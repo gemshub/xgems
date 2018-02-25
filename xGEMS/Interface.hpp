@@ -1,6 +1,6 @@
-// Reaktoro is a unified framework for modeling chemically reactive systems.
+// xGEMS is a C++ and Python library for thermodynamic modeling by Gibbs energy minimization
 //
-// Copyright (C) 2014-2015 Allan Leal
+// Copyright (C) 2018 Allan Leal, Dmitrii Kulik
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include <Reaktoro/Thermodynamics/Models/PhaseChemicalModel.hpp>
 #include <Reaktoro/Thermodynamics/Models/PhaseThermoModel.hpp>
 
-namespace Reaktoro {
+namespace xGEMS {
 
 // Forward declarations
 class ChemicalState;
@@ -120,4 +120,4 @@ public:
     operator ChemicalSystem() const;
 };
 
-} // namespace Reaktoro
+} // namespace xGEMS
