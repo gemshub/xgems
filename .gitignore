@@ -1,0 +1,12 @@
+build/
+.settings
+.project
+.cproject
+.directory
+.idea
+.pydevproject
+*.pyc
+~lock.*
+.ptp-sync-folder
+.ptp-sync/
+.DS_Store
