@@ -87,6 +87,8 @@ find_package(Eigen3 3.2 REQUIRED)
 # Find the Python interpreter
 if(XGEMS_BUILD_PYTHON)
     find_package(pybind11 2.2.2 REQUIRED)
+    set(PYBIND11_PYTHON_VERSION XGEMS_PYTHON_VERSION)
+    
     if(NOT pybind11_FOUND)
         set(XGEMS_BUILD_PYTHON OFF)
         message(WARNING "pybind11 has not been found. "

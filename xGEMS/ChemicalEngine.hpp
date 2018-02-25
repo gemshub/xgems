@@ -25,37 +25,34 @@
 #include <xGEMS/Index.hpp>
 #include <xGEMS/Eigen.hpp>
 
-// Forward declarations
-class TNode;
-
 namespace xGEMS {
 
-/// A type that describes the options for Gems
-struct GemsOptions
+/// A type that describes the options for ChemicalEngine
+struct ChemicalEngineOptions
 {
     /// The flag that indicates if smart start initial approximation is used
     bool warmstart = true;
 };
 
-/// A wrapper class for Gems code
-class Gems
+/// A wrapper class for ChemicalEngine code
+class ChemicalEngine
 {
 public:
-    /// Construct a default Gems object
-    Gems();
+    /// Construct a default ChemicalEngine object
+    ChemicalEngine();
 
-    /// Construct a copy of a Gems object
-    Gems(const Gems& other);
+    /// Construct a copy of a ChemicalEngine object
+    ChemicalEngine(const ChemicalEngine& other);
 
-    /// Construct a Gems object from a specification file
+    /// Construct a ChemicalEngine object from a specification file
     /// @param filename The name of the file containing the definition of the chemical system
-    Gems(std::string filename);
+    ChemicalEngine(std::string filename);
 
-    /// Destroy this Gems instance
-    virtual ~Gems();
+    /// Destroy this ChemicalEngine instance
+    virtual ~ChemicalEngine();
 
-    /// Assign another Gems object to this
-    auto operator=(Gems other) -> Gems&;
+    /// Assign another ChemicalEngine object to this
+    auto operator=(ChemicalEngine other) -> ChemicalEngine&;
 
     /// Return the temperature (in units of K)
     auto temperature() const -> double;
@@ -96,8 +93,8 @@ public:
     /// Return the name of a phase
     auto phaseName(Index iphase) const -> std::string;
 
-    /// Set the options of the Gems instance
-    auto setOptions(const GemsOptions& options) -> void;
+    /// Set the options of the ChemicalEngine instance
+    auto setOptions(const ChemicalEngineOptions& options) -> void;
 
     /// Calculate the equilibrium state of the system
     /// @param T The temperature for the equilibrium calculation (in units of K)
@@ -113,9 +110,6 @@ public:
 
     /// Return the wall time of the equilibrium calculation (in units of s)
     auto elapsedTime() const -> double;
-
-    /// Return a shared pointer to the TNode instance of Gems
-    auto node() const -> std::shared_ptr<TNode>;
 
 private:
     struct Impl;

@@ -22,26 +22,6 @@
 
 namespace xGEMS {
 
-using Vector           = Eigen::VectorXd;                             /// < Alias to Eigen type VectorXd.
-using VectorRef        = Eigen::Ref<Eigen::VectorXd>;                 /// < Alias to Eigen type Ref<VectorXd>.
-using VectorStridedRef = Eigen::Ref<Vector, 0, Eigen::InnerStride<>>; /// < Alias to Eigen type Ref<VectorXd>.
-using VectorConstRef   = Eigen::Ref<const Eigen::VectorXd>;           /// < Alias to Eigen type Ref<const VectorXd>.
-using VectorMap        = Eigen::Map<Eigen::VectorXd>;                 /// < Alias to Eigen type Map<VectorXd>.
-using VectorConstMap   = Eigen::Map<const Eigen::VectorXd>;           /// < Alias to Eigen type Map<const VectorXd>.
-
-using RowVector           = Eigen::RowVectorXd;                                      /// < Alias to Eigen type RowVectorXd.
-using RowVectorRef        = Eigen::Ref<Eigen::RowVectorXd>;                          /// < Alias to Eigen type Ref<RowVectorXd>.
-using RowVectorStridedRef = Eigen::Ref<Eigen::RowVectorXd, 0, Eigen::InnerStride<>>; /// < Alias to Eigen type Ref<RowVectorXd>.
-using RowVectorConstRef   = Eigen::Ref<const Eigen::RowVectorXd>;                    /// < Alias to Eigen type Ref<const RowVectorXd>.
-using RowVectorMap        = Eigen::Map<Eigen::RowVectorXd>;                          /// < Alias to Eigen type Map<VectorXd>.
-using RowVectorConstMap   = Eigen::Map<const Eigen::RowVectorXd>;                    /// < Alias to Eigen type Map<const VectorXd>.
-
-using Matrix         = Eigen::MatrixXd;                   ///< Alias to Eigen type MatrixXd.
-using MatrixRef      = Eigen::Ref<Eigen::MatrixXd>;       ///< Alias to Eigen type Ref<MatrixXd>.
-using MatrixConstRef = Eigen::Ref<const Eigen::MatrixXd>; ///< Alias to Eigen type Ref<const MatrixXd>.
-using MatrixMap      = Eigen::Map<Eigen::MatrixXd>;       ///< Alias to Eigen type Map<MatrixXd>.
-using MatrixConstMap = Eigen::Map<const Eigen::MatrixXd>; ///< Alias to Eigen type Map<const MatrixXd>.
-
 using Vector = Eigen::VectorXd; /// Alias to Eigen type Eigen::VectorXd.
 using VectorXd = Eigen::VectorXd; /// Alias to Eigen type Eigen::VectorXd.
 using VectorXi = Eigen::VectorXi; /// Alias to Eigen type Eigen::VectorXi.
