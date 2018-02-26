@@ -18,8 +18,9 @@
 #pragma once
 
 // C++ includes
-#include <string>
+#include <iostream>
 #include <memory>
+#include <string>
 
 // xGEMS includes
 #include <xGEMS/Index.hpp>
@@ -38,21 +39,97 @@ struct ChemicalEngineOptions
 class ChemicalEngine
 {
 public:
-    /// Construct a default ChemicalEngine object
+    /// Construct a default ChemicalEngine object.
     ChemicalEngine();
 
-    /// Construct a copy of a ChemicalEngine object
+    /// Construct a copy of a ChemicalEngine object.
     ChemicalEngine(const ChemicalEngine& other);
 
-    /// Construct a ChemicalEngine object from a specification file
+    /// Construct a ChemicalEngine object from a GEM-Selektor project file.
     /// @param filename The name of the file containing the definition of the chemical system
     ChemicalEngine(std::string filename);
 
-    /// Destroy this ChemicalEngine instance
+    /// Destroy this ChemicalEngine instance.
     virtual ~ChemicalEngine();
 
-    /// Assign another ChemicalEngine object to this
+    /// Assign another ChemicalEngine object to this.
     auto operator=(ChemicalEngine other) -> ChemicalEngine&;
+
+    /// Initialize the ChemicalEngine object from a GEM-Selektor project file.
+    /// @param filename The name of the file containing the definition of the chemical system
+    auto initialize(std::string filename) -> void;
+
+    /// Return the number of elements.
+    auto numElements() const -> Index;
+
+    /// Return the number of species.
+    auto numSpecies() const -> Index;
+
+    /// Return the number of phases.
+    auto numPhases() const -> Index;
+
+    /// Return the number of species in a phase
+    /// @param iphase The index of the phase.
+    auto numSpeciesInPhase(Index iphase) const -> Index;
+
+    /// Return the name of an element.
+    /// @param ielement The index of the element.
+    auto elementName(Index ielement) const -> std::string;
+
+    /// Return the name of a species.
+    /// @param ispecies The index of the species.
+    auto speciesName(Index ispecies) const -> std::string;
+
+    /// Return the name of a phase
+    /// @param iphase The index of the phase.
+    auto phaseName(Index iphase) const -> std::string;
+
+    /// Return the index of an element.
+    /// @param ielement The index of the element.
+    auto indexElement(std::string element) const -> Index;
+
+    /// Return the index of a species.
+    /// @param ispecies The index of the species.
+    auto indexSpecies(std::string species) const -> Index;
+
+    /// Return the index of a phase
+    /// @param iphase The index of the phase.
+    auto indexPhase(std::string phase) const -> Index;
+
+    /// Return the index of the phase with a species.
+    /// @param ispecies The index of the species.
+    auto indexPhaseWithSpecies(Index ispecies) const -> Index;
+
+    /// Return the index of the first species in a phase.
+    /// @param iphase The index of the phase.
+    auto indexFirstSpeciesInPhase(Index iphase) const -> Index;
+
+    /// Return the molar masses of the elements (in units of kg/mol)
+    auto elementMolarMasses() const -> VectorConstRef;
+
+    /// Return the molar masses of the species (in units of kg/mol)
+    auto speciesMolarMasses() const -> VectorConstRef;
+
+    /// Return the formula matrix of the species.
+    auto formulaMatrix() const -> MatrixConstRef;
+
+    /// Set the options of the ChemicalEngine instance
+    auto setOptions(const ChemicalEngineOptions& options) -> void;
+
+    /// Calculate the equilibrium state of the chemical system.
+    /// @param T The temperature for the equilibrium calculation (in units of K)
+    /// @param P The pressure for the equilibrium calculation (in units of Pa)
+    /// @param b The amounts of the elements (in units of mol)
+    auto equilibrate(double T, double P, VectorConstRef b) -> void;
+
+    /// Return the convergence result of the equilibrium calculation
+    auto converged() const -> bool;
+
+    /// Return the number of iterations of the equilibrium calculation
+    auto numIterations() const -> Index;
+
+    /// Return the wall time of the equilibrium calculation (in units of s)
+    auto elapsedTime() const -> double;
 
     /// Return the temperature (in units of K)
     auto temperature() const -> double;
@@ -62,59 +139,136 @@ public:
 
     /// Return the amounts of the elements (in units of mol)
     auto elementAmounts() const -> VectorConstRef;
+    
+    /// Return the amounts of the elements in a phase.
+    /// @param iphase The index of the phase.
+    auto elementAmountsInPhase(Index iphase) const -> Vector;
+
+    /// Return the amounts of the elements in a group of species.
+    /// @param ispecies The vector of indices of the species.
+    auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector;
 
     /// Return the amounts of the species (in units of mol)
     auto speciesAmounts() const -> VectorConstRef;
 
-    /// Return the number of elements
-    auto numElements() const -> unsigned;
+    /// Return the mole fractions of the species.
+    auto moleFractions() const -> VectorConstRef;
 
-    /// Return the number of species
-    auto numSpecies() const -> unsigned;
+    /// Return the ln activity coefficients of the species (in mole fraction scale).
+    auto lnActivityCoefficients() const -> VectorConstRef;
 
-    /// Return the number of phases
-    auto numPhases() const -> unsigned;
+    /// Return the ln activities of the species.
+    auto lnActivities() const -> VectorConstRef;
 
-    /// Return the number of species in a phase
-    auto numSpeciesInPhase(Index iphase) const -> unsigned;
+    /// Return the chemical potentials of the species (in units of J/mol).
+    auto chemicalPotentials() const -> VectorConstRef;
 
-    /// Return the name of an element
-    auto elementName(Index ielement) const -> std::string;
+    /// Return the standard partial molar Gibbs energies of the species (in units of J/mol).
+    auto standardPartialMolarGibbsEnergies() const -> VectorConstRef;
 
-    /// Return the molar mass of an element (in units of kg/mol)
-    auto elementMolarMass(Index ielement) const -> double;
+    /// Return the standard partial molar enthalpies of the species (in units of J/mol).
+    auto standardPartialMolarEnthalpies() const -> VectorConstRef;
 
-    /// Return the stoichiometry of an element in a species
-    auto elementStoichiometry(Index ispecies, Index ielement) const -> double;
+    /// Return the standard partial molar volumes of the species (in units of m3/mol).
+    auto standardPartialMolarVolumes() const -> VectorConstRef;
 
-    /// Return the name of a species
-    auto speciesName(Index ispecies) const -> std::string;
+    /// Return the standard partial molar entropies of the species (in units of J/(mol*K)).
+    auto standardPartialMolarEntropies() const -> VectorConstRef;
 
-    /// Return the name of a phase
-    auto phaseName(Index iphase) const -> std::string;
+    /// Return the standard partial molar internal energies of the species (in units of J/mol).
+    auto standardPartialMolarInternalEnergies() const -> VectorConstRef;
 
-    /// Set the options of the ChemicalEngine instance
-    auto setOptions(const ChemicalEngineOptions& options) -> void;
+    /// Return the standard partial molar Helmholtz energies of the species (in units of J/mol).
+    auto standardPartialMolarHelmholtzEnergies() const -> VectorConstRef;
 
-    /// Calculate the equilibrium state of the system
-    /// @param T The temperature for the equilibrium calculation (in units of K)
-    /// @param P The pressure for the equilibrium calculation (in units of Pa)
-    /// @param n The amounts of the elements (in units of mol)
-    auto equilibrate(double T, double P, VectorConstRef b) -> void;
+    /// Return the standard partial molar isobaric heat capacities of the species (in units of J/(mol*K)).
+    auto standardPartialMolarHeatCapacitiesConstP() const -> VectorConstRef;
 
-    /// Return the convergence result of the equilibrium calculation
-    auto converged() const -> bool;
+    /// Return the standard partial molar isochoric heat capacities of the species (in units of J/(mol*K)).
+    auto standardPartialMolarHeatCapacitiesConstV() const -> VectorConstRef;
 
-    /// Return the number of iterations of the equilibrium calculation
-    auto numIterations() const -> unsigned;
+    /// Return the molar Gibbs energies of the phases (in units of J/mol).
+    auto phaseMolarGibbsEnergies() const -> VectorConstRef;
 
-    /// Return the wall time of the equilibrium calculation (in units of s)
-    auto elapsedTime() const -> double;
+    /// Return the molar enthalpies of the phases (in units of J/mol).
+    auto phaseMolarEnthalpies() const -> VectorConstRef;
+
+    /// Return the molar volumes of the phases (in units of m3/mol).
+    auto phaseMolarVolumes() const -> VectorConstRef;
+
+    /// Return the molar entropies of the phases (in units of J/(mol*K)).
+    auto phaseMolarEntropies() const -> VectorConstRef;
+
+    /// Return the molar internal energies of the phases (in units of J/mol).
+    auto phaseMolarInternalEnergies() const -> VectorConstRef;
+
+    /// Return the molar Helmholtz energies of the phases (in units of J/mol).
+    auto phaseMolarHelmholtzEnergies() const -> VectorConstRef;
+
+    /// Return the molar isobaric heat capacities of the phases (in units of J/(mol*K)).
+    auto phaseMolarHeatCapacitiesConstP() const -> VectorConstRef;
+
+    /// Return the molar isochoric heat capacities of the phases (in units of J/(mol*K)).
+    auto phaseMolarHeatCapacitiesConstV() const -> VectorConstRef;
+
+    /// Return the specific Gibbs energies of the phases (in units of J/kg).
+    auto phaseSpecificGibbsEnergies() const -> VectorConstRef;
+
+    /// Return the specific enthalpies of the phases (in units of J/kg).
+    auto phaseSpecificEnthalpies() const -> VectorConstRef;
+
+    /// Return the specific volumes of the phases (in units of m3/kg).
+    auto phaseSpecificVolumes() const -> VectorConstRef;
+
+    /// Return the specific entropies of the phases (in units of J/(kg*K)).
+    auto phaseSpecificEntropies() const -> VectorConstRef;
+
+    /// Return the specific internal energies of the phases (in units of J/kg).
+    auto phaseSpecificInternalEnergies() const -> VectorConstRef;
+
+    /// Return the specific Helmholtz energies of the phases (in units of J/kg).
+    auto phaseSpecificHelmholtzEnergies() const -> VectorConstRef;
+
+    /// Return the specific isobaric heat capacities of the phases (in units of J/(kg*K)).
+    auto phaseSpecificHeatCapacitiesConstP() const -> VectorConstRef;
+
+    /// Return the specific isochoric heat capacities of the phases (in units of J/(kg*K)).
+    auto phaseSpecificHeatCapacitiesConstV() const -> VectorConstRef;
+
+    /// Return the densities of the phases (in units of kg/m3).
+    auto phaseDensities() const -> VectorConstRef;
+
+    /// Return the masses of the phases (in units of kg).
+    auto phaseMasses() const -> VectorConstRef;
+
+    /// Return the molar amounts of the phases (in units of mol).
+    auto phaseAmounts() const -> VectorConstRef;
+
+    /// Return the volumes of the phases (in units of m3).
+    auto phaseVolumes() const -> VectorConstRef;
+
+    /// Return the volume of the system (in units of m3).
+    auto volume() const -> double;
+
+    /// Return the ionic strength of the aqueous phase (in units of molal).
+    auto ionicStrength() const -> double;
+
+    /// Return the pH of the aqueous phase.
+    auto pH() const -> double;
+
+    /// Return the pe of the aqueous phase.
+    auto pe() const -> double;
+
+    /// Return the Eh of the aqueous phase.
+    auto Eh() const -> double;
 
 private:
     struct Impl;
 
     std::unique_ptr<Impl> pimpl;
 };
+
+/// Output the state of the ChemicalEngine object.
+auto operator<<(std::ostream& out, const ChemicalEngine& engine) -> std::ostream&;
 
 } // namespace xGEMS

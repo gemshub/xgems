@@ -15,11 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+// C++ includes
+#include <iostream>
+
 // xGEMS includes
 #include <xGEMS/ChemicalEngine.hpp>
 using namespace xGEMS;
 
 int main(int argc, char **argv)
 {
-    ChemicalEngine chemicalengine;
+    ChemicalEngine chemicalengine("resources/CalciteBC-dat.lst");
+
+    std::cout << chemicalengine << std::endl;
 }

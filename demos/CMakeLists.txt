@@ -1,5 +1,5 @@
 # Copy resources dir for the demos to the binary build dir along with the demos
-file(COPY resources DESTINATION .)
+file(COPY resources DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 file(GLOB DEMO_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 

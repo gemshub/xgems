@@ -62,4 +62,6 @@ using MatrixConstMap = Eigen::Map<const MatrixXd>; ///< Alias to Eigen type Eige
 using MatrixXdConstMap = Eigen::Map<const MatrixXd>; ///< Alias to Eigen type Eigen::Map<const MatrixXd>.
 using MatrixXiConstMap = Eigen::Map<const MatrixXi>; ///< Alias to Eigen type Eigen::Map<const MatrixXi>.
 
+const auto all = Eigen::placeholders::all; ///< Alias to Eigen placeholder value Eigen::placeholder::all.
+
 } // namespace xGEMS
