@@ -6,6 +6,74 @@ When you're done, you can delete the content in this README and update the file 
 
 ---
 
+## xGEMS 
+
+This is a numerical solver of chemical equilibria for thermodynamic modelling, extended (relative to GEMS3K code) with new C++ and Python APIs (compatible with [Reaktoro framework](http://reaktoro.org)), and supposed to replace GEMS3K in next-generation software.  
+
+### Briefly about xGEMS
+
+* Implements the improved GEM IPM-3 algorithm with excellent mass balance precision and fast convergence to Gibbs energy minimum even in very complex non-ideal chemical systems with two-sided metastability constraints.
+* Written in C/C++. Using compiler directives, the xGEMS code can be compiled as a standalone program e.g. 'gemcalc'; as a static or dynamic library for coupling with the mass transport simulator or another code; or as part of the GEM-Selektor v4 code together with GUI and databases.
+* Version: currently 4.0.0.
+* Will be distributed under the terms of GPL v.3 license. 
+
+### How to download xGEMS source code
+
+* In your home directory, make a folder named e.g. ~/gitxGEMS.
+* Change into ~/gitxGEMS and clone this repository from https://bitbucket.org/gems4/xgems.git using a preinstalled free git client, e.g. SourceTree. 
+* Alternatively on Mac OS X or linux, open a terminal and type in the command line:
+~~~
+cd ~/gitxGEMS
+git clone https://bitbucket.org/gems4/xgems.git
+~~~
+
+
+### How to build xGEMS library and examples
+
+* You will need to install Eigen [(the development branch)](http://bitbucket.org/eigen/eigen/get/default.tar.bz2). Assume you have unpacked it to ~/unpacked-eigen-dir.
+~~~
+cd ~/unpacked-eigen-dir
+mkdir build 
+cd build
+cmake ..
+sudo make install
+~~~
+
+* You will also need to install Pybind11 (v2.2.2):
+~~~
+cd Downloads
+git clone https://github.com/pybind/pybind11.git
+cd pybind11
+mkdir build
+cd build
+cmake .. -DPYBIND11_TEST=OFF
+sudo make install
+~~~
+
+* To compile xGEMS and demos:
+~~~
+cd ~/gitxGEMS/xgems
+mkdir build
+cd build
+cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2.7 (or 3.5, and also, if debug mode, add -DCMAKE_BUILD_TYPE=Debug)
+make -j 3
+~~~
+
+* To execute the c++ demo:
+~~~
+cd xGEMS/build/bin
+./demo1
+~~~
+
+* To execute the python demo:
+~~~
+ cd xGEMS/demos/
+ python demo1.py
+~~~
+
+There are yet things to do.
+
+
 ## Edit a file
 
 You’ll start by editing this README file to learn how to edit a file in Bitbucket.
