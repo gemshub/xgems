@@ -60,6 +60,13 @@ cd ~/git/xGEMS/build/bin
 ~~~
 
 * To execute the python demo:
+
+First, make sure the xGEMS Python module can be found by Python. This can be done by setting the `PYTHONPATH` environment variable to the path where the xGEMS module is located:
+
+~~~
+export PYTHONPATH=/home/username/pathto-xGEMS/build/lib
+~~~
+
 ~~~
  cd ~git/xGEMS/demos/
  python demo1.py
