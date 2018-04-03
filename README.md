@@ -49,9 +49,12 @@ sudo make install
 cd ~/git/xGEMS
 mkdir build
 cd build
-cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2.7 (or 3.5, and also, if debug mode, add -DCMAKE_BUILD_TYPE=Debug)
+cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2.7
 make -j 3
+make demos
 ~~~
+If you use Python 3.5, in the anove commands, change "python2.7" to "python3.5". 
+For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
 * To execute the c++ demo:
 ~~~
@@ -60,17 +63,26 @@ cd ~/git/xGEMS/build/bin
 ~~~
 
 * To execute the python demo:
-
-First, make sure the xGEMS Python module can be found by Python. This can be done by setting the `PYTHONPATH` environment variable to the path where the xGEMS module is located:
+* First, make sure the xGEMS Python module can be found by Python. 
+* This can be done by setting the `PYTHONPATH` environment variable to the path where the xGEMS module is located:
 
 ~~~
 export PYTHONPATH=/home/username/pathto-xGEMS/build/lib
 ~~~
 
+* Then run the demo - if built with python 2.7:
 ~~~
  cd ~git/xGEMS/demos/
  python demo1.py
 ~~~
+
+* If built with python 3.5: in demo1.py, change the last line from "print chemicalengine" to "print(chemicalengine)", save and execute:
+~~~
+ cd ~git/xGEMS/demos/
+ python3 demo1.py
+~~~
+
+
 
 There are yet things to do.
 
