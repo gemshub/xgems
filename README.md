@@ -8,7 +8,7 @@ This is a numerical solver of chemical equilibria for thermodynamic modelling, e
 * Implements the improved GEM IPM-3 algorithm with excellent mass balance precision and fast convergence to Gibbs energy minimum even in very complex non-ideal chemical systems with two-sided metastability constraints.
 * Written in C/C++. Using compiler directives, the xGEMS code can be compiled as a standalone program e.g. 'gemcalc'; as a static or dynamic library for coupling with the mass transport simulator or another code; or as part of the GEM-Selektor v4 code together with GUI and databases.
 * Version: currently 4.0.0.
-* Will be distributed under the terms of GPL v.3 license. 
+* Will be distributed under the terms of LGPL v.3 license. 
 
 ### How to download xGEMS source code
 
