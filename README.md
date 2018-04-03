@@ -12,18 +12,19 @@ This is a numerical solver of chemical equilibria for thermodynamic modelling, e
 
 ### How to download xGEMS source code
 
-* In your home directory, make a folder named e.g. ~/gitxGEMS.
-* Change into ~/gitxGEMS and clone this repository from https://bitbucket.org/gems4/xgems.git using a preinstalled free git client, e.g. SourceTree. 
+* In your home directory, make a folder named e.g. ~/git/xGEMS.
+* Change into ~/git/xGEMS and clone this repository from https://bitbucket.org/gems4/xgems.git using a preinstalled free git client, e.g. SourceTree. 
 * Alternatively on Mac OS X or linux, open a terminal and type in the command line:
 ~~~
-cd ~/gitxGEMS
-git clone https://bitbucket.org/gems4/xgems.git
+cd ~/git/xGEMS
+git clone https://bitbucket.org/gems4/xgems.git .
 ~~~
 
 
 ### How to build xGEMS library and examples
 
-* You will need to install Eigen [(the development branch)](http://bitbucket.org/eigen/eigen/get/default.tar.bz2). Assume you have unpacked it to ~/unpacked-eigen-dir.
+* You will need to install Eigen [(the development branch)](http://bitbucket.org/eigen/eigen/get/default.tar.bz2). 
+* We assume you have unpacked it to your home directory and renamed to ~/unpacked-eigen-dir.
 ~~~
 cd ~/unpacked-eigen-dir
 mkdir build 
@@ -45,7 +46,7 @@ sudo make install
 
 * To compile xGEMS and demos:
 ~~~
-cd ~/gitxGEMS/xgems
+cd ~/git/xGEMS
 mkdir build
 cd build
 cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2.7 (or 3.5, and also, if debug mode, add -DCMAKE_BUILD_TYPE=Debug)
@@ -54,13 +55,13 @@ make -j 3
 
 * To execute the c++ demo:
 ~~~
-cd xGEMS/build/bin
+cd ~/git/xGEMS/build/bin
 ./demo1
 ~~~
 
 * To execute the python demo:
 ~~~
- cd xGEMS/demos/
+ cd ~git/xGEMS/demos/
  python demo1.py
 ~~~
 
