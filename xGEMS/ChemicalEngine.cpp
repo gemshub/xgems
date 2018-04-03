@@ -20,22 +20,23 @@
 // C++ includes
 #include <chrono>
 #include <iomanip>
+#include <memory>
 
 // GEMS3K includes
 #define IPMGEMPLUGIN
 #define NOPARTICLEARRAY
-#include <xGEMS/GEMS3K/node.h>
+#define NODEARRAYLEVEL
+#include <GEMS3K/node.h>
 
 #define NODE  pimpl->node
 #define CSD   pimpl->node->pCSD()
-#define pActivity pimpl->node->pActiv()->GetActivityDataPtr()
 
 namespace xGEMS {
 
 struct ChemicalEngine::Impl
 {
     /// The TNode instance from ChemicalEngine
-    std::shared_ptr<TNode> node;
+    std::unique_ptr<TNode> node;
 
     /// The options for ChemicalEngine
     ChemicalEngineOptions options;
@@ -46,6 +47,12 @@ struct ChemicalEngine::Impl
     /// The elapsed time of the equilibrate method (in units of s)
     double elapsed_time = 0;
 
+    /// The activity coefficients of the species (in natural log scale)
+    Vector ln_activity_coefficients;
+
+    /// The activities of the species (in natural log scale)
+    Vector ln_activities;
+
     /// Construct a default Impl instance
     Impl()
     {}
@@ -53,11 +60,6 @@ struct ChemicalEngine::Impl
 
 ChemicalEngine::ChemicalEngine()
 : pimpl(new Impl())
-{
-}
-
-ChemicalEngine::ChemicalEngine(const ChemicalEngine& other)
-: pimpl(new Impl(*other.pimpl))
 {
 }
 
@@ -70,17 +72,22 @@ ChemicalEngine::ChemicalEngine(std::string filename)
 ChemicalEngine::~ChemicalEngine()
 {}
 
-auto ChemicalEngine::operator=(ChemicalEngine other) -> ChemicalEngine&
-{
-    pimpl = std::move(other.pimpl);
-    return *this;
-}
-
 auto ChemicalEngine::initialize(std::string filename) -> void
 {
+    // Allocate memory for the GEMS `node` member
+    pimpl->node = std::unique_ptr<TNode>(new TNode);
+
     // Initialize the GEMS `node` member
-    pimpl->node = std::make_shared<TNode>();
-    if(pimpl->node->GEM_init(filename.c_str()))
+    const auto res = pimpl->node->GEM_init(filename.c_str());
+
+    // Check if there was a system error during node initialization
+    if(res == -1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not initialize the ChemicalEngine object.\n"
+                "There was a problem during memory allocation.");
+
+    // Check if there was a file read error during node initialization
+    if(res == 1)
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not initialize the ChemicalEngine object.\n"
                 "Make sure the provided file exists relative to the working directory.");
@@ -92,6 +99,10 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     for(Index i = 0; i < N; ++i)
         for(Index j = 0; j < E; ++j)
             pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
+
+    // Allocate memory for vector members
+    pimpl->ln_activity_coefficients.resize(N);
+    pimpl->ln_activities.resize(N);
 }
 
 auto ChemicalEngine::numElements() const -> Index
@@ -202,12 +213,12 @@ auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> void
     auto begin = std::chrono::high_resolution_clock::now();
 
     // Set temperature and pressure
-    pimpl->node->setTemperature(T);
-    pimpl->node->setPressure(P);
+    pimpl->node->Set_TK(T);
+    pimpl->node->Set_P(P);
 
     // Set the mole amounts of the elements
     for(Index i = 0; i < numElements(); ++i)
-        pimpl->node->pCNode()->bIC[i] = b[i];
+        pimpl->node->Set_bIC(i, b[i]);
 
     // Solve the equilibrium problem with gems
     pimpl->node->pCNode()->NodeStatusCH =
@@ -286,12 +297,16 @@ auto ChemicalEngine::moleFractions() const -> VectorConstRef
 
 auto ChemicalEngine::lnActivityCoefficients() const -> VectorConstRef
 {
-    return Vector::Map(pActivity->lnGam, numSpecies());
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->ln_activity_coefficients[i] = std::log(pimpl->node->Get_gDC(i));
+    return pimpl->ln_activity_coefficients;
 }
 
 auto ChemicalEngine::lnActivities() const -> VectorConstRef
 {
-    return Vector::Map(pActivity->lnAct, numSpecies());
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->ln_activities[i] = std::log(pimpl->node->Get_aDC(i, true));
+    return pimpl->ln_activities;
 }
 
 auto ChemicalEngine::chemicalPotentials() const -> VectorConstRef
@@ -470,7 +485,7 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const double P = state.pressure();
     VectorConstRef n = state.speciesAmounts();
     const Vector activity_coeffs = state.lnActivityCoefficients().array().exp();
-    const Vector activities = state.lnActivities().array().exp();
+    const Vector activities = state.lnActivities();
 
     const Index num_phases = state.numPhases();
     const Index bar_size = std::max(Index(9), num_phases + 2) * 25;
