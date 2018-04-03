@@ -53,7 +53,7 @@ cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2.7
 make -j 3
 make demos
 ~~~
-If you use Python 3.5, in the anove commands, change "python2.7" to "python3.5". 
+If you use Python 3.5, in the above commands, change "python2.7" to "python3.5". 
 For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
 * To execute the c++ demo:
@@ -62,8 +62,7 @@ cd ~/git/xGEMS/build/bin
 ./demo1
 ~~~
 
-* To execute the python demo:
-* First, make sure the xGEMS Python module can be found by Python. 
+* To execute the python demo: first, make sure the xGEMS Python module can be found by Python. 
 * This can be done by setting the `PYTHONPATH` environment variable to the path where the xGEMS module is located:
 
 ~~~
