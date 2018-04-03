@@ -20,3 +20,6 @@ from xgems import *
 chemicalengine = ChemicalEngine("resources/CalciteBC-dat.lst")
 
 print chemicalengine
+
+# print(chemicalengine)
+# (if Python3.5 is used)

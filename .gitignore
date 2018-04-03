@@ -10,3 +10,4 @@ build/
 .ptp-sync-folder
 .ptp-sync/
 .DS_Store
+demos/ipmlog.txt
