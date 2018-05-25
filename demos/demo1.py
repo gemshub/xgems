@@ -15,26 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
-sys.path.append('/home/allan/git/xGEMS/build/debug/lib')
-
 from xgems import *
 from numpy import *
 
-chemicalengine = ChemicalEngine("resources/CalciteBC-dat.lst")
+engine = ChemicalEngine("resources/CalciteBC-dat.lst")
 
-T = chemicalengine.temperature()
-P = chemicalengine.pressure()
-b = array(chemicalengine.elementAmounts())
+T = engine.temperature()
+P = engine.pressure()
+b = engine.elementAmounts()
 
-print "T =", T
-print "P =", P
-print "b =", b
+engine.equilibrate(T, P, b)
 
-b[0] = b[0] + 1e-6
-
-chemicalengine.equilibrate(T, P, b)
-
-
-print chemicalengine
+print engine
