@@ -147,7 +147,8 @@ set(GEMS3K_CMAKE_ARGS
 # Clone GEMS3K from git repository and build it 
 ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     PREFIX build
-    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
+#    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
+    GIT_REPOSITORY https://bitbucket.org/gems4/gems3k.git
     GIT_TAG trunk
     SOURCE_DIR build/src/gems3k
     BINARY_DIR build/src/gems3k-build

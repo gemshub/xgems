@@ -11,3 +11,4 @@ build/
 .ptp-sync/
 .DS_Store
 .ipmlog.txt
+demos/ipmlog.txt
