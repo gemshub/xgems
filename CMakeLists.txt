@@ -61,6 +61,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+add_compile_options(-std=c++11)
+
 # Set the list of compiler flags for GNU compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     add_compile_options(-std=c++11 -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
@@ -86,8 +88,11 @@ find_package(Eigen3 3.2 REQUIRED)
 
 # Find the Python interpreter
 if(XGEMS_BUILD_PYTHON)
+    if(NOT PYBIND11_PYTHON_VERSION)
+        set(PYBIND11_PYTHON_VERSION 2.7)
+    endif()
+    
     find_package(pybind11 2.2.2 REQUIRED)
-    set(PYBIND11_PYTHON_VERSION XGEMS_PYTHON_VERSION)
     
     if(NOT pybind11_FOUND)
         set(XGEMS_BUILD_PYTHON OFF)
@@ -105,6 +110,62 @@ set(XGEMS_TESTS_DIR  ${CMAKE_SOURCE_DIR}/tests)
 # Set the include directories
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${EIGEN3_INCLUDE_DIR})
+
+
+# Set the local directory where the third-party libraries are installed
+set(THIRDPARTY_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/thirdparty/install)
+
+# Set the include directories for third-party libraries
+include_directories(${THIRDPARTY_INSTALL_PREFIX}/include)
+
+# Set the link directories for third-party libraries
+link_directories(${THIRDPARTY_INSTALL_PREFIX}/lib)
+
+
+
+
+# Include the ExternalProject module
+include(ExternalProject)
+
+# Set the common cmake arguments to all external projects
+set(GEMS3K_CMAKE_ARGS
+    -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
+    -DCMAKE_INSTALL_PREFIX=${THIRDPARTY_INSTALL_PREFIX}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#    -DCMAKE_C_FLAGS=${CFLAGS}
+#    -DCMAKE_CXX_FLAGS=${CXXFLAGS}
+#    -DCMAKE_INSTALL_INCLUDEDIR=include
+#    -DCMAKE_INSTALL_LIBDIR=lib
+#    -DCMAKE_INSTALL_BINDIR=bin
+#    -DBUILD_SHARED_LIBS=OFF
+     # Disables the cmake warning message `Manually-specified
+     # variables were not used by the project` because of
+     # unused arguments above
+    --no-warn-unused-cli
+    )
+
+# Clone GEMS3K from git repository and build it 
+ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
+    PREFIX build
+    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
+    GIT_TAG trunk
+    SOURCE_DIR build/src/gems3k
+    BINARY_DIR build/src/gems3k-build
+    STAMP_DIR build/src/gems3k-stamp
+    CMAKE_ARGS ${GEMS3K_CMAKE_ARGS})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)

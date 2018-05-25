@@ -42,9 +42,6 @@ public:
     /// Construct a default ChemicalEngine object.
     ChemicalEngine();
 
-    /// Construct a copy of a ChemicalEngine object.
-    ChemicalEngine(const ChemicalEngine& other);
-
     /// Construct a ChemicalEngine object from a GEM-Selektor project file.
     /// @param filename The name of the file containing the definition of the chemical system
     ChemicalEngine(std::string filename);
@@ -52,8 +49,11 @@ public:
     /// Destroy this ChemicalEngine instance.
     virtual ~ChemicalEngine();
 
+    /// Construct a copy of a ChemicalEngine object.
+    ChemicalEngine(const ChemicalEngine& other) = delete;
+
     /// Assign another ChemicalEngine object to this.
-    auto operator=(ChemicalEngine other) -> ChemicalEngine&;
+    auto operator=(ChemicalEngine other) -> ChemicalEngine& = delete;
 
     /// Initialize the ChemicalEngine object from a GEM-Selektor project file.
     /// @param filename The name of the file containing the definition of the chemical system
@@ -139,7 +139,7 @@ public:
 
     /// Return the amounts of the elements (in units of mol)
     auto elementAmounts() const -> VectorConstRef;
-    
+
     /// Return the amounts of the elements in a phase.
     /// @param iphase The index of the phase.
     auto elementAmountsInPhase(Index iphase) const -> Vector;

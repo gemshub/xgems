@@ -16,10 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from xgems import *
+from numpy import *
 
-chemicalengine = ChemicalEngine("resources/CalciteBC-dat.lst")
+engine = ChemicalEngine("resources/CalciteBC-dat.lst")
 
-print chemicalengine
+T = engine.temperature()
+P = engine.pressure()
+b = engine.elementAmounts()
 
-# print(chemicalengine)
-# (if Python3.5 is used)
+engine.equilibrate(T, P, b)
+
+print engine

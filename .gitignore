@@ -10,4 +10,8 @@ build/
 .ptp-sync-folder
 .ptp-sync/
 .DS_Store
+<<<<<<< HEAD
 demos/ipmlog.txt
+=======
+.ipmlog.txt
+>>>>>>> cmake-git-clone-gems3k
