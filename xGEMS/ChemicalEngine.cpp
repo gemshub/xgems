@@ -485,7 +485,7 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const double P = state.pressure();
     VectorConstRef n = state.speciesAmounts();
     const Vector activity_coeffs = state.lnActivityCoefficients().array().exp();
-    const Vector activities = state.lnActivities();
+    const Vector activities = state.lnActivities().array().exp();
 
     const Index num_phases = state.numPhases();
     const Index bar_size = std::max(Index(9), num_phases + 2) * 25;
