@@ -150,7 +150,7 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
 #    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
     GIT_REPOSITORY https://bitbucket.org/gems4/gems3k.git
     GIT_TAG trunk
-    GIT_SHALLOW TRUE
+#    GIT_SHALLOW TRUE
     SOURCE_DIR build/src/gems3k
     BINARY_DIR build/src/gems3k-build
     STAMP_DIR build/src/gems3k-stamp
