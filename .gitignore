@@ -12,3 +12,4 @@ build/
 .DS_Store
 demos/ipmlog.txt
 .ipmlog.txt
+.vscode/

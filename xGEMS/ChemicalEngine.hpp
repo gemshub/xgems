@@ -59,6 +59,11 @@ public:
     /// @param filename The name of the file containing the definition of the chemical system
     auto initialize(std::string filename) -> void;
 
+    /// Reads another DBR file (with input system composition, T,P etc.) \ . The DBR file must be compatible with
+    /// the currently loaded IPM and DCH files (see description of initialize() function call).
+    /// @param Null-terminated (C) string containing a full path to the input DBR disk file.
+    auto readDbrFile(std::string filename) -> void;
+
     /// Return the number of elements.
     auto numElements() const -> Index;
 
@@ -246,6 +251,9 @@ public:
 
     /// Return the volumes of the phases (in units of m3).
     auto phaseVolumes() const -> VectorConstRef;
+
+    /// Return the mass of the system (in units of kg).
+    auto mass() const -> double;
 
     /// Return the volume of the system (in units of m3).
     auto volume() const -> double;
