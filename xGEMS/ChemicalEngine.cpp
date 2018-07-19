@@ -53,6 +53,21 @@ struct ChemicalEngine::Impl
     /// The activities of the species (in natural log scale)
     Vector ln_activities;
 
+    /// molar volumes of the phases (in units of m3/mol).
+    Vector phaseMolarVolumes;
+
+    /// the densities of the phases (in units of kg/m3).
+    Vector phDensities;
+
+    /// volumes of the phases (in units of m3).
+    Vector phVolumes;
+
+    /// the molar amounts of the phases (in units of mol).
+    Vector phAmounts;
+
+    /// the masses of the phases (in units of kg).
+    Vector phMasses;
+
     /// Construct a default Impl instance
     Impl()
     {}
@@ -95,6 +110,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     // Assemble the formula matrix of the species
     const Index E = numElements();
     const Index N = numSpecies();
+    const Index P = numPhases();
     pimpl->formula_matrix = Matrix::Zero(E, N);
     for(Index i = 0; i < N; ++i)
         for(Index j = 0; j < E; ++j)
@@ -103,6 +119,11 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     // Allocate memory for vector members
     pimpl->ln_activity_coefficients.resize(N);
     pimpl->ln_activities.resize(N);
+    pimpl->phaseMolarVolumes.resize(P);
+    pimpl->phDensities.resize(P);
+    pimpl->phVolumes.resize(P);
+    pimpl->phAmounts.resize(P);
+
 }
 
 auto ChemicalEngine::readDbrFile(std::string filename) -> void
@@ -384,9 +405,7 @@ auto ChemicalEngine::phaseMolarEnthalpies() const -> VectorConstRef
 
 auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
 {
-    Vector phaseMolarVolumes;
     VectorConstRef n = speciesAmounts();
-    phaseMolarVolumes.resize(numPhases());
 
     for(Index iphase = 0; iphase < numPhases(); ++iphase)
     {
@@ -397,10 +416,10 @@ auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
         for (Index ispecies = 0; ispecies < size; ++ispecies)
         {
             // to m3/mol
-            phaseMolarVolumes[iphase] += np[ispecies] * pimpl->node->DC_V0(ispecies, temperature(), pressure()) * 1e-5;
+            pimpl->phaseMolarVolumes[iphase] += np[ispecies] * pimpl->node->DC_V0(ispecies, temperature(), pressure()) * 1e-5;
         }
     }
-    return phaseMolarVolumes;
+    return pimpl->phaseMolarVolumes;
 }
 
 auto ChemicalEngine::phaseMolarEntropies() const -> VectorConstRef
@@ -470,42 +489,30 @@ auto ChemicalEngine::phaseSpecificHeatCapacitiesConstV() const -> VectorConstRef
 
 auto ChemicalEngine::phaseDensities() const -> VectorConstRef
 {
-    Vector phDensities;
-    phDensities.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-        phDensities[i] = pimpl->node->Ph_Mass(i)/pimpl->node->Ph_Volume(i);
-    return phDensities;
+        pimpl->phDensities[i] = pimpl->node->Ph_Mass(i)/pimpl->node->Ph_Volume(i);
+    return pimpl->phDensities;
 }
 
 auto ChemicalEngine::phaseMasses() const -> VectorConstRef
 {
-    Vector phMasses;
-    phMasses.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-        phMasses[i] = pimpl->node->Ph_Mass(i);
-    return phMasses;
+        pimpl->phMasses[i] = pimpl->node->Ph_Mass(i);
+    return pimpl->phMasses;
 }
 
 auto ChemicalEngine::phaseAmounts() const -> VectorConstRef
 {
-    Vector phAmounts;
-    phAmounts.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-        phAmounts[i] = pimpl->node->Ph_Mole(i);
-    return phAmounts;
+        pimpl->phAmounts[i] = pimpl->node->Ph_Mole(i);
+    return pimpl->phAmounts;
 }
 
 auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
 {
-    Vector phVolumes;
-    
-    phVolumes.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-    {
-        cout << pimpl->node->Ph_Volume(i) << endl;
-        phVolumes[i] = pimpl->node->Ph_Volume(i);
-    }
-    return phVolumes;
+        pimpl->phVolumes[i] = pimpl->node->Ph_Volume(i);
+    return pimpl->phVolumes;
 }
 
 auto ChemicalEngine::volume() const -> double
