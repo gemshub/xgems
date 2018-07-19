@@ -113,13 +113,13 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
         // Check if there was a system error during node initialization
     if(res == -1)
         throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not the provided dbr file.\n"
+            "Could not find the provided dbr file.\n"
                 "There was a problem during memory allocation.");
 
     // Check if there was a file read error during node initialization
     if(res == 1)
         throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not the provided dbr file.\n"
+            "Could not find the provided dbr file.\n"
                 "Make sure the provided file exists relative to the working directory.");
 }
 
@@ -473,10 +473,7 @@ auto ChemicalEngine::phaseDensities() const -> VectorConstRef
     Vector phDensities;
     phDensities.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-    {
         phDensities[i] = pimpl->node->Ph_Mass(i)/pimpl->node->Ph_Volume(i);
-    }
-
     return phDensities;
 }
 
@@ -485,10 +482,7 @@ auto ChemicalEngine::phaseMasses() const -> VectorConstRef
     Vector phMasses;
     phMasses.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-    {
         phMasses[i] = pimpl->node->Ph_Mass(i);
-    }
-
     return phMasses;
 }
 
@@ -497,22 +491,20 @@ auto ChemicalEngine::phaseAmounts() const -> VectorConstRef
     Vector phAmounts;
     phAmounts.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
-    {
         phAmounts[i] = pimpl->node->Ph_Mole(i);
-    }
-
     return phAmounts;
 }
 
 auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
 {
     Vector phVolumes;
+    
     phVolumes.resize(numPhases());
     for(Index i = 0; i < numPhases(); ++i)
     {
+        cout << pimpl->node->Ph_Volume(i) << endl;
         phVolumes[i] = pimpl->node->Ph_Volume(i);
     }
-
     return phVolumes;
 }
 
