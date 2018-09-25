@@ -169,6 +169,9 @@ public:
     /// Return the ln activities of the species.
     auto lnActivities() const -> VectorConstRef;
 
+    /// Return the ln of concentrations of the species in theri respective phases.
+    auto lnConcentrations() const -> VectorConstRef;
+
     /// Return the chemical potentials of the species (in units of J/mol).
     auto chemicalPotentials() const -> VectorConstRef;
 

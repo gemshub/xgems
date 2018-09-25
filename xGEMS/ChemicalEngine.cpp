@@ -41,6 +41,12 @@ struct ChemicalEngine::Impl
     /// The options for ChemicalEngine
     ChemicalEngineOptions options;
 
+    /// Molar masses of elements
+    Vector elemMolMasses;
+
+    /// Molar masses of species
+    Vector molMasses;
+    
     /// The formula matrix of the species
     Matrix formula_matrix;
 
@@ -58,6 +64,9 @@ struct ChemicalEngine::Impl
 
     /// The activities of the species (in natural log scale)
     Vector ln_activities;
+
+    /// The concentrations of the species (in natural log scale)
+    Vector ln_concentrations;
 
     /// The chemical potentials of the species (in J/mol)
     Vector chemPotentials;
@@ -129,8 +138,11 @@ auto ChemicalEngine::initialize(std::string filename) -> void
             pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
 
     // Allocate memory for vector members
+    pimpl->elemMolMasses.resize(E);
+    pimpl->molMasses.resize(N);
     pimpl->ln_activity_coefficients.resize(N);
     pimpl->ln_activities.resize(N);
+    pimpl->ln_concentrations.resize(N);
     pimpl->chemPotentials.resize(N);
     pimpl->molFractions.resize(N);
     pimpl->molalities.resize(N);
@@ -138,6 +150,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->phDensities.resize(P);
     pimpl->phVolumes.resize(P);
     pimpl->phAmounts.resize(P);
+    pimpl->phMasses.resize(P);
     pimpl->phSatIndex.resize(P);
 
 }
@@ -247,14 +260,16 @@ auto ChemicalEngine::indexFirstSpeciesInPhase(Index iphase) const -> Index
 
 auto ChemicalEngine::elementMolarMasses() const -> VectorConstRef
 {
-    // This does not work like that below
-    return Vector::Map(pimpl->node->pCSD()->ICmm, numElements());
+    for(Index i = 0; i < numElements(); ++i)
+        pimpl->elemMolMasses[i] = pimpl->node->pCSD()->ICmm[i];
+    return pimpl->elemMolMasses;
 }
 
 auto ChemicalEngine::speciesMolarMasses() const -> VectorConstRef
 {
-    // This does not work like that below
-    return Vector::Map(pimpl->node->pCSD()->DCmm, numElements());
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->molMasses[i] = pimpl->node->pCSD()->DCmm[i];
+    return pimpl->molMasses;
 }
 
 auto ChemicalEngine::formulaMatrix() const -> MatrixConstRef
@@ -398,6 +413,13 @@ auto ChemicalEngine::lnActivities() const -> VectorConstRef
     for(Index i = 0; i < numSpecies(); ++i)
         pimpl->ln_activities[i] = std::log(pimpl->node->Get_aDC(i, true));
     return pimpl->ln_activities;
+}
+
+auto ChemicalEngine::lnConcentrations() const -> VectorConstRef
+{
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->ln_concentrations[i] = std::log(pimpl->node->Get_cDC(i));
+    return pimpl->ln_concentrations;
 }
 
 auto ChemicalEngine::chemicalPotentials() const -> VectorConstRef
@@ -638,7 +660,7 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const Vector activity_coeffs = state.lnActivityCoefficients().array().exp();
     const Vector activities = state.lnActivities().array().exp();
     const Vector chemical_potentials = state.chemicalPotentials().array();
-    const Vector mol_fractions = state.moleFractions().array();
+    const Vector concentrations = state.lnConcentrations().array().exp();
     const Vector molalities = state.speciesMolalities().array();
 
     const Index num_phases = state.numPhases();
@@ -685,7 +707,7 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     out << std::left << std::setw(25) << "Activity Coeff. [-]";
     out << std::left << std::setw(25) << "Activity [-]";
     out << std::left << std::setw(25) << "Chem.Potential [kJ/mol]";
-    out << std::left << std::setw(25) << "Mole Fraction [-]";
+    out << std::left << std::setw(25) << "Concentration [-]";
     out << std::left << std::setw(25) << "Molality [mol/kgw]";
     out << std::endl;
     out << bar2 << std::endl;
@@ -696,7 +718,7 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
         out << std::left << std::setw(25) << activity_coeffs[i];
         out << std::left << std::setw(25) << activities[i];
         out << std::left << std::setw(25) << chemical_potentials[i]/1000.0;
-        out << std::left << std::setw(25) << mol_fractions[i];
+        out << std::left << std::setw(25) << concentrations[i];
         out << std::left << std::setw(25) << molalities[i];
         out << std::endl;
     }
