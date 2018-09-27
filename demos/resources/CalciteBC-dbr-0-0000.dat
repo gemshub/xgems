@@ -55,7 +55,7 @@
 #  'C' 'Ca' 'Cl' 'H' 'Mg' 'O' 'Sn' 'Zz' 
 # bIC: Bulk composition of reactive subsystem (main GEM input), moles of ICs [nICb]
 <bIC>
-1e-08 1e-08 0.004 111.016746657646 0.002 55.5083933588231 130.841288437146 0 
+1e-08 1e-08 0.002 111.016746657646 0.001 55.5083933588231 130.841288437146 0 
 
 # rMB: Mass balance residuals, moles (GEM output) [nICb]
 <rMB>
