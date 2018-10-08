@@ -41,11 +41,23 @@ struct ChemicalEngine::Impl
     /// The options for ChemicalEngine
     ChemicalEngineOptions options;
 
+    /// Molar masses of elements
+    Vector elemMolMasses;
+
+    /// Molar masses of species
+    Vector molMasses;
+    
     /// The formula matrix of the species
     Matrix formula_matrix;
 
     /// The elapsed time of the equilibrate method (in units of s)
     double elapsed_time = 0;
+
+    /// Mole fractions of species in their respective phases 
+    Vector molFractions;
+
+    /// Mole fractions of species in their respective phases 
+    Vector molalities;
 
     /// The activity coefficients of the species (in natural log scale)
     Vector ln_activity_coefficients;
@@ -53,8 +65,14 @@ struct ChemicalEngine::Impl
     /// The activities of the species (in natural log scale)
     Vector ln_activities;
 
+    /// The concentrations of the species (in natural log scale)
+    Vector ln_concentrations;
+
+    /// The chemical potentials of the species (in J/mol)
+    Vector chemPotentials;
+
     /// molar volumes of the phases (in units of m3/mol).
-    Vector phaseMolarVolumes;
+    Vector phMolarVolumes;
 
     /// the densities of the phases (in units of kg/m3).
     Vector phDensities;
@@ -67,6 +85,9 @@ struct ChemicalEngine::Impl
 
     /// the masses of the phases (in units of kg).
     Vector phMasses;
+
+    /// the saturation (stability) indexes of phases (in log10 scale).
+    Vector phSatIndex;
 
     /// Construct a default Impl instance
     Impl()
@@ -117,12 +138,20 @@ auto ChemicalEngine::initialize(std::string filename) -> void
             pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
 
     // Allocate memory for vector members
+    pimpl->elemMolMasses.resize(E);
+    pimpl->molMasses.resize(N);
     pimpl->ln_activity_coefficients.resize(N);
     pimpl->ln_activities.resize(N);
-    pimpl->phaseMolarVolumes.resize(P);
+    pimpl->ln_concentrations.resize(N);
+    pimpl->chemPotentials.resize(N);
+    pimpl->molFractions.resize(N);
+    pimpl->molalities.resize(N);
+    pimpl->phMolarVolumes.resize(P);
     pimpl->phDensities.resize(P);
     pimpl->phVolumes.resize(P);
     pimpl->phAmounts.resize(P);
+    pimpl->phMasses.resize(P);
+    pimpl->phSatIndex.resize(P);
 
 }
 
@@ -166,17 +195,20 @@ auto ChemicalEngine::numSpeciesInPhase(Index iphase) const -> Index
 
 auto ChemicalEngine::elementName(Index ielement) const -> std::string
 {
-    return pimpl->node->pCSD()->ICNL[ielement];
+    std::string name = pimpl->node->pCSD()->ICNL[ielement];
+    return name;
 }
 
 auto ChemicalEngine::speciesName(Index ispecies) const -> std::string
 {
-    return pimpl->node->pCSD()->DCNL[ispecies];
+    std::string name = pimpl->node->pCSD()->DCNL[ispecies];
+    return name;
 }
 
 auto ChemicalEngine::phaseName(Index iphase) const -> std::string
 {
-    return pimpl->node->pCSD()->PHNL[iphase];
+    std::string name = pimpl->node->pCSD()->PHNL[iphase];
+    return name;
 }
 
 auto ChemicalEngine::indexElement(std::string element) const -> Index
@@ -228,12 +260,16 @@ auto ChemicalEngine::indexFirstSpeciesInPhase(Index iphase) const -> Index
 
 auto ChemicalEngine::elementMolarMasses() const -> VectorConstRef
 {
-    return Vector::Map(pimpl->node->pCSD()->ICmm, numElements());
+    for(Index i = 0; i < numElements(); ++i)
+        pimpl->elemMolMasses[i] = pimpl->node->pCSD()->ICmm[i];
+    return pimpl->elemMolMasses;
 }
 
 auto ChemicalEngine::speciesMolarMasses() const -> VectorConstRef
 {
-    return Vector::Map(pimpl->node->pCSD()->DCmm, numElements());
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->molMasses[i] = pimpl->node->pCSD()->DCmm[i];
+    return pimpl->molMasses;
 }
 
 auto ChemicalEngine::formulaMatrix() const -> MatrixConstRef
@@ -329,9 +365,51 @@ auto ChemicalEngine::speciesAmounts() const -> VectorConstRef
     return Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
 }
 
+// Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
+// is the last species in it)
+auto ChemicalEngine::speciesMolalities() const -> VectorConstRef
+{
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->molalities[i] = pimpl->node->Get_cDC(i);
+    if(numSpecies() > numSpeciesInPhase(0)) 
+    {
+        Vector amountSp = Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
+        Index H2Oindex = numSpeciesInPhase(0)-1;
+        double H2Omass = pimpl->node->Get_nDC(H2Oindex)*pimpl->node->DCmm(H2Oindex); // in kg
+        if( H2Omass > 0.0 )
+            for(Index i = H2Oindex+1; i < numSpecies(); ++i)
+                pimpl->molalities[i] = speciesAmounts()(i)/H2Omass; 
+    }               
+    return pimpl->molalities;
+}
+
 auto ChemicalEngine::moleFractions() const -> VectorConstRef
 {
-    return Vector{};
+    Vector amountSp = Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
+    Index counter = 0;
+    for(Index k = 0; k < numPhases(); ++k)
+    {
+        Index numSpInPh = numSpeciesInPhase(k);
+        double amountPh = phaseAmounts()(k);
+        if(numSpInPh == 1 )
+        {
+            if(amountPh > 0.0)
+                pimpl->molFractions(counter) = 1.0;
+            else 
+                pimpl->molFractions(counter) = 0.0; 
+            counter++;   
+            continue;
+        }
+        for(Index i = 0; i < numSpInPh; ++i)
+        {
+            if(amountPh > 0.0)
+                pimpl->molFractions(counter) = amountSp(counter)/amountPh;
+            else
+                pimpl->molFractions(counter) = 0.0;
+            counter++;    
+        }
+    }
+    return pimpl->molFractions;
 }
 
 auto ChemicalEngine::lnActivityCoefficients() const -> VectorConstRef
@@ -348,8 +426,19 @@ auto ChemicalEngine::lnActivities() const -> VectorConstRef
     return pimpl->ln_activities;
 }
 
+auto ChemicalEngine::lnConcentrations() const -> VectorConstRef
+{
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->ln_concentrations[i] = std::log(pimpl->node->Get_cDC(i));
+    return pimpl->ln_concentrations;
+}
+
 auto ChemicalEngine::chemicalPotentials() const -> VectorConstRef
 {
+    for(Index i = 0; i < numSpecies(); ++i)
+        pimpl->chemPotentials[i] = pimpl->node->Get_muDC(i, false);
+    return pimpl->chemPotentials;
+    
     return Vector{};
 }
 
@@ -405,6 +494,7 @@ auto ChemicalEngine::phaseMolarEnthalpies() const -> VectorConstRef
 
 auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
 {
+/*
     VectorConstRef n = speciesAmounts();
 
     for(Index iphase = 0; iphase < numPhases(); ++iphase)
@@ -416,10 +506,18 @@ auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
         for (Index ispecies = 0; ispecies < size; ++ispecies)
         {
             // to m3/mol
-            pimpl->phaseMolarVolumes[iphase] += np[ispecies] * pimpl->node->DC_V0(ispecies, temperature(), pressure()) * 1e-5;
+            pimpl->phMolarVolumes[iphase] += np[ispecies] * pimpl->node->DC_V0(ispecies, temperature(), pressure()) * 1e-5;
         }
     }
-    return pimpl->phaseMolarVolumes;
+    return pimpl->phMolarVolumes;
+*/
+    for(Index i = 0; i < numPhases(); ++i)
+    {
+        pimpl->phMolarVolumes[i] = 0.0;
+        if( pimpl->node->Ph_Mole(i) )
+            pimpl->phMolarVolumes[i] = pimpl->node->Ph_Volume(i)/pimpl->node->Ph_Mole(i);
+    }
+    return pimpl->phMolarVolumes;
 }
 
 auto ChemicalEngine::phaseMolarEntropies() const -> VectorConstRef
@@ -515,14 +613,27 @@ auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
     return pimpl->phVolumes;
 }
 
-auto ChemicalEngine::volume() const -> double
+auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
 {
-    return pimpl->node->cVs();
+    for(Index i = 0; i < numPhases(); ++i)
+    {    
+        pimpl->phSatIndex[i] = pimpl->node->Ph_SatInd(i); 
+     //   > 0.0? log10(pimpl->node->Ph_SatInd(i)): 0.0;
+    }
+    return pimpl->phSatIndex;
 }
 
-auto ChemicalEngine::mass() const -> double
+
+auto ChemicalEngine::systemVolume() const -> double
 {
-    return pimpl->node->cMs();
+    return pimpl->node->pCNode()->Vs;
+    // return pimpl->node->cVs();
+}
+
+auto ChemicalEngine::systemMass() const -> double
+{
+    //return pimpl->node->cMs();
+    return pimpl->node->pCNode()->Ms;
 }
 
 auto ChemicalEngine::ionicStrength() const -> double
@@ -545,13 +656,27 @@ auto ChemicalEngine::Eh() const -> double
     return pimpl->node->pCNode()->Eh;
 }
 
+auto ChemicalEngine::systemGibbsEnergy() const -> double
+{
+    return pimpl->node->pCNode()->Gs;
+}
+
+auto ChemicalEngine::systemEnthalpy() const -> double
+{
+    return pimpl->node->pCNode()->Hs;
+}
+
 auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
 {
     const double T = state.temperature();
     const double P = state.pressure();
     VectorConstRef n = state.speciesAmounts();
     const Vector activity_coeffs = state.lnActivityCoefficients().array().exp();
-    const Vector activities = state.lnActivities().array().exp();
+    const Vector activities = state.lnActivities().array() * 0.4343; // .exp();
+    const Vector chemical_potentials = state.chemicalPotentials().array() / 1000.;
+    const Vector concentrations = state.lnConcentrations().array().exp();
+//    const Vector molalities = state.speciesMolalities().array();
+    const Vector molfractions = state.moleFractions().array();
 
     const Index num_phases = state.numPhases();
     const Index bar_size = std::max(Index(9), num_phases + 2) * 25;
@@ -559,9 +684,9 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const std::string bar2(bar_size, '-');
 
     out << bar1 << std::endl;
-    out << std::left << std::setw(25) << "Temperature [K]";
-    out << std::left << std::setw(25) << "Temperature [C]";
-    out << std::left << std::setw(25) << "Pressure [MPa]";
+    out << std::left << std::setw(25) << "Temperature[K]";
+    out << std::left << std::setw(25) << "Temperature[C]";
+    out << std::left << std::setw(25) << "Pressure[MPa]";
     out << std::endl << bar2 << std::endl;
 
     out << std::left << std::setw(25) << T;
@@ -576,9 +701,9 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     // Output the table of the element-related state
     out << bar1 << std::endl;
     out << std::left << std::setw(25) << "Element";
-    out << std::left << std::setw(25) << "Amount [mol]";
+    out << std::left << std::setw(25) << "Amount[mol]";
     for(Index i = 0; i < state.numPhases(); ++i)
-        out << std::left << std::setw(25) << state.phaseName(i) + " [mol]";
+        out << std::left << std::setw(25) << state.phaseName(i) + "[mol]";
     out << std::endl;
     out << bar2 << std::endl;
     for(Index i = 0; i < state.numElements(); ++i)
@@ -589,31 +714,64 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
             out << std::left << std::setw(25) << state.elementAmountsInPhase(j)[i];
         out << std::endl;
     }
+    out << bar2 << std::endl;
+    out << std::left << std::setw(25) << "PhaseAmount[mol]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseAmounts()[j];
+    out << std::endl;    
+    out << std::left << std::setw(25) << "PhaseVolume[m^3]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseVolumes()[j];
+    out << std::endl;        
+    out << std::left << std::setw(25) << "PhaseSatIndex[lg]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseSatIndices()[j];
+    out << std::endl;
+    out << std::endl;            
 
     // Output the table of the species-related state
     out << bar1 << std::endl;
     out << std::left << std::setw(25) << "Species";
-    out << std::left << std::setw(25) << "Amount [mol]";
-    out << std::left << std::setw(25) << "Activity Coefficient [-]";
-    out << std::left << std::setw(25) << "Activity [-]";
+    out << std::left << std::setw(25) << "Amount[mol]";
+    out << std::left << std::setw(25) << "Concentration[-]";
+    out << std::left << std::setw(25) << "ActivityCoeff[-]";
+ //   out << std::left << std::setw(25) << "Molality[mol/kgw]";
+    out << std::left << std::setw(25) << "MoleFraction[-]";
+    out << std::left << std::setw(25) << "ChemPotential[kJ/mol]";
+    out << std::left << std::setw(25) << "Activity[lg]";
     out << std::endl;
     out << bar2 << std::endl;
     for(Index i = 0; i < state.numSpecies(); ++i)
     {
         out << std::left << std::setw(25) << state.speciesName(i);
         out << std::left << std::setw(25) << n[i];
+        out << std::left << std::setw(25) << concentrations[i];
         out << std::left << std::setw(25) << activity_coeffs[i];
+ //       out << std::left << std::setw(25) << molalities[i];
+        out << std::left << std::setw(25) << molfractions[i];
+        out << std::left << std::setw(25) << chemical_potentials[i];
         out << std::left << std::setw(25) << activities[i];
         out << std::endl;
     }
 
     // Output the table of the aqueous phase related state
     out << bar1 << std::endl;
+    out << std::left << std::setw(25) << "M [kg]";
+    out << std::left << std::setw(25) << "V [m^3]";
+    out << std::left << std::setw(25) << "G [norm]";
+    out << std::left << std::setw(25) << "H [kJ]";
     out << std::left << std::setw(25) << "Ionic Strength [molal]";
     out << std::left << std::setw(25) << "pH";
     out << std::left << std::setw(25) << "pE";
     out << std::left << std::setw(25) << "Eh [V]";
     out << std::endl << bar2 << std::endl;
+    out << std::left << std::setw(25) << state.systemMass();
+    out << std::left << std::setw(25) << state.systemVolume();
+    out << std::left << std::setw(25) << state.systemGibbsEnergy();
+    out << std::left << std::setw(25) << state.systemEnthalpy()/1000.0;
     out << std::left << std::setw(25) << state.ionicStrength();
     out << std::left << std::setw(25) << state.pH();
     out << std::left << std::setw(25) << state.pe();

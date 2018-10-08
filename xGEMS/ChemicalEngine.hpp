@@ -115,7 +115,8 @@ public:
     /// Return the molar masses of the species (in units of kg/mol)
     auto speciesMolarMasses() const -> VectorConstRef;
 
-    /// Return the formula matrix of the species.
+    /// Return the formula matrix of elements in species (in moles per mole species)
+    /// (rows: elements, cols: species).
     auto formulaMatrix() const -> MatrixConstRef;
 
     /// Set the options of the ChemicalEngine instance
@@ -156,6 +157,11 @@ public:
     /// Return the amounts of the species (in units of mol)
     auto speciesAmounts() const -> VectorConstRef;
 
+    /// Return the molalities of the species.
+    /// Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
+    /// is the last species in it)
+    auto speciesMolalities() const -> VectorConstRef;
+
     /// Return the mole fractions of the species.
     auto moleFractions() const -> VectorConstRef;
 
@@ -164,6 +170,9 @@ public:
 
     /// Return the ln activities of the species.
     auto lnActivities() const -> VectorConstRef;
+
+    /// Return the ln of concentrations of the species in theri respective phases.
+    auto lnConcentrations() const -> VectorConstRef;
 
     /// Return the chemical potentials of the species (in units of J/mol).
     auto chemicalPotentials() const -> VectorConstRef;
@@ -252,11 +261,14 @@ public:
     /// Return the volumes of the phases (in units of m3).
     auto phaseVolumes() const -> VectorConstRef;
 
+    /// Return the saturation (stability) indices  of the phases (in log10 units).
+    auto phaseSatIndices() const -> VectorConstRef;
+
     /// Return the mass of the system (in units of kg).
-    auto mass() const -> double;
+    auto systemMass() const -> double;
 
     /// Return the volume of the system (in units of m3).
-    auto volume() const -> double;
+    auto systemVolume() const -> double;
 
     /// Return the ionic strength of the aqueous phase (in units of molal).
     auto ionicStrength() const -> double;
@@ -269,6 +281,12 @@ public:
 
     /// Return the Eh of the aqueous phase.
     auto Eh() const -> double;
+
+    /// Return the total Gibbs energy of the system.
+    auto systemGibbsEnergy() const -> double;
+
+     /// Return the total enthalpy of the system.
+    auto systemEnthalpy() const -> double;
 
 private:
     struct Impl;
