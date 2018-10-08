@@ -158,6 +158,8 @@ public:
     auto speciesAmounts() const -> VectorConstRef;
 
     /// Return the molalities of the species.
+    /// Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
+    /// is the last species in it)
     auto speciesMolalities() const -> VectorConstRef;
 
     /// Return the mole fractions of the species.

@@ -365,10 +365,21 @@ auto ChemicalEngine::speciesAmounts() const -> VectorConstRef
     return Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
 }
 
+// Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
+// is the last species in it)
 auto ChemicalEngine::speciesMolalities() const -> VectorConstRef
 {
     for(Index i = 0; i < numSpecies(); ++i)
-        pimpl->molalities[i] = pimpl->node->Get_aDC(i, true);
+        pimpl->molalities[i] = pimpl->node->Get_cDC(i);
+    if(numSpecies() > numSpeciesInPhase(0)) 
+    {
+        Vector amountSp = Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
+        Index H2Oindex = numSpeciesInPhase(0)-1;
+        double H2Omass = pimpl->node->Get_nDC(H2Oindex)*pimpl->node->DCmm(H2Oindex); // in kg
+        if( H2Omass > 0.0 )
+            for(Index i = H2Oindex+1; i < numSpecies(); ++i)
+                pimpl->molalities[i] = speciesAmounts()(i)/H2Omass; 
+    }               
     return pimpl->molalities;
 }
 
@@ -605,7 +616,10 @@ auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
 auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
 {
     for(Index i = 0; i < numPhases(); ++i)
-        pimpl->phSatIndex[i] = pimpl->node->Ph_SatInd(i);
+    {    
+        pimpl->phSatIndex[i] = pimpl->node->Ph_SatInd(i); 
+     //   > 0.0? log10(pimpl->node->Ph_SatInd(i)): 0.0;
+    }
     return pimpl->phSatIndex;
 }
 
@@ -658,10 +672,11 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const double P = state.pressure();
     VectorConstRef n = state.speciesAmounts();
     const Vector activity_coeffs = state.lnActivityCoefficients().array().exp();
-    const Vector activities = state.lnActivities().array().exp();
-    const Vector chemical_potentials = state.chemicalPotentials().array();
+    const Vector activities = state.lnActivities().array() * 0.4343; // .exp();
+    const Vector chemical_potentials = state.chemicalPotentials().array() / 1000.;
     const Vector concentrations = state.lnConcentrations().array().exp();
-    const Vector molalities = state.speciesMolalities().array();
+//    const Vector molalities = state.speciesMolalities().array();
+    const Vector molfractions = state.moleFractions().array();
 
     const Index num_phases = state.numPhases();
     const Index bar_size = std::max(Index(9), num_phases + 2) * 25;
@@ -669,9 +684,9 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const std::string bar2(bar_size, '-');
 
     out << bar1 << std::endl;
-    out << std::left << std::setw(25) << "Temperature [K]";
-    out << std::left << std::setw(25) << "Temperature [C]";
-    out << std::left << std::setw(25) << "Pressure [MPa]";
+    out << std::left << std::setw(25) << "Temperature[K]";
+    out << std::left << std::setw(25) << "Temperature[C]";
+    out << std::left << std::setw(25) << "Pressure[MPa]";
     out << std::endl << bar2 << std::endl;
 
     out << std::left << std::setw(25) << T;
@@ -686,9 +701,9 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     // Output the table of the element-related state
     out << bar1 << std::endl;
     out << std::left << std::setw(25) << "Element";
-    out << std::left << std::setw(25) << "Amount [mol]";
+    out << std::left << std::setw(25) << "Amount[mol]";
     for(Index i = 0; i < state.numPhases(); ++i)
-        out << std::left << std::setw(25) << state.phaseName(i) + " [mol]";
+        out << std::left << std::setw(25) << state.phaseName(i) + "[mol]";
     out << std::endl;
     out << bar2 << std::endl;
     for(Index i = 0; i < state.numElements(); ++i)
@@ -699,27 +714,46 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
             out << std::left << std::setw(25) << state.elementAmountsInPhase(j)[i];
         out << std::endl;
     }
+    out << bar2 << std::endl;
+    out << std::left << std::setw(25) << "PhaseAmount[mol]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseAmounts()[j];
+    out << std::endl;    
+    out << std::left << std::setw(25) << "PhaseVolume[m^3]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseVolumes()[j];
+    out << std::endl;        
+    out << std::left << std::setw(25) << "PhaseSatIndex[lg]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseSatIndices()[j];
+    out << std::endl;
+    out << std::endl;            
 
     // Output the table of the species-related state
     out << bar1 << std::endl;
     out << std::left << std::setw(25) << "Species";
-    out << std::left << std::setw(25) << "Amount [mol]";
-    out << std::left << std::setw(25) << "Activity Coeff. [-]";
-    out << std::left << std::setw(25) << "Activity [-]";
-    out << std::left << std::setw(25) << "Chem.Potential [kJ/mol]";
-    out << std::left << std::setw(25) << "Concentration [-]";
-    out << std::left << std::setw(25) << "Molality [mol/kgw]";
+    out << std::left << std::setw(25) << "Amount[mol]";
+    out << std::left << std::setw(25) << "Concentration[-]";
+    out << std::left << std::setw(25) << "ActivityCoeff[-]";
+ //   out << std::left << std::setw(25) << "Molality[mol/kgw]";
+    out << std::left << std::setw(25) << "MoleFraction[-]";
+    out << std::left << std::setw(25) << "ChemPotential[kJ/mol]";
+    out << std::left << std::setw(25) << "Activity[lg]";
     out << std::endl;
     out << bar2 << std::endl;
     for(Index i = 0; i < state.numSpecies(); ++i)
     {
         out << std::left << std::setw(25) << state.speciesName(i);
         out << std::left << std::setw(25) << n[i];
-        out << std::left << std::setw(25) << activity_coeffs[i];
-        out << std::left << std::setw(25) << activities[i];
-        out << std::left << std::setw(25) << chemical_potentials[i]/1000.0;
         out << std::left << std::setw(25) << concentrations[i];
-        out << std::left << std::setw(25) << molalities[i];
+        out << std::left << std::setw(25) << activity_coeffs[i];
+ //       out << std::left << std::setw(25) << molalities[i];
+        out << std::left << std::setw(25) << molfractions[i];
+        out << std::left << std::setw(25) << chemical_potentials[i];
+        out << std::left << std::setw(25) << activities[i];
         out << std::endl;
     }
 

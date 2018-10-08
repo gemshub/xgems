@@ -26,9 +26,18 @@ int main(int argc, char **argv)
 {
     ChemicalEngine chemicalengine("resources/CalciteBC-dat.lst");
 
-    std::cout << chemicalengine << std::endl;
-
     Vector b = chemicalengine.elementAmounts();
 
-    std::cout << "b = " << b.transpose() << std::endl;
+    std::cout << "Vector b: " << b.transpose() << std::endl;
+    
+    std::cout << chemicalengine << std::endl;
+    
+    ChemicalEngine chemicalengine2("resources/CalciteIC-dat.lst");
+    
+    Vector b2 = chemicalengine2.elementAmounts();
+
+    std::cout << "\nVector b2: " << b2.transpose() << std::endl;
+
+    std::cout << chemicalengine2 << std::endl;
+
 }
