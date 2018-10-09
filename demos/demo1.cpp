@@ -3,9 +3,8 @@
 // Copyright (C) 2018 Allan Leal, Dmitrii Kulik
 //
 // This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// it under the terms of the GNU Lesser General Public License version 2.1 
+// as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,7 +23,7 @@ using namespace xGEMS;
 
 int main(int argc, char **argv)
 {
-    ChemicalEngine chemicalengine("resources/CalciteBC-dat.lst");
+    ChemicalEngine chemicalengine("resources/CalciteIC-dat.lst");
 
     Vector b = chemicalengine.elementAmounts();
 
@@ -32,7 +31,9 @@ int main(int argc, char **argv)
     
     std::cout << chemicalengine << std::endl;
     
-    ChemicalEngine chemicalengine2("resources/CalciteIC-dat.lst");
+    chemicalengine.~ChemicalEngine();
+    
+    ChemicalEngine chemicalengine2("resources/CemHyds-dat.lst");
     
     Vector b2 = chemicalengine2.elementAmounts();
 
