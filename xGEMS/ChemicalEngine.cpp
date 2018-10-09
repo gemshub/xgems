@@ -773,14 +773,14 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
 
     // Output the table of the aqueous phase related state
     out << bar1 << std::endl;
-    out << std::left << std::setw(25) << "M [kg]";
-    out << std::left << std::setw(25) << "V [m^3]";
-    out << std::left << std::setw(25) << "G [norm]";
-    out << std::left << std::setw(25) << "H [kJ]";
-    out << std::left << std::setw(25) << "Ionic Strength [molal]";
+    out << std::left << std::setw(25) << "Mass[kg]";
+    out << std::left << std::setw(25) << "Volume[m^3]";
+    out << std::left << std::setw(25) << "G[norm]";
+    out << std::left << std::setw(25) << "H[kJ]";
+    out << std::left << std::setw(25) << "IonicStrength[molal]";
     out << std::left << std::setw(25) << "pH";
     out << std::left << std::setw(25) << "pE";
-    out << std::left << std::setw(25) << "Eh [V]";
+    out << std::left << std::setw(25) << "Eh[V]";
     out << std::endl << bar2 << std::endl;
     out << std::left << std::setw(25) << state.systemMass();
     out << std::left << std::setw(25) << state.systemVolume();
