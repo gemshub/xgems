@@ -376,7 +376,7 @@ auto ChemicalEngine::speciesMolalities() const -> VectorConstRef
         Vector amountSp = Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
         Index H2Oindex = numSpeciesInPhase(0)-1;
         double H2Omass = pimpl->node->Get_nDC(H2Oindex)*pimpl->node->DCmm(H2Oindex); // in kg
-        if( H2Omass > 0.0 )
+        if( H2Omass != 0.0 )
             for(Index i = H2Oindex+1; i < numSpecies(); ++i)
                 pimpl->molalities[i] = speciesAmounts()(i)/H2Omass; 
     }               
@@ -402,7 +402,7 @@ auto ChemicalEngine::moleFractions() const -> VectorConstRef
         }
         for(Index i = 0; i < numSpInPh; ++i)
         {
-            if(amountPh > 0.0)
+            if(amountPh != 0.0)
                 pimpl->molFractions(counter) = amountSp(counter)/amountPh;
             else
                 pimpl->molFractions(counter) = 0.0;
@@ -514,7 +514,7 @@ auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
     for(Index i = 0; i < numPhases(); ++i)
     {
         pimpl->phMolarVolumes[i] = 0.0;
-        if( pimpl->node->Ph_Mole(i) )
+        if( pimpl->node->Ph_Mole(i) != 0.0 )
             pimpl->phMolarVolumes[i] = pimpl->node->Ph_Volume(i)/pimpl->node->Ph_Mole(i);
     }
     return pimpl->phMolarVolumes;
@@ -588,7 +588,12 @@ auto ChemicalEngine::phaseSpecificHeatCapacitiesConstV() const -> VectorConstRef
 auto ChemicalEngine::phaseDensities() const -> VectorConstRef
 {
     for(Index i = 0; i < numPhases(); ++i)
-        pimpl->phDensities[i] = pimpl->node->Ph_Mass(i)/pimpl->node->Ph_Volume(i);
+    {    
+        if(pimpl->node->Ph_Volume(i) != 0.0)
+            pimpl->phDensities[i] = pimpl->node->Ph_Mass(i)/pimpl->node->Ph_Volume(i);
+        else 
+            pimpl->phDensities[i] = 0.0;
+    }
     return pimpl->phDensities;
 }
 
@@ -616,10 +621,7 @@ auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
 auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
 {
     for(Index i = 0; i < numPhases(); ++i)
-    {    
         pimpl->phSatIndex[i] = pimpl->node->Ph_SatInd(i); 
-     //   > 0.0? log10(pimpl->node->Ph_SatInd(i)): 0.0;
-    }
     return pimpl->phSatIndex;
 }
 
@@ -677,6 +679,7 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     const Vector concentrations = state.lnConcentrations().array().exp();
 //    const Vector molalities = state.speciesMolalities().array();
     const Vector molfractions = state.moleFractions().array();
+//    const Vector satindices = state.phaseSatIndices().array();
 
     const Index num_phases = state.numPhases();
     const Index bar_size = std::max(Index(9), num_phases + 2) * 25;
@@ -719,15 +722,26 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     out << std::left << std::setw(25) << 0.0;
     for(Index j = 0; j < state.numPhases(); ++j)
         out << std::left << std::setw(25) << state.phaseAmounts()[j];
-    out << std::endl;    
+    out << std::endl;   
+    out << std::left << std::setw(25) << "PhaseMass[kg]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseMasses()[j];
+    out << std::endl;        
     out << std::left << std::setw(25) << "PhaseVolume[m^3]";
     out << std::left << std::setw(25) << 0.0;
     for(Index j = 0; j < state.numPhases(); ++j)
         out << std::left << std::setw(25) << state.phaseVolumes()[j];
-    out << std::endl;        
+    out << std::endl;  
+    out << std::left << std::setw(25) << "PhaseDensity[kg/m^3]";
+    out << std::left << std::setw(25) << 0.0;
+    for(Index j = 0; j < state.numPhases(); ++j)
+        out << std::left << std::setw(25) << state.phaseDensities()[j];
+    out << std::endl;    
     out << std::left << std::setw(25) << "PhaseSatIndex[lg]";
     out << std::left << std::setw(25) << 0.0;
     for(Index j = 0; j < state.numPhases(); ++j)
+//        out << std::left << std::setw(25) << satindices[j];    
         out << std::left << std::setw(25) << state.phaseSatIndices()[j];
     out << std::endl;
     out << std::endl;            
