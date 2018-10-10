@@ -196,18 +196,24 @@ auto ChemicalEngine::numSpeciesInPhase(Index iphase) const -> Index
 auto ChemicalEngine::elementName(Index ielement) const -> std::string
 {
     std::string name = pimpl->node->pCSD()->ICNL[ielement];
+    if( name.length() > MaxICnameLength )
+        name.resize( MaxICnameLength );
     return name;
 }
 
 auto ChemicalEngine::speciesName(Index ispecies) const -> std::string
 {
     std::string name = pimpl->node->pCSD()->DCNL[ispecies];
+       if( name.length() > MaxDCnameLength )
+        name.resize( MaxDCnameLength );
     return name;
 }
 
 auto ChemicalEngine::phaseName(Index iphase) const -> std::string
 {
     std::string name = pimpl->node->pCSD()->PHNL[iphase];
+       if( name.length() > MaxPHnameLength )
+        name.resize( MaxPHnameLength );
     return name;
 }
 

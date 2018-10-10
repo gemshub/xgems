@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     
     std::cout << chemicalengine << std::endl;
     
-    chemicalengine.~ChemicalEngine();
+    // chemicalengine.~ChemicalEngine();
     
     ChemicalEngine chemicalengine2("resources/CemHyds-dat.lst");
     
