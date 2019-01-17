@@ -85,6 +85,8 @@ public:
     /// @param ispecies The index of the species.
     auto speciesName(Index ispecies) const -> std::string;
 
+    auto speciesCharge(Index ispecies) const -> double;
+
     /// Return the name of a phase
     /// @param iphase The index of the phase.
     auto phaseName(Index iphase) const -> std::string;
@@ -119,6 +121,14 @@ public:
     /// (rows: elements, cols: species).
     auto formulaMatrix() const -> MatrixConstRef;
 
+    auto setSpeciesAmounts(VectorConstRef n) -> void;
+
+    /// Set the species with the new amount
+    auto setSpeciesAmount(std::string name, double amount) -> void;
+
+    /// Set the species with the new amount
+    auto setSpeciesAmount(Index ispecies, double amount) -> void;
+
     /// Set the options of the ChemicalEngine instance
     auto setOptions(const ChemicalEngineOptions& options) -> void;
 
@@ -126,7 +136,7 @@ public:
     /// @param T The temperature for the equilibrium calculation (in units of K)
     /// @param P The pressure for the equilibrium calculation (in units of Pa)
     /// @param b The amounts of the elements (in units of mol)
-    auto equilibrate(double T, double P, VectorConstRef b) -> void;
+    auto equilibrate(double T, double P, VectorConstRef b) -> int;
 
     /// Return the convergence result of the equilibrium calculation
     auto converged() const -> bool;
@@ -156,6 +166,12 @@ public:
 
     /// Return the amounts of the species (in units of mol)
     auto speciesAmounts() const -> VectorConstRef;
+
+    /// Return the amount of the species with index ispecies (in units of mol)
+    auto speciesAmount(Index ispecies) const -> double;
+
+    /// Return the amount of the species with index ispecies (in units of mol)
+    auto speciesAmount(std::string name) const -> double;
 
     /// Return the molalities of the species.
     /// Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
@@ -260,6 +276,9 @@ public:
 
     /// Return the volumes of the phases (in units of m3).
     auto phaseVolumes() const -> VectorConstRef;
+
+    /// Return the volumes of the phase i (in units of m3).
+    auto phaseVolume(Index iphase) const -> double;
 
     /// Return the saturation (stability) indices  of the phases (in log10 units).
     auto phaseSatIndices() const -> VectorConstRef;

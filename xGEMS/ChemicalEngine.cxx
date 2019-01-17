@@ -27,6 +27,14 @@ using namespace xGEMS;
 
 void exportChemicalEngine(py::module& m)
 {
+
+    auto speciesAmount1 = static_cast<double (ChemicalEngine::*)(Index) const> (&ChemicalEngine::speciesAmount);
+    auto speciesAmount2 = static_cast<double (ChemicalEngine::*)(std::string) const> (&ChemicalEngine::speciesAmount);
+
+
+    auto setSpeciesAmount1 = static_cast<void (ChemicalEngine::*)(std::string, double)> (&ChemicalEngine::setSpeciesAmount);
+    auto setSpeciesAmount2 = static_cast<void (ChemicalEngine::*)(Index, double)> (&ChemicalEngine::setSpeciesAmount);
+
     py::class_<ChemicalEngine>(m, "ChemicalEngine")
         .def(py::init<>())
         .def(py::init<std::string>())
@@ -38,6 +46,7 @@ void exportChemicalEngine(py::module& m)
         .def("numSpeciesInPhase", &ChemicalEngine::numSpeciesInPhase)
         .def("elementName", &ChemicalEngine::elementName)
         .def("speciesName", &ChemicalEngine::speciesName)
+        .def("speciesCharge", &ChemicalEngine::speciesCharge)
         .def("phaseName", &ChemicalEngine::phaseName)
         .def("indexElement", &ChemicalEngine::indexElement)
         .def("indexSpecies", &ChemicalEngine::indexSpecies)
@@ -48,6 +57,8 @@ void exportChemicalEngine(py::module& m)
         .def("speciesMolarMasses", &ChemicalEngine::speciesMolarMasses, py::return_value_policy::reference_internal)
         .def("formulaMatrix", &ChemicalEngine::formulaMatrix, py::return_value_policy::reference_internal)
         .def("setOptions", &ChemicalEngine::setOptions)
+        .def("setSpeciesAmount", setSpeciesAmount1)
+        .def("setSpeciesAmount", setSpeciesAmount2)
         .def("equilibrate", &ChemicalEngine::equilibrate)
         .def("converged", &ChemicalEngine::converged)
         .def("numIterations", &ChemicalEngine::numIterations)
@@ -57,6 +68,9 @@ void exportChemicalEngine(py::module& m)
         .def("elementAmounts", &ChemicalEngine::elementAmounts, py::return_value_policy::reference_internal)
         .def("elementAmountsInPhase", &ChemicalEngine::elementAmountsInPhase)
         .def("elementAmountsInSpecies", &ChemicalEngine::elementAmountsInSpecies)
+        .def("speciesAmount", speciesAmount1)
+        .def("speciesAmount", speciesAmount2)
+        .def("setSpeciesAmounts", &ChemicalEngine::setSpeciesAmounts, py::return_value_policy::reference_internal)
         .def("speciesAmounts", &ChemicalEngine::speciesAmounts, py::return_value_policy::reference_internal)
         .def("moleFractions", &ChemicalEngine::moleFractions, py::return_value_policy::reference_internal)
         .def("speciesMolalities", &ChemicalEngine::speciesMolalities, py::return_value_policy::reference_internal)
@@ -92,6 +106,7 @@ void exportChemicalEngine(py::module& m)
         .def("phaseMasses", &ChemicalEngine::phaseMasses, py::return_value_policy::reference_internal)
         .def("phaseAmounts", &ChemicalEngine::phaseAmounts, py::return_value_policy::reference_internal)
         .def("phaseVolumes", &ChemicalEngine::phaseVolumes, py::return_value_policy::reference_internal)
+        .def("phaseVolume", &ChemicalEngine::phaseVolume, py::return_value_policy::reference_internal)
         .def("phaseSatIndices", &ChemicalEngine::phaseSatIndices, py::return_value_policy::reference_internal)
         .def("systemMass", &ChemicalEngine::systemMass)
         .def("systemVolume", &ChemicalEngine::systemVolume)

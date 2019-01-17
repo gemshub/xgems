@@ -209,6 +209,13 @@ auto ChemicalEngine::speciesName(Index ispecies) const -> std::string
     return name;
 }
 
+auto ChemicalEngine::speciesCharge(Index ispecies) const -> double
+{
+    MatrixConstRef W = formulaMatrix();
+    auto chargeRow = numElements();
+    return W(chargeRow -1 , ispecies);
+}
+
 auto ChemicalEngine::phaseName(Index iphase) const -> std::string
 {
     std::string name = pimpl->node->pCSD()->PHNL[iphase];
@@ -288,7 +295,7 @@ auto ChemicalEngine::setOptions(const ChemicalEngineOptions& options) -> void
     pimpl->options = options;
 }
 
-auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> void
+auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
 {
     // Begin timing
     auto begin = std::chrono::high_resolution_clock::now();
@@ -304,13 +311,66 @@ auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> void
     // Solve the equilibrium problem with gems
     pimpl->node->pCNode()->NodeStatusCH =
         pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
-    pimpl->node->GEM_run(false);
+    auto valueOutputGem = pimpl->node->GEM_run(false);
 
     // Finish timing
     auto end = std::chrono::high_resolution_clock::now();
 
     // Set the elapsed time member
     pimpl->elapsed_time = std::chrono::duration<double>(end - begin).count();
+    return valueOutputGem;
+}
+
+auto ChemicalEngine::setSpeciesAmounts(VectorConstRef n) -> void
+{
+
+    MatrixConstRef W = formulaMatrix();
+    // Updates all the species amount
+    long int jj;
+    for(jj = 0; jj <numSpecies(); jj++)
+        pimpl->node->pCNode()->xDC[jj] = n[jj];
+    // Correction of the bIC vector
+    long int ii;
+
+    for( ii=0; ii<numElements(); ii++ )
+        pimpl->node->pCNode()->bIC[ii] = 0.0;
+    for(jj = 0; jj <numSpecies(); jj++)
+        for( ii=0; ii<numElements(); ii++ )
+            pimpl->node->pCNode()->bIC[ii] += speciesAmounts()[jj] * W(ii , jj);
+}
+
+auto ChemicalEngine::setSpeciesAmount(std::string name, double amount) -> void
+{
+
+    MatrixConstRef W = formulaMatrix();
+    auto ispecies = indexSpecies(name);
+    // Updates the species amount
+    pimpl->node->pCNode()->xDC[ispecies] = amount;
+    // Correction of the bIC vector
+    long int ii;
+    long int jj;
+    for( ii=0; ii<numElements(); ii++ )
+        pimpl->node->pCNode()->bIC[ii] = 0.0;
+    for(jj = 0; jj <numSpecies(); jj++)
+        for( ii=0; ii<numElements(); ii++ )
+            pimpl->node->pCNode()->bIC[ii] += speciesAmounts()[jj] * W(ii , jj);
+}
+
+
+auto ChemicalEngine::setSpeciesAmount(Index ispecies, double amount) -> void
+{
+
+    MatrixConstRef W = formulaMatrix();
+    // Updates the species amount
+    pimpl->node->pCNode()->xDC[ispecies] = amount;
+    // Correction of the bIC vector
+    long int ii;
+    long int jj;
+    for( ii=0; ii<numElements(); ii++ )
+        pimpl->node->pCNode()->bIC[ii] = 0.0;
+    for(jj = 0; jj <numSpecies(); jj++)
+        for( ii=0; ii<numElements(); ii++ )
+            pimpl->node->pCNode()->bIC[ii] += speciesAmounts()[jj] * W(ii , jj);
 }
 
 auto ChemicalEngine::converged() const -> bool
@@ -364,6 +424,16 @@ auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const ->
     VectorConstRef np = n(ispecies);
     Vector res = Wp * np;
     return res;
+}
+
+auto ChemicalEngine::speciesAmount(Index ispecies) const -> double
+{
+    return pimpl->node->pCNode()->xDC[ispecies];
+}
+
+auto ChemicalEngine::speciesAmount(std::string name) const -> double
+{
+    return pimpl->node->pCNode()->xDC[indexSpecies(name)];
 }
 
 auto ChemicalEngine::speciesAmounts() const -> VectorConstRef
@@ -622,6 +692,12 @@ auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
     for(Index i = 0; i < numPhases(); ++i)
         pimpl->phVolumes[i] = pimpl->node->Ph_Volume(i);
     return pimpl->phVolumes;
+}
+
+
+auto ChemicalEngine::phaseVolume(Index iphase) const -> double
+{
+    return pimpl->node->Ph_Volume(iphase);
 }
 
 auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
