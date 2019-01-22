@@ -132,6 +132,11 @@ public:
     /// Set the options of the ChemicalEngine instance
     auto setOptions(const ChemicalEngineOptions& options) -> void;
 
+    /// Set the species with the dul
+    auto setSpeciesUpperLimit(std::string name, double amount) -> void;
+    /// Set the species with the dll
+    auto setSpeciesLowerLimit(std::string name, double amount) -> void;
+
     /// Calculate the equilibrium state of the chemical system.
     /// @param T The temperature for the equilibrium calculation (in units of K)
     /// @param P The pressure for the equilibrium calculation (in units of Pa)

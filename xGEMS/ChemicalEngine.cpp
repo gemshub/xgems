@@ -224,6 +224,19 @@ auto ChemicalEngine::phaseName(Index iphase) const -> std::string
     return name;
 }
 
+
+auto ChemicalEngine::setSpeciesUpperLimit(std::string name, double amount) -> void
+{
+    auto ispecies = indexSpecies(name);
+    pimpl->node->pCNode()->dul[ispecies] = amount;
+}
+
+auto ChemicalEngine::setSpeciesLowerLimit(std::string name, double amount) -> void
+{
+    auto ispecies = indexSpecies(name);
+    pimpl->node->pCNode()->dll[ispecies] = amount;
+}
+
 auto ChemicalEngine::indexElement(std::string element) const -> Index
 {
     const Index size = numElements();
