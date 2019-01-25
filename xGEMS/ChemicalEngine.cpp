@@ -322,8 +322,8 @@ auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
         pimpl->node->Set_bIC(i, b[i]);
 
     // Solve the equilibrium problem with gems
-    pimpl->node->pCNode()->NodeStatusCH =
-        pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+    pimpl->node->pCNode()->NodeStatusCH = NEED_GEM_AIA;
+//        pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
     auto valueOutputGem = pimpl->node->GEM_run(false);
 
     // Finish timing
