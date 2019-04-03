@@ -13,3 +13,5 @@ build/
 demos/ipmlog.txt
 .ipmlog.txt
 .vscode/
+CMakeLists.txt.user
+

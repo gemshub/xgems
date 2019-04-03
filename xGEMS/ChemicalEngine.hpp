@@ -281,9 +281,15 @@ public:
 
     /// Return the volumes of the phases (in units of m3).
     auto phaseVolumes() const -> VectorConstRef;
+    
+    /// Return the enthalpies of the phases (in units of J).
+    auto phaseEnthalpies() const -> VectorConstRef;
 
     /// Return the volumes of the phase i (in units of m3).
     auto phaseVolume(Index iphase) const -> double;
+    
+    /// Returns the enthalpy of the phase i (in units of J).
+    auto phaseEnthalpy(Index iphase) const -> double;
 
     /// Return the saturation (stability) indices  of the phases (in log10 units).
     auto phaseSatIndices() const -> VectorConstRef;

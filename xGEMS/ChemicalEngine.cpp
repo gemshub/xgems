@@ -74,11 +74,17 @@ struct ChemicalEngine::Impl
     /// molar volumes of the phases (in units of m3/mol).
     Vector phMolarVolumes;
 
+    /// Specific enthalpies of the phases (in units of J/kg).
+    Vector phSpecificEnthalpies;
+
     /// the densities of the phases (in units of kg/m3).
     Vector phDensities;
 
     /// volumes of the phases (in units of m3).
     Vector phVolumes;
+    
+    /// Enthalpies of the phases (in units of J).
+    Vector phEnthalpies;
 
     /// the molar amounts of the phases (in units of mol).
     Vector phAmounts;
@@ -149,6 +155,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->phMolarVolumes.resize(P);
     pimpl->phDensities.resize(P);
     pimpl->phVolumes.resize(P);
+    pimpl->phEnthalpies.resize(P);
     pimpl->phAmounts.resize(P);
     pimpl->phMasses.resize(P);
     pimpl->phSatIndex.resize(P);
@@ -322,8 +329,8 @@ auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
         pimpl->node->Set_bIC(i, b[i]);
 
     // Solve the equilibrium problem with gems
-    pimpl->node->pCNode()->NodeStatusCH = NEED_GEM_AIA;
-//        pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+    pimpl->node->pCNode()->NodeStatusCH = 
+       pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
     auto valueOutputGem = pimpl->node->GEM_run(false);
 
     // Finish timing
@@ -641,7 +648,13 @@ auto ChemicalEngine::phaseSpecificGibbsEnergies() const -> VectorConstRef
 
 auto ChemicalEngine::phaseSpecificEnthalpies() const -> VectorConstRef
 {
-    return Vector{};
+    for(Index i = 0; i < numPhases(); ++i)
+    {
+        pimpl->phSpecificEnthalpies[i] = 0.0;
+        if( pimpl->node->Ph_Mass(i) != 0.0 )
+            pimpl->phSpecificEnthalpies[i] = pimpl->node->Ph_Enthalpy(i)/pimpl->node->Ph_Mass(i);
+    }
+    return pimpl->phSpecificEnthalpies;  // in J/kg
 }
 
 auto ChemicalEngine::phaseSpecificVolumes() const -> VectorConstRef
@@ -707,10 +720,21 @@ auto ChemicalEngine::phaseVolumes() const -> VectorConstRef
     return pimpl->phVolumes;
 }
 
+auto ChemicalEngine::phaseEnthalpies() const -> VectorConstRef
+{
+    for(Index i = 0; i < numPhases(); ++i)
+        pimpl->phEnthalpies[i] = pimpl->node->Ph_Enthalpy(i);
+    return pimpl->phEnthalpies;
+}
 
 auto ChemicalEngine::phaseVolume(Index iphase) const -> double
 {
     return pimpl->node->Ph_Volume(iphase);
+}
+
+auto ChemicalEngine::phaseEnthalpy(Index iphase) const -> double
+{
+    return pimpl->node->Ph_Enthalpy(iphase);
 }
 
 auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
