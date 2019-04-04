@@ -153,6 +153,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->molFractions.resize(N);
     pimpl->molalities.resize(N);
     pimpl->phMolarVolumes.resize(P);
+    pimpl->phSpecificEnthalpies.resize(P);
     pimpl->phDensities.resize(P);
     pimpl->phVolumes.resize(P);
     pimpl->phEnthalpies.resize(P);
@@ -610,7 +611,7 @@ auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
     for(Index i = 0; i < numPhases(); ++i)
     {
         pimpl->phMolarVolumes[i] = 0.0;
-        if( pimpl->node->Ph_Mole(i) != 0.0 )
+        if( pimpl->node->Ph_Mole(i) > 1e-15 )
             pimpl->phMolarVolumes[i] = pimpl->node->Ph_Volume(i)/pimpl->node->Ph_Mole(i);
     }
     return pimpl->phMolarVolumes;
@@ -651,7 +652,7 @@ auto ChemicalEngine::phaseSpecificEnthalpies() const -> VectorConstRef
     for(Index i = 0; i < numPhases(); ++i)
     {
         pimpl->phSpecificEnthalpies[i] = 0.0;
-        if( pimpl->node->Ph_Mass(i) != 0.0 )
+        if( pimpl->node->Ph_Mass(i) > 1e-14 )
             pimpl->phSpecificEnthalpies[i] = pimpl->node->Ph_Enthalpy(i)/pimpl->node->Ph_Mass(i);
     }
     return pimpl->phSpecificEnthalpies;  // in J/kg
