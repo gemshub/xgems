@@ -785,7 +785,13 @@ auto ChemicalEngine::systemGibbsEnergy() const -> double
 
 auto ChemicalEngine::systemEnthalpy() const -> double
 {
-    return pimpl->node->pCNode()->Hs;
+    // enth = pimpl->node->phEnthalpies.sum(); // needs to be computed first anyway
+    auto enth = 0.0;
+    for(Index i = 0; i < numPhases(); ++i)
+        enth += pimpl->node->Ph_Enthalpy(i);
+    return enth;  // in J 
+    // enth /= pimpl->node->pCNode()->Ms; in  kg
+    // return pimpl->node->pCNode()->Hs;  // Not computed in GEMS3K so far!
 }
 
 auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
