@@ -132,6 +132,12 @@ public:
     /// Set the options of the ChemicalEngine instance
     auto setOptions(const ChemicalEngineOptions& options) -> void;
 
+    /// Set smart start initial approximation (faster convergence, can be less accurate)
+    auto setWarmStart() -> void;
+
+    /// Set cold start automatic initial approximation (slower convergence, more accurate)
+    auto setColdStart() -> void;
+
     /// Set the species with the dul
     auto setSpeciesUpperLimit(std::string name, double amount) -> void;
     /// Set the species with the dll

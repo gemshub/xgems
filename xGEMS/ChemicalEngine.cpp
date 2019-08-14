@@ -316,6 +316,16 @@ auto ChemicalEngine::setOptions(const ChemicalEngineOptions& options) -> void
     pimpl->options = options;
 }
 
+auto ChemicalEngine::setWarmStart() -> void
+{
+    pimpl->options.warmstart = true;
+}
+
+auto ChemicalEngine::setColdStart() -> void
+{
+    pimpl->options.warmstart = false;
+}
+
 auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
 {
     // Begin timing
