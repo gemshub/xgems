@@ -51,11 +51,11 @@ sudo make install
 cd ~/git/xGEMS
 mkdir build
 cd build
-cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2.7
+cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.6
 make -j 3
 make demos
 ~~~
-If you use Python 3.5, in the above commands, change "python2.7" to "python3.5" above. 
+If you are still using Python 2.7 then in the above commands, change "python3.6" to "python2.7". 
 For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
 * To install xGEMS into /usr/local as a library with includes:
@@ -84,7 +84,7 @@ export PYTHONPATH=/home/username/pathto-xGEMS/build/lib
  python demo1.py
 ~~~
 
-* If built with python 3.5: in demo1.py, change the last line from "print chemicalengine" to "print(chemicalengine)", save and execute:
+* If built with python 3.6: in demo1.py, change the last line from "print chemicalengine" to "print(chemicalengine)", save and execute:
 ~~~
  cd ~git/xGEMS/demos/
  python3 demo1.py

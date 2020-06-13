@@ -232,17 +232,36 @@ auto ChemicalEngine::phaseName(Index iphase) const -> std::string
     return name;
 }
 
-
+// These methods may be ambiguous, as in GEMS3K, species with the same name 
+//   may occur in more than one condensed phase!
+// An overload including phase name or index is needed! 
+//
 auto ChemicalEngine::setSpeciesUpperLimit(std::string name, double amount) -> void
 {
     auto ispecies = indexSpecies(name);
-    pimpl->node->pCNode()->dul[ispecies] = amount;
+    double bound = (amount < 0.0? 1e6: amount);
+    pimpl->node->pCNode()->dul[ispecies] = bound;
 }
 
 auto ChemicalEngine::setSpeciesLowerLimit(std::string name, double amount) -> void
 {
     auto ispecies = indexSpecies(name);
-    pimpl->node->pCNode()->dll[ispecies] = amount;
+    double bound = (amount < 0.0? 0.0: amount);
+    pimpl->node->pCNode()->dll[ispecies] = bound;
+}
+
+// Overload!
+auto ChemicalEngine::setSpeciesUpperLimit(Index ispecies, double amount) -> void
+{   
+    double bound = (amount < 0.0? 1e6: amount);
+    pimpl->node->pCNode()->dul[ispecies] = bound;
+}
+
+// Overload!
+auto ChemicalEngine::setSpeciesLowerLimit(Index ispecies, double amount) -> void
+{
+    double bound = (amount < 0.0? 0.0: amount);
+    pimpl->node->pCNode()->dll[ispecies] = bound;
 }
 
 auto ChemicalEngine::indexElement(std::string element) const -> Index
@@ -370,6 +389,10 @@ auto ChemicalEngine::setSpeciesAmounts(VectorConstRef n) -> void
             pimpl->node->pCNode()->bIC[ii] += speciesAmounts()[jj] * W(ii , jj);
 }
 
+// Set the species of name (string) with the new amount
+// Caution: this may be ambiguous as in GEMS3K, species with the same name 
+//   may occur in more than one condensed phase!
+// An overload including phase name is needed! 
 auto ChemicalEngine::setSpeciesAmount(std::string name, double amount) -> void
 {
 

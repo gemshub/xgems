@@ -31,9 +31,14 @@ void exportChemicalEngine(py::module& m)
     auto speciesAmount1 = static_cast<double (ChemicalEngine::*)(Index) const> (&ChemicalEngine::speciesAmount);
     auto speciesAmount2 = static_cast<double (ChemicalEngine::*)(std::string) const> (&ChemicalEngine::speciesAmount);
 
-
     auto setSpeciesAmount1 = static_cast<void (ChemicalEngine::*)(std::string, double)> (&ChemicalEngine::setSpeciesAmount);
     auto setSpeciesAmount2 = static_cast<void (ChemicalEngine::*)(Index, double)> (&ChemicalEngine::setSpeciesAmount);
+
+    auto setSpeciesUpperLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double)> (&ChemicalEngine::setSpeciesUpperLimit);
+    auto setSpeciesUpperLimit2 = static_cast<void (ChemicalEngine::*)(Index, double)> (&ChemicalEngine::setSpeciesUpperLimit);
+
+    auto setSpeciesLowerLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double)> (&ChemicalEngine::setSpeciesLowerLimit);
+    auto setSpeciesLowerLimit2 = static_cast<void (ChemicalEngine::*)(Index, double)> (&ChemicalEngine::setSpeciesLowerLimit);
 
     py::class_<ChemicalEngine>(m, "ChemicalEngine")
         .def(py::init<>())
@@ -59,8 +64,10 @@ void exportChemicalEngine(py::module& m)
         .def("setOptions", &ChemicalEngine::setOptions)
         .def("setWarmStart", &ChemicalEngine::setWarmStart)
         .def("setColdStart", &ChemicalEngine::setColdStart)
-        .def("setSpeciesUpperLimit", &ChemicalEngine::setSpeciesUpperLimit)
-        .def("setSpeciesLowerLimit", &ChemicalEngine::setSpeciesLowerLimit)
+        .def("setSpeciesUpperLimit", setSpeciesUpperLimit1)
+        .def("setSpeciesUpperLimit", setSpeciesUpperLimit2)
+        .def("setSpeciesLowerLimit", setSpeciesLowerLimit1)
+        .def("setSpeciesLowerLimit", setSpeciesLowerLimit2)
         .def("setSpeciesAmount", setSpeciesAmount1)
         .def("setSpeciesAmount", setSpeciesAmount2)
         .def("equilibrate", &ChemicalEngine::equilibrate)

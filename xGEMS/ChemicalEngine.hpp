@@ -121,12 +121,14 @@ public:
     /// (rows: elements, cols: species).
     auto formulaMatrix() const -> MatrixConstRef;
 
+    /// Sets the whole speciation vector xDC to amounts provided in n and resets bIC bector accordingly
+    ///  (often used for input initial guess of GEM solution in reactive transport sims)
     auto setSpeciesAmounts(VectorConstRef n) -> void;
 
-    /// Set the species with the new amount
+    /// Set the species name to the new amount in xDC vector and adds this to bIC vector
     auto setSpeciesAmount(std::string name, double amount) -> void;
 
-    /// Set the species with the new amount
+    /// Set the species with index ispecies to the new amount in xDC vector and adds this to bIC vector
     auto setSpeciesAmount(Index ispecies, double amount) -> void;
 
     /// Set the options of the ChemicalEngine instance
@@ -138,10 +140,23 @@ public:
     /// Set cold start automatic initial approximation (slower convergence, more accurate)
     auto setColdStart() -> void;
 
-    /// Set the species with the dul
+    // Caution: this may be ambiguous as in GEMS3K, species with the same name 
+    //   may occur in more than one condensed phase!
+    // An overload including phase name is needed!  
+    /// Set the species @param name @param amount upper bound in dul vector
+    /// if amount < 0 then resets to default 1e6
     auto setSpeciesUpperLimit(std::string name, double amount) -> void;
-    /// Set the species with the dll
+    /// Set the species @param name @param amount lower bound in dll vector
+    /// if @param amount < 0 then resets to default 0
     auto setSpeciesLowerLimit(std::string name, double amount) -> void;
+
+    /// Set species with index @param ispecies upper bound to @param amount in dul vector
+    /// if @param amount < 0 then resets to default 1e6
+    auto setSpeciesUpperLimit(Index ispecies, double amount) -> void;
+   
+    /// Set species with index @param ispecies upper bound to @param amount in dul vector
+    /// if @param amount < 0 then resets to default 0 
+    auto setSpeciesLowerLimit(Index ispecies, double amount) -> void;
 
     /// Calculate the equilibrium state of the chemical system.
     /// @param T The temperature for the equilibrium calculation (in units of K)
