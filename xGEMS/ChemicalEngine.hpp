@@ -73,7 +73,7 @@ public:
     /// Return the number of phases.
     auto numPhases() const -> Index;
 
-    /// Return the number of species in a phase
+    /// Return the number of species in a phase or 0, if the phase was not found
     /// @param iphase The index of the phase.
     auto numSpeciesInPhase(Index iphase) const -> Index;
 
@@ -91,23 +91,23 @@ public:
     /// @param iphase The index of the phase.
     auto phaseName(Index iphase) const -> std::string;
 
-    /// Return the index of an element.
-    /// @param ielement The index of the element.
+    /// Return the index of an @param element name, or number of elements, if not found.
+    /// @param Index The index of the element.
     auto indexElement(std::string element) const -> Index;
 
-    /// Return the index of a species.
-    /// @param ispecies The index of the species.
+    /// Return the index of a @param species name, or number of species, if not found.
+    /// @param Index The index of the species.
     auto indexSpecies(std::string species) const -> Index;
 
-    /// Return the index of a phase
-    /// @param iphase The index of the phase.
+    /// Return the index of a @param phase name, or number of phases, if not found.
+    /// @param Index The index of the phase.
     auto indexPhase(std::string phase) const -> Index;
 
-    /// Return the index of the phase with a species.
-    /// @param ispecies The index of the species.
+    /// Return the index of the phase containing a @param species name (ambiguous).
+    /// @param Index The index of the species.
     auto indexPhaseWithSpecies(Index ispecies) const -> Index;
 
-    /// Return the index of the first species in a phase.
+    /// Return the @param Index of the first species in a phase.
     /// @param iphase The index of the phase.
     auto indexFirstSpeciesInPhase(Index iphase) const -> Index;
 

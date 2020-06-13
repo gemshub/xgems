@@ -270,7 +270,7 @@ auto ChemicalEngine::indexElement(std::string element) const -> Index
     for(Index i = 0; i < size; ++i)
         if(elementName(i) == element)
             return i;
-    return size;
+    return size; // in case that element name was not found 
 }
 
 auto ChemicalEngine::indexSpecies(std::string species) const -> Index
@@ -279,16 +279,17 @@ auto ChemicalEngine::indexSpecies(std::string species) const -> Index
     for(Index i = 0; i < size; ++i)
         if(speciesName(i) == species)
             return i;
-    return size;
+    return size; // in case that species name was not found 
 }
 
+// Index of phase searched by name
 auto ChemicalEngine::indexPhase(std::string phase) const -> Index
 {
     const Index size = numPhases();
     for(Index i = 0; i < size; ++i)
         if(phaseName(i) == phase)
             return i;
-    return size;
+    return size; // in case that phase name was not found 
 }
 
 auto ChemicalEngine::indexPhaseWithSpecies(Index ispecies) const -> Index
@@ -300,7 +301,7 @@ auto ChemicalEngine::indexPhaseWithSpecies(Index ispecies) const -> Index
         counter += numSpeciesInPhase(i);
         if(counter > ispecies) return i;
     }
-    return size;
+    return size; // in case that species name was not found 
 }
 
 auto ChemicalEngine::indexFirstSpeciesInPhase(Index iphase) const -> Index
