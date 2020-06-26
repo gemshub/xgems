@@ -4,8 +4,11 @@ file(GLOB HPP_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.hpp)
 # Collect all cpp files from the current directory
 file(GLOB CPP_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 
+# Compile the python binding files into a Python module called xgems
+if(XGEMS_BUILD_PYTHON)
 # Collect all cpp files from the current directory
-file(GLOB CXX_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cxx)
+    file(GLOB CXX_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cxx)
+endif()
 
 # Compile the C++ source code into object files
 add_library(XGEMS_OBJECT OBJECT ${HPP_FILES} ${CPP_FILES})
@@ -30,13 +33,14 @@ if(XGEMS_BUILD_STATIC_LIBS)
 endif()
 
 # Compile the python binding files into a Python module called xgems
-pybind11_add_module(xgems ${CXX_FILES})
+if(XGEMS_BUILD_PYTHON)
+    pybind11_add_module(xgems ${CXX_FILES}) 
+    # Link xGEMS against third-party libs
+    target_link_libraries(xgems LINK_PRIVATE XGEMS_STATIC GEMS3K-static)
 
-# Link xGEMS against third-party libs
-target_link_libraries(xgems LINK_PRIVATE XGEMS_STATIC GEMS3K-static)
-
-# Specify the xgems dependency to ensure proper build sequence
-add_dependencies(xgems EXTERNAL_PROJECT_GEMS3K)
+    # Specify the xgems dependency to ensure proper build sequence
+    add_dependencies(xgems EXTERNAL_PROJECT_GEMS3K)
+endif()
 
 # Create an install target for the header files
 install(DIRECTORY ${XGEMS_SOURCE_DIR}

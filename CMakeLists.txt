@@ -121,9 +121,6 @@ include_directories(${THIRDPARTY_INSTALL_PREFIX}/include)
 # Set the link directories for third-party libraries
 link_directories(${THIRDPARTY_INSTALL_PREFIX}/lib)
 
-
-
-
 # Include the ExternalProject module
 include(ExternalProject)
 
@@ -155,18 +152,6 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     BINARY_DIR build/src/gems3k-build
     STAMP_DIR build/src/gems3k-stamp
     CMAKE_ARGS ${GEMS3K_CMAKE_ARGS})
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Build the C++ library and the Python bindings
