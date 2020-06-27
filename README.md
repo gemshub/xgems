@@ -62,14 +62,16 @@ make -j 3
 make demos
 ~~~
 
-* If you are still using Python 2.7 then in the above commands, change "python3.6" to "python2.7". 
 * For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
-For building xGEMS for use from C++ codes only (i.e. no python in the system), replace the above cmake command with
+* For building xGEMS for use from C++ codes only (i.e. no python in the system), replace the above cmake command with
 ~~~
 cmake .. -DXGEMS_BUILD_PYTHON=OFF
 ~~~~
-and skip the paragraphs in the remaining part of this instruction that are dealing with python. 
+
+* and skip the paragraphs in the remaining part of this instruction that are dealing with python. 
+
+* If you are still using Python 2.7 then in the above cmake command, change "python3.6" to "python2.7". 
 
 * To install xGEMS into /usr/local as a library with /includes:
 ~~~
