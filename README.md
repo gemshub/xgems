@@ -67,7 +67,7 @@ make demos
 * For building xGEMS for use from C++ codes only (i.e. no python in the system), replace the above cmake command with
 ~~~
 cmake .. -DXGEMS_BUILD_PYTHON=OFF
-~~~~
+~~~
 
 * and skip the paragraphs in the remaining part of this instruction that are dealing with python. 
 
