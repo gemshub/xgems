@@ -25,19 +25,25 @@ git clone https://bitbucket.org/gems4/xgems.git .
 
 ### How to build xGEMS library and examples
 
-* You will need to install Eigen [(the development branch)](http://bitbucket.org/eigen/eigen/get/default.tar.bz2). 
-* We assume you have unpacked it to your home directory and renamed to ~/unpacked-eigen-dir.
+* You will need to install Eigen3:
+
 ~~~
-cd ~/unpacked-eigen-dir
-mkdir build 
+mkdir -p ~/code
+cd ~/code
+git clone https://gitlab.com/libeigen/eigen.git
+cd eigen
+mkdir -p build
 cd build
-cmake ..
-sudo make install
+cmake .. 
+sudo make -j install
+cd ~
+sudo rm -rf ~/code
 ~~~
 
-* You will also need to install Pybind11 (v2.2.2):
+* If you want to use xGEMS from python, you will also need to install Pybind11:
 ~~~
-cd Downloads
+mkdir -p ~/code
+cd ~/code
 git clone https://github.com/pybind/pybind11.git
 cd pybind11
 mkdir build
@@ -55,10 +61,17 @@ cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.6
 make -j 3
 make demos
 ~~~
-If you are still using Python 2.7 then in the above commands, change "python3.6" to "python2.7". 
-For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
-* To install xGEMS into /usr/local as a library with includes:
+* If you are still using Python 2.7 then in the above commands, change "python3.6" to "python2.7". 
+* For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
+
+For building xGEMS for use from C++ codes only (i.e. no python in the system), replace the above cmake command with
+~~~
+cmake .. -DXGEMS_BUILD_PYTHON=OFF
+~~~~
+and skip the paragraphs in the remaining part of this instruction that are dealing with python. 
+
+* To install xGEMS into /usr/local as a library with /includes:
 ~~~
 cd ~/git/xGEMS/build
 sudo make install 
