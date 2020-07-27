@@ -9,7 +9,7 @@ dependencies:
   - make  # [win]
   - git
   - ccache  # [unix]
- # - pybind11
+  - pybind11
  # - eigen
   - pytest
   - python={{ python_version }}
