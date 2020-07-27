@@ -13,6 +13,9 @@ include(CTest)
 # Include the cmake variables with values for installation directories
 include(GNUInstallDirs)
 
+# Ensure proper configuration if in a conda environment
+include(CondaAware)
+
 # Set the version of the project
 set(XGEMS_VERSION_MAJOR "1")
 set(XGEMS_VERSION_MINOR "0")
@@ -84,7 +87,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 endif()
 
 # Find Eigen library and include its directory
-find_package(Eigen3 3.2 REQUIRED)
+#find_package(Eigen3 3.2 REQUIRED)
 
 # Find the Python interpreter
 if(XGEMS_BUILD_PYTHON)
@@ -141,6 +144,13 @@ set(GEMS3K_CMAKE_ARGS
     --no-warn-unused-cli
     )
 
+set(EIGEN_CMAKE_ARGS
+    -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
+    -DCMAKE_INSTALL_PREFIX=${THIRDPARTY_INSTALL_PREFIX}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    -DPYBIND11_TEST=OFF
+    )
+
 # Clone GEMS3K from git repository and build it 
 ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     PREFIX build
@@ -153,6 +163,35 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     STAMP_DIR build/src/gems3k-stamp
     CMAKE_ARGS ${GEMS3K_CMAKE_ARGS})
 
+if(XGEMS_BUILD_PYTHON)
+    set(PYBIND11_CMAKE_ARGS
+        -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
+        -DCMAKE_INSTALL_PREFIX=${THIRDPARTY_INSTALL_PREFIX}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DPYBIND11_TEST=OFF
+        )
+    # Clone pybind11 from git repository and build it 
+    ExternalProject_Add(EXTERNAL_PROJECT_PYBIND11
+        PREFIX build
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    #    GIT_TAG master
+    #    GIT_SHALLOW TRUE
+        SOURCE_DIR build/src/pybind11
+        BINARY_DIR build/src/pybind11-build
+        STAMP_DIR build/src/pybind11-stamp
+        CMAKE_ARGS ${PYBIND11_CMAKE_ARGS})
+    
+    # Clone pybind11 from git repository and build it 
+    ExternalProject_Add(EXTERNAL_PROJECT_EIGEN
+        PREFIX build
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+    #    GIT_TAG master
+    #    GIT_SHALLOW TRUE
+        SOURCE_DIR build/src/eigen
+        BINARY_DIR build/src/eigen-build
+        STAMP_DIR build/src/eigen-stamp
+        CMAKE_ARGS ${EIGEN_CMAKE_ARGS})
+endif()
 
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)

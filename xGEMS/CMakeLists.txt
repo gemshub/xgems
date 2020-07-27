@@ -14,7 +14,10 @@ endif()
 add_library(XGEMS_OBJECT OBJECT ${HPP_FILES} ${CPP_FILES})
 
 # Specify the GEMS3K dependency to ensure proper build sequence
-add_dependencies(XGEMS_OBJECT EXTERNAL_PROJECT_GEMS3K)
+add_dependencies(XGEMS_OBJECT EXTERNAL_PROJECT_GEMS3K EXTERNAL_PROJECT_EIGEN)
+
+message(${CMAKE_CURRENT_BINARY_DIR}/../thirdparty/install/include/eigen3)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../thirdparty/install/include/eigen3)
 
 # Check if a shared library must be built
 if(XGEMS_BUILD_SHARED_LIBS)
@@ -39,7 +42,7 @@ if(XGEMS_BUILD_PYTHON)
     target_link_libraries(xgems LINK_PRIVATE XGEMS_STATIC GEMS3K-static)
 
     # Specify the xgems dependency to ensure proper build sequence
-    add_dependencies(xgems EXTERNAL_PROJECT_GEMS3K)
+    add_dependencies(xgems EXTERNAL_PROJECT_PYBIND11)
 endif()
 
 # Create an install target for the header files
