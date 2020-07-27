@@ -40,9 +40,6 @@ if(XGEMS_BUILD_PYTHON)
     pybind11_add_module(xgems ${CXX_FILES}) 
     # Link xGEMS against third-party libs
     target_link_libraries(xgems LINK_PRIVATE XGEMS_STATIC GEMS3K-static)
-
-    # Specify the xgems dependency to ensure proper build sequence
-    add_dependencies(xgems EXTERNAL_PROJECT_PYBIND11)
 endif()
 
 # Create an install target for the header files

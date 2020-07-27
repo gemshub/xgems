@@ -25,21 +25,6 @@ git clone https://bitbucket.org/gems4/xgems.git .
 
 ### How to build xGEMS library and examples
 
-* You will need to install Eigen3:
-
-~~~
-mkdir -p ~/code
-cd ~/code
-git clone https://gitlab.com/libeigen/eigen.git
-cd eigen
-mkdir -p build
-cd build
-cmake .. 
-sudo make -j install
-cd ~
-sudo rm -rf ~/code
-~~~
-
 * If you want to use xGEMS from python, you will also need to install Pybind11:
 ~~~
 mkdir -p ~/code
