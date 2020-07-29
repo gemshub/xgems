@@ -42,7 +42,7 @@ make install
 
 * To compile xGEMS with python bindings and demos:
 
-`-DCMAKE_PREFIX_PATH` is necessary if pybind11 is not present in the default include path `/usr/include/` or `/usr/lib/cmake/`, provided that `/usr/lib/cmake/pybind11/pybind11Config.cmake` cmake config file is found at this path.
+`-DCMAKE_PREFIX_PATH` is necessary if pybind11 is not present in the default include path `/usr/include/` or `/usr/lib/cmake/`, provided that `/your/local/codes/directory/pybind11/pybind11Config.cmake` cmake config file is found at this path.
 
 ~~~
 cd ~/git/xGEMS
