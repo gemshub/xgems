@@ -95,7 +95,9 @@ if(XGEMS_BUILD_PYTHON)
         set(PYBIND11_PYTHON_VERSION 2.7)
     endif()
     
-    find_package(pybind11 2.0.0 REQUIRED)
+    #find_package(pybind11 2.0.0 REQUIRED)
+    find_package(pybind11 2.2.0 REQUIRED)
+    message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
     
     if(NOT pybind11_FOUND)
         set(XGEMS_BUILD_PYTHON OFF)
