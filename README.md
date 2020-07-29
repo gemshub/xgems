@@ -27,7 +27,7 @@ git clone https://bitbucket.org/gems4/xgems.git .
 
 xGEMS uses GEMS3K and Egien3 as external projects. These are downloaded and compiled together with xGEMS during the make step. 
 
-For compiling xGEMS python bindings you need a recent version of pybind11 (including development headers, 2.2.0 is the minimum version required) installed. In case your distribution does not provide pybind11 development packages you can install it like follows:
+For compiling xGEMS python bindings you need a recent version of pybind11 installed (including development headers, 2.2.0 is the minimum version required). In case your distribution does not provide pybind11 development packages, or the version is too old, you can install it as follows:
 
 ~~~
 mkdir -p ~/code
@@ -40,9 +40,11 @@ cmake .. -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_PREFIX=/your/local/codes/directory
 make install
 ~~~
 
+CMake uses `find_package` to search for pybind11 `pybind11Config.cmake` configuration file. Installing pybind11 using `pip install` using other ways might not provide the required configuration file and will result in errors.
+
 * To compile xGEMS with python bindings and demos:
 
-`-DCMAKE_PREFIX_PATH` is necessary if pybind11 is not present in the default include path `/usr/include/` or `/usr/lib/cmake/`, provided that `/your/local/codes/directory/pybind11/pybind11Config.cmake` cmake config file is found at this path.
+`-DCMAKE_PREFIX_PATH=/your/local/codes/directory` is necessary if pybind11 is not installed in the default include path `/usr/include/` or `/usr/lib/cmake/`, provided that `/your/local/codes/directory/pybind11/pybind11Config.cmake` cmake config file is found at this path.
 
 ~~~
 cd ~/git/xGEMS
