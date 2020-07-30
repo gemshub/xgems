@@ -25,22 +25,10 @@ git clone https://bitbucket.org/gems4/xgems.git .
 
 ### How to build xGEMS library and examples
 
-* You will need to install Eigen3:
+xGEMS uses GEMS3K and Egien3 as external projects. These are downloaded and compiled together with xGEMS during the make step. 
 
-~~~
-mkdir -p ~/code
-cd ~/code
-git clone https://gitlab.com/libeigen/eigen.git
-cd eigen
-mkdir -p build
-cd build
-cmake .. 
-sudo make -j install
-cd ~
-sudo rm -rf ~/code
-~~~
+For compiling xGEMS python bindings you need a recent version of pybind11 installed (including development headers, 2.2.0 is the minimum version required). In case your distribution does not provide pybind11 development packages, or the version is to old, you can install it as follows:
 
-* If you want to use xGEMS from python, you will also need to install Pybind11:
 ~~~
 mkdir -p ~/code
 cd ~/code
@@ -48,30 +36,33 @@ git clone https://github.com/pybind/pybind11.git
 cd pybind11
 mkdir build
 cd build
-cmake .. -DPYBIND11_TEST=OFF
-sudo make install
+cmake .. -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_PREFIX=/your/local/codes/directory
+make install
 ~~~
 
-* To compile xGEMS and demos:
+CMake uses `find_package` to search for pybind11 `pybind11Config.cmake` configuration file. Installing pybind11 using `pip install` or other ways might not provide the required configuration file and will result in errors.
+
+* To compile xGEMS with python bindings and demos:
+
+`-DCMAKE_PREFIX_PATH=/your/local/codes/directory` is necessary if pybind11 is not installed in the default include path `/usr/include/` or `/usr/lib/cmake/`, provided that `/your/local/codes/directory/pybind11/pybind11Config.cmake` cmake config file is found at this path.
+
 ~~~
 cd ~/git/xGEMS
 mkdir build
 cd build
-cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.6
+cmake .. -DCMAKE_PREFIX_PATH=/your/local/codes/directory
 make -j 3
 make demos
 ~~~
-
-* For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
 * For building xGEMS for use from C++ codes only (i.e. no python in the system), replace the above cmake command with
 ~~~
 cmake .. -DXGEMS_BUILD_PYTHON=OFF
 ~~~
 
-* and skip the paragraphs in the remaining part of this instruction that are dealing with python. 
+* For pointing to a specific python version use `-DPYTHON_EXECUTABLE=/usr/bin/python3.6` or `-DPYTHON_EXECUTABLE=$(which python)` to get the default python path.
 
-* If you are still using Python 2.7 then in the above cmake command, change "python3.6" to "python2.7". 
+* For compiling in the debug mode, add -DCMAKE_BUILD_TYPE=Debug as cmake parameter.
 
 * To install xGEMS into /usr/local as a library with /includes:
 ~~~
