@@ -71,6 +71,9 @@ struct ChemicalEngine::Impl
     /// The chemical potentials of the species (in J/mol)
     Vector chemPotentials;
 
+    /// Standard thermodynamic properties of species
+    Vector sp
+
     /// molar volumes of the phases (in units of m3/mol).
     Vector phMolarVolumes;
 
@@ -573,42 +576,42 @@ auto ChemicalEngine::chemicalPotentials() const -> VectorConstRef
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarGibbsEnergies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarGibbsEnergies() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarEnthalpies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarEnthalpies() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarVolumes() const -> VectorConstRef
+auto ChemicalEngine::standardMolarVolumes() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarEntropies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarEntropies() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarInternalEnergies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarInternalEnergies() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarHelmholtzEnergies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarHelmholtzEnergies() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarHeatCapacitiesConstP() const -> VectorConstRef
+auto ChemicalEngine::standardMolarHeatCapacitiesConstP() const -> VectorConstRef
 {
     return Vector{};
 }
 
-auto ChemicalEngine::standardPartialMolarHeatCapacitiesConstV() const -> VectorConstRef
+auto ChemicalEngine::standardMolarHeatCapacitiesConstV() const -> VectorConstRef
 {
     return Vector{};
 }
