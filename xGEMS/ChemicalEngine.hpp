@@ -221,31 +221,26 @@ public:
 
     /// Return the standard  molar Gibbs energies of the species (in units of J/mol).
     auto standardMolarGibbsEnergies() const -> VectorConstRef;
-    auto standardMolarGibbsEnergies() const -> VectorConstRef;
 
     /// Return the standard  molar enthalpies of the species (in units of J/mol).
-    auto standardMolarEnthalpies() const -> VectorConstRef;
     auto standardMolarEnthalpies() const -> VectorConstRef;
 
     /// Return the standard  molar volumes of the species (in units of m3/mol).
     auto standardMolarVolumes() const -> VectorConstRef;
-    auto standardMolarVolumes() const -> VectorConstRef;
-
+    
     /// Return the standard  molar entropies of the species (in units of J/(mol*K)).
     auto standardMolarEntropies() const -> VectorConstRef;
-    auto standardMolarEntropies() const -> VectorConstRef;
 
-    /// Return the standard  molar internal energies of the species (in units of J/mol).
+    /// TBD Return the standard  molar internal energies of the species (in units of J/mol).
     auto standardMolarInternalEnergies() const -> VectorConstRef;
 
-    /// Return the standard  molar Helmholtz energies of the species (in units of J/mol).
+    /// TBD Return the standard  molar Helmholtz energies of the species (in units of J/mol).
     auto standardMolarHelmholtzEnergies() const -> VectorConstRef;
 
     /// Return the standard  molar isobaric heat capacities of the species (in units of J/(mol*K)).
     auto standardMolarHeatCapacitiesConstP() const -> VectorConstRef;
-    auto standardMolarHeatCapacitiesConstP() const -> VectorConstRef;
 
-    /// Return the standard  molar isochoric heat capacities of the species (in units of J/(mol*K)).
+    /// TBD Return the standard  molar isochoric heat capacities of the species (in units of J/(mol*K)).
     auto standardMolarHeatCapacitiesConstV() const -> VectorConstRef;
 
     /// Return the molar Gibbs energies of the phases (in units of J/mol).
@@ -260,16 +255,16 @@ public:
     /// Return the molar entropies of the phases (in units of J/(mol*K)).
     auto phaseMolarEntropies() const -> VectorConstRef;
 
-    /// Return the molar internal energies of the phases (in units of J/mol).
+    /// TBD Return the molar internal energies of the phases (in units of J/mol).
     auto phaseMolarInternalEnergies() const -> VectorConstRef;
 
-    /// Return the molar Helmholtz energies of the phases (in units of J/mol).
+    /// TBD Return the molar Helmholtz energies of the phases (in units of J/mol).
     auto phaseMolarHelmholtzEnergies() const -> VectorConstRef;
 
     /// Return the molar isobaric heat capacities of the phases (in units of J/(mol*K)).
     auto phaseMolarHeatCapacitiesConstP() const -> VectorConstRef;
 
-    /// Return the molar isochoric heat capacities of the phases (in units of J/(mol*K)).
+    /// TBD Return the molar isochoric heat capacities of the phases (in units of J/(mol*K)).
     auto phaseMolarHeatCapacitiesConstV() const -> VectorConstRef;
 
     /// Return the specific Gibbs energies of the phases (in units of J/kg).
@@ -284,16 +279,16 @@ public:
     /// Return the specific entropies of the phases (in units of J/(kg*K)).
     auto phaseSpecificEntropies() const -> VectorConstRef;
 
-    /// Return the specific internal energies of the phases (in units of J/kg).
+    /// TBD Return the specific internal energies of the phases (in units of J/kg).
     auto phaseSpecificInternalEnergies() const -> VectorConstRef;
 
-    /// Return the specific Helmholtz energies of the phases (in units of J/kg).
+    /// TBD Return the specific Helmholtz energies of the phases (in units of J/kg).
     auto phaseSpecificHelmholtzEnergies() const -> VectorConstRef;
 
     /// Return the specific isobaric heat capacities of the phases (in units of J/(kg*K)).
     auto phaseSpecificHeatCapacitiesConstP() const -> VectorConstRef;
 
-    /// Return the specific isochoric heat capacities of the phases (in units of J/(kg*K)).
+    /// TBD Return the specific isochoric heat capacities of the phases (in units of J/(kg*K)).
     auto phaseSpecificHeatCapacitiesConstV() const -> VectorConstRef;
 
     /// Return the densities of the phases (in units of kg/m3).
@@ -310,6 +305,9 @@ public:
     
     /// Return the enthalpies of the phases (in units of J).
     auto phaseEnthalpies() const -> VectorConstRef;
+
+    /// Return the mass of the phase i (in units of kg).
+    auto phaseMass(Index iphase) const -> double;
 
     /// Return the volumes of the phase i (in units of m3).
     auto phaseVolume(Index iphase) const -> double;
@@ -343,6 +341,12 @@ public:
 
      /// Return the total enthalpy of the system.
     auto systemEnthalpy() const -> double;
+
+    /// Return the total entropy of the system.
+    auto systemEntropy() const -> double;
+
+    /// Return the total heat capacity Cp of the system.
+    auto systemHeatCapacityConstP() const -> double;
 
 private:
     struct Impl;
