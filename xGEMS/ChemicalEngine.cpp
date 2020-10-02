@@ -84,7 +84,7 @@ struct ChemicalEngine::Impl
     /// Specific enthalpies of the phases.
     Vector phSpecificEnthalpies;         // (in units of J/kg)
     Vector phSpecificEntropies;          // J/K/kg
-    Vector phSpecificHeatCapacities;     // J/K/kg
+    Vector phSpecificHeatCapacitiesConstP;     // J/K/kg
 
     /// Densities of the phases (in units of kg/m3).
     Vector phDensities;
@@ -612,7 +612,7 @@ auto ChemicalEngine::standardMolarEnthalpies() const -> VectorConstRef
     for(Index i = 0; i < numSpecies(); ++i)
     {
         auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarEnthalpies[i] = pimpl->node->DC_H0(idc, P, TK,  false);
+        pimpl->stMolarEnthalpies[i] = pimpl->node->DC_H0(idc, P, TK);
     }    
     return pimpl->stMolarEnthalpies;
 }
@@ -625,7 +625,7 @@ auto ChemicalEngine::standardMolarVolumes() const -> VectorConstRef
     for(Index i = 0; i < numSpecies(); ++i)
     {
         auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarVolumes[i] = pimpl->node->DC_V0(idc, P, TK,  false);
+        pimpl->stMolarVolumes[i] = pimpl->node->DC_V0(idc, P, TK);
     }    
     return pimpl->stMolarVolumes;
 }
@@ -638,7 +638,7 @@ auto ChemicalEngine::standardMolarEntropies() const -> VectorConstRef
     for(Index i = 0; i < numSpecies(); ++i)
     {
         auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarEntropies[i] = pimpl->node->DC_S0(idc, P, TK,  false);
+        pimpl->stMolarEntropies[i] = pimpl->node->DC_S0(idc, P, TK);
     }    
     return pimpl->stMolarEntropies;
 }
@@ -663,7 +663,7 @@ auto ChemicalEngine::standardMolarHeatCapacitiesConstP() const -> VectorConstRef
     for(Index i = 0; i < numSpecies(); ++i)
     {
         auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarHeatCapacitiesConstP[i] = pimpl->node->DC_Cp0(idc, P, TK,  false);
+        pimpl->stMolarHeatCapacitiesConstP[i] = pimpl->node->DC_Cp0(idc, P, TK);
     }    
     return pimpl->stMolarHeatCapacitiesConstP;
 }
@@ -830,7 +830,7 @@ auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
 {
     for(Index i = 0; i < numPhases(); ++i)
         pimpl->phSatIndices[i] = pimpl->node->Ph_SatInd(i); 
-    return pimpl->phSatIndex;
+    return pimpl->phSatIndices;
 }
 
 auto ChemicalEngine::systemVolume() const -> double

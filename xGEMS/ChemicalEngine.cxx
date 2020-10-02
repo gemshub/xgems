@@ -131,7 +131,7 @@ void exportChemicalEngine(py::module& m)
         .def("systemGibbsEnergy", &ChemicalEngine::systemGibbsEnergy)
         .def("systemEnthalpy", &ChemicalEngine::systemEnthalpy)
         .def("systemEntropy", &ChemicalEngine::systemEntropy)
-        .def("systemHeatCapacityConstC", &ChemicalEngine::systemHeatCapacityConstC)
+        .def("systemHeatCapacityConstP", &ChemicalEngine::systemHeatCapacityConstP)
         .def("__repr__", [](const ChemicalEngine& self) { std::stringstream ss; ss << self; return ss.str(); })
         ;
 }

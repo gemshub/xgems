@@ -64,16 +64,19 @@ if(NOT CMAKE_BUILD_TYPE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-add_compile_options(-std=c++11)
+# add_compile_options(-std=c++11)
+add_compile_options(-std=c++17)
 
 # Set the list of compiler flags for GNU compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    add_compile_options(-std=c++11 -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
+#   add_compile_options(-std=c++11 -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
+    add_compile_options(-std=c++17 -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Set the list of compiler flags for Clang compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options(-std=c++11 -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
+   add_compile_options(-std=c++17 -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
+#  add_compile_options(-std=c++11 -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Set the list of compiler flags for Intel compiler
@@ -151,7 +154,8 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     PREFIX build
 #    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
     GIT_REPOSITORY https://bitbucket.org/gems4/gems3k.git
-    GIT_TAG trunk
+    GIT_TAG fix_warnings
+#    GIT_TAG trunk
 #    GIT_SHALLOW TRUE
     SOURCE_DIR build/src/gems3k
     BINARY_DIR build/src/gems3k-build
