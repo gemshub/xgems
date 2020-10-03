@@ -99,9 +99,17 @@ public:
     /// @param Index The index of the species.
     auto indexSpecies(std::string species) const -> Index;
 
+    /// Return the vector of all indices of a @param species name, number of species found is VectorXi.size().
+    /// @param VectorXi contains all indices of the species found in the species name list in this system.
+    auto indexSpeciesAll(std::string species) const -> VectorXiConstRef;
+
     /// Return the index of a @param phase name, or number of phases, if not found.
     /// @param Index The index of the phase.
     auto indexPhase(std::string phase) const -> Index;
+
+    /// Return the vector of all indices of a @param phase name, number of indices found is VectorXi.size().
+    /// @param VectorXi contains all indices of the phases found in the phase name list in this system.
+    auto indexPhaseAll(std::string phase) const -> VectorXiConstRef;
 
     /// Return the index of the phase containing a @param species name (ambiguous).
     /// @param Index The index of the species.
@@ -146,6 +154,7 @@ public:
     /// Set the species @param name @param amount upper bound in dul vector
     /// if amount < 0 then resets to default 1e6
     auto setSpeciesUpperLimit(std::string name, double amount) -> void;
+
     /// Set the species @param name @param amount lower bound in dll vector
     /// if @param amount < 0 then resets to default 0
     auto setSpeciesLowerLimit(std::string name, double amount) -> void;
@@ -184,24 +193,23 @@ public:
 
     /// Return the amounts of the elements in a phase.
     /// @param iphase The index of the phase.
-    auto elementAmountsInPhase(Index iphase) const -> Vector;
+    auto elementAmountsInPhase(Index iphase) const -> VectorConstRef;
 
     /// Return the amounts of the elements in a group of species.
     /// @param ispecies The vector of indices of the species.
-    auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector;
+    auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> VectorConstRef;
 
     /// Return the amounts of the species (in units of mol)
     auto speciesAmounts() const -> VectorConstRef;
 
-    /// Return the amount of the species with index ispecies (in units of mol)
+    /// Return the amount of the species with index @param ispecies (in units of mol)
     auto speciesAmount(Index ispecies) const -> double;
 
-    /// Return the amount of the species with index ispecies (in units of mol)
+    /// Return the amount of the species with name @param name (in units of mol)
     auto speciesAmount(std::string name) const -> double;
 
-    /// Return the molalities of the species.
-    /// Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
-    /// is the last species in it)
+    /// Return the molalities of the species. Aquatic systems only (assuming 
+    /// the aqueous phase is the first one and H2O-solvent is the last species in it)
     auto speciesMolalities() const -> VectorConstRef;
 
     /// Return the mole fractions of the species.
@@ -213,110 +221,131 @@ public:
     /// Return the ln activities of the species.
     auto lnActivities() const -> VectorConstRef;
 
-    /// Return the ln of concentrations of the species in theri respective phases.
+    /// Return the ln of concentrations of the species in their respective phases.
     auto lnConcentrations() const -> VectorConstRef;
 
-    /// Return the chemical potentials of the species (in units of J/mol).
+    /// Return the chemical potentials of species (in units of J/mol).
     auto chemicalPotentials() const -> VectorConstRef;
 
-    /// Return the standard  molar Gibbs energies of the species (in units of J/mol).
-    auto standardMolarGibbsEnergies() const -> VectorConstRef;
+    /// Return the standard  molar Gibbs energy of the species (in units of J/mol).
+    auto standardMolarGibbsEnergy(Index ispecies) const -> double;
 
-    /// Return the standard  molar enthalpies of the species (in units of J/mol).
-    auto standardMolarEnthalpies() const -> VectorConstRef;
+    /// Return the standard  molar enthalpy of the species (in units of J/mol).
+    auto standardMolarEnthalpy(Index ispecies) const -> double;
 
-    /// Return the standard  molar volumes of the species (in units of m3/mol).
-    auto standardMolarVolumes() const -> VectorConstRef;
+    /// Return the standard  molar volume of the species (in units of m3/mol).
+    auto standardMolarVolume(Index ispecies) const -> double;
     
     /// Return the standard  molar entropies of the species (in units of J/(mol*K)).
-    auto standardMolarEntropies() const -> VectorConstRef;
+    auto standardMolarEntropy(Index ispecies) const -> double;
 
     /// TBD Return the standard  molar internal energies of the species (in units of J/mol).
-    auto standardMolarInternalEnergies() const -> VectorConstRef;
+    // auto standardMolarInternalEnergy(Index ispecies) const -> double;
 
     /// TBD Return the standard  molar Helmholtz energies of the species (in units of J/mol).
-    auto standardMolarHelmholtzEnergies() const -> VectorConstRef;
+    // auto standardMolarHelmholtzEnergy(Index ispecies) const -> double;
 
     /// Return the standard  molar isobaric heat capacities of the species (in units of J/(mol*K)).
-    auto standardMolarHeatCapacitiesConstP() const -> VectorConstRef;
+    auto standardMolarHeatCapacityConstP(Index ispecies) const -> double;
 
     /// TBD Return the standard  molar isochoric heat capacities of the species (in units of J/(mol*K)).
-    auto standardMolarHeatCapacitiesConstV() const -> VectorConstRef;
+    // auto standardMolarHeatCapacityConstV(Index ispecies) const -> double;
 
     /// Return the molar Gibbs energies of the phases (in units of J/mol).
-    auto phaseMolarGibbsEnergies() const -> VectorConstRef;
+    auto phaseMolarGibbsEnergy(Index iphase) const -> double;
 
-    /// Return the molar enthalpies of the phases (in units of J/mol).
-    auto phaseMolarEnthalpies() const -> VectorConstRef;
+    /// Return the molar enthalpie of the phase @param iphase (in units of J/mol).
+    auto phaseMolarEnthalpy(Index iphase) const -> double;
 
-    /// Return the molar volumes of the phases (in units of m3/mol).
-    auto phaseMolarVolumes() const -> VectorConstRef;
+    /// Return the molar volume of the phase @param iphase (in units of m3/mol).
+    auto phaseMolarVolume(Index iphase) const -> double;
 
-    /// Return the molar entropies of the phases (in units of J/(mol*K)).
-    auto phaseMolarEntropies() const -> VectorConstRef;
+    /// Return the molar entropy of the phase @param iphase (in units of J/(mol*K)).
+    auto phaseMolarEntropy(Index iphase) const -> double;
 
     /// TBD Return the molar internal energies of the phases (in units of J/mol).
-    auto phaseMolarInternalEnergies() const -> VectorConstRef;
+    // auto phaseMolarInternalEnergy(Index iphase) const -> double;
 
     /// TBD Return the molar Helmholtz energies of the phases (in units of J/mol).
-    auto phaseMolarHelmholtzEnergies() const -> VectorConstRef;
+    // auto phaseMolarHelmholtzEnergy(Index iphase) const -> double;
 
-    /// Return the molar isobaric heat capacities of the phases (in units of J/(mol*K)).
-    auto phaseMolarHeatCapacitiesConstP() const -> VectorConstRef;
+    /// Return the molar isobaric heat capacity of phase @param iphase (in units of J/(mol*K)).
+    auto phaseMolarHeatCapacityConstP(Index iphase) const -> double;
 
     /// TBD Return the molar isochoric heat capacities of the phases (in units of J/(mol*K)).
-    auto phaseMolarHeatCapacitiesConstV() const -> VectorConstRef;
+    // auto phaseMolarHeatCapacityConstV(Index ispecies) const -> double;
 
-    /// Return the specific Gibbs energies of the phases (in units of J/kg).
-    auto phaseSpecificGibbsEnergies() const -> VectorConstRef;
+    /// Return the specific Gibbs energy of the phase @param iphase (in units of J/kg).
+    auto phaseSpecificGibbsEnergy(Index iphase) const -> double;
 
-    /// Return the specific enthalpies of the phases (in units of J/kg).
-    auto phaseSpecificEnthalpies() const -> VectorConstRef;
+    /// Return the specific enthalpy of the phase @param iphase (in units of J/kg).
+    auto phaseSpecificEnthalpy(Index iphase) const -> double;
 
-    /// Return the specific volumes of the phases (in units of m3/kg).
-    auto phaseSpecificVolumes() const -> VectorConstRef;
+    /// Return the specific volume of the phase @param iphase (in units of m3/kg).
+    auto phaseSpecificVolume(Index iphase) const -> double;
 
-    /// Return the specific entropies of the phases (in units of J/(kg*K)).
-    auto phaseSpecificEntropies() const -> VectorConstRef;
+    /// Return the specific entropy of the phase @param iphase (in units of J/(kg*K)).
+    auto phaseSpecificEntropy(Index iphase) const -> double;
 
     /// TBD Return the specific internal energies of the phases (in units of J/kg).
-    auto phaseSpecificInternalEnergies() const -> VectorConstRef;
+    // auto phaseSpecificInternalEnergy(Index iphase) const -> double;
 
     /// TBD Return the specific Helmholtz energies of the phases (in units of J/kg).
-    auto phaseSpecificHelmholtzEnergies() const -> VectorConstRef;
+    // auto phaseSpecificHelmholtzEnergy(Index iphase) const -> double;
 
-    /// Return the specific isobaric heat capacities of the phases (in units of J/(kg*K)).
-    auto phaseSpecificHeatCapacitiesConstP() const -> VectorConstRef;
+    /// Return the specific isobaric heat capacity of phase @param iphase (in units of J/(kg*K)).
+    auto phaseSpecificHeatCapacityConstP(Index iphase) const -> double;
 
     /// TBD Return the specific isochoric heat capacities of the phases (in units of J/(kg*K)).
-    auto phaseSpecificHeatCapacitiesConstV() const -> VectorConstRef;
+    // auto phaseSpecificHeatCapacityConstV(Index iphase) const -> double;
 
     /// Return the densities of the phases (in units of kg/m3).
     auto phaseDensities() const -> VectorConstRef;
 
+     /// Return the density of the phase @param iphase (in units of kg/m3).
+    auto phaseDensity(Index iphase) const -> double;
+
     /// Return the masses of the phases (in units of kg).
     auto phaseMasses() const -> VectorConstRef;
-
+ 
+    /// Return the mass of the phase @param iphase (in units of kg).
+    auto phaseMass(Index iphase) const -> double;
+    
     /// Return the molar amounts of the phases (in units of mol).
     auto phaseAmounts() const -> VectorConstRef;
 
+    /// Return the molar amount of the phase @param iphase (in units of mol).
+    auto phaseAmount(Index iphase) const -> double;
+
     /// Return the volumes of the phases (in units of m3).
     auto phaseVolumes() const -> VectorConstRef;
-    
+  
+    /// Return the volume of the phase @param iphase (in units of m3).
+    auto phaseVolume(Index iphase) const -> double;  
+
     /// Return the enthalpies of the phases (in units of J).
     auto phaseEnthalpies() const -> VectorConstRef;
-
-    /// Return the mass of the phase i (in units of kg).
-    auto phaseMass(Index iphase) const -> double;
-
-    /// Return the volumes of the phase i (in units of m3).
-    auto phaseVolume(Index iphase) const -> double;
     
-    /// Returns the enthalpy of the phase i (in units of J).
+    /// Returns the enthalpy of the phase @param iphase (in units of J).
     auto phaseEnthalpy(Index iphase) const -> double;
+
+    /// Return the entropies of the phases (in units of J/K).
+    auto phaseEntropies() const -> VectorConstRef;
+    
+    /// Returns the entropy of the phase @param iphase (in units of J/K).
+    auto phaseEntropy(Index iphase) const -> double;
+
+    /// Return the heat capacities Cp of the phases (in units of J/k).
+    auto phaseHeatCapacitiesConstP() const -> VectorConstRef;
+    
+    /// Returns the heat capacity Cp of the phase @param iphase (in units of J/K).
+    auto phaseHeatCapacityConstP(Index iphase) const -> double;
 
     /// Return the saturation (stability) indices  of the phases (in log10 units).
     auto phaseSatIndices() const -> VectorConstRef;
+       
+    /// Returns saturation (stability) index (in log10 units) of phase @param iphase.
+    auto phaseSatIndex(Index iphase) const -> double;
 
     /// Return the mass of the system (in units of kg).
     auto systemMass() const -> double;

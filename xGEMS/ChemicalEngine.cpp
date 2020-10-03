@@ -72,19 +72,18 @@ struct ChemicalEngine::Impl
     Vector chemPotentials;
 
     /// Standard thermodynamic properties of species at T,P of the node
-    Vector stMolarGibbsEnergies;            // in J/mol
-    Vector stMolarEnthalpies;               // in J/mol
-    Vector stMolarEntropies;                // in J/K/mol
-    Vector stMolarHeatCapacitiesConstP;     // in J/K/mol
-    Vector stMolarVolumes;                  // in m3/mol
+    // Vector stMolarGibbsEnergies;            // in J/mol
+    // Vector stMolarEnthalpies;               // in J/mol
+    // Vector stMolarEntropies;                // in J/K/mol
+    // Vector stMolarHeatCapacitiesConstP;     // in J/K/mol
+    // Vector stMolarVolumes;                  // in m3/mol
 
-    /// molar volumes of the phases (in units of m3/mol).
-    Vector phMolarVolumes;
-
-    /// Specific enthalpies of the phases.
-    Vector phSpecificEnthalpies;         // (in units of J/kg)
-    Vector phSpecificEntropies;          // J/K/kg
-    Vector phSpecificHeatCapacitiesConstP;     // J/K/kg
+    /// molar properties of the phases .
+    // Vector phMolarVolumes;             // (in units of m3/mol)
+    // Vector phMolarGibbsEnergies;       // (in units of J/mol)
+    // Vector phMolarEnthalpies;          // (in units of J/mol)
+    // Vector phMolarEntropies;             // J/K/mol
+    Vector phMolarHeatCapacitiesConstP;  // J/K/mol
 
     /// Densities of the phases (in units of kg/m3).
     Vector phDensities;
@@ -94,6 +93,12 @@ struct ChemicalEngine::Impl
     
     /// Enthalpies of the phases (in units of J).
     Vector phEnthalpies;
+
+     /// Entropies of the phases (in units of J/K).
+    Vector phEntropies;
+
+    /// Entropies of the phases (in units of J/K).
+    Vector phHeatCapacitiesConstP;
 
     /// Mole amounts of the phases (in units of mol).
     Vector phAmounts;
@@ -161,24 +166,23 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->chemPotentials.resize(N);
     pimpl->molFractions.resize(N);
     pimpl->molalities.resize(N);
-    pimpl->phMolarVolumes.resize(P);
-    pimpl->phSpecificEnthalpies.resize(P);
+    // pimpl->phMolarVolumes.resize(P);
+    // pimpl->phMolarEnthalpies.resize(P);
+    // pimpl->phMolarEntropies.resize(P);
+    pimpl->phMolarHeatCapacitiesConstP.resize(P);
     pimpl->phDensities.resize(P);
     pimpl->phVolumes.resize(P);
     pimpl->phEnthalpies.resize(P);
+    pimpl->phEntropies.resize(P);
+    pimpl->phHeatCapacitiesConstP.resize(P);
     pimpl->phAmounts.resize(P);
     pimpl->phMasses.resize(P);
     pimpl->phSatIndices.resize(P);
-    // Added for extraction of thermodynamic properties on Oct.1, 2020
-    pimpl->stMolarGibbsEnergies.resize(N);            // in J/mol
-    pimpl->stMolarEnthalpies.resize(N);               // in J/mol
-    pimpl->stMolarEntropies.resize(N);                // in J/K/mol
-    pimpl->stMolarHeatCapacitiesConstP.resize(N);     // in J/K/mol
-    pimpl->stMolarVolumes.resize(N);                  // in m3/mol
-
-    pimpl->phSpecificEntropies.resize(P);
-    pimpl->phSpecificHeatCapacitiesConstP.resize(P);
-
+    // pimpl->stMolarGibbsEnergies.resize(N);            // in J/mol
+    // pimpl->stMolarEnthalpies.resize(N);               // in J/mol
+    // pimpl->stMolarEntropies.resize(N);                // in J/K/mol
+    // pimpl->stMolarHeatCapacitiesConstP.resize(N);     // in J/K/mol
+    // pimpl->stMolarVolumes.resize(N);                  // in m3/mol
 }
 
 auto ChemicalEngine::readDbrFile(std::string filename) -> void
@@ -300,6 +304,26 @@ auto ChemicalEngine::indexSpecies(std::string species) const -> Index
     return size; // in case that species name was not found 
 }
 
+auto ChemicalEngine::indexSpeciesAll(std::string species) const -> VectorXiConstRef
+{
+    std::vector<Index> occur;
+    occur.resize(0);
+    const Index size = numSpecies();
+    for(Index i = 0; i < size; ++i)
+        if(speciesName(i) == species)
+            occur.push_back(i);
+    Index n_species_found = occur.size();
+    VectorXi result;
+    result.resize(0);
+    if(n_species_found > 0)        
+    {
+        result.resize(n_species_found);
+        for(Index is=0; is<n_species_found; is++)
+            result(is) = occur.at(is);
+    }
+    return result;
+}
+
 // Index of phase searched by name
 auto ChemicalEngine::indexPhase(std::string phase) const -> Index
 {
@@ -308,6 +332,26 @@ auto ChemicalEngine::indexPhase(std::string phase) const -> Index
         if(phaseName(i) == phase)
             return i;
     return size; // in case that phase name was not found 
+}
+
+auto ChemicalEngine::indexPhaseAll(std::string phase) const -> VectorXiConstRef
+{
+    std::vector<Index> occur;
+    occur.resize(0);
+    const Index size = numPhases();
+    for(Index i = 0; i < size; ++i)
+        if(phaseName(i) == phase)
+            occur.push_back(i);
+    Index n_phases_found = occur.size();
+    VectorXi result;
+    result.resize(0);
+    if(n_phases_found > 0)        
+    {
+        result.resize(n_phases_found);
+        for(Index is=0; is<n_phases_found; is++)
+            result(is) = occur.at(is);
+    }
+    return result;
 }
 
 auto ChemicalEngine::indexPhaseWithSpecies(Index ispecies) const -> Index
@@ -477,7 +521,7 @@ auto ChemicalEngine::elementAmounts() const -> VectorConstRef
     return Vector::Map(pimpl->node->pCNode()->bIC, numElements());
 }
 
-auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> Vector
+auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> VectorConstRef
 {
     MatrixConstRef W = formulaMatrix();
     VectorConstRef n = speciesAmounts();
@@ -489,7 +533,7 @@ auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> Vector
     return res;
 }
 
-auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector
+auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> VectorConstRef
 {
     MatrixConstRef W = formulaMatrix();
     VectorConstRef n = speciesAmounts();
@@ -592,184 +636,212 @@ auto ChemicalEngine::chemicalPotentials() const -> VectorConstRef
 }
 
 // Implemented on Oct 1, 2020
-auto ChemicalEngine::standardMolarGibbsEnergies() const -> VectorConstRef
+// auto ChemicalEngine::standardMolarGibbsEnergies() const -> VectorConstRef
+// {
+//     double TK = pimpl->node->cTK();
+//     double P = pimpl->node->cP();
+//     for(Index i = 0; i < numSpecies(); ++i)
+//     {
+//         auto idc = pimpl->node->DC_xDB_to_xCH( i );
+//         pimpl->stMolarGibbsEnergies[i] = pimpl->node->DC_G0(idc, P, TK,  false);
+//     }    
+//     return pimpl->stMolarGibbsEnergies;
+// }
+
+// Uses curent node TK and P
+auto ChemicalEngine::standardMolarGibbsEnergy(Index ispecies) const -> double
 {
     double TK = pimpl->node->cTK();
     double P = pimpl->node->cP();
-    for(Index i = 0; i < numSpecies(); ++i)
-    {
-        auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarGibbsEnergies[i] = pimpl->node->DC_G0(idc, P, TK,  false);
-    }    
-    return pimpl->stMolarGibbsEnergies;
+    auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+    auto stMolarG = pimpl->node->DC_G0(idc, P, TK,  false);  
+    return stMolarG;
 }
 
 // Implemented on Oct 1, 2020
-auto ChemicalEngine::standardMolarEnthalpies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarEnthalpy(Index ispecies) const -> double
 {
     double TK = pimpl->node->cTK();
     double P = pimpl->node->cP();
-    for(Index i = 0; i < numSpecies(); ++i)
-    {
-        auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarEnthalpies[i] = pimpl->node->DC_H0(idc, P, TK);
-    }    
-    return pimpl->stMolarEnthalpies;
+    auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+    auto stMolarH = pimpl->node->DC_H0(idc, P, TK);   
+    return stMolarH;
 }
 
 // Implemented on Oct 1, 2020
-auto ChemicalEngine::standardMolarVolumes() const -> VectorConstRef
+auto ChemicalEngine::standardMolarVolume(Index ispecies) const -> double
 {
     double TK = pimpl->node->cTK();
     double P = pimpl->node->cP();
-    for(Index i = 0; i < numSpecies(); ++i)
-    {
-        auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarVolumes[i] = pimpl->node->DC_V0(idc, P, TK);
-    }    
-    return pimpl->stMolarVolumes;
+    auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+    auto stMolarV = pimpl->node->DC_V0(idc, P, TK);   
+    return stMolarV;
 }
 
 // Implemented on Oct 1, 2020
-auto ChemicalEngine::standardMolarEntropies() const -> VectorConstRef
+auto ChemicalEngine::standardMolarEntropy(Index ispecies) const -> double
 {
     double TK = pimpl->node->cTK();
     double P = pimpl->node->cP();
-    for(Index i = 0; i < numSpecies(); ++i)
-    {
-        auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarEntropies[i] = pimpl->node->DC_S0(idc, P, TK);
-    }    
-    return pimpl->stMolarEntropies;
+    auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+    auto stMolarS = pimpl->node->DC_S0(idc, P, TK); 
+    return stMolarS;
 }
 
 // TBD
-auto ChemicalEngine::standardMolarInternalEnergies() const -> VectorConstRef
-{
-    return Vector{};
-}
+// auto ChemicalEngine::standardMolarInternalEnergy(Index ispecies) const -> double
+// {
+//     double TK = pimpl->node->cTK();
+//     double P = pimpl->node->cP();
+//     auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+//     auto stMolarU = pimpl->node->DC_U0(idc, P, TK); 
+//     return stMolarU;
+// }
 
 // TBD
-auto ChemicalEngine::standardMolarHelmholtzEnergies() const -> VectorConstRef
-{
-    return Vector{};
-}
+// auto ChemicalEngine::standardMolarHelmholtzEnergy(Index ispecies) const -> double
+// {
+//     double TK = pimpl->node->cTK();
+//     double P = pimpl->node->cP();
+//     auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+//     auto stMolarA = pimpl->node->DC_A0(idc, P, TK); 
+//     return stMolarA;
+// }
 
 // Implemented on Oct 1, 2020
-auto ChemicalEngine::standardMolarHeatCapacitiesConstP() const -> VectorConstRef
+auto ChemicalEngine::standardMolarHeatCapacityConstP(Index ispecies) const -> double
 {
     double TK = pimpl->node->cTK();
     double P = pimpl->node->cP();
-    for(Index i = 0; i < numSpecies(); ++i)
-    {
-        auto idc = pimpl->node->DC_xDB_to_xCH( i );
-        pimpl->stMolarHeatCapacitiesConstP[i] = pimpl->node->DC_Cp0(idc, P, TK);
-    }    
-    return pimpl->stMolarHeatCapacitiesConstP;
+    auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+    auto stMolarCp = pimpl->node->DC_Cp0(idc, P, TK); 
+    return stMolarCp;
 }
 
 // TBD
-auto ChemicalEngine::standardMolarHeatCapacitiesConstV() const -> VectorConstRef
+// auto ChemicalEngine::standardMolarHeatCapacityConstV(Index ispecies) const -> double
+// {
+//     double TK = pimpl->node->cTK();
+//     double P = pimpl->node->cP();
+//     auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+//     auto stMolarCv = pimpl->node->DC_Cp0(idc, P, TK) - R_CONSTANT; 
+//     return stMolarCv;
+// }
+
+auto ChemicalEngine::phaseMolarGibbsEnergy(Index iphase) const -> double
 {
-    return Vector{};
+    double phMolarGibbsEnergy = 0.0;
+    if( pimpl->node->Ph_Mole(iphase) > 1e-15 )
+        phMolarGibbsEnergy = pimpl->node->Ph_GibbsEnergy(iphase)/pimpl->node->Ph_Mole(iphase);
+    return phMolarGibbsEnergy;
 }
 
-auto ChemicalEngine::phaseMolarGibbsEnergies() const -> VectorConstRef
+auto ChemicalEngine::phaseMolarEnthalpy(Index iphase) const -> double
 {
-    return Vector{};
+    double phMolarEnthalpy = 0.0;
+    if( pimpl->node->Ph_Mole(iphase) > 1e-15 )
+        phMolarEnthalpy = pimpl->node->Ph_Enthalpy(iphase)/pimpl->node->Ph_Mole(iphase);
+    return phMolarEnthalpy;
 }
 
-auto ChemicalEngine::phaseMolarEnthalpies() const -> VectorConstRef
+auto ChemicalEngine::phaseMolarVolume(Index iphase) const -> double
 {
-    return Vector{};
+     double phMolarVolume = 0.0;
+    if( pimpl->node->Ph_Mole(iphase) > 1e-15 )
+        phMolarVolume = pimpl->node->Ph_Volume(iphase)/pimpl->node->Ph_Mole(iphase);
+    return phMolarVolume;
 }
 
-auto ChemicalEngine::phaseMolarVolumes() const -> VectorConstRef
+auto ChemicalEngine::phaseMolarEntropy(Index iphase) const -> double
 {
-    for(Index i = 0; i < numPhases(); ++i)
-    {
-        pimpl->phMolarVolumes[i] = 0.0;
-        if( pimpl->node->Ph_Mole(i) > 1e-15 )
-            pimpl->phMolarVolumes[i] = pimpl->node->Ph_Volume(i)/pimpl->node->Ph_Mole(i);
-    }
-    return pimpl->phMolarVolumes;
-}
-
-auto ChemicalEngine::phaseMolarEntropies() const -> VectorConstRef
-{
-    return Vector{};
-}
-
-// TBD
-auto ChemicalEngine::phaseMolarInternalEnergies() const -> VectorConstRef
-{
-    return Vector{};
-}
-
-// TBD
-auto ChemicalEngine::phaseMolarHelmholtzEnergies() const -> VectorConstRef
-{
-    return Vector{};
-}
-
-auto ChemicalEngine::phaseMolarHeatCapacitiesConstP() const -> VectorConstRef
-{
-    return Vector{};
+    double phMolarEntropy = 0.0;
+    if( pimpl->node->Ph_Mole(iphase) > 1e-15 )
+        phMolarEntropy = pimpl->node->Ph_Entropy(iphase)/pimpl->node->Ph_Mole(iphase);
+    return phMolarEntropy;
 }
 
 // TBD
-auto ChemicalEngine::phaseMolarHeatCapacitiesConstV() const -> VectorConstRef
-{
-    return Vector{};
-}
+// auto ChemicalEngine::phaseMolarInternalEnergy(Index iphase) const -> double
+// {
+//     return 0.0;
+// }
 
-auto ChemicalEngine::phaseSpecificGibbsEnergies() const -> VectorConstRef
-{
-    return Vector{};
-}
+// TBD
+// auto ChemicalEngine::phaseMolarHelmholtzEnergy(Index iphase) const -> double
+// {
+//     return 0.0;
+// }
 
-auto ChemicalEngine::phaseSpecificEnthalpies() const -> VectorConstRef
+auto ChemicalEngine::phaseMolarHeatCapacityConstP(Index iphase) const -> double
 {
-    for(Index i = 0; i < numPhases(); ++i)
-    {
-        pimpl->phSpecificEnthalpies[i] = 0.0;
-        if( pimpl->node->Ph_Mass(i) > 1e-14 )
-            pimpl->phSpecificEnthalpies[i] = pimpl->node->Ph_Enthalpy(i)/pimpl->node->Ph_Mass(i);
-    }
-    return pimpl->phSpecificEnthalpies;  // in J/kg
-}
-
-auto ChemicalEngine::phaseSpecificVolumes() const -> VectorConstRef
-{
-    return Vector{};
-}
-
-auto ChemicalEngine::phaseSpecificEntropies() const -> VectorConstRef
-{
-    return Vector{};
+     double phMolarCp = 0.0;
+    if( pimpl->node->Ph_Mole(iphase) > 1e-15 )
+        phMolarCp = pimpl->node->Ph_HeatCapacityCp(iphase)/pimpl->node->Ph_Mole(iphase);
+    return phMolarCp;
 }
 
 // TBD
-auto ChemicalEngine::phaseSpecificInternalEnergies() const -> VectorConstRef
+// auto ChemicalEngine::phaseMolarHeatCapacityConstV(Index iphase) const -> double
+// {
+//     return 0.0;
+// }
+
+auto ChemicalEngine::phaseSpecificGibbsEnergy(Index iphase) const -> double
 {
-    return Vector{};
+     double phSpecGibbsEnergy = 0.0;
+    if( pimpl->node->Ph_Mass(iphase) > 1e-15 )
+        phSpecGibbsEnergy = pimpl->node->Ph_GibbsEnergy(iphase)/pimpl->node->Ph_Mass(iphase);
+    return phSpecGibbsEnergy;
+}
+
+auto ChemicalEngine::phaseSpecificEnthalpy(Index iphase) const -> double
+{
+    double phSpecEnthalpy = 0.0;
+    if( pimpl->node->Ph_Mass(iphase) > 1e-15 )
+        phSpecEnthalpy = pimpl->node->Ph_Enthalpy(iphase)/pimpl->node->Ph_Mass(iphase);
+    return phSpecEnthalpy;
+}
+
+auto ChemicalEngine::phaseSpecificVolume(Index iphase) const -> double
+{
+     double phSpecVolume = 0.0;
+    if( pimpl->node->Ph_Mass(iphase) > 1e-15 )
+        phSpecVolume = pimpl->node->Ph_Volume(iphase)/pimpl->node->Ph_Mass(iphase);
+    return phSpecVolume;
+}
+
+auto ChemicalEngine::phaseSpecificEntropy(Index iphase) const -> double
+{
+    double phSpecEntropy = 0.0;
+    if( pimpl->node->Ph_Mass(iphase) > 1e-15 )
+        phSpecEntropy = pimpl->node->Ph_Entropy(iphase)/pimpl->node->Ph_Mass(iphase);
+    return phSpecEntropy;
 }
 
 // TBD
-auto ChemicalEngine::phaseSpecificHelmholtzEnergies() const -> VectorConstRef
+// auto ChemicalEngine::phaseSpecificInternalEnergy(Index iphase) const -> double
+// {
+//     return 0.0;
+// }
+
+// TBD
+// auto ChemicalEngine::phaseSpecificHelmholtzEnergy(Index iphase) const -> double
+// {
+//     return 0.0;
+// }
+
+auto ChemicalEngine::phaseSpecificHeatCapacityConstP(Index iphase) const -> double
 {
-    return Vector{};
+    double phSpecCp = 0.0;
+    if( pimpl->node->Ph_Mass(iphase) > 1e-15 )
+        phSpecCp = pimpl->node->Ph_HeatCapacityCp(iphase)/pimpl->node->Ph_Mass(iphase);
+    return phSpecCp;
 }
 
-auto ChemicalEngine::phaseSpecificHeatCapacitiesConstP() const -> VectorConstRef
-{
-    return Vector{};
-}
-
-auto ChemicalEngine::phaseSpecificHeatCapacitiesConstV() const -> VectorConstRef
-{
-    return Vector{};
-}
+// auto ChemicalEngine::phaseSpecificHeatCapacityConstV(Index iphase) const -> double
+// {
+//     return 0.0;
+// }
 
 auto ChemicalEngine::phaseDensities() const -> VectorConstRef
 {
@@ -793,7 +865,7 @@ auto ChemicalEngine::phaseMasses() const -> VectorConstRef
 auto ChemicalEngine::phaseAmounts() const -> VectorConstRef
 {
     for(Index i = 0; i < numPhases(); ++i)
-        pimpl->phAmounts[i] = pimpl->node->Ph_Mole(i);
+        pimpl->phAmounts[i] = pimpl->node->Ph_Moles(i);
     return pimpl->phAmounts;
 }
 
@@ -811,9 +883,35 @@ auto ChemicalEngine::phaseEnthalpies() const -> VectorConstRef
     return pimpl->phEnthalpies;
 }
 
+auto ChemicalEngine::phaseEntropies() const -> VectorConstRef
+{
+    for(Index i = 0; i < numPhases(); ++i)
+        pimpl->phEntropies[i] = pimpl->node->Ph_Entropy(i);
+    return pimpl->phEntropies;
+}
+
+auto ChemicalEngine::phaseHeatCapacitiesConstP() const -> VectorConstRef
+{
+    for(Index i = 0; i < numPhases(); ++i)
+        pimpl->phHeatCapacitiesConstP[i] = pimpl->node->Ph_HeatCapacityCp(i);
+    return pimpl->phHeatCapacitiesConstP;
+}
+
+auto ChemicalEngine::phaseDensity(Index iphase) const -> double
+{
+    if(pimpl->node->Ph_Volume(iphase) > 1e-15)
+        return pimpl->node->Ph_Mass(iphase)/pimpl->node->Ph_Volume(iphase);
+    else return 0.0;    
+}
+
 auto ChemicalEngine::phaseMass(Index iphase) const -> double
 {
     return pimpl->node->Ph_Mass(iphase);
+}
+
+auto ChemicalEngine::phaseAmount(Index iphase) const -> double
+{
+    return pimpl->node->Ph_Moles(iphase);
 }
 
 auto ChemicalEngine::phaseVolume(Index iphase) const -> double
@@ -826,11 +924,26 @@ auto ChemicalEngine::phaseEnthalpy(Index iphase) const -> double
     return pimpl->node->Ph_Enthalpy(iphase);
 }
 
+auto ChemicalEngine::phaseEntropy(Index iphase) const -> double
+{
+    return pimpl->node->Ph_Entropy(iphase);
+}
+
+auto ChemicalEngine::phaseHeatCapacityConstP(Index iphase) const -> double
+{
+    return pimpl->node->Ph_HeatCapacityCp(iphase);
+}
+
 auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
 {
     for(Index i = 0; i < numPhases(); ++i)
         pimpl->phSatIndices[i] = pimpl->node->Ph_SatInd(i); 
     return pimpl->phSatIndices;
+}
+
+auto ChemicalEngine::phaseSatIndex(Index iphase) const -> double
+{
+    return pimpl->node->Ph_SatInd(iphase);
 }
 
 auto ChemicalEngine::systemVolume() const -> double
