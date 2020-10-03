@@ -90,7 +90,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 endif()
 
 # Find Eigen library and include its directory
-#find_package(Eigen3 3.2 REQUIRED)
+find_package(Eigen3 3.3.7 REQUIRED)
 
 # Find the Python interpreter
 if(XGEMS_BUILD_PYTHON)
@@ -162,20 +162,20 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     STAMP_DIR build/src/gems3k-stamp
     CMAKE_ARGS ${GEMS3K_CMAKE_ARGS})
 
-set(EIGEN_CMAKE_ARGS
+ set(EIGEN_CMAKE_ARGS
     -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
     -DCMAKE_INSTALL_PREFIX=${THIRDPARTY_INSTALL_PREFIX}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DPYBIND11_TEST=OFF
     )
     # Clone pybind11 from git repository and build it 
-ExternalProject_Add(EXTERNAL_PROJECT_EIGEN
+ ExternalProject_Add(EXTERNAL_PROJECT_EIGEN
     PREFIX build
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-#    GIT_TAG master
-#    GIT_SHALLOW TRUE
+    GIT_TAG master
+    GIT_SHALLOW TRUE
     SOURCE_DIR build/src/eigen
-    BINARY_DIR build/src/eigen-build
+   BINARY_DIR build/src/eigen-build
     STAMP_DIR build/src/eigen-stamp
     CMAKE_ARGS ${EIGEN_CMAKE_ARGS})
 
