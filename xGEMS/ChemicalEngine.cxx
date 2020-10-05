@@ -27,7 +27,6 @@ using namespace xGEMS;
 
 void exportChemicalEngine(py::module& m)
 {
-
     auto speciesAmount1 = static_cast<double (ChemicalEngine::*)(Index) const> (&ChemicalEngine::speciesAmount);
     auto speciesAmount2 = static_cast<double (ChemicalEngine::*)(std::string) const> (&ChemicalEngine::speciesAmount);
 
@@ -72,6 +71,9 @@ void exportChemicalEngine(py::module& m)
         .def("setSpeciesLowerLimit", setSpeciesLowerLimit2)
         .def("setSpeciesAmount", setSpeciesAmount1)
         .def("setSpeciesAmount", setSpeciesAmount2)
+        .def("setPT", &ChemicalEngine::setPT)
+        .def("setB", &ChemicalEngine::setB)
+        .def("reequilibrate", &ChemicalEngine::reequilibrate)
         .def("equilibrate", &ChemicalEngine::equilibrate)
         .def("converged", &ChemicalEngine::converged)
         .def("numIterations", &ChemicalEngine::numIterations)

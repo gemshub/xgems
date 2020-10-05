@@ -408,6 +408,40 @@ auto ChemicalEngine::setColdStart() -> void
     pimpl->options.warmstart = false;
 }
 
+auto ChemicalEngine::setPT( double P, double T) const -> bool
+{
+    // Check if P, T are feasible
+    if(pimpl->node->check_TP( T, P )==false)
+        return true;
+    // Set temperature and pressure
+    pimpl->node->Set_TK(T);
+    pimpl->node->Set_P(P);
+    return false;    
+}  
+
+auto ChemicalEngine::setB( VectorConstRef b ) -> void
+{
+    // Set the mole amounts of elements
+    for(Index i = 0; i < numElements(); ++i)
+        pimpl->node->Set_bIC(i, b[i]);
+}  
+
+auto ChemicalEngine::reequilibrate( bool warmstart ) -> int
+{
+    pimpl->options.warmstart = warmstart;
+    // Begin timing
+    auto begin = std::chrono::high_resolution_clock::now();
+    // Solve the equilibrium problem with gems
+    pimpl->node->pCNode()->NodeStatusCH = 
+       pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+    auto valueOutputGem = pimpl->node->GEM_run(false);
+    // Finish timing
+    auto end = std::chrono::high_resolution_clock::now();
+    // Set the elapsed time member
+    pimpl->elapsed_time = std::chrono::duration<double>(end - begin).count();
+    return valueOutputGem;
+}
+
 auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
 {
     // Begin timing

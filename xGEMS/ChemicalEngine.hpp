@@ -167,10 +167,27 @@ public:
     /// if @param amount < 0 then resets to default 0 
     auto setSpeciesLowerLimit(Index ispecies, double amount) -> void;
 
+    /// Sets pressure to @param P (in Pa) and temperature to @param T (in K)
+    /// in ChemicalEngine instance without computing the equilibrium state
+    /// Returns false if P.T was reset o.k., or true if P or T is out of 
+    /// range for the lookup for thermodynamic data in the node (with old P,T retained).  
+    auto setPT( double P, double T) const -> bool;  
+    
+    /// Sets the amounts of elements (vector b) in moles into ChemicalEngine
+    /// instance without computing the equilibrium state
+    auto setB( VectorConstRef b) -> void;
+
+    /// recalculate the equilibrium state with preset P,T,B and other inputs
+    /// If @param warmstart is true then GEMS3K uses contents of node as initial 
+    ///   guess, otherwise (false) it gets the simplex LP initial guess.
+    /// Returns the return code of GEMS3K GEM_run call
+    auto reequilibrate(bool warmstart) -> int;
+
     /// Calculate the equilibrium state of the chemical system.
     /// @param T The temperature for the equilibrium calculation (in units of K)
     /// @param P The pressure for the equilibrium calculation (in units of Pa)
     /// @param b The amounts of the elements (in units of mol)
+    /// Returns the return code of GEMS3K GEM_run call
     auto equilibrate(double T, double P, VectorConstRef b) -> int;
 
     /// Return the convergence result of the equilibrium calculation
