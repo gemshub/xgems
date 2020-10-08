@@ -154,8 +154,7 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     PREFIX build
 #    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
     GIT_REPOSITORY https://bitbucket.org/gems4/gems3k.git
-    GIT_TAG fix_warnings
-#    GIT_TAG trunk
+    GIT_TAG trunk
 #    GIT_SHALLOW TRUE
     SOURCE_DIR build/src/gems3k
     BINARY_DIR build/src/gems3k-build
