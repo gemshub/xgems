@@ -90,7 +90,8 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 endif()
 
 # Find Eigen library and include its directory
-find_package(Eigen3 3.3.7 REQUIRED)
+#find_package(Eigen3 3.3.7 REQUIRED)
+#message(STATUS "Found Eigen3 v${Eigen3_VERSION}: ${Eigen3_INCLUDE_DIRS}")
 
 # Find the Python interpreter
 if(XGEMS_BUILD_PYTHON)
@@ -171,7 +172,7 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
  ExternalProject_Add(EXTERNAL_PROJECT_EIGEN
     PREFIX build
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG master
+    GIT_TAG before-git-migration
     GIT_SHALLOW TRUE
     SOURCE_DIR build/src/eigen
    BINARY_DIR build/src/eigen-build
