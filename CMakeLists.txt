@@ -160,7 +160,8 @@ ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
     SOURCE_DIR build/src/gems3k
     BINARY_DIR build/src/gems3k-build
     STAMP_DIR build/src/gems3k-stamp
-    CMAKE_ARGS ${GEMS3K_CMAKE_ARGS})
+    CMAKE_ARGS ${GEMS3K_CMAKE_ARGS}
+    )
 
  set(EIGEN_CMAKE_ARGS
     -DCMAKE_GENERATOR=${CMAKE_GENERATOR}

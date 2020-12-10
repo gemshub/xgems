@@ -27,6 +27,7 @@
 #define NOPARTICLEARRAY
 #define NODEARRAYLEVEL
 #include <GEMS3K/node.h>
+#include <GEMS3K/gems3k_impex.h>
 
 #define NODE  pimpl->node
 #define CSD   pimpl->node->pCSD()
@@ -109,6 +110,10 @@ struct ChemicalEngine::Impl
     /// Saturation (stability) indexes of phases (in log10 scale).
     Vector phSatIndices;
 
+    /// Write IPM, DCH and DBR files in binary, txt or json mode)
+    GEMS3KGenerator::IOModes io_mode = GEMS3KGenerator::f_key_value;
+
+
     /// Construct a default Impl instance
     Impl()
     {}
@@ -130,6 +135,10 @@ ChemicalEngine::~ChemicalEngine()
 
 auto ChemicalEngine::initialize(std::string filename) -> void
 {
+    // Initialize the GEMS input files mode
+    GEMS3KGenerator generator_data(filename.c_str());
+    pimpl->io_mode =   generator_data.files_mode();
+
     // Allocate memory for the GEMS `node` member
     pimpl->node = std::unique_ptr<TNode>(new TNode);
 
@@ -188,7 +197,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
 auto ChemicalEngine::readDbrFile(std::string filename) -> void
 {
     // Reads another dbr file with input system composition
-    const auto res = pimpl->node->GEM_read_dbr(filename.c_str());
+    const auto res = pimpl->node->GEM_read_dbr(filename.c_str(), pimpl->io_mode);
 
         // Check if there was a system error during node initialization
     if(res == -1)
