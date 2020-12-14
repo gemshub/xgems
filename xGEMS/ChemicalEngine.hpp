@@ -101,7 +101,7 @@ public:
 
     /// Return the vector of all indices of a @param species name, number of species found is VectorXi.size().
     /// @param VectorXi contains all indices of the species found in the species name list in this system.
-    auto indexSpeciesAll(std::string species) const -> VectorXiConstRef;
+    auto indexSpeciesAll(std::string species) const -> VectorXi;
 
     /// Return the index of a @param phase name, or number of phases, if not found.
     /// @param Index The index of the phase.
@@ -109,7 +109,7 @@ public:
 
     /// Return the vector of all indices of a @param phase name, number of indices found is VectorXi.size().
     /// @param VectorXi contains all indices of the phases found in the phase name list in this system.
-    auto indexPhaseAll(std::string phase) const -> VectorXiConstRef;
+    auto indexPhaseAll(std::string phase) const -> VectorXi;
 
     /// Return the index of the phase containing a @param species name (ambiguous).
     /// @param Index The index of the species.
@@ -210,11 +210,11 @@ public:
 
     /// Return the amounts of the elements in a phase.
     /// @param iphase The index of the phase.
-    auto elementAmountsInPhase(Index iphase) const -> VectorConstRef;
+    auto elementAmountsInPhase(Index iphase) const -> Vector;
 
     /// Return the amounts of the elements in a group of species.
     /// @param ispecies The vector of indices of the species.
-    auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> VectorConstRef;
+    auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector;
 
     /// Return the amounts of the species (in units of mol)
     auto speciesAmounts() const -> VectorConstRef;
@@ -271,7 +271,7 @@ public:
     /// Return the molar Gibbs energies of the phases (in units of J/mol).
     auto phaseMolarGibbsEnergy(Index iphase) const -> double;
 
-    /// Return the molar enthalpie of the phase @param iphase (in units of J/mol).
+    /// Return the molar enthalpy of the phase @param iphase (in units of J/mol).
     auto phaseMolarEnthalpy(Index iphase) const -> double;
 
     /// Return the molar volume of the phase @param iphase (in units of m3/mol).

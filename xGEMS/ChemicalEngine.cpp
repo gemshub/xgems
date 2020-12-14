@@ -313,7 +313,7 @@ auto ChemicalEngine::indexSpecies(std::string species) const -> Index
     return size; // in case that species name was not found 
 }
 
-auto ChemicalEngine::indexSpeciesAll(std::string species) const -> VectorXiConstRef
+auto ChemicalEngine::indexSpeciesAll(std::string species) const -> VectorXi
 {
     std::vector<Index> occur;
     occur.resize(0);
@@ -343,7 +343,7 @@ auto ChemicalEngine::indexPhase(std::string phase) const -> Index
     return size; // in case that phase name was not found 
 }
 
-auto ChemicalEngine::indexPhaseAll(std::string phase) const -> VectorXiConstRef
+auto ChemicalEngine::indexPhaseAll(std::string phase) const -> VectorXi
 {
     std::vector<Index> occur;
     occur.resize(0);
@@ -564,7 +564,7 @@ auto ChemicalEngine::elementAmounts() const -> VectorConstRef
     return Vector::Map(pimpl->node->pCNode()->bIC, numElements());
 }
 
-auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> VectorConstRef
+auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> Vector
 {
     MatrixConstRef W = formulaMatrix();
     VectorConstRef n = speciesAmounts();
@@ -576,7 +576,7 @@ auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> VectorConstRef
     return res;
 }
 
-auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> VectorConstRef
+auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector
 {
     MatrixConstRef W = formulaMatrix();
     VectorConstRef n = speciesAmounts();
