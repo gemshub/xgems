@@ -110,7 +110,10 @@ struct ChemicalEngine::Impl
     /// Saturation (stability) indexes of phases (in log10 scale).
     Vector phSatIndices;
 
-    /// Write IPM, DCH and DBR files in binary, txt or json mode)
+    /// Json string with I/O node (DBR) object in JSON format
+    std::string dbr_json;
+
+    /// Write IPM, DCH and DBR files (in binary, txt or json mode)
     GEMS3KGenerator::IOModes io_mode = GEMS3KGenerator::f_key_value;
 
 
@@ -194,6 +197,66 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     // pimpl->stMolarVolumes.resize(N);                  // in m3/mol
 }
 
+
+auto ChemicalEngine::initializeJson(std::string dch_json, std::string ipm_json, std::string dbr_json) -> void
+{
+    // pimpl->io_mode = "json";
+    // Allocate memory for the GEMS `node` member
+    pimpl->node = std::unique_ptr<TNode>(new TNode);
+
+    // Initialize the GEMS `node` member
+    const auto res = pimpl->node->GEM_init( dch_json, ipm_json, dbr_json );
+
+    // Check if there was a system error during node initialization
+    if(res == -1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not initialize the ChemicalEngine object from JSON strings. \n"
+                " There was a problem during memory allocation.");
+
+    // Check if there was a JSON parsing error during node initialization
+    if(res == 1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not initialize the ChemicalEngine object from JSON strings.\n"
+                "Make sure that these JSON strings are not empty and are in correct format.");
+
+    // Assemble the formula matrix of the species
+    const Index E = numElements();
+    const Index N = numSpecies();
+    const Index P = numPhases();
+    pimpl->formula_matrix = Matrix::Zero(E, N);
+    for(Index i = 0; i < N; ++i)
+        for(Index j = 0; j < E; ++j)
+            pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
+
+    // Allocate memory for vector members
+    pimpl->elemMolMasses.resize(E);
+    pimpl->molMasses.resize(N);
+    pimpl->ln_activity_coefficients.resize(N);
+    pimpl->ln_activities.resize(N);
+    pimpl->ln_concentrations.resize(N);
+    pimpl->chemPotentials.resize(N);
+    pimpl->molFractions.resize(N);
+    pimpl->molalities.resize(N);
+    // pimpl->phMolarVolumes.resize(P);
+    // pimpl->phMolarEnthalpies.resize(P);
+    // pimpl->phMolarEntropies.resize(P);
+    pimpl->phMolarHeatCapacitiesConstP.resize(P);
+    pimpl->phDensities.resize(P);
+    pimpl->phVolumes.resize(P);
+    pimpl->phEnthalpies.resize(P);
+    pimpl->phEntropies.resize(P);
+    pimpl->phHeatCapacitiesConstP.resize(P);
+    pimpl->phAmounts.resize(P);
+    pimpl->phMasses.resize(P);
+    pimpl->phSatIndices.resize(P);
+    // pimpl->stMolarGibbsEnergies.resize(N);            // in J/mol
+    // pimpl->stMolarEnthalpies.resize(N);               // in J/mol
+    // pimpl->stMolarEntropies.resize(N);                // in J/K/mol
+    // pimpl->stMolarHeatCapacitiesConstP.resize(N);     // in J/K/mol
+    // pimpl->stMolarVolumes.resize(N);                  // in m3/mol
+}
+
+
 auto ChemicalEngine::readDbrFile(std::string filename) -> void
 {
     // Reads another dbr file with input system composition
@@ -210,6 +273,64 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not find the provided dbr file.\n"
                 "Make sure the provided file exists relative to the working directory.");
+}
+
+auto ChemicalEngine::readDbrJson(std::string dbr_json) -> void
+{
+    // Reads another dbr file with input system composition
+    const auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
+    int res = 1;    // Temporary plug
+
+        // Check if there was a system error during node initialization
+    if(res == -1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not process the provided DBR JSON string.\n"
+                "There was a problem during memory allocation.");
+
+    // Check if there was a file read error during node initialization
+    if(res == 1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not process the provided DBR JSON string.\n"
+                "Make sure that this JSON string is not empty and is in correct format.");
+}
+
+auto ChemicalEngine::writeDbrFile(std::string filename) -> void
+{
+    // Write current node into a dbr file into path filename
+    pimpl->node->GEM_write_dbr(filename.c_str(), pimpl->io_mode);
+
+        // Check if there was a system error during node initialization
+    if(res == -1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not find the provided dbr file.\n"
+                "There was a problem during memory allocation.");
+
+    // Check if there was a file read error during node initialization
+    if(res == 1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not find the provided dbr file.\n"
+                "Make sure the provided file exists relative to the working directory.");
+}
+
+auto ChemicalEngine::writeDbrJson() const -> std::string
+{
+    std::string dbr_json;
+    // Reads another dbr file with input system composition
+    const auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
+
+        // Check if there was a system error during node initialization
+    if(res == -1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not process the provided DBR JSON string.\n"
+                "There was a problem during memory allocation.");
+
+    // Check if there was a file read error during node initialization
+    if(res == 1)
+        throw std::runtime_error("\n*** ERROR ***\n"
+            "Could not process the provided DBR JSON string.\n"
+                "Make sure that this JSON string is not empty and is in correct format.");
+    return dbr_json;
+    // Potential memory leak?
 }
 
 auto ChemicalEngine::numElements() const -> Index
