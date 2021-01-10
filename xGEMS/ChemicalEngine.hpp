@@ -80,7 +80,7 @@ public:
     /// @param Null-terminated (C) string containing a full path to the output DBR disk file.
     auto writeDbrFile(std::string filename) -> void;
 
-    /// Returns a DBR object (normally after some changes via API and GEM calculation) as JSON string. \ 
+    /// Returns a DBR object (normally after some changes via API and GEM calculation) as JSON string. \ .
     /// In case of error raises an exception or returns empty string. 
     auto writeDbrJson() const -> std::string;
 

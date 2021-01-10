@@ -278,8 +278,8 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
 auto ChemicalEngine::readDbrJson(std::string dbr_json) -> void
 {
     // Reads another dbr file with input system composition
-    const auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
-    int res = 1;    // Temporary plug
+    auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
+    // res = 1;    // Temporary plug
 
         // Check if there was a system error during node initialization
     if(res == -1)
@@ -296,6 +296,7 @@ auto ChemicalEngine::readDbrJson(std::string dbr_json) -> void
 
 auto ChemicalEngine::writeDbrFile(std::string filename) -> void
 {
+    int res = 1;
     // Write current node into a dbr file into path filename
     pimpl->node->GEM_write_dbr(filename.c_str(), pimpl->io_mode);
 

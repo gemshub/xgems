@@ -27,7 +27,7 @@ git clone https://bitbucket.org/gems4/xgems.git .
 
 xGEMS uses GEMS3K and Eigen3 as external projects. These are downloaded and compiled together with xGEMS during the make step. 
 
-For compiling xGEMS python bindings you need a recent version of pybind11 installed (including development headers, 2.2.0 is the minimum version required). In case your distribution does not provide pybind11 development packages, or the version is to old, you can install it as follows:
+For compiling xGEMS python bindings you need a recent version of pybind11 installed (including development headers, 2.2.0 is the minimum version required). In case your distribution does not provide pybind11 development packages, or the version is too old, you can install it as follows:
 
 ~~~
 mkdir -p ~/code
@@ -82,7 +82,12 @@ cd ~/git/xGEMS/build/bin
 export PYTHONPATH=/home/username/pathto-xGEMS/build/lib
 ~~~
 
-(use your username instead of "username" and actual path to xGEMS e.g. git/xGEMS instead of "pathto-xGEMS"   
+(use your username instead of "username" and actual path to xGEMS e.g. git/xGEMS instead of "pathto-xGEMS").
+
+* If you get compiler messages that Python.h cannot be found, then a better way may be not to set PYTHONPATH, but to make sure that the Python development installation in the system is visible to all compilers. To check this, first locate your Python installation. Currently (in 2020), the most widespread is Python3.6 with headers normally found in "/usr/include/python3.6/" or "/usr/include/python3.6m/". The access to headers can be made generic by making soft links to include files in this folder:   
+~~~
+sudo ln -sv /usr/include/python3.6m/* /usr/include/
+~~~ 
 
 * Then run the demo - if built with python 2.7:
 ~~~

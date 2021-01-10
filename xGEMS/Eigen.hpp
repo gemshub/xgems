@@ -64,4 +64,5 @@ using MatrixXiConstMap = Eigen::Map<const MatrixXi>; ///< Alias to Eigen type Ei
 
 const auto all = Eigen::all; ///< Alias to Eigen placeholder value Eigen::placeholder::all.
 
+
 } // namespace xGEMS
