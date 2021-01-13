@@ -272,7 +272,7 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
     if(res == 1)
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not find the provided dbr file.\n"
-                "Make sure the provided file exists relative to the working directory.");
+                "Make sure the provided file path exists relative to the working directory.");
 }
 
 auto ChemicalEngine::readDbrJson(std::string dbr_json) -> void
@@ -287,11 +287,11 @@ auto ChemicalEngine::readDbrJson(std::string dbr_json) -> void
             "Could not process the provided DBR JSON string.\n"
                 "There was a problem during memory allocation.");
 
-    // Check if there was a file read error during node initialization
+    // Check if there was a JSON string read error during node initialization
     if(res == 1)
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not process the provided DBR JSON string.\n"
-                "Make sure that this JSON string is not empty and is in correct format.");
+                "Make sure that this JSON string is not empty and is in correct format and place.");
 }
 
 auto ChemicalEngine::writeDbrFile(std::string filename) -> void
@@ -303,14 +303,14 @@ auto ChemicalEngine::writeDbrFile(std::string filename) -> void
         // Check if there was a system error during node initialization
     if(res == -1)
         throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not find the provided dbr file.\n"
+            "Could not write the provided dbr file.\n"
                 "There was a problem during memory allocation.");
 
-    // Check if there was a file read error during node initialization
+    // Check if there was a file write error during node initialization
     if(res == 1)
         throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not find the provided dbr file.\n"
-                "Make sure the provided file exists relative to the working directory.");
+            "Could not write the provided dbr file.\n"
+                "Make sure the provided folder path exists relative to the working directory.");
 }
 
 auto ChemicalEngine::writeDbrJson() const -> std::string
