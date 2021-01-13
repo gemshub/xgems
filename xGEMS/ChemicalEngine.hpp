@@ -64,7 +64,7 @@ public:
     /// @param dch_json The json string containing the definition of the chemical system
     /// @param ipm_json The json string containing the parameters and settings for GEMS3K IPM-3 algorithm
     /// @param dbr_json The json string containing the input node composition of the chemical system
-    auto initializeJson(std::string dch_json, std::string ipm_json, std::string dbr_json) -> void;
+    auto initializeJstr(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void;
 
     /// Reads another DBR file (with input system composition, T,P etc.) \ . The DBR file must be compatible with
     /// the currently loaded IPM and DCH files (see description of initialize() function call).
@@ -74,7 +74,7 @@ public:
     /// Reads another DBR object (with input system composition, T,P etc.) from JSON string \ . The DBR file 
     /// must be compatible with the currently loaded IPM and DCH objects (see description of initialize() function call).
     /// @param Null-terminated (C) string containing a full path to the input DBR disk file.
-    auto readDbrJson(std::string dbr_json) -> void;
+    auto readDbrJstr(std::string& dbr_json) -> void;
 
     /// Writes a DBR file (normally after some changes via API and GEM calculation). 
     /// @param Null-terminated (C) string containing a full path to the output DBR disk file.
@@ -82,7 +82,7 @@ public:
 
     /// Returns a DBR object (normally after some changes via API and GEM calculation) as JSON string. \ .
     /// In case of error raises an exception or returns empty string. 
-    auto writeDbrJson() const -> std::string;
+    auto writeDbrJstr(std::string& dbr_json) -> void;
 
     /// Return the number of elements.
     auto numElements() const -> Index;

@@ -198,7 +198,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
 }
 
 
-auto ChemicalEngine::initializeJson(std::string dch_json, std::string ipm_json, std::string dbr_json) -> void
+auto ChemicalEngine::initializeJstr(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void
 {
     // pimpl->io_mode = "json";
     // Allocate memory for the GEMS `node` member
@@ -275,7 +275,7 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
                 "Make sure the provided file path exists relative to the working directory.");
 }
 
-auto ChemicalEngine::readDbrJson(std::string dbr_json) -> void
+auto ChemicalEngine::readDbrJstr(std::string& dbr_json) -> void
 {
     // Reads another dbr file with input system composition
     auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
@@ -313,9 +313,8 @@ auto ChemicalEngine::writeDbrFile(std::string filename) -> void
                 "Make sure the provided folder path exists relative to the working directory.");
 }
 
-auto ChemicalEngine::writeDbrJson() const -> std::string
+auto ChemicalEngine::writeDbrJstr(std::string& dbr_json) -> void
 {
-    std::string dbr_json;
     // Reads another dbr file with input system composition
     const auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
 
@@ -330,8 +329,6 @@ auto ChemicalEngine::writeDbrJson() const -> std::string
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not process the provided DBR JSON string.\n"
                 "Make sure that this JSON string is not empty and is in correct format.");
-    return dbr_json;
-    // Potential memory leak?
 }
 
 auto ChemicalEngine::numElements() const -> Index
