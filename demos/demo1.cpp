@@ -34,13 +34,14 @@ int getJsonFile( const string path, string& str )
     if(f) {
       ostringstream ss;
       ss << f.rdbuf(); // reading data
-      // Looking for the first ':'
-      size_t from = ss.str().find_first_of(':')+1; 
-      // Looking for the last '}'
-      size_t until = ss.str().find_last_of('}');
-      // Getting json string from until-1
-      str = ss.str().substr(from, until-from);
-//      cout << str.substr(0,80) << endl;
+    //   // Looking for the first '{' to strip top-level [] 
+    //   size_t from = ss.str().find_first_of('{'); 
+    //   // Looking for the last '}'
+    //   size_t until = ss.str().find_last_of('}');
+    //   // Getting json string from until-1
+    //   str = ss.str().substr(from, until-from+1);
+      str = ss.str();
+      // cout << str.substr(0,80) << endl;
       return 0;
     }
     cout << "Error reading file " << path << " into text string";
@@ -49,17 +50,20 @@ int getJsonFile( const string path, string& str )
 
 int main(int argc, char **argv)
 {
+    //  Testing with input of keyvalue GEMS3K files
     // ChemicalEngine chemicalengine("resources/CalciteIC-dat.lst");
     // Vector b = chemicalengine.elementAmounts();
     // std::cout << "Vector b: " << b.transpose() << std::endl;
     // std::cout << chemicalengine << std::endl;
-    // chemicalengine.~ChemicalEngine();
+
+    // Testing with input of JSON GEMS3K files
     // ChemicalEngine chemicalengine2("resources/CemHyds-dat.lst");
     // Vector b2 = chemicalengine2.elementAmounts()
     // std::cout << "\nVector b2: " << b2.transpose() << std::endl;
     // std::cout << chemicalengine2 << std::endl;
     // Test input from JSON documents
 
+    // Testing= with input from JSON strings
     ChemicalEngine engine;
     
     int f1, f2, f3; 
