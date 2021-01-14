@@ -146,7 +146,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->node = std::unique_ptr<TNode>(new TNode);
 
     // Initialize the GEMS `node` member
-    const auto res = pimpl->node->GEM_init(filename.c_str());
+    int res = pimpl->node->GEM_init(filename.c_str());
 
     // Check if there was a system error during node initialization
     if(res == -1)
@@ -205,7 +205,7 @@ auto ChemicalEngine::initializeJstr(std::string& dch_json, std::string& ipm_json
     pimpl->node = std::unique_ptr<TNode>(new TNode);
 
     // Initialize the GEMS `node` member
-    const auto res = pimpl->node->GEM_init( dch_json, ipm_json, dbr_json );
+    int res = pimpl->node->GEM_init( dch_json, ipm_json, dbr_json );
 
     // Check if there was a system error during node initialization
     if(res == -1)
@@ -260,7 +260,7 @@ auto ChemicalEngine::initializeJstr(std::string& dch_json, std::string& ipm_json
 auto ChemicalEngine::readDbrFile(std::string filename) -> void
 {
     // Reads another dbr file with input system composition
-    const auto res = pimpl->node->GEM_read_dbr(filename.c_str(), pimpl->io_mode);
+    long int res = pimpl->node->GEM_read_dbr(filename.c_str(), pimpl->io_mode);
 
         // Check if there was a system error during node initialization
     if(res == -1)
@@ -269,7 +269,7 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
                 "There was a problem during memory allocation.");
 
     // Check if there was a file read error during node initialization
-    if(res == 1)
+    if(res >= 1)
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not find the provided dbr file.\n"
                 "Make sure the provided file path exists relative to the working directory.");
@@ -278,7 +278,7 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
 auto ChemicalEngine::readDbrJstr(std::string& dbr_json) -> void
 {
     // Reads another dbr file with input system composition
-    auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
+    long int res = pimpl->node->GEM_read_dbr( dbr_json, true );
     // res = 1;    // Temporary plug
 
         // Check if there was a system error during node initialization
@@ -288,47 +288,28 @@ auto ChemicalEngine::readDbrJstr(std::string& dbr_json) -> void
                 "There was a problem during memory allocation.");
 
     // Check if there was a JSON string read error during node initialization
-    if(res == 1)
+    if(res >= 1)
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not process the provided DBR JSON string.\n"
-                "Make sure that this JSON string is not empty and is in correct format and place.");
+                "Make sure that this JSON string is not empty and is in correct format and parameter position.");
 }
 
 auto ChemicalEngine::writeDbrFile(std::string filename) -> void
 {
-    int res = 1;
     // Write current node into a dbr file into path filename
     pimpl->node->GEM_write_dbr(filename.c_str(), pimpl->io_mode);
-
-        // Check if there was a system error during node initialization
-    if(res == -1)
-        throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not write the provided dbr file.\n"
-                "There was a problem during memory allocation.");
-
-    // Check if there was a file write error during node initialization
-    if(res == 1)
-        throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not write the provided dbr file.\n"
-                "Make sure the provided folder path exists relative to the working directory.");
 }
 
 auto ChemicalEngine::writeDbrJstr(std::string& dbr_json) -> void
 {
-    // Reads another dbr file with input system composition
-    const auto res = pimpl->node->GEM_read_dbr( dbr_json, true );
+    // Writes another node dbr with input system composition into json string dbr_json
+    long int res = pimpl->node->GEM_write_dbr( dbr_json );
 
-        // Check if there was a system error during node initialization
+    // Check if there was a json write error
     if(res == -1)
         throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not process the provided DBR JSON string.\n"
-                "There was a problem during memory allocation.");
-
-    // Check if there was a file read error during node initialization
-    if(res == 1)
-        throw std::runtime_error("\n*** ERROR ***\n"
-            "Could not process the provided DBR JSON string.\n"
-                "Make sure that this JSON string is not empty and is in correct format.");
+            "Could not process the provided DBR into JSON string.\n"
+                "Check the code.");
 }
 
 auto ChemicalEngine::numElements() const -> Index
