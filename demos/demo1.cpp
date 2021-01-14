@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     
     if( f1 == 0 && f2 == 0 && f3 == 0 )
     {
-        engine.initializeJstr(dch_json, ipm_json, dbr_json);
+        engine.initializeFromJsonStrings(dch_json, ipm_json, dbr_json);
 
         Vector bj = engine.elementAmounts();
     

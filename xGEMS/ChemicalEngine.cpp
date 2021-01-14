@@ -136,6 +136,45 @@ ChemicalEngine::ChemicalEngine(std::string filename)
 ChemicalEngine::~ChemicalEngine()
 {}
 
+auto ChemicalEngine::reallocateEngineArrays() -> void
+{
+    // Assemble the formula matrix of the species
+    const Index E = numElements();
+    const Index N = numSpecies();
+    const Index P = numPhases();
+    pimpl->formula_matrix = Matrix::Zero(E, N);
+    for(Index i = 0; i < N; ++i)
+        for(Index j = 0; j < E; ++j)
+            pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
+
+    // Allocate memory for vector members
+    pimpl->elemMolMasses.resize(E);
+    pimpl->molMasses.resize(N);
+    pimpl->ln_activity_coefficients.resize(N);
+    pimpl->ln_activities.resize(N);
+    pimpl->ln_concentrations.resize(N);
+    pimpl->chemPotentials.resize(N);
+    pimpl->molFractions.resize(N);
+    pimpl->molalities.resize(N);
+    // pimpl->phMolarVolumes.resize(P);
+    // pimpl->phMolarEnthalpies.resize(P);
+    // pimpl->phMolarEntropies.resize(P);
+    pimpl->phMolarHeatCapacitiesConstP.resize(P);
+    pimpl->phDensities.resize(P);
+    pimpl->phVolumes.resize(P);
+    pimpl->phEnthalpies.resize(P);
+    pimpl->phEntropies.resize(P);
+    pimpl->phHeatCapacitiesConstP.resize(P);
+    pimpl->phAmounts.resize(P);
+    pimpl->phMasses.resize(P);
+    pimpl->phSatIndices.resize(P);
+    // pimpl->stMolarGibbsEnergies.resize(N);            // in J/mol
+    // pimpl->stMolarEnthalpies.resize(N);               // in J/mol
+    // pimpl->stMolarEntropies.resize(N);                // in J/K/mol
+    // pimpl->stMolarHeatCapacitiesConstP.resize(N);     // in J/K/mol
+    // pimpl->stMolarVolumes.resize(N);                  // in m3/mol
+}
+
 auto ChemicalEngine::initialize(std::string filename) -> void
 {
     // Initialize the GEMS input files mode
@@ -160,45 +199,11 @@ auto ChemicalEngine::initialize(std::string filename) -> void
             "Could not initialize the ChemicalEngine object.\n"
                 "Make sure the provided file exists relative to the working directory.");
 
-    // Assemble the formula matrix of the species
-    const Index E = numElements();
-    const Index N = numSpecies();
-    const Index P = numPhases();
-    pimpl->formula_matrix = Matrix::Zero(E, N);
-    for(Index i = 0; i < N; ++i)
-        for(Index j = 0; j < E; ++j)
-            pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
-
-    // Allocate memory for vector members
-    pimpl->elemMolMasses.resize(E);
-    pimpl->molMasses.resize(N);
-    pimpl->ln_activity_coefficients.resize(N);
-    pimpl->ln_activities.resize(N);
-    pimpl->ln_concentrations.resize(N);
-    pimpl->chemPotentials.resize(N);
-    pimpl->molFractions.resize(N);
-    pimpl->molalities.resize(N);
-    // pimpl->phMolarVolumes.resize(P);
-    // pimpl->phMolarEnthalpies.resize(P);
-    // pimpl->phMolarEntropies.resize(P);
-    pimpl->phMolarHeatCapacitiesConstP.resize(P);
-    pimpl->phDensities.resize(P);
-    pimpl->phVolumes.resize(P);
-    pimpl->phEnthalpies.resize(P);
-    pimpl->phEntropies.resize(P);
-    pimpl->phHeatCapacitiesConstP.resize(P);
-    pimpl->phAmounts.resize(P);
-    pimpl->phMasses.resize(P);
-    pimpl->phSatIndices.resize(P);
-    // pimpl->stMolarGibbsEnergies.resize(N);            // in J/mol
-    // pimpl->stMolarEnthalpies.resize(N);               // in J/mol
-    // pimpl->stMolarEntropies.resize(N);                // in J/K/mol
-    // pimpl->stMolarHeatCapacitiesConstP.resize(N);     // in J/K/mol
-    // pimpl->stMolarVolumes.resize(N);                  // in m3/mol
+    reallocateEngineArrays();
 }
 
 
-auto ChemicalEngine::initializeJstr(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void
+auto ChemicalEngine::initializeFromJsonStrings(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void
 {
     // pimpl->io_mode = "json";
     // Allocate memory for the GEMS `node` member
@@ -219,45 +224,11 @@ auto ChemicalEngine::initializeJstr(std::string& dch_json, std::string& ipm_json
             "Could not initialize the ChemicalEngine object from JSON strings.\n"
                 "Make sure that these JSON strings are not empty and are in correct format.");
 
-    // Assemble the formula matrix of the species
-    const Index E = numElements();
-    const Index N = numSpecies();
-    const Index P = numPhases();
-    pimpl->formula_matrix = Matrix::Zero(E, N);
-    for(Index i = 0; i < N; ++i)
-        for(Index j = 0; j < E; ++j)
-            pimpl->formula_matrix(j, i) = pimpl->node->DCaJI(i, j);
-
-    // Allocate memory for vector members
-    pimpl->elemMolMasses.resize(E);
-    pimpl->molMasses.resize(N);
-    pimpl->ln_activity_coefficients.resize(N);
-    pimpl->ln_activities.resize(N);
-    pimpl->ln_concentrations.resize(N);
-    pimpl->chemPotentials.resize(N);
-    pimpl->molFractions.resize(N);
-    pimpl->molalities.resize(N);
-    // pimpl->phMolarVolumes.resize(P);
-    // pimpl->phMolarEnthalpies.resize(P);
-    // pimpl->phMolarEntropies.resize(P);
-    pimpl->phMolarHeatCapacitiesConstP.resize(P);
-    pimpl->phDensities.resize(P);
-    pimpl->phVolumes.resize(P);
-    pimpl->phEnthalpies.resize(P);
-    pimpl->phEntropies.resize(P);
-    pimpl->phHeatCapacitiesConstP.resize(P);
-    pimpl->phAmounts.resize(P);
-    pimpl->phMasses.resize(P);
-    pimpl->phSatIndices.resize(P);
-    // pimpl->stMolarGibbsEnergies.resize(N);            // in J/mol
-    // pimpl->stMolarEnthalpies.resize(N);               // in J/mol
-    // pimpl->stMolarEntropies.resize(N);                // in J/K/mol
-    // pimpl->stMolarHeatCapacitiesConstP.resize(N);     // in J/K/mol
-    // pimpl->stMolarVolumes.resize(N);                  // in m3/mol
+    reallocateEngineArrays();
 }
 
 
-auto ChemicalEngine::readDbrFile(std::string filename) -> void
+auto ChemicalEngine::readDbrFromFile(std::string filename) -> void
 {
     // Reads another dbr file with input system composition
     long int res = pimpl->node->GEM_read_dbr(filename.c_str(), pimpl->io_mode);
@@ -275,7 +246,7 @@ auto ChemicalEngine::readDbrFile(std::string filename) -> void
                 "Make sure the provided file path exists relative to the working directory.");
 }
 
-auto ChemicalEngine::readDbrJstr(std::string& dbr_json) -> void
+auto ChemicalEngine::readDbrFromJsonString(std::string& dbr_json) -> void
 {
     // Reads another dbr file with input system composition
     long int res = pimpl->node->GEM_read_dbr( dbr_json, true );
@@ -294,15 +265,16 @@ auto ChemicalEngine::readDbrJstr(std::string& dbr_json) -> void
                 "Make sure that this JSON string is not empty and is in correct format and parameter position.");
 }
 
-auto ChemicalEngine::writeDbrFile(std::string filename) -> void
+auto ChemicalEngine::writeDbrToFile(std::string filename) -> void
 {
     // Write current node into a dbr file into path filename
     pimpl->node->GEM_write_dbr(filename.c_str(), pimpl->io_mode);
 }
 
-auto ChemicalEngine::writeDbrJstr(std::string& dbr_json) -> void
+auto ChemicalEngine::writeDbrToJsonString() -> const std::string
 {
     // Writes another node dbr with input system composition into json string dbr_json
+    std::string dbr_json = ""; 
     long int res = pimpl->node->GEM_write_dbr( dbr_json );
 
     // Check if there was a json write error
@@ -310,6 +282,8 @@ auto ChemicalEngine::writeDbrJstr(std::string& dbr_json) -> void
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not process the provided DBR into JSON string.\n"
                 "Check the code.");
+    
+    return dbr_json;            
 }
 
 auto ChemicalEngine::numElements() const -> Index

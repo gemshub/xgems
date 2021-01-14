@@ -55,34 +55,38 @@ public:
     /// Assign another ChemicalEngine object to this.
     auto operator=(ChemicalEngine other) -> ChemicalEngine& = delete;
 
+    /// Reallocates chemical engine vectors and matrix upon node initialization from files or json
+    /// Used only inside of initialize() or initializeFromJsonStrings()
+    auto reallocateEngineArrays() -> void;
+
     /// Initialize the ChemicalEngine object from a GEM-Selektor project file.
     /// @param filename The name of the file containing the definition of the chemical system
     auto initialize(std::string filename) -> void;
-
+    
     /// Initialize the ChemicalEngine object from JSON strings for dch, ipm and dbr exported from GEM-Selektor \ .
     /// Normally to be used after ChemicalEngine();
     /// @param dch_json The json string containing the definition of the chemical system
     /// @param ipm_json The json string containing the parameters and settings for GEMS3K IPM-3 algorithm
     /// @param dbr_json The json string containing the input node composition of the chemical system
-    auto initializeJstr(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void;
+    auto initializeFromJsonStrings(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void;
 
     /// Reads another DBR file (with input system composition, T,P etc.) \ . The DBR file must be compatible with
     /// the currently loaded IPM and DCH files (see description of initialize() function call).
     /// @param Null-terminated (C) string containing a full path to the input DBR disk file.
-    auto readDbrFile(std::string filename) -> void;
+    auto readDbrFromFile(std::string filename) -> void;
 
     /// Reads another DBR object (with input system composition, T,P etc.) from JSON string \ . The DBR file 
     /// must be compatible with the currently loaded IPM and DCH objects (see description of initialize() function call).
     /// @param Null-terminated (C) string containing a full path to the input DBR disk file.
-    auto readDbrJstr(std::string& dbr_json) -> void;
+    auto readDbrFromJsonString(std::string& dbr_json) -> void;
 
     /// Writes a DBR file (normally after some changes via API and GEM calculation). 
     /// @param Null-terminated (C) string containing a full path to the output DBR disk file.
-    auto writeDbrFile(std::string filename) -> void;
+    auto writeDbrToFile(std::string filename) -> void;
 
     /// Returns a DBR object (normally after some changes via API and GEM calculation) as JSON string. \ .
     /// In case of error raises an exception or returns empty string. 
-    auto writeDbrJstr(std::string& dbr_json) -> void;
+    auto writeDbrToJsonString() -> const std::string;
 
     /// Return the number of elements.
     auto numElements() const -> Index;
