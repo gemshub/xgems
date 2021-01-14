@@ -146,7 +146,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->node = std::unique_ptr<TNode>(new TNode);
 
     // Initialize the GEMS `node` member
-    int res = pimpl->node->GEM_init(filename.c_str());
+    long int res = pimpl->node->GEM_init(filename.c_str());
 
     // Check if there was a system error during node initialization
     if(res == -1)
@@ -205,7 +205,7 @@ auto ChemicalEngine::initializeJstr(std::string& dch_json, std::string& ipm_json
     pimpl->node = std::unique_ptr<TNode>(new TNode);
 
     // Initialize the GEMS `node` member
-    int res = pimpl->node->GEM_init( dch_json, ipm_json, dbr_json );
+    long int res = pimpl->node->GEM_init( dch_json, ipm_json, dbr_json );
 
     // Check if there was a system error during node initialization
     if(res == -1)
