@@ -50,31 +50,63 @@ int getJsonFile( const string path, string& str )
 
 int main(int argc, char **argv)
 {
-    //  Testing with input of keyvalue GEMS3K files
-    // ChemicalEngine chemicalengine("resources/CalciteIC-dat.lst");
+    // Testing with input of small keyvalue GEMS3K files
+    // ChemicalEngine chemicalengine("resources/CalciteIC/CalciteIC-dat.lst");
     // Vector b = chemicalengine.elementAmounts();
     // std::cout << "Vector b: " << b.transpose() << std::endl;
     // std::cout << chemicalengine << std::endl;
 
-    // Testing with input of JSON GEMS3K files
-    // ChemicalEngine chemicalengine2("resources/CemHyds-dat.lst");
-    // Vector b2 = chemicalengine2.elementAmounts()
-    // std::cout << "\nVector b2: " << b2.transpose() << std::endl;
-    // std::cout << chemicalengine2 << std::endl;
-    // Test input from JSON documents
+    // Testing with input of large keyvalue GEMS3K files
+    // ChemicalEngine chemicalengine1("resources/CemGEMS-keyvalue/CemHyds-dat.lst");
+    // Vector b1 = chemicalengine1.elementAmounts();
+    // std::cout << "\nVector b1: " << b1.transpose() << std::endl;
+    // std::cout << chemicalengine1 << std::endl;
+    
+    Test of input from JSON GEMS3K files
+    ChemicalEngine chemicalengine2("resources/CemGEMS-formatted/CemHyds-dat.lst");
+//    ChemicalEngine chemicalengine2("resources/CemGEMS-condensed/CemHyds-dat.lst");
+    Vector b2 = chemicalengine2.elementAmounts();
+    std::cout << "\nVector b2: " << b2.transpose() << std::endl;
+    std::cout << chemicalengine2 << std::endl;
 
     // Testing= with input from JSON strings
-    ChemicalEngine engine;
-    
+    ChemicalEngine engine;   
     int f1, f2, f3; 
     std::string dch_json = "";
-    f1 = getJsonFile( "resources/dch_test.json", dch_json );
-
     std::string ipm_json = "";
-    f2 = getJsonFile( "resources/ipm_test.json", ipm_json );
-
     std::string dbr_json = "";
-    f3 = getJsonFile( "resources/dbr_test.json", dbr_json );
+
+//    f1 = getJsonFile( "resources/Test-json-strings/dch_test.json", dch_json );
+//    f2 = getJsonFile( "resources/Test-json-strings/ipm_test.json", ipm_json );
+//    f3 = getJsonFile( "resources/Test-json-strings/dbr_test.json", dbr_json );
+
+//    f1 = getJsonFile( "resources/Kaolinite-formatted/pHtitrKaS-dch.json", dch_json );
+//    f2 = getJsonFile( "resources/Kaolinite-formatted/pHtitrKaS-ipm.json", ipm_json );
+//    f3 = getJsonFile( "resources/Kaolinite-formatted/pHtitrKaS-dbr-0-0000.json", dbr_json );
+
+//    f1 = getJsonFile( "resources/Kaolinite-condensed/pHtitrKaS-dch.json", dch_json );
+//    f2 = getJsonFile( "resources/Kaolinite-condensed/pHtitrKaS-ipm.json", ipm_json );
+//    f3 = getJsonFile( "resources/Kaolinite-condensed/pHtitrKaS-dbr-0-0000.json", dbr_json );
+
+//    f1 = getJsonFile( "resources/Export-formatted/Export-dch.json", dch_json );
+//    f2 = getJsonFile( "resources/Export-formatted/Export-ipm.json", ipm_json );  
+//    f3 = getJsonFile( "resources/Export-formatted/Export-dbr-0-0000.json", dbr_json ); 
+
+    f1 = getJsonFile( "resources/Export-condensed/Export-dch.json", dch_json );
+    f2 = getJsonFile( "resources/Export-condensed/Export-ipm.json", ipm_json );
+    f3 = getJsonFile( "resources/Export-condensed/Export-dbr-0-0000.json", dbr_json );
+
+//    f1 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-dch.json", dch_json );
+//    f2 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-ipm.json", ipm_json );
+//    f3 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-dbr-0-0000.json", dbr_json );
+    
+    // f1 = getJsonFile( "resources/CemGEMS-condensed/CemHyds-dch.json", dch_json );
+    // f2 = getJsonFile( "resources/CemGEMS-condensed/CemHyds-ipm.json", ipm_json );
+    // f3 = getJsonFile( "resources/CemGEMS-condensed/CemHyds-dbr-0-0000.json", dbr_json );
+
+//    f1 = getJsonFile( "resources/GEMSW-from-DB/GEMSW-dch.json", dch_json );
+//    f2 = getJsonFile( "resources/GEMSW-from-DB/GEMSW-ipm.json", ipm_json );
+//    f3 = getJsonFile( "resources/GEMSW-from-DB/GEMSW-dbr-0-0000.json", dbr_json );
     
     if( f1 == 0 && f2 == 0 && f3 == 0 )
     {
