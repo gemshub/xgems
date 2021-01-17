@@ -56,18 +56,18 @@ int main(int argc, char **argv)
     // std::cout << "Vector b: " << b.transpose() << std::endl;
     // std::cout << chemicalengine << std::endl;
 
-    // Testing with input of large keyvalue GEMS3K files
+//  Testing with input of large keyvalue GEMS3K files
     // ChemicalEngine chemicalengine1("resources/CemGEMS-keyvalue/CemHyds-dat.lst");
     // Vector b1 = chemicalengine1.elementAmounts();
     // std::cout << "\nVector b1: " << b1.transpose() << std::endl;
     // std::cout << chemicalengine1 << std::endl;
     
-    Test of input from JSON GEMS3K files
-    ChemicalEngine chemicalengine2("resources/CemGEMS-formatted/CemHyds-dat.lst");
-//    ChemicalEngine chemicalengine2("resources/CemGEMS-condensed/CemHyds-dat.lst");
-    Vector b2 = chemicalengine2.elementAmounts();
-    std::cout << "\nVector b2: " << b2.transpose() << std::endl;
-    std::cout << chemicalengine2 << std::endl;
+    // Test of input from JSON GEMS3K files
+//    ChemicalEngine chemicalengine2("resources/CemGEMS-formatted/CemHyds-dat.lst");
+    // ChemicalEngine chemicalengine2("resources/CemGEMS-condensed/CemHyds-dat.lst");
+    // Vector b2 = chemicalengine2.elementAmounts();
+    // std::cout << "\nVector b2: " << b2.transpose() << std::endl;
+    // std::cout << chemicalengine2 << std::endl;
 
     // Testing= with input from JSON strings
     ChemicalEngine engine;   
@@ -92,13 +92,13 @@ int main(int argc, char **argv)
 //    f2 = getJsonFile( "resources/Export-formatted/Export-ipm.json", ipm_json );  
 //    f3 = getJsonFile( "resources/Export-formatted/Export-dbr-0-0000.json", dbr_json ); 
 
-    f1 = getJsonFile( "resources/Export-condensed/Export-dch.json", dch_json );
-    f2 = getJsonFile( "resources/Export-condensed/Export-ipm.json", ipm_json );
-    f3 = getJsonFile( "resources/Export-condensed/Export-dbr-0-0000.json", dbr_json );
+    // f1 = getJsonFile( "resources/Export-condensed/Export-dch.json", dch_json );
+    // f2 = getJsonFile( "resources/Export-condensed/Export-ipm.json", ipm_json );
+    // f3 = getJsonFile( "resources/Export-condensed/Export-dbr-0-0000.json", dbr_json );
 
-//    f1 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-dch.json", dch_json );
-//    f2 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-ipm.json", ipm_json );
-//    f3 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-dbr-0-0000.json", dbr_json );
+   f1 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-dch.json", dch_json );
+   f2 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-ipm.json", ipm_json );
+   f3 = getJsonFile( "resources/CemGEMS-formatted/CemHyds-dbr-0-0000.json", dbr_json );
     
     // f1 = getJsonFile( "resources/CemGEMS-condensed/CemHyds-dch.json", dch_json );
     // f2 = getJsonFile( "resources/CemGEMS-condensed/CemHyds-ipm.json", ipm_json );
