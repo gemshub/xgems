@@ -203,7 +203,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
 }
 
 
-auto ChemicalEngine::initializeFromJsonStrings(std::string dch_json, std::string ipm_json, std::string dbr_json) -> void
+auto ChemicalEngine::initializeFromJsonStrings( std::string dch_json, std::string ipm_json, std::string dbr_json) -> void
 {
     // pimpl->io_mode = "json";
     // Allocate memory for the GEMS `node` member
@@ -246,7 +246,7 @@ auto ChemicalEngine::readDbrFromFile(std::string filename) -> void
                 "Make sure the provided file path exists relative to the working directory.");
 }
 
-auto ChemicalEngine::readDbrFromJsonString(std::string& dbr_json) -> void
+auto ChemicalEngine::readDbrFromJsonString( std::string dbr_json) -> void
 {
     // Reads another dbr file with input system composition
     long int res = pimpl->node->GEM_read_dbr( dbr_json, true );
