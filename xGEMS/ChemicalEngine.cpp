@@ -203,7 +203,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
 }
 
 
-auto ChemicalEngine::initializeFromJsonStrings(std::string& dch_json, std::string& ipm_json, std::string& dbr_json) -> void
+auto ChemicalEngine::initializeFromJsonStrings(std::string dch_json, std::string ipm_json, std::string dbr_json) -> void
 {
     // pimpl->io_mode = "json";
     // Allocate memory for the GEMS `node` member
