@@ -373,21 +373,14 @@ auto ChemicalEngine::setSpeciesUpperLimits(VectorConstRef n) -> void
 {
 
     // Updates all the specied upper limits
-    long int jj;
-    double bound = 1e6;
-    for(jj = 0; jj <numSpecies(); jj++)
-      bound = (n[jj] < 0.0? 1e6: n[jj]);
-      pimpl->node->pCNode()->dul[jj] = bound;
+    for(Index jj = 0; jj <numSpecies(); jj++)
+      pimpl->node->Set_dul(jj,n[jj]);
 }
 auto ChemicalEngine::setSpeciesLowerLimits(VectorConstRef n) -> void
 {
-
     // Updates all the specied lower limits
-    long int jj;
-    double bound = 0.0;
-    for(jj = 0; jj <numSpecies(); jj++)
-      bound = (n[jj] < 0.0? 0.0: n[jj]);
-      pimpl->node->pCNode()->dll[jj] = bound;
+    for(Index jj = 0; jj <numSpecies(); jj++)
+      pimpl->node->Set_dll(jj,n[jj]);
 }
 
 
