@@ -195,6 +195,12 @@ public:
     /// if @param amount < 0 then resets to default 0 
     auto setSpeciesLowerLimit(Index ispecies, double amount) -> void;
 
+    /// set all the upper limits for the species dul (in units of mol)
+    auto setSpeciesUpperLimits(VectorConstRef n) -> void;
+    /// set all the lower limits for the species dll (in units of mol)
+    auto setSpeciesLowerLimits(VectorConstRef n) -> void;
+
+  
     /// Sets pressure to @param P (in Pa) and temperature to @param T (in K)
     /// in ChemicalEngine instance without computing the equilibrium state
     /// Returns false if P.T was reset o.k., or true if P or T is out of 
@@ -252,6 +258,11 @@ public:
 
     /// Return the amount of the species with name @param name (in units of mol)
     auto speciesAmount(std::string name) const -> double;
+
+    /// Return the upper limits for the species dul (in units of mol)
+    auto speciesUpperLimits() const -> VectorConstRef;
+    /// Return the lower limits for the species dll (in units of mol)
+    auto speciesLowerLimits() const -> VectorConstRef;
 
     /// Return the molalities of the species. Aquatic systems only (assuming 
     /// the aqueous phase is the first one and H2O-solvent is the last species in it)

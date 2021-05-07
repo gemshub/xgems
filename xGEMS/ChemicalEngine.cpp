@@ -369,6 +369,22 @@ auto ChemicalEngine::setSpeciesLowerLimit(Index ispecies, double amount) -> void
     pimpl->node->pCNode()->dll[ispecies] = bound;
 }
 
+auto ChemicalEngine::setSpeciesUpperLimits(VectorConstRef n) -> void
+{
+
+    // Updates all the specied upper limits
+    for(Index jj = 0; jj <numSpecies(); jj++)
+      pimpl->node->Set_dul(jj,n[jj]);
+}
+auto ChemicalEngine::setSpeciesLowerLimits(VectorConstRef n) -> void
+{
+    // Updates all the specied lower limits
+    for(Index jj = 0; jj <numSpecies(); jj++)
+      pimpl->node->Set_dll(jj,n[jj]);
+}
+
+
+
 auto ChemicalEngine::indexElement(std::string element) const -> Index
 {
     const Index size = numElements();
@@ -674,6 +690,17 @@ auto ChemicalEngine::speciesAmounts() const -> VectorConstRef
 {
     return Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
 }
+
+auto ChemicalEngine::speciesUpperLimits() const -> VectorConstRef
+{
+    return Vector::Map(pimpl->node->pCNode()->dul, numSpecies());
+}
+auto ChemicalEngine::speciesLowerLimits() const -> VectorConstRef
+{
+    return Vector::Map(pimpl->node->pCNode()->dll, numSpecies());
+}
+
+
 
 // Aquatic systems only (assuming aqueous phase is the first one and H2O-solvent 
 // is the last species in it)
