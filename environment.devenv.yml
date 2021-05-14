@@ -10,8 +10,9 @@ dependencies:
   - git
   - ccache  # [unix]
   - pybind11
- # - eigen
+  - eigen
   - pytest
+  - gems3k
   - python={{ python_version }}
 
 environment:

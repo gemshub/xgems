@@ -248,7 +248,7 @@ public:
 
     /// Return the amounts of the elements in a group of species.
     /// @param ispecies The vector of indices of the species.
-    auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector;
+    //auto elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector; // commented out until Eigen 3.4 is released on conda forge
 
     /// Return the amounts of the species (in units of mol)
     auto speciesAmounts() const -> VectorConstRef;
