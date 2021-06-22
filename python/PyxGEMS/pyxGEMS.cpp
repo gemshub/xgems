@@ -15,13 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-// pybind11 includes
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
+#include "pyxGEMS.hpp"
 
-void exportChemicalEngine(py::module& m);
-
-PYBIND11_MODULE(xgems, m)
+PYBIND11_MODULE(PyxGEMS, m)
 {
     exportChemicalEngine(m);
 }

@@ -26,8 +26,21 @@ git clone https://bitbucket.org/gems4/xgems.git .
 ### How to build xGEMS library and examples
 
 xGEMS uses GEMS3K and Eigen3 as external projects. These are downloaded and compiled together with xGEMS during the make step. 
+For compiling xGEMS python bindings you need a recent version of pybind11 installed (including development headers, 2.2.0 is the minimum version required) and Eigen library ([v3.3.9](https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz)). 
 
-For compiling xGEMS python bindings you need a recent version of pybind11 installed (including development headers, 2.2.0 is the minimum version required). In case your distribution does not provide pybind11 development packages, or the version is too old, you can install it as follows:
+For eigen3 download [v3.3.9](https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz) unpack the archive and install it as follows:
+
+
+~~~
+cd /eigen-3.3.9
+mkdir build
+cd build
+cmake .. 
+make install
+~~~
+
+For pybind11. In case your distribution does not provide pybind11 development packages, or the version is too old, you can install it as follows:
+
 
 ~~~
 mkdir -p ~/code

@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 # Set the name of the project
-project(xGEMS)
+project(xGEMS VERSION 1.0.0 LANGUAGES CXX)
 
 # Set the cmake module path of the project
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -86,7 +86,14 @@ endif()
 
 # Set the list of compiler flags for MSVC compiler
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    add_compile_options("/W0 -D_SCL_SECURE_NO_WARNINGS /MP4")
+    add_compile_options(
+        /D_SCL_SECURE_NO_WARNINGS
+        /D_CRT_SECURE_NO_WARNINGS=1
+        /MP4
+        /EHsc
+        /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
+        /DNOMINMAX
+    )
 endif()
 
 # Find Eigen library and include its directory
@@ -130,56 +137,6 @@ include_directories(${THIRDPARTY_INSTALL_PREFIX}/include)
 # Set the link directories for third-party libraries
 link_directories(${THIRDPARTY_INSTALL_PREFIX}/lib)
 
-# Include the ExternalProject module
-include(ExternalProject)
-
-# Set the common cmake arguments to all external projects
-set(GEMS3K_CMAKE_ARGS
-    -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
-    -DCMAKE_INSTALL_PREFIX=${THIRDPARTY_INSTALL_PREFIX}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-#    -DCMAKE_C_FLAGS=${CFLAGS}
-#    -DCMAKE_CXX_FLAGS=${CXXFLAGS}
-#    -DCMAKE_INSTALL_INCLUDEDIR=include
-#    -DCMAKE_INSTALL_LIBDIR=lib
-#    -DCMAKE_INSTALL_BINDIR=bin
-#    -DBUILD_SHARED_LIBS=OFF
-     # Disables the cmake warning message `Manually-specified
-     # variables were not used by the project` because of
-     # unused arguments above
-    --no-warn-unused-cli
-    )
-
-# Clone GEMS3K from git repository and build it 
-ExternalProject_Add(EXTERNAL_PROJECT_GEMS3K
-    PREFIX build
-#    GIT_REPOSITORY git@bitbucket.org:gems4/gems3k.git
-    GIT_REPOSITORY https://bitbucket.org/gems4/gems3k.git
-    GIT_TAG trunk
-#    GIT_TAG arango    
-    GIT_SHALLOW TRUE
-    SOURCE_DIR build/src/gems3k
-    BINARY_DIR build/src/gems3k-build
-    STAMP_DIR build/src/gems3k-stamp
-    CMAKE_ARGS ${GEMS3K_CMAKE_ARGS}
-    )
-
- set(EIGEN_CMAKE_ARGS
-    -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
-    -DCMAKE_INSTALL_PREFIX=${THIRDPARTY_INSTALL_PREFIX}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    -DPYBIND11_TEST=OFF
-    )
-    # Clone pybind11 from git repository and build it 
- ExternalProject_Add(EXTERNAL_PROJECT_EIGEN
-    PREFIX build
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG before-git-migration
-    GIT_SHALLOW TRUE
-    SOURCE_DIR build/src/eigen
-   BINARY_DIR build/src/eigen-build
-    STAMP_DIR build/src/eigen-stamp
-    CMAKE_ARGS ${EIGEN_CMAKE_ARGS})
 
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)
@@ -204,6 +161,12 @@ if(XGEMS_BUILD_TESTS)
 else()
     add_subdirectory(tests EXCLUDE_FROM_ALL)
 endif()
+
+# Build python wraper
+if(XGEMS_BUILD_PYTHON)
+    add_subdirectory(python)
+endif()
+
 
 # Add target "demos" for manual building of demos, as `make demos`, if XGEMS_BUILD_DEMOS is OFF
 add_custom_target(demos
