@@ -666,15 +666,15 @@ auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> Vector
     return res;
 }
 
-//auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector
-//{
-//    MatrixConstRef W = formulaMatrix();
-//    VectorConstRef n = speciesAmounts();
-//    MatrixConstRef Wp = W(all, ispecies);
-//    VectorConstRef np = n(ispecies);
-//    Vector res = Wp * np;
-//    return res;
-//}
+auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector
+{
+    MatrixConstRef W = formulaMatrix();
+    VectorConstRef n = speciesAmounts();
+    MatrixConstRef Wp = W(all, ispecies);
+    VectorConstRef np = n(ispecies);
+    Vector res = Wp * np;
+    return res;
+}
 
 auto ChemicalEngine::speciesAmount(Index ispecies) const -> double
 {
