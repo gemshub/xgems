@@ -383,7 +383,14 @@ auto ChemicalEngine::setSpeciesLowerLimits(VectorConstRef n) -> void
       pimpl->node->Set_dll(jj,n[jj]);
 }
 
-
+auto ChemicalEngine::setStandardMolarGibbsEnergy(std::string name, double value) -> void
+{
+    auto ispecies = indexSpecies(name);
+    double TK = pimpl->node->cTK();
+    double P = pimpl->node->cP();
+    auto idc = pimpl->node->DC_xDB_to_xCH( ispecies );
+    pimpl->node->Set_DC_G0(idc, P, TK,  value);  
+}
 
 auto ChemicalEngine::indexElement(std::string element) const -> Index
 {

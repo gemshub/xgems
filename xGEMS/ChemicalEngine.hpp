@@ -195,6 +195,9 @@ public:
     /// if @param amount < 0 then resets to default 0 
     auto setSpeciesLowerLimit(Index ispecies, double amount) -> void;
 
+    /// Set the species @param name StandardMolarGibbsEnergy @param value
+    auto setStandardMolarGibbsEnergy(std::string name, double value) -> void;
+
     /// set all the upper limits for the species dul (in units of mol)
     auto setSpeciesUpperLimits(VectorConstRef n) -> void;
     /// set all the lower limits for the species dll (in units of mol)
