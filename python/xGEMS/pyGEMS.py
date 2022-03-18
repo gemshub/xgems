@@ -246,6 +246,18 @@ class GEMS(object):
             out[name]=speamt[self.species_names.index(name)]
         return out
 
+    @property
+    def species_ln_activities(self):
+        """
+        returns ln activities of all chemical species (DCs) added 
+        15.03.2022 by DK
+        """
+        speciesLnActivities= self.gem.lnActivities()
+        specLnActivities = {}
+        for i in range(self.nspecies):
+            specLnActivities[self.species_names[i]]=speciesLnActivities[i]
+        return specLnActivities
+
     def phase_species_moles(self, phase_symbol):
         """
         returns species in phase in moles
