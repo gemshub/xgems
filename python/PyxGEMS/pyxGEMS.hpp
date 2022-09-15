@@ -39,6 +39,7 @@ void exportChemicalEngine(py::module& m)
     auto setSpeciesLowerLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double)> (&ChemicalEngine::setSpeciesLowerLimit);
     auto setSpeciesLowerLimit2 = static_cast<void (ChemicalEngine::*)(Index, double)> (&ChemicalEngine::setSpeciesLowerLimit);
 
+    m.def("update_loggers", &update_loggers);
     py::class_<ChemicalEngine>(m, "ChemicalEngine")
         .def(py::init<>())
         .def(py::init<std::string>())
