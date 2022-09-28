@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 # Set the name of the project
-project(xGEMS VERSION 1.0.2 LANGUAGES CXX)
+project(xGEMS VERSION 1.0.4 LANGUAGES CXX)
 
 # Set the cmake module path of the project
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -102,9 +102,9 @@ endif()
 
 # Find the Python interpreter
 if(XGEMS_BUILD_PYTHON)
-    if(NOT PYBIND11_PYTHON_VERSION)
-        set(PYBIND11_PYTHON_VERSION 2.7)
-    endif()
+    #if(NOT PYBIND11_PYTHON_VERSION)
+    #    set(PYBIND11_PYTHON_VERSION 2.7)
+    #endif()
     
     #find_package(pybind11 2.0.0 REQUIRED)
     find_package(pybind11 2.2.0 REQUIRED)

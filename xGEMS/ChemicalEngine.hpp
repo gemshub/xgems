@@ -28,6 +28,8 @@
 
 namespace xGEMS {
 
+void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level);
+
 /// A type that describes the options for ChemicalEngine
 struct ChemicalEngineOptions
 {
