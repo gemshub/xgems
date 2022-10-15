@@ -19,10 +19,17 @@ add_library(XGEMS_OBJECT OBJECT ${HPP_FILES} ${CPP_FILES})
 #message(${CMAKE_CURRENT_BINARY_DIR}/../thirdparty/install/include/eigen3)
 #include_directories(${CMAKE_CURRENT_BINARY_DIR}/../thirdparty/install/include/eigen3)
 
+#target_link_libraries(XGEMS_OBJECT
+#    PUBLIC ChemicalFun::ChemicalFun
+#    PUBLIC ThermoFun::ThermoFun
+#    PRIVATE spdlog::spdlog
+#    PRIVATE nlohmann_json::nlohmann_json
+#)
+
 # Check if a shared library must be built
 if(XGEMS_BUILD_SHARED_LIBS)
     add_library(XGEMS_SHARED SHARED $<TARGET_OBJECTS:XGEMS_OBJECT>)
-    target_link_libraries(XGEMS_SHARED GEMS3K-static)
+    target_link_libraries(XGEMS_SHARED GEMS3K)
     set_target_properties(XGEMS_SHARED PROPERTIES OUTPUT_NAME xGEMS)
     install(TARGETS XGEMS_SHARED DESTINATION "lib" COMPONENT libraries)
 endif()

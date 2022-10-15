@@ -33,6 +33,7 @@ option(XGEMS_BUILD_PYTHON "Build the python bindings." ON)
 option(XGEMS_BUILD_DEMOS  "Build demos." OFF)
 option(XGEMS_BUILD_DOCS   "Build documentation." OFF)
 option(XGEMS_BUILD_TESTS  "Build tests." OFF)
+option(XGEMS_USE_THERMOFUN "Use ThermoFun" ON)
 
 # Modify the XGEMS_BUILD_X variables according to XGEMS_BUILD_ALL
 if(XGEMS_BUILD_ALL MATCHES ON)
@@ -137,6 +138,8 @@ include_directories(${THIRDPARTY_INSTALL_PREFIX}/include)
 # Set the link directories for third-party libraries
 link_directories(${THIRDPARTY_INSTALL_PREFIX}/lib)
 
+# Find xGEMS dependencies
+include(xGEMSFindDeps)
 
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)
@@ -165,6 +168,11 @@ endif()
 # Build python wraper
 if(XGEMS_BUILD_PYTHON)
     add_subdirectory(python)
+endif()
+
+if(XGEMS_USE_THERMOFUN MATCHES ON)
+  add_definitions(-DUSE_THERMOFUN)
+  add_definitions(-DUSE_THERMO_LOG)
 endif()
 
 
