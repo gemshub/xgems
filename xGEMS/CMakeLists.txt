@@ -44,6 +44,17 @@ if(XGEMS_BUILD_STATIC_LIBS)
     install(TARGETS XGEMS_STATIC DESTINATION "lib" COMPONENT libraries)
 endif()
 
+
+# Install debug symbols
+if(MSVC)
+    install(
+        FILES $<TARGET_PDB_FILE:xgems>
+        DESTINATION ${CMAKE_INSTALL_BINDIR}
+        COMPONENT libraries
+        OPTIONAL
+    )
+endif()
+
 # Create an install target for the header files
 install(DIRECTORY ${XGEMS_SOURCE_DIR}
     DESTINATION "include" COMPONENT headers
