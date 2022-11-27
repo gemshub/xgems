@@ -46,14 +46,14 @@ endif()
 
 
 # Install debug symbols
-if(MSVC)
-    install(
-        FILES $<TARGET_PDB_FILE:xGEMS>
-        DESTINATION ${CMAKE_INSTALL_BINDIR}
-        COMPONENT libraries
-        OPTIONAL
-    )
-endif()
+#if(MSVC)
+#    install(
+#        FILES $<TARGET_PDB_FILE:xGEMS>
+#        DESTINATION ${CMAKE_INSTALL_BINDIR}
+#        COMPONENT libraries
+#        OPTIONAL
+#    )
+#endif()
 
 # Create an install target for the header files
 install(DIRECTORY ${XGEMS_SOURCE_DIR}

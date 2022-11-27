@@ -58,34 +58,34 @@ jobs:
 #      call python -c "import xgems"
 #     displayName: Test
 
-- job: win64_VS
-  pool:
-    vmImage: 'windows-2019'
-  strategy:
-    matrix:
-      Python39:
-        python.version: '3.9'
-
-  steps:
-  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-    displayName: Add conda to PATH
-
-  - script: |
-      conda config --system --set always_yes yes --set changeps1 no
-      conda config --system --append channels conda-forge
-      conda install -n base conda-devenv
-      conda update -q conda
-      conda info -a
-      conda devenv
-      call activate xgems
-    displayName: Create Anaconda environment
-
-  - task: BatchScript@1
-    inputs:
-      filename: 'ci/pipelines/installVS.bat'
-
-  - script: |
-     call activate xgems
-     conda list
-     call python -c "import xgems"
-    displayName: Test
+#- job: win64_VS
+#  pool:
+#    vmImage: 'windows-2019'
+#  strategy:
+#    matrix:
+#      Python39:
+#        python.version: '3.9'
+#
+#  steps:
+#  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+#    displayName: Add conda to PATH
+#
+#  - script: |
+#      conda config --system --set always_yes yes --set changeps1 no
+#      conda config --system --append channels conda-forge
+#      conda install -n base conda-devenv
+#      conda update -q conda
+#      conda info -a
+#      conda devenv
+#      call activate xgems
+#    displayName: Create Anaconda environment
+#
+#  - task: BatchScript@1
+#    inputs:
+#      filename: 'ci/pipelines/installVS.bat'
+#
+#  - script: |
+#     call activate xgems
+#     conda list
+#     call python -c "import xgems"
+#    displayName: Test
