@@ -13,6 +13,8 @@ endif()
 # Compile the C++ source code into object files
 add_library(XGEMS_OBJECT OBJECT ${HPP_FILES} ${CPP_FILES})
 
+target_compile_definitions(XGEMS_OBJECT PUBLIC -DSPDLOG_FMT_EXTERNAL=yes) 
+
 # Specify the GEMS3K dependency to ensure proper build sequence
 #add_dependencies(XGEMS_OBJECT EXTERNAL_PROJECT_GEMS3K EXTERNAL_PROJECT_EIGEN)
 

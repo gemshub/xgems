@@ -1,9 +1,13 @@
 name: xgems
 
-{% set python_version = os.environ.get("PY_VER", "3.7") %}
+{% set python_version = os.environ.get("PY_VER", "3.9") %}
+
+channels:
+  - conda-forge
 
 dependencies:
-  - gxx_linux-64=7.3.0  # [linux]
+  - setuptools=59.7.0
+  - gxx_linux-64  # [linux]
   - cmake>=3.13
   - make
   - git
@@ -11,7 +15,8 @@ dependencies:
   - pybind11
   - eigen
   - pytest
-  - gems3k=4.3.1
+  - gems3k=4.3.3
+  - thermofun=0.4.1
   - python={{ python_version }}
 
 environment:
