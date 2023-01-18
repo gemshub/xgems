@@ -27,6 +27,7 @@
 #define NODEARRAYLEVEL
 #include <GEMS3K/node.h>
 #include <GEMS3K/gems3k_impex.h>
+#include <GEMS3K/jsonconfig.h>
 
 #define NODE  pimpl->node
 #define CSD   pimpl->node->pCSD()
@@ -35,7 +36,7 @@ namespace xGEMS {
 
 void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level)
 {
-    gems3k_update_loggers(use_cout, logfile_name, log_level);
+    gemsSettings().gems3k_update_loggers(use_cout, logfile_name, log_level);
 }
 
 struct ChemicalEngine::Impl

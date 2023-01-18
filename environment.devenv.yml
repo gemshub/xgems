@@ -15,8 +15,8 @@ dependencies:
   - pybind11
   - eigen
   - pytest
-  - gems3k=4.3.3
-  - thermofun=0.4.1
+  - gems3k>=4.3.4
+  - thermofun>=0.4.1
   - python={{ python_version }}
 
 environment:
