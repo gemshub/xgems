@@ -58,6 +58,13 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     set(XGEMS_BUILD_SHARED_LIBS OFF)
 endif()
 
+# Used into conda only
+if(DEFINED ENV{CONDA_PREFIX})
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" ON)
+else()
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" OFF)
+endif()
+
 # Set the default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to 'Release' as none was specified.")

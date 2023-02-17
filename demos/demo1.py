@@ -18,7 +18,7 @@
 from xgems import *
 from numpy import *
 
-engine = ChemicalEngine("resources/CalciteBC-dat.lst")
+engine = ChemicalEngine("resources/CalciteBC/CalciteBC-dat.lst")
 
 T = engine.temperature()
 P = engine.pressure()
