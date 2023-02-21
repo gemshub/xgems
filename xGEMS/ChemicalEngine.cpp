@@ -24,7 +24,7 @@
 
 // GEMS3K includes
 #define IPMGEMPLUGIN
-#define NODEARRAYLEVEL
+//#define NODEARRAYLEVEL
 #include <GEMS3K/node.h>
 #include <GEMS3K/gems3k_impex.h>
 #include <GEMS3K/jsonconfig.h>
@@ -187,7 +187,7 @@ auto ChemicalEngine::initialize(std::string filename) -> void
     pimpl->io_mode =   generator_data.files_mode();
 
     // Allocate memory for the GEMS `node` member
-    pimpl->node = std::unique_ptr<TNode>(new TNode);
+    pimpl->node.reset(new TNode());
 
     // Initialize the GEMS `node` member
     long int res = pimpl->node->GEM_init(filename.c_str());
@@ -212,7 +212,7 @@ auto ChemicalEngine::initializeFromJsonStrings( std::string dch_json, std::strin
 {
     // pimpl->io_mode = "json";
     // Allocate memory for the GEMS `node` member
-    pimpl->node = std::unique_ptr<TNode>(new TNode);
+    pimpl->node.reset(new TNode());
 
     // Initialize the GEMS `node` member
     long int res = pimpl->node->GEM_init( dch_json, ipm_json, dbr_json );
@@ -257,7 +257,7 @@ auto ChemicalEngine::readDbrFromJsonString( std::string dbr_json) -> void
     long int res = pimpl->node->GEM_read_dbr( dbr_json, true );
     // res = 1;    // Temporary plug
 
-        // Check if there was a system error during node initialization
+    // Check if there was a system error during node initialization
     if(res == -1)
         throw std::runtime_error("\n*** ERROR ***\n"
             "Could not process the provided DBR JSON string.\n"
@@ -567,7 +567,7 @@ auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
         pimpl->node->Set_bIC(i, b[i]);
 
     // Solve the equilibrium problem with gems
-    pimpl->node->pCNode()->NodeStatusCH = 
+    pimpl->node->pCNode()->NodeStatusCH =
        pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
     auto valueOutputGem = pimpl->node->GEM_run(false);
 
