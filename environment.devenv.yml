@@ -14,6 +14,7 @@ dependencies:
   - pybind11
   - eigen
   - pytest
+  - thermofun>=0.4.3
   - gems3k>=4.3.5
   - python
 
