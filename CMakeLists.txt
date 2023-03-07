@@ -82,19 +82,14 @@ endif()
 #set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=thread")
 #set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=thread")
 
-#add_compile_options(-std=c++17)
-
 # Set the list of compiler flags for GNU compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-#   add_compile_options(-std=c++11 -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
-#    add_compile_options(-Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
-add_compile_options( -pthread -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-variadic-macros -Wno-deprecated)
+   add_compile_options( -pthread -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Set the list of compiler flags for Clang compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
    add_compile_options(-Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
-#  add_compile_options(-std=c++11 -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Set the list of compiler flags for Intel compiler
@@ -145,7 +140,6 @@ set(XGEMS_TESTS_DIR  ${CMAKE_SOURCE_DIR}/tests)
 include_directories(${CMAKE_SOURCE_DIR})
 #include_directories(${EIGEN3_INCLUDE_DIR})
 
-
 # Set the local directory where the third-party libraries are installed
 set(THIRDPARTY_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/thirdparty/install)
 
@@ -165,7 +159,6 @@ if(XGEMS_USE_THERMOFUN MATCHES ON)
   add_definitions(-DUSE_THERMOFUN)
   add_definitions(-DUSE_THERMO_LOG)
 endif()
-
 
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)

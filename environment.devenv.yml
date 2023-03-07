@@ -14,7 +14,7 @@ dependencies:
   - pybind11
   - eigen
   - pytest
-  - gems3k>=4.3.4
+  - gems3k>=4.3.5
   - python
 
 environment:

@@ -1,11 +1,3 @@
-find_package(GEMS3K REQUIRED)
-if(NOT GEMS3K_FOUND)
-   message(FATAL_ERROR "GEMS3K library not found")
-else()
-   message(STATUS "Found GEMS3K v${GEMS3K_VERSION}")
-endif()
-
-
 if(XGEMS_USE_THERMOFUN MATCHES ON)
   find_package(ThermoFun REQUIRED)
   if(NOT ThermoFun_FOUND)
@@ -32,4 +24,11 @@ if(USE_SPDLOG_PRECOMPILED)
        message(STATUS "Found spdlog v${spdlog_VERSION}")
     endif()
   endif()
+endif()
+
+find_package(GEMS3K REQUIRED)
+if(NOT GEMS3K_FOUND)
+   message(FATAL_ERROR "GEMS3K library not found")
+else()
+   message(STATUS "Found GEMS3K v${GEMS3K_VERSION}")
 endif()
