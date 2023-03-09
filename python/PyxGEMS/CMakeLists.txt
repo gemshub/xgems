@@ -2,7 +2,7 @@
 file(GLOB_RECURSE HEADER_FILES *.hpp)
 file(GLOB_RECURSE SOURCE_FILES *.cpp)
 
-# Include the ThermoFun/python directory
+# Include the xGEMS/python directory
 include_directories(${PROJECT_SOURCE_DIR}/python)
 include_directories(${CONDA_AWARE_PREFIX}/include/eigen3)
 include_directories(/usr/local/include/eigen3)

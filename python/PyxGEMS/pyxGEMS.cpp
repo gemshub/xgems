@@ -19,6 +19,6 @@
 
 PYBIND11_MODULE(PyxGEMS, m)
 {
-    xGEMS::update_loggers(false, "xGEM2MT.log", 6);
+    xGEMS::update_loggers(false, "xGEMS.log", 3);
     exportChemicalEngine(m);
 }
