@@ -7,7 +7,7 @@ import os,sys
 mygemspath = '../build/lib'#change this to path where xgems is compiled. If directory structure is same as in repo dont change this
 sys.path.append(mygemspath)
 import xgems
-input_file =os.path.join('resources','CalciteIC-dat.lst')
+input_file =os.path.join('resources','CalciteIC/CalciteIC-dat.lst')
 gem = xgems.ChemicalEngine(input_file)
 #%% equilibriate system
 T = gem.temperature() #get temprature

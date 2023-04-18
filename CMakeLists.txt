@@ -2,7 +2,16 @@
 cmake_minimum_required(VERSION 3.0)
 
 # Set the name of the project
-project(xGEMS VERSION 1.0.5 LANGUAGES CXX)
+project(xGEMS VERSION 1.0.6 LANGUAGES CXX)
+
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_MACOSX_RPATH ON)
+
+# Include the cmake variables with values for installation directories
+include(GNUInstallDirs)
 
 # Set the cmake module path of the project
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -10,16 +19,13 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 # Include this module to enable testing with CTest and dashboard submissions to CDash
 include(CTest)
 
-# Include the cmake variables with values for installation directories
-include(GNUInstallDirs)
-
 # Ensure proper configuration if in a conda environment
 include(CondaAware)
 
 # Set the version of the project
 set(XGEMS_VERSION_MAJOR "1")
 set(XGEMS_VERSION_MINOR "0")
-set(XGEMS_VERSION_MICRO "0")
+set(XGEMS_VERSION_MICRO "6")
 set(XGEMS_VERSION "${XGEMS_VERSION_MAJOR}.${XGEMS_VERSION_MINOR}.${XGEMS_VERSION_MICRO}")
 
 # Set the output directories of the built libraries and binaries
@@ -30,9 +36,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Define which components of Reaktoro to build
 option(XGEMS_BUILD_ALL    "Build everything." OFF)
 option(XGEMS_BUILD_PYTHON "Build the python bindings." ON)
-option(XGEMS_BUILD_DEMOS  "Build demos." OFF)
+option(XGEMS_BUILD_DEMOS  "Build demos." ON)
 option(XGEMS_BUILD_DOCS   "Build documentation." OFF)
-option(XGEMS_BUILD_TESTS  "Build tests." OFF)
+option(XGEMS_BUILD_TESTS  "Build tests." ON)
 option(XGEMS_USE_THERMOFUN "Use ThermoFun" ON)
 
 # Modify the XGEMS_BUILD_X variables according to XGEMS_BUILD_ALL
@@ -58,6 +64,13 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     set(XGEMS_BUILD_SHARED_LIBS OFF)
 endif()
 
+# Used into conda only
+if(DEFINED ENV{CONDA_PREFIX})
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" ON)
+else()
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" OFF)
+endif()
+
 # Set the default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -65,19 +78,18 @@ if(NOT CMAKE_BUILD_TYPE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-# add_compile_options(-std=c++11)
-add_compile_options(-std=c++17)
+# test thread safe
+#set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=thread")
+#set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=thread")
 
 # Set the list of compiler flags for GNU compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-#   add_compile_options(-std=c++11 -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
-    add_compile_options(-Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
+   add_compile_options( -pthread -Wall -Wno-misleading-indentation -Wno-ignored-attributes -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Set the list of compiler flags for Clang compiler
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
    add_compile_options(-Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
-#  add_compile_options(-std=c++11 -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Set the list of compiler flags for Intel compiler
@@ -128,7 +140,6 @@ set(XGEMS_TESTS_DIR  ${CMAKE_SOURCE_DIR}/tests)
 include_directories(${CMAKE_SOURCE_DIR})
 #include_directories(${EIGEN3_INCLUDE_DIR})
 
-
 # Set the local directory where the third-party libraries are installed
 set(THIRDPARTY_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/thirdparty/install)
 
@@ -141,8 +152,19 @@ link_directories(${THIRDPARTY_INSTALL_PREFIX}/lib)
 # Find xGEMS dependencies
 include(xGEMSFindDeps)
 
+# Set some necessary definitions
+add_definitions(-DNODEARRAYLEVEL)
+add_definitions(-DIPMGEMPLUGIN)
+
+if(XGEMS_USE_THERMOFUN MATCHES ON)
+  add_definitions(-DUSE_THERMOFUN)
+  #add_definitions(-DUSE_THERMO_LOG)
+endif()
+
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)
+link_directories(${CMAKE_BINARY_DIR}/xGEMS)
+link_directories(${CMAKE_BINARY_DIR}/lib)
 
 # Build the demos
 if(XGEMS_BUILD_DEMOS)
@@ -169,12 +191,6 @@ endif()
 if(XGEMS_BUILD_PYTHON)
     add_subdirectory(python)
 endif()
-
-if(XGEMS_USE_THERMOFUN MATCHES ON)
-  add_definitions(-DUSE_THERMOFUN)
-  add_definitions(-DUSE_THERMO_LOG)
-endif()
-
 
 # Add target "demos" for manual building of demos, as `make demos`, if XGEMS_BUILD_DEMOS is OFF
 add_custom_target(demos

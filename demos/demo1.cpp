@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     // std::cout << chemicalengine2 << std::endl;
 
     // Testing= with input from JSON strings
-    ChemicalEngine engine;   
+    ChemicalEngine engine;
     int f1, f2, f3; 
     std::string dch_json = "";
     std::string ipm_json = "";
@@ -116,10 +116,14 @@ int main(int argc, char **argv)
     
         std::cout << "Vector bj: " << bj.transpose() << std::endl;
 
-        std::cout << engine << std::endl;
+        //std::cout << engine << std::endl;
 
-        // engine.equilibrate(  );
+        auto T = engine.temperature();
+        auto P = engine.pressure();
+        auto b = engine.elementAmounts();
 
+
+        engine.equilibrate(T, P, b);
         return 0;   
     }    
     return 1;
