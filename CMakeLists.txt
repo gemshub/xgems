@@ -158,7 +158,7 @@ add_definitions(-DIPMGEMPLUGIN)
 
 if(XGEMS_USE_THERMOFUN MATCHES ON)
   add_definitions(-DUSE_THERMOFUN)
-  add_definitions(-DUSE_THERMO_LOG)
+  #add_definitions(-DUSE_THERMO_LOG)
 endif()
 
 # Build the C++ library and the Python bindings
