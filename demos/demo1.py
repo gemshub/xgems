@@ -19,7 +19,7 @@ from xgems import *
 from numpy import *
 
 #connect all loggers
-update_loggers(True, "test_demo1.log", 0)
+#update_loggers(True, "test_demo1.log", 0)
 
 engine = ChemicalEngine("resources/CalciteBC/CalciteBC-dat.lst")
 
