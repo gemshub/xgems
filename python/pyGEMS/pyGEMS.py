@@ -302,7 +302,7 @@ class GEMS(object):
         """
         out = {}
         amounts =  self.gem.speciesAmounts()
-        species_names=self.species_in_phase[phase_symbol][:-1]
+        species_names=self.species_in_phase[phase_symbol]
         for name in species_names:
             out[name] =amounts[self.species_names.index(name)]
         return out
