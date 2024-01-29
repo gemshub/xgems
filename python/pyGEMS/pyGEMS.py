@@ -543,7 +543,7 @@ class GEMS(object):
         activate multiple supressed species given in the list
         """
         for species in species_list:
-            self.supress_species(species)
+            self.activate_species(species)
 
     def activate_species(self,species_name):
         """
