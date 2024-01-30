@@ -49,11 +49,46 @@ public:
     }
 
     void clear(double cvalue=1e-15);
-
     void set_species_G0(std::string symbol, double value);
+
+    double T; // K
+    double P; // Pa
+    Vector b_amounts; // moles
+
+    std::vector<std::string> element_names() { return m_element_names; }
+    std::vector<std::string> species_names() { return m_species_names; }
+    std::vector<std::string> phase_names() { return m_phase_names; }
+
+    std::string aq_phase_symbol() { return m_aq_phase_symbol; }
+    std::string gas_phase_symbol() { return m_gas_phase_symbol; }
+
+    /// dictionary containing elements and their molar masses
+    ValuesMap element_molar_masses() { return m_element_molar_masses; }
+    /// dictionary containing species in phase
+    std::map<std::string, std::vector<std::string>> species_in_phase() { return m_species_in_phase; }
+    ///
+    ValuesMap species_charges() { return m_species_charges; }
+    /// dictionary containing species and their molar masses
+    ValuesMap species_molar_mass() { return m_species_molar_mass; }
+    ///  dictionary containing species and their molar volumes
+    ValuesMap species_molar_volumes() { return m_species_molar_volumes; }
 
     ///  return input bulk elemental composition (vector b) in moles
     ValuesMap bulk_composition();
+    /// returns pH of the solution
+    double pH();
+    /// returns pE of the solution
+    double pE();
+    /// returns ionic strength of the solution
+    double ionic_strength();
+    /// returns volume of the system in m3
+    double system_volume();
+    /// returns mass of the system in kg
+    double system_mass();
+    /// returns molar volume of phases in m3/mol
+    ValuesMap phases_molar_volume();
+    /// returns saturation indices of phases
+    ValuesMap phase_sat_indices();
 
     /// aq solution composition in mol/L aq solution
     ValuesMap aq_elements_molarity();
@@ -97,10 +132,11 @@ public:
     ValuesMap phases_mass();
     /// returns a dict. with phases and their volume fractions in the system
     ValuesMap phases_volume_frac();
+
+
     ///  add species amount in the system useful for adding aqueous solution composition
     ///  units= moles, kg, m3
     void add_multiple_species_amt(const ValuesMap &input_dict, const std::string& units = "moles");
-
     /// add species amount in the system useful for adding aqueous solution composition
     /// units= moles, kg, m3
     void add_species_amt(const std::string &species, double val, const std::string &units = "moles");
@@ -114,7 +150,6 @@ public:
     /// returns a bulk vector b from user-defined formula (as dict. {"H":2,"O":1} )
     /// and amount of the formula [object] in units of 'moles' or 'kg'
     Vector get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles");
-
     ///  constrain species amount to a specified lower bound, units= moles,kg,m3
     void set_multiple_species_lower_bound(const ValuesMap &input_dict, const std::string &units = "moles");
     ///  constrain species amount to a specified lower bound, units= moles,kg,m3
@@ -123,6 +158,7 @@ public:
     void set_species_lower_bound(const std::string &species, double val, const std::string &units= "moles");
     ///  constrain species amount to a specified upper bound, units= moles,kg,m3
     void set_species_upper_bound(const std::string &species, double val, const std::string &units= "moles");
+
     /// supresses a phase in GEM calculation
     void supress_phase(const std::string &phase_name);
     /// supresses multiple phase in calculation as given in phase names list
@@ -140,48 +176,28 @@ public:
     /// activate a supressed species in phase
     void activate_species(const std::string &species_name);
 
-    /// returns pH of the solution
-    double pH();
-    /// returns pE of the solution
-    double pE();
-    /// returns ionic strength of the solution
-    double ionic_strength();
-    /// returns volume of the system in m3
-    double system_volume();
-    /// returns mass of the system in kg
-    double system_mass();
-    /// returns molar volume of phases in m3/mol
-    ValuesMap phases_molar_volume();
-    /// returns saturation indices of phases
-    ValuesMap phase_sat_indices();
-
 protected:
 
     std::string input_file;
     ChemicalEngine gem;
-    double T; // K
-    double P; // Pa
-    Vector b_amounts; // moles
 
-    std::vector<std::string> element_names;
-    std::vector<std::string> species_names;
-    std::vector<std::string> phase_names;
+    std::vector<std::string> m_element_names;
+    std::vector<std::string> m_species_names;
+    std::vector<std::string> m_phase_names;
 
-    std::string aq_phase_symbol;
-    std::string gas_phase_symbol;
+    std::string m_aq_phase_symbol;
+    std::string m_gas_phase_symbol;
 
     /// dictionary containing elements and their molar masses
-    ValuesMap element_molar_masses;
+    ValuesMap m_element_molar_masses;
     /// dictionary containing species in phase
-    std::map<std::string, std::vector<std::string>> species_in_phase;
+    std::map<std::string, std::vector<std::string>> m_species_in_phase;
     ///
-    ValuesMap species_charges;
+    ValuesMap m_species_charges;
     /// dictionary containing species and their molar masses
-    ValuesMap species_molar_mass;
+    ValuesMap m_species_molar_mass;
     ///  dictionary containing species and their molar volumes
-    ValuesMap species_molar_volumes;
-
-
+    ValuesMap m_species_molar_volumes;
 
     ValuesMap to_map( const std::vector<std::string>& names,  Vector values )
     {
@@ -191,7 +207,6 @@ protected:
         }
         return out;
     }
-
 
 };
 
