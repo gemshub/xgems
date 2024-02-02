@@ -31,29 +31,35 @@ public:
         gem.setWarmStart();
     }
 
-    // number of elements in the system
+    void clear(double cvalue=1e-15);
+    void set_species_G0(std::string symbol, double value);
+    /// set input bulk elemental composition (vector b) in moles
+    void set_bulk_composition(ValuesMap b_input);
+    ///  Removes bulk elemental aqueous solution composition from vector b
+    ///  be careful as this will also remove water i.e H+ and OH-
+    void reset_aq_composition();
+
+    double T; // K
+    double P; // Pa
+    Vector b_amounts; // moles
+
+    /// number of elements in the system
     int nelements()
     {
         return gem.numElements();
     }
 
-    // number of phases in the system
+    /// number of phases in the system
     int nphases()
     {
         return gem.numPhases();
     }
 
+    /// number of phases in the system
     int nspecies()
     {
         return gem.numSpecies();
     }
-
-    void clear(double cvalue=1e-15);
-    void set_species_G0(std::string symbol, double value);
-
-    double T; // K
-    double P; // Pa
-    Vector b_amounts; // moles
 
     std::vector<std::string> element_names() { return m_element_names; }
     std::vector<std::string> species_names() { return m_species_names; }
@@ -100,11 +106,6 @@ public:
     ValuesMap aq_species_molality();
     /// aq solution elements amount in moles
     ValuesMap aq_elements_moles();
-    /// set input bulk elemental composition (vector b) in moles
-    void set_bulk_composition(ValuesMap b_input);
-    ///  Removes bulk elemental aqueous solution composition from vector b
-    ///  be careful as this will also remove water i.e H+ and OH-
-    void reset_aq_composition();
     /// return a dictionary containing mole amounts of elements in all solids together
     ValuesMap solids_elements_moles();
     /// return a dictionary (table) containing amounts of elements in phases in moles
@@ -118,8 +119,12 @@ public:
     ValuesMap species_ln_activities();
     /// returns species ln(activity_coefficient)
     ValuesMap species_ln_activity_coefficients();
+    /// returns the upper limits for the species
+    ValuesMap species_upper_bounds();
+    /// returns the lower limits for the species
+    ValuesMap species_lower_bounds();
     /// returns species in phase in moles
-    ValuesMap phase_species_moles(const std::string &phase_symbol);
+    ValuesMap phase_species_moles(std::string phase_symbol);
     /// mass(phase)/mass(system) ratios for [solid] phases
     ValuesMap solids_mass_frac();
     /// volume(phase)/volume(total) ratio for solid phases
@@ -155,9 +160,9 @@ public:
     ///  constrain species amount to a specified lower bound, units= moles,kg,m3
     void set_multiple_species_upper_bound(const ValuesMap &input_dict, const std::string &units = "moles");
     ///  constrain species amount to a specified lower bound, units= moles,kg,m3
-    void set_species_lower_bound(const std::string &species, double val, const std::string &units= "moles");
+    void set_species_lower_bound(const std::string& species, double val, const std::string& units= "moles");
     ///  constrain species amount to a specified upper bound, units= moles,kg,m3
-    void set_species_upper_bound(const std::string &species, double val, const std::string &units= "moles");
+    void set_species_upper_bound(const std::string& species, double val, const std::string& units= "moles");
 
     /// supresses a phase in GEM calculation
     void supress_phase(const std::string &phase_name);
@@ -208,6 +213,7 @@ protected:
         return out;
     }
 
+    void clear_vector(Vector& bb, double cvalue);
 };
 
 }

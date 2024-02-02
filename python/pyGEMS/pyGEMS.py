@@ -43,7 +43,7 @@ class GEMS(object):
         #self.aq_phase_symbol = 'aq_gen'               Potential problem if no aq phase in system
         #self.gas_phase_symbol = self.gem.phaseName(1) # use index 0 if no aq phase in the system, or
         self.gas_phase_symbol = 'gas_gen'             # !!!!!!!!!!! Potential problem if no gas phase in system
-        						#             or it has a different name   
+                                                        #             or it has a different name
         for i in range(self.nelements):
             self.element_names.append(self.gem.elementName(i))
             self.element_molar_masses[self.gem.elementName(i)] = elemolarmass[i]
@@ -326,7 +326,10 @@ class GEMS(object):
         volume(phase)/volume(total) ratio for solid phases
         """
         out = self.phases_volume_frac
-        del out[self.aq_phase_symbol],out[self.gas_phase_symbol]
+        del out[self.aq_phase_symbol]
+        gaspx = self.gem.indexPhase(self.gas_phase_symbol)
+        if gaspx < self.nphases:
+            del out[self.gas_phase_symbol]
         return out
     solid_volume_frac = solids_volume_frac
 

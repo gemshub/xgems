@@ -74,18 +74,23 @@ std::string GEMSEngine::equilibrate()
     return _status_encoder[outcode];
 }
 
-void GEMSEngine::clear(double cvalue)
+void GEMSEngine::clear_vector(Vector& bb, double cvalue)
 {
     if( cvalue > 0 ) {
         for(Index i = 0; i < nelements(); ++i) {
             if( m_element_names[i] == "Zz") {
-                b_amounts[i] = 0.0;
+                bb[i] = 0.0;
             }
             else {
-                b_amounts[i] = cvalue;
+                bb[i] = cvalue;
             }
         }
     }
+}
+
+void GEMSEngine::clear(double cvalue)
+{
+    clear_vector(b_amounts, cvalue);
 }
 
 
@@ -279,9 +284,20 @@ ValuesMap GEMSEngine::species_ln_activity_coefficients()
     return to_map( m_species_names,  gem.lnActivityCoefficients() );
 }
 
+// returns the upper limits for the species
+ValuesMap GEMSEngine::species_upper_bounds()
+{
+    return to_map( m_species_names,  gem.speciesUpperLimits() );
+}
+
+// returns the lower limits for the species
+ValuesMap GEMSEngine::species_lower_bounds()
+{
+    return to_map( m_species_names,  gem.speciesLowerLimits() );
+}
 
 // returns species in phase in moles
-ValuesMap GEMSEngine::phase_species_moles(const std::string& phase_symbol)
+ValuesMap GEMSEngine::phase_species_moles(std::string phase_symbol)
 {
     ValuesMap out;
     auto index = gem.indexPhase(phase_symbol);
@@ -405,6 +421,8 @@ void GEMSEngine::add_amt_from_formula(const ValuesMap& formula, double val, cons
 Vector GEMSEngine::get_b_from_formula(const ValuesMap& formula, double val, const std::string& units)
 {
     Vector bx(b_amounts.size()); //   bx = [v for v in self.b]
+    clear_vector(bx, 1e-15);
+
     if( units  == "kg" ) {
         double molarmass =0.0;
         for( const auto& element: formula ) {
