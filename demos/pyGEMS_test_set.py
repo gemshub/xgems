@@ -21,7 +21,7 @@ b_from_formula2 = engine.get_b_from_formula( {"H":2,"O":1})
 print("b_from_formula", b_from_formula2)
 
 engine.clear()
-print("\nbulk_composition", engine.bulk_composition)
+print("\nbulk_composition", engine.vector_b)
 engine.add_multiple_species_amt( { 'HCl@':0.01, 'H2@':2 }, "moles")
 engine.add_species_amt( 'H2O@', 0.01, "kg")
 engine.add_element_amt( 'Al', 0.3, "moles")

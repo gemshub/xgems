@@ -25,7 +25,7 @@
 #include <pybind11/eigen.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
-namespace py = pybind11;
+namespace py=pybind11;
 using namespace pybind11::literals;
 
 // xGEMS includes
@@ -36,8 +36,9 @@ using namespace xGEMS;
 void exportGEMSEngine(py::module& m)
 {
 
-    py::class_<GEMSEngine>(m, "GEMS2")
-            .def(py::init<std::string, bool, bool>(), py::arg("input_file"), py::arg("reset_calc")=true, py::arg("cold_start")=true )
+    py::class_<GEMSEngine>  gems(m, "GEMS2");
+
+    gems.def(py::init<std::string, bool, bool>(), py::arg("input_file"), py::arg("reset_calc")=true, py::arg("cold_start")=true )
             .def_readwrite("T", &GEMSEngine::T)
             .def_readwrite("P", &GEMSEngine::P)
             .def_readwrite("b", &GEMSEngine::b_amounts)
@@ -63,6 +64,7 @@ void exportGEMSEngine(py::module& m)
 
             .def("set_species_G0", &GEMSEngine::set_species_G0)
             .def_property_readonly("bulk_composition", &GEMSEngine::bulk_composition)
+            //            .def_property_readonly("vector_b", &GEMSEngine::bulk_composition)
             .def_property_readonly("pH", &GEMSEngine::pH)
             .def_property_readonly("pE", &GEMSEngine::pE)
             .def_property_readonly("ionic_strength", &GEMSEngine::ionic_strength)
@@ -116,5 +118,35 @@ void exportGEMSEngine(py::module& m)
             .def("activate_species", &GEMSEngine::activate_species)
             .def("activate_multiple_species", &GEMSEngine::activate_multiple_species)
             ;
+
+    gems.attr("vector_b")  =   gems.attr("bulk_composition");
+    gems.attr("aq_el_M")  = gems.attr("aq_elements_molarity");
+    gems.attr("aq_el_my") = gems.attr("aq_elements_molality");
+    gems.attr("aq_species_composition") = gems.attr("aq_elements_molality");  // this alias is misleading!
+    gems.attr("aq_sp_M") = gems.attr("aq_species_molarity");
+    gems.attr("aq_sp_my") = gems.attr("aq_species_molality");
+    gems.attr("aq_composition") = gems.attr("aq_species_molality");   // this alias is misleading!
+    gems.attr("aq_elements_amounts") = gems.attr("aq_elements_moles");
+    gems.attr("set_vector_b") = gems.attr("set_bulk_composition");
+    gems.attr("clear_b_aq_part") = gems.attr("reset_aq_composition");
+    gems.attr("solid_elements_amounts") = gems.attr("solids_elements_moles");
+    gems.attr("phase_elements_amounts") = gems.attr("phases_elements_moles");
+    gems.attr("phase_amounts") = gems.attr("phases_moles");
+    gems.attr("species_amounts") = gems.attr("species_moles");
+    gems.attr("phase_species_amounts") = gems.attr("phase_species_moles");
+    gems.attr("solid_mass_frac") = gems.attr("solids_mass_frac");
+    gems.attr("solid_volume_frac") = gems.attr("solids_volume_frac");
+    gems.attr("phase_volumes") = gems.attr("phases_volume");
+    gems.attr("phase_masses") = gems.attr("phases_mass");
+    gems.attr("phase_volume_frac") = gems.attr("phases_volume_frac");
+    gems.attr("vector_b_from_formula") = gems.attr("get_b_from_formula");
+    gems.attr("multiple_species_lower_bound") = gems.attr("set_multiple_species_lower_bound");
+    gems.attr("multiple_species_upper_bound") = gems.attr("set_multiple_species_upper_bound");
+    gems.attr("species_lower_bound") = gems.attr("set_species_lower_bound");
+    gems.attr("species_upper_bound") = gems.attr("set_species_upper_bound");
+    gems.attr("IS") = gems.attr("ionic_strength");
+    gems.attr("phase_molar_volume") = gems.attr("phases_molar_volume");
+    gems.attr("phases_sat_index") = gems.attr("phase_sat_indices");
+    gems.attr("phases_SI") = gems.attr("phase_sat_indices");
 
 }
