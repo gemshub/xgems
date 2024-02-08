@@ -8,6 +8,7 @@
 namespace xGEMS {
 
 using ValuesMap = std::map<std::string, double>;
+using PhaseValuesMap = std::map<std::string, ValuesMap>;
 
 /// Gems interface in calculator format for easy  using dictionaries
 class GEMSEngine
@@ -164,6 +165,12 @@ public:
     ///  constrain species amount to a specified upper bound, units= moles,kg,m3
     void set_species_upper_bound(const std::string& species, double val, const std::string& units= "moles");
 
+    ///  constrain species amount to a specified lower bound, units= moles,kg,m3  (phase depended case)
+    void set_species_lower_bound(Index ispecies, double val, const std::string& units= "moles");
+    ///  constrain species amount to a specified upper bound, units= moles,kg,m3  (phase depended case)
+    void set_species_upper_bound(Index ispecies, double val, const std::string& units= "moles");
+
+
     /// supresses a phase in GEM calculation
     void supress_phase(const std::string &phase_name);
     /// supresses multiple phase in calculation as given in phase names list
@@ -180,6 +187,19 @@ public:
     void activate_multiple_species(const std::vector<std::string> &species_list);
     /// activate a supressed species in phase
     void activate_species(const std::string &species_name);
+
+
+    /// returns all species amounts in moles
+    PhaseValuesMap phase_species_moles();
+    /// returns species ln(activities)
+    PhaseValuesMap phase_species_ln_activities();
+    /// returns species ln(activity_coefficient)
+    PhaseValuesMap phase_species_ln_activity_coefficients();
+    /// returns the upper limits for the species
+    PhaseValuesMap phase_species_upper_bounds();
+    /// returns the lower limits for the species
+    PhaseValuesMap phase_species_lower_bounds();
+
 
 protected:
 
@@ -204,14 +224,9 @@ protected:
     ///  dictionary containing species and their molar volumes
     ValuesMap m_species_molar_volumes;
 
-    ValuesMap to_map( const std::vector<std::string>& names,  Vector values )
-    {
-        ValuesMap out;
-        for(Index j = 0; j < names.size(); ++j) {
-            out[names[j]]=values[j];
-        }
-        return out;
-    }
+    ValuesMap to_map( const std::vector<std::string>& names,  Vector values );
+
+    PhaseValuesMap to_phase_species_map( Vector values );
 
     void clear_vector(Vector& bb, double cvalue);
 };

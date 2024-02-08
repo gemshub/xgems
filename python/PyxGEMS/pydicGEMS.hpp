@@ -83,13 +83,18 @@ void exportGEMSEngine(py::module& m)
             .def_property_readonly("solids_elements_moles", &GEMSEngine::solids_elements_moles)
             .def_property_readonly("phases_elements_moles", &GEMSEngine::phases_elements_moles)
 
+            .def("phase_species_moles", py::overload_cast<>(&GEMSEngine::phase_species_moles))
+            .def("phase_species_moles", py::overload_cast<std::string>(&GEMSEngine::phase_species_moles))
             .def_property_readonly("phases_moles", &GEMSEngine::phases_moles)
             .def_property_readonly("species_moles", &GEMSEngine::species_moles)
             .def_property_readonly("species_ln_activities", &GEMSEngine::species_ln_activities)
             .def_property_readonly("species_ln_activity_coefficients", &GEMSEngine::species_ln_activity_coefficients)
             .def_property_readonly("species_upper_bounds", &GEMSEngine::species_upper_bounds)
             .def_property_readonly("species_lower_bounds", &GEMSEngine::species_lower_bounds)
-            .def("phase_species_moles", &GEMSEngine::phase_species_moles)
+            .def_property_readonly("phase_species_ln_activities", &GEMSEngine::phase_species_ln_activities)
+            .def_property_readonly("phase_species_ln_activity_coefficients", &GEMSEngine::phase_species_ln_activity_coefficients)
+            .def_property_readonly("phase_species_upper_bounds", &GEMSEngine::phase_species_upper_bounds)
+            .def_property_readonly("phase_species_lower_bounds", &GEMSEngine::phase_species_lower_bounds)
             .def_property_readonly("solids_mass_frac", &GEMSEngine::solids_mass_frac)
             .def_property_readonly("solids_volume_frac", &GEMSEngine::solids_volume_frac)
             .def_property_readonly("aq_volume_frac", &GEMSEngine::aq_volume_frac)
@@ -106,8 +111,14 @@ void exportGEMSEngine(py::module& m)
 
             .def("set_multiple_species_lower_bound", &GEMSEngine::set_multiple_species_lower_bound, py::arg("input_dict"), py::arg("units")="moles")
             .def("set_multiple_species_upper_bound", &GEMSEngine::set_multiple_species_upper_bound, py::arg("input_dict"), py::arg("units")="moles")
-            .def("set_species_lower_bound", &GEMSEngine::set_species_lower_bound, py::arg("species"), py::arg("val"), py::arg("units")="moles")
-            .def("set_species_upper_bound", &GEMSEngine::set_species_upper_bound, py::arg("species"), py::arg("val"), py::arg("units")="moles")
+            .def("set_species_lower_bound", py::overload_cast<const std::string&, double, const std::string&>
+                 (&GEMSEngine::set_species_lower_bound), py::arg("species"), py::arg("val"), py::arg("units")="moles")
+            .def("set_species_lower_bound", py::overload_cast<Index, double, const std::string&>
+                 (&GEMSEngine::set_species_lower_bound), py::arg("ispecies"), py::arg("val"), py::arg("units")="moles")
+            .def("set_species_upper_bound", py::overload_cast<const std::string&, double, const std::string&>
+                 (&GEMSEngine::set_species_upper_bound), py::arg("species"), py::arg("val"), py::arg("units")="moles")
+            .def("set_species_upper_bound", py::overload_cast<Index, double, const std::string&>
+                 (&GEMSEngine::set_species_upper_bound), py::arg("ispecies"), py::arg("val"), py::arg("units")="moles")
 
             .def("supress_phase", &GEMSEngine::supress_phase)
             .def("supress_multiple_phases", &GEMSEngine::supress_multiple_phases)
@@ -142,8 +153,6 @@ void exportGEMSEngine(py::module& m)
     gems.attr("vector_b_from_formula") = gems.attr("get_b_from_formula");
     gems.attr("multiple_species_lower_bound") = gems.attr("set_multiple_species_lower_bound");
     gems.attr("multiple_species_upper_bound") = gems.attr("set_multiple_species_upper_bound");
-    gems.attr("species_lower_bound") = gems.attr("set_species_lower_bound");
-    gems.attr("species_upper_bound") = gems.attr("set_species_upper_bound");
     gems.attr("IS") = gems.attr("ionic_strength");
     gems.attr("phase_molar_volume") = gems.attr("phases_molar_volume");
     gems.attr("phases_sat_index") = gems.attr("phase_sat_indices");

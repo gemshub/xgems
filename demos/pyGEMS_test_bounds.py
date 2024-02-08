@@ -1,6 +1,5 @@
 from xgems import *
 from numpy import *
-from pyGEMS import GEMS
 
 #connect all loggers
 #update_loggers(True, "test_demo1.log", 0)
@@ -18,6 +17,9 @@ out2 = engine.species_upper_bounds
 for name in species_names:
     print(name, out1[name], out2[name])
 
+
+engine.set_species_lower_bound( 8, 400, "moles")
+engine.set_species_upper_bound( 8, 900, "kg")
 engine.set_species_lower_bound( 'Ca(HCO3)+', 200, "moles")
 engine.set_species_upper_bound( 'CaOH+', 500, "kg")
 engine.set_multiple_species_lower_bound( {'Mg(CO3)@':30, 'Mg(HCO3)+':40, 'Mg+2':50})
@@ -43,3 +45,4 @@ out1 = engine.species_lower_bounds
 out2 = engine.species_upper_bounds
 for name in species_names:
     print(name, out1[name], out2[name])
+

@@ -296,6 +296,60 @@ ValuesMap GEMSEngine::species_lower_bounds()
     return to_map( m_species_names,  gem.speciesLowerLimits() );
 }
 
+
+// returns all species amounts in moles
+PhaseValuesMap GEMSEngine::phase_species_moles()
+{
+    return to_phase_species_map( gem.speciesAmounts() );
+}
+
+// returns species ln(activities)
+PhaseValuesMap GEMSEngine::phase_species_ln_activities()
+{
+    return to_phase_species_map( gem.lnActivities() );
+}
+
+// returns species ln(activity_coefficient)
+PhaseValuesMap GEMSEngine::phase_species_ln_activity_coefficients()
+{
+    return to_phase_species_map( gem.lnActivityCoefficients() );
+}
+
+// returns the upper limits for the species
+PhaseValuesMap GEMSEngine::phase_species_upper_bounds()
+{
+    return to_phase_species_map( gem.speciesUpperLimits() );
+}
+
+// returns the lower limits for the species
+PhaseValuesMap GEMSEngine::phase_species_lower_bounds()
+{
+    return to_phase_species_map( gem.speciesLowerLimits() );
+}
+
+ValuesMap GEMSEngine::to_map(const std::vector<std::string> &names, Vector values)
+{
+    ValuesMap out;
+    for(size_t j = 0; j < names.size(); ++j) {
+        out[names[j]]=values[j];
+    }
+    return out;
+}
+
+PhaseValuesMap GEMSEngine::to_phase_species_map(Vector values)
+{
+    PhaseValuesMap phase_out;
+    Index jk = 0, j = 0;
+    for(Index k = 0; k < nphases(); ++k) {
+        ValuesMap out;
+        for( jk = 0; jk < gem.numSpeciesInPhase(k); ++j, ++jk) {
+            out[m_species_names[j]]=values[j];
+        }
+        phase_out[m_phase_names[k]] = out;
+    }
+    return phase_out;
+}
+
 // returns species in phase in moles
 ValuesMap GEMSEngine::phase_species_moles(std::string phase_symbol)
 {
@@ -476,6 +530,31 @@ void GEMSEngine::set_species_upper_bound(const std::string& species, double val,
     }
     gem.setSpeciesUpperLimit(species,val);
 }
+
+//  constrain species amount to a specified lower bound, units= moles,kg,m3
+void GEMSEngine::set_species_lower_bound(Index ispecies, double val, const std::string& units)
+{
+    if( units == "kg") {
+        val/=m_species_molar_mass[m_species_names[ispecies]];
+    }
+    if( units == "m3") {
+        val/=m_species_molar_volumes[m_species_names[ispecies]];
+    }
+    gem.setSpeciesLowerLimit(ispecies,val);
+}
+
+//  constrain species amount to a specified upper bound, units= moles,kg,m3
+void GEMSEngine::set_species_upper_bound(Index ispecies, double val, const std::string& units)
+{
+    if( units == "kg") {
+        val/=m_species_molar_mass[m_species_names[ispecies]];
+    }
+    if( units == "m3") {
+        val/=m_species_molar_volumes[m_species_names[ispecies]];
+    }
+    gem.setSpeciesUpperLimit(ispecies,val);
+}
+
 
 // supresses a phase in GEM calculation
 void GEMSEngine::supress_phase(const std::string& phase_name)
