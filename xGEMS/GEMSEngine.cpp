@@ -1,5 +1,5 @@
 #include <map>
-#include "GEMSEngine.h"
+#include "GEMSEngine.hpp"
 
 
 namespace xGEMS {
@@ -31,11 +31,8 @@ GEMSEngine::GEMSEngine(const std::string &inputfile, bool reset_calc, bool colds
 
     equilibrate();
 
-    m_aq_phase_symbol = gem.phaseName(0);
-    //self.aq_phase_symbol = 'aq_gen'               Potential problem if no aq phase in system
-    //self.gas_phase_symbol = self.gem.phaseName(1) # use index 0 if no aq phase in the system, or
-    m_gas_phase_symbol = "gas_gen";             //!!!!!!!!!!! Potential problem if no gas phase in system
-    // to be done or it has a different name
+    m_aq_phase_symbol = gem.aqueousPhaseName();
+    m_gas_phase_symbol = gem.gasPhaseName();
 
     auto elemolarmass = gem.elementMolarMasses();
     for(Index i = 0; i < nelements(); ++i) {

@@ -41,7 +41,7 @@ contains(DEFINES, USE_THERMOFUN) {
 HEADERS	 += \
     ../xGEMS/ChemicalEngine.hpp \
     ../xGEMS/Eigen.hpp \
-    ../xGEMS/GEMSEngine.h \
+    ../xGEMS/GEMSEngine.hpp \
     ../xGEMS/Index.hpp \
     ../xGEMS/Interface.hpp
 SOURCES	+=  demo1.cpp \

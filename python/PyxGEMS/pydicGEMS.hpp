@@ -29,7 +29,7 @@ namespace py=pybind11;
 using namespace pybind11::literals;
 
 // xGEMS includes
-#include <xGEMS/GEMSEngine.h>
+#include <xGEMS/GEMSEngine.hpp>
 using namespace xGEMS;
 
 

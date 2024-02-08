@@ -442,6 +442,14 @@ public:
     /// Return the total heat capacity Cp of the system.
     auto systemHeatCapacityConstP() const -> double;
 
+    /// The name of aqueous phase
+    /// returns null string if no aq phase in system.
+    auto aqueousPhaseName() const -> std::string;
+
+    /// The name of gas phase
+    /// returns null string if no gas phase in system.
+    auto gasPhaseName() const -> std::string;
+
 private:
     struct Impl;
 

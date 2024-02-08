@@ -1160,6 +1160,28 @@ auto ChemicalEngine::systemHeatCapacityConstP() const -> double
     return 0.0;
 }
 
+std::string ChemicalEngine::aqueousPhaseName() const
+{
+    for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
+        if( pimpl->node->pCSD()->ccPH[ii] == 'a' ) {
+            return phaseName(ii);
+        }
+    }
+    return {};
+}
+
+std::string ChemicalEngine::gasPhaseName() const
+{
+    for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
+        if( pimpl->node->pCSD()->ccPH[ii] == 'g' ||
+                pimpl->node->pCSD()->ccPH[ii] == 'p' ||
+                pimpl->node->pCSD()->ccPH[ii] == 'f') {
+            return  phaseName(ii);
+        }
+    }
+    return {};
+}
+
 auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
 {
     const double T = state.temperature();

@@ -23,6 +23,7 @@ using namespace std;
 
 // xGEMS includes
 #include <xGEMS/ChemicalEngine.hpp>
+#include "xGEMS/GEMSEngine.hpp"
 using namespace xGEMS;
 
 // Reading the whole file (given by path) into a string str
@@ -50,6 +51,8 @@ int getJsonFile( const string path, string& str )
 
 int main(int argc, char **argv)
 {
+    //auto gemsd  = GEMSEngine("resources/Thermo-time-in/series1-dat.lst");
+
     // Testing with input of small keyvalue GEMS3K files
     // ChemicalEngine chemicalengine("resources/CalciteIC/CalciteIC-dat.lst");
     // Vector b = chemicalengine.elementAmounts();

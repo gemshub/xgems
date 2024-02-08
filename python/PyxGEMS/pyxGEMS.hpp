@@ -153,6 +153,8 @@ void exportChemicalEngine(py::module& m)
         .def("pH", &ChemicalEngine::pH)
         .def("pe", &ChemicalEngine::pe)
         .def("Eh", &ChemicalEngine::Eh)
+        .def("aqueousPhaseName", &ChemicalEngine::aqueousPhaseName)
+        .def("gasPhaseName", &ChemicalEngine::gasPhaseName)
         .def("__repr__", [](const ChemicalEngine& self) { std::stringstream ss; ss << self; return ss.str(); })
         ;
 }
