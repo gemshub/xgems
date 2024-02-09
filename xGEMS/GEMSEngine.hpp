@@ -17,7 +17,7 @@ public:
 
     ///  Initialization of the calculator
     ///  @param   reset_calc: true will reset b vector to zero
-    GEMSEngine(const std::string& input_file, bool reset_calc=true, bool cold_start=true);
+    GEMSEngine(const std::string& input_file, bool reset_calc=false, bool cold_start=true);
 
     /// runs GEM equilibriation of the current (internally set) system
     std::string equilibrate();

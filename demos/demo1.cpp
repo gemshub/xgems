@@ -51,8 +51,11 @@ int getJsonFile( const string path, string& str )
 
 int main(int argc, char **argv)
 {
-    //auto gemsd  = GEMSEngine("resources/Thermo-time-in/series1-dat.lst");
+    auto gemsd  = GEMSEngine("resources/Thermo-time-in/series1-dat.lst");
+    Vector bj = gemsd.b_amounts;
 
+    std::cout << "Vector bj: " << bj.transpose() << std::endl;
+    return 0;
     // Testing with input of small keyvalue GEMS3K files
     // ChemicalEngine chemicalengine("resources/CalciteIC/CalciteIC-dat.lst");
     // Vector b = chemicalengine.elementAmounts();

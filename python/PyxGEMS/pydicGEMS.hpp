@@ -38,7 +38,7 @@ void exportGEMSEngine(py::module& m)
 
     py::class_<GEMSEngine>  gems(m, "GEMS2");
 
-    gems.def(py::init<std::string, bool, bool>(), py::arg("input_file"), py::arg("reset_calc")=true, py::arg("cold_start")=true )
+    gems.def(py::init<std::string, bool, bool>(), py::arg("input_file"), py::arg("reset_calc")=false, py::arg("cold_start")=true )
             .def_readwrite("T", &GEMSEngine::T)
             .def_readwrite("P", &GEMSEngine::P)
             .def_readwrite("b", &GEMSEngine::b_amounts)
