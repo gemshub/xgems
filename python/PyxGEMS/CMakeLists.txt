@@ -12,3 +12,4 @@ pybind11_add_module(PyxGEMS ${SOURCE_FILES} NO_EXTRAS) # NO_EXTRAS used to decre
 
 # Link PyxGEMS against xGEMS and GEMS3K library
 target_link_libraries(PyxGEMS LINK_PUBLIC XGEMS_STATIC)
+
