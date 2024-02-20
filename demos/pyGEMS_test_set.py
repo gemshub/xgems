@@ -1,6 +1,5 @@
 from xgems import *
 from numpy import *
-from pyGEMS import GEMS
 
 #connect all loggers
 #update_loggers(True, "test_demo1.log", 0)
