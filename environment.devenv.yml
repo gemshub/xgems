@@ -1,22 +1,29 @@
 name: xgems
 
+{% set python_version = os.environ.get("PY_VER", "3.9") %}
 
 channels:
   - conda-forge
 
 dependencies:
-  - setuptools=59.7.0
+#  - setuptools=59.7.0
   - gxx_linux-64  # [linux]
   - cmake>=3.13
   - make
   - git
+  - clcache  # [win]
   - ccache  # [unix]
   - pybind11
-  - eigen
+ # - eigen
   - pytest
-  - thermofun>=0.4.3
-  - gems3k>=4.3.6
-  - python
+ # - thermofun>=0.4.3
+ # - gems3k>=4.3.6
+  - python={{ python_version }}
+  - eigen >=3.4.0
+  - spdlog >=1.10.0
+  - gems3k =>4.3.5
+  - thermofun >=0.4.3
+ # - vs2019_win-64  # [win] - maybe a solution for CI windows link error
 
 environment:
 
