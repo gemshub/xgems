@@ -1,6 +1,7 @@
 # Copy resources dir for the demos to the binary build dir along with the demos
 file(COPY resources DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 file(COPY demo1.py DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+file(COPY demo1-dict.py DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 file(COPY demo_reactive_transport.py DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 file(COPY pyGEMS_test_bounds.py DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 file(COPY pyGEMS_test_properties.py DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

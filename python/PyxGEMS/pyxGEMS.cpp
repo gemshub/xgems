@@ -16,11 +16,11 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "pyxGEMS.hpp"
-#include "pydicGEMS.hpp"
+#include "pyxdGEMS.hpp"
 
 PYBIND11_MODULE(PyxGEMS, m)
 {
     xGEMS::update_loggers(false, "xGEMS.log", 3);
     exportChemicalEngine(m);
-    exportGEMSEngine(m);
+    exportChemicalEngineMaps(m);
 }

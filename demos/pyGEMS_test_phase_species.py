@@ -4,7 +4,7 @@ from numpy import *
 #connect all loggers
 #update_loggers(True, "test_demo1.log", 0)
 
-engine = GEMS2("resources/Thermo-time-in/series1-dat.lst")
+engine = ChemicalEngineDicts("resources/Thermo-time-in/series1-dat.lst")
 phase_names = engine.phase_names
 
 print("phase_names\n", engine.phase_names)

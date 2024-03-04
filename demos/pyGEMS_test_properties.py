@@ -4,8 +4,8 @@ from numpy import *
 #connect all loggers
 #update_loggers(True, "test_demo1.log", 0)
 
-#engine = GEMS2("resources/CalciteBC/CalciteBC-dat.lst")
-engine = GEMS2("resources/Thermo-time-in/series1-dat.lst")
+#engine = ChemicalEngineDicts("resources/CalciteBC/CalciteBC-dat.lst")
+engine = ChemicalEngineDicts("resources/Thermo-time-in/series1-dat.lst")
 element_names = engine.element_names
 species_names = engine.species_names
 aq_species_names = engine.species_in_phase['aq_gen']

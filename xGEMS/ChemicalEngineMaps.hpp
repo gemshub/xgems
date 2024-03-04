@@ -1,5 +1,5 @@
-#ifndef GEMSENGINE_H
-#define GEMSENGINE_H
+#ifndef CHEMICALENGINEMAPS_H
+#define CHEMICALENGINEMAPS_H
 
 #include <vector>
 #include <map>
@@ -11,13 +11,13 @@ using ValuesMap = std::map<std::string, double>;
 using PhaseValuesMap = std::map<std::string, ValuesMap>;
 
 /// Gems interface in calculator format for easy  using dictionaries
-class GEMSEngine
+class ChemicalEngineMaps
 {
 public:
 
     ///  Initialization of the calculator
     ///  @param   reset_calc: true will reset b vector to zero
-    GEMSEngine(const std::string& input_file, bool reset_calc=false, bool cold_start=true);
+    ChemicalEngineMaps(const std::string& input_file, bool reset_calc=false, bool cold_start=true);
 
     /// runs GEM equilibriation of the current (internally set) system
     std::string equilibrate();
@@ -232,4 +232,4 @@ protected:
 };
 
 }
-#endif // GEMSENGINE_H
+#endif // CHEMICALENGINEMAPS_H

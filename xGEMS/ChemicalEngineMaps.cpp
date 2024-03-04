@@ -1,5 +1,5 @@
 #include <map>
-#include "GEMSEngine.hpp"
+#include "ChemicalEngineMaps.hpp"
 
 
 namespace xGEMS {
@@ -18,7 +18,7 @@ static std::map<int, std::string> _status_encoder = {
 };
 
 
-GEMSEngine::GEMSEngine(const std::string &inputfile, bool reset_calc, bool coldstart):
+ChemicalEngineMaps::ChemicalEngineMaps(const std::string &inputfile, bool reset_calc, bool coldstart):
     input_file(inputfile), gem(inputfile)
 {
     T = gem.temperature();
@@ -65,13 +65,13 @@ GEMSEngine::GEMSEngine(const std::string &inputfile, bool reset_calc, bool colds
     }
 }
 
-std::string GEMSEngine::equilibrate()
+std::string ChemicalEngineMaps::equilibrate()
 {
     auto outcode= gem.equilibrate(T,P,b_amounts);
     return _status_encoder[outcode];
 }
 
-void GEMSEngine::clear_vector(Vector& bb, double cvalue)
+void ChemicalEngineMaps::clear_vector(Vector& bb, double cvalue)
 {
     if( cvalue > 0 ) {
         for(Index i = 0; i < nelements(); ++i) {
@@ -85,25 +85,25 @@ void GEMSEngine::clear_vector(Vector& bb, double cvalue)
     }
 }
 
-void GEMSEngine::clear(double cvalue)
+void ChemicalEngineMaps::clear(double cvalue)
 {
     clear_vector(b_amounts, cvalue);
 }
 
 
-void GEMSEngine::set_species_G0(std::string symbol, double value)
+void ChemicalEngineMaps::set_species_G0(std::string symbol, double value)
 {
     gem.setStandardMolarGibbsEnergy(symbol, value);
 }
 
 // return input bulk elemental composition (vector b) in moles
-ValuesMap GEMSEngine::bulk_composition()
+ValuesMap ChemicalEngineMaps::bulk_composition()
 {
     return to_map( m_element_names, b_amounts );
 }
 
 // aq solution composition in mol/L aq solution
-ValuesMap GEMSEngine::aq_elements_molarity()
+ValuesMap ChemicalEngineMaps::aq_elements_molarity()
 {
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
@@ -118,7 +118,7 @@ ValuesMap GEMSEngine::aq_elements_molarity()
 
 
 // aq solution elemental composition in mol/kgH2O
-ValuesMap GEMSEngine::aq_elements_molality()
+ValuesMap ChemicalEngineMaps::aq_elements_molality()
 {
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
@@ -136,7 +136,7 @@ ValuesMap GEMSEngine::aq_elements_molality()
 }
 
 // aq solution composition in mol/L of aqueous species
-ValuesMap GEMSEngine::aq_species_molarity()
+ValuesMap ChemicalEngineMaps::aq_species_molarity()
 {
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
@@ -150,7 +150,7 @@ ValuesMap GEMSEngine::aq_species_molarity()
 }
 
 // aq solution composition in mol/kg H2O of aqueous species (speciation)
-ValuesMap GEMSEngine::aq_species_molality()
+ValuesMap ChemicalEngineMaps::aq_species_molality()
 {
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
@@ -166,7 +166,7 @@ ValuesMap GEMSEngine::aq_species_molality()
 
 
 // aq solution elements amount in moles
-ValuesMap GEMSEngine::aq_elements_moles()
+ValuesMap ChemicalEngineMaps::aq_elements_moles()
 {
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
@@ -176,7 +176,7 @@ ValuesMap GEMSEngine::aq_elements_moles()
 }
 
 // set input bulk elemental composition (vector b) in moles
-void GEMSEngine::set_bulk_composition(ValuesMap b_input)
+void ChemicalEngineMaps::set_bulk_composition(ValuesMap b_input)
 {
     for(Index i = 0; i < nelements(); ++i) {
         if( b_input.find(m_element_names[i]) != b_input.end() ) {
@@ -195,7 +195,7 @@ void GEMSEngine::set_bulk_composition(ValuesMap b_input)
 //  Removes bulk elemental aqueous solution composition from vector b
 //  be careful as this will also remove water i.e H+ and OH-
 //  Not quite clear what this access method really does (DK)
-void GEMSEngine::reset_aq_composition()
+void ChemicalEngineMaps::reset_aq_composition()
 {
     auto peamt = gem.phaseAmounts();
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
@@ -214,7 +214,7 @@ void GEMSEngine::reset_aq_composition()
 
 
 // return a dictionary containing mole amounts of elements in all solids together
-ValuesMap GEMSEngine::solids_elements_moles()
+ValuesMap ChemicalEngineMaps::solids_elements_moles()
 {
     Vector  b_solid = gem.elementAmounts();
     auto peamt = gem.phaseAmounts();
@@ -242,7 +242,7 @@ ValuesMap GEMSEngine::solids_elements_moles()
 
 
 // return a dictionary (table) containing amounts of elements in phases in moles
-std::map<std::string, ValuesMap> GEMSEngine::phases_elements_moles()
+std::map<std::string, ValuesMap> ChemicalEngineMaps::phases_elements_moles()
 {
     std::map<std::string, ValuesMap> out;
     for(Index k = 0; k < nphases(); ++k) {
@@ -258,73 +258,73 @@ std::map<std::string, ValuesMap> GEMSEngine::phases_elements_moles()
 
 
 // return phases amounts in moles
-ValuesMap GEMSEngine::phases_moles()
+ValuesMap ChemicalEngineMaps::phases_moles()
 {
     return to_map( m_phase_names,  gem.phaseAmounts() );
 }
 
 // returns all species amounts in moles
-ValuesMap GEMSEngine::species_moles()
+ValuesMap ChemicalEngineMaps::species_moles()
 {
     return to_map( m_species_names,  gem.speciesAmounts() );
 }
 
 // returns species ln(activities)
-ValuesMap GEMSEngine::species_ln_activities()
+ValuesMap ChemicalEngineMaps::species_ln_activities()
 {
     return to_map( m_species_names,  gem.lnActivities() );
 }
 
 // returns species ln(activity_coefficient)
-ValuesMap GEMSEngine::species_ln_activity_coefficients()
+ValuesMap ChemicalEngineMaps::species_ln_activity_coefficients()
 {
     return to_map( m_species_names,  gem.lnActivityCoefficients() );
 }
 
 // returns the upper limits for the species
-ValuesMap GEMSEngine::species_upper_bounds()
+ValuesMap ChemicalEngineMaps::species_upper_bounds()
 {
     return to_map( m_species_names,  gem.speciesUpperLimits() );
 }
 
 // returns the lower limits for the species
-ValuesMap GEMSEngine::species_lower_bounds()
+ValuesMap ChemicalEngineMaps::species_lower_bounds()
 {
     return to_map( m_species_names,  gem.speciesLowerLimits() );
 }
 
 
 // returns all species amounts in moles
-PhaseValuesMap GEMSEngine::phase_species_moles()
+PhaseValuesMap ChemicalEngineMaps::phase_species_moles()
 {
     return to_phase_species_map( gem.speciesAmounts() );
 }
 
 // returns species ln(activities)
-PhaseValuesMap GEMSEngine::phase_species_ln_activities()
+PhaseValuesMap ChemicalEngineMaps::phase_species_ln_activities()
 {
     return to_phase_species_map( gem.lnActivities() );
 }
 
 // returns species ln(activity_coefficient)
-PhaseValuesMap GEMSEngine::phase_species_ln_activity_coefficients()
+PhaseValuesMap ChemicalEngineMaps::phase_species_ln_activity_coefficients()
 {
     return to_phase_species_map( gem.lnActivityCoefficients() );
 }
 
 // returns the upper limits for the species
-PhaseValuesMap GEMSEngine::phase_species_upper_bounds()
+PhaseValuesMap ChemicalEngineMaps::phase_species_upper_bounds()
 {
     return to_phase_species_map( gem.speciesUpperLimits() );
 }
 
 // returns the lower limits for the species
-PhaseValuesMap GEMSEngine::phase_species_lower_bounds()
+PhaseValuesMap ChemicalEngineMaps::phase_species_lower_bounds()
 {
     return to_phase_species_map( gem.speciesLowerLimits() );
 }
 
-ValuesMap GEMSEngine::to_map(const std::vector<std::string> &names, Vector values)
+ValuesMap ChemicalEngineMaps::to_map(const std::vector<std::string> &names, Vector values)
 {
     ValuesMap out;
     for(size_t j = 0; j < names.size(); ++j) {
@@ -333,7 +333,7 @@ ValuesMap GEMSEngine::to_map(const std::vector<std::string> &names, Vector value
     return out;
 }
 
-PhaseValuesMap GEMSEngine::to_phase_species_map(Vector values)
+PhaseValuesMap ChemicalEngineMaps::to_phase_species_map(Vector values)
 {
     PhaseValuesMap phase_out;
     Index jk = 0, j = 0;
@@ -348,7 +348,7 @@ PhaseValuesMap GEMSEngine::to_phase_species_map(Vector values)
 }
 
 // returns species in phase in moles
-ValuesMap GEMSEngine::phase_species_moles(std::string phase_symbol)
+ValuesMap ChemicalEngineMaps::phase_species_moles(std::string phase_symbol)
 {
     ValuesMap out;
     auto index = gem.indexPhase(phase_symbol);
@@ -364,7 +364,7 @@ ValuesMap GEMSEngine::phase_species_moles(std::string phase_symbol)
 
 
 // mass(phase)/mass(system) ratios for [solid] phases
-ValuesMap GEMSEngine::solids_mass_frac()
+ValuesMap ChemicalEngineMaps::solids_mass_frac()
 {
     Vector mfrac = gem.phaseMasses();
     auto sum = mfrac.sum();
@@ -373,7 +373,7 @@ ValuesMap GEMSEngine::solids_mass_frac()
 }
 
 // volume(phase)/volume(total) ratio for solid phases
-ValuesMap GEMSEngine::solids_volume_frac()
+ValuesMap ChemicalEngineMaps::solids_volume_frac()
 {
     auto out = phases_volume_frac();
     out.erase(m_aq_phase_symbol);
@@ -382,26 +382,26 @@ ValuesMap GEMSEngine::solids_volume_frac()
 }
 
 // Volume fraction of aqueous phase in the system
-double GEMSEngine::aq_volume_frac()
+double ChemicalEngineMaps::aq_volume_frac()
 {
     auto out = phases_volume_frac();
     return out[m_aq_phase_symbol];
 }
 
 // returns a dict. with phases and their absolute volume in m3
-ValuesMap GEMSEngine::phases_volume()
+ValuesMap ChemicalEngineMaps::phases_volume()
 {
     return to_map( m_phase_names, gem.phaseVolumes() );
 }
 
 // returns a dict. with phases and their mass in kg
-ValuesMap GEMSEngine::phases_mass()
+ValuesMap ChemicalEngineMaps::phases_mass()
 {
     return to_map( m_phase_names, gem.phaseMasses() );
 }
 
 // returns a dict. with phases and their volume fractions in the system
-ValuesMap GEMSEngine::phases_volume_frac()
+ValuesMap ChemicalEngineMaps::phases_volume_frac()
 {
     auto vfrac = gem.phaseVolumes()/system_volume();
     return to_map( m_phase_names, vfrac );
@@ -409,7 +409,7 @@ ValuesMap GEMSEngine::phases_volume_frac()
 
 //  add species amount in the system useful for adding aqueous solution composition
 //  units= moles, kg, m3
-void GEMSEngine::add_multiple_species_amt(const ValuesMap& input_dict, const std::string& units)
+void ChemicalEngineMaps::add_multiple_species_amt(const ValuesMap& input_dict, const std::string& units)
 {
     for(const auto& el: input_dict) {
         add_species_amt(el.first, el.second, units);
@@ -418,7 +418,7 @@ void GEMSEngine::add_multiple_species_amt(const ValuesMap& input_dict, const std
 
 // add species amount in the system useful for adding aqueous solution composition
 // units= moles, kg, m3
-void GEMSEngine::add_species_amt(const std::string& species, double val, const std::string& units)
+void ChemicalEngineMaps::add_species_amt(const std::string& species, double val, const std::string& units)
 {
     auto species_idx =gem.indexSpecies(species);
     if( units == "kg") {
@@ -433,7 +433,7 @@ void GEMSEngine::add_species_amt(const std::string& species, double val, const s
 }
 
 // add element amount in the system units = moles, kg
-void GEMSEngine::add_element_amt(const std::string& element_name, double val, const std::string& units)
+void ChemicalEngineMaps::add_element_amt(const std::string& element_name, double val, const std::string& units)
 {
     if( units  == "kg" ) {
         val /= m_element_molar_masses[element_name];
@@ -444,7 +444,7 @@ void GEMSEngine::add_element_amt(const std::string& element_name, double val, co
 
 //  add elements amount in the system useful for adding aqueous solution composition
 //  units= moles,kg
-void GEMSEngine::add_multiple_elements_amt(const ValuesMap& input_dict, const std::string& units)
+void ChemicalEngineMaps::add_multiple_elements_amt(const ValuesMap& input_dict, const std::string& units)
 {
     for(const auto& el: input_dict) {
         add_element_amt(el.first, el.second, units);
@@ -452,7 +452,7 @@ void GEMSEngine::add_multiple_elements_amt(const ValuesMap& input_dict, const st
 }
 
 // add element amount using user defined formula, units = moles,kg
-void GEMSEngine::add_amt_from_formula(const ValuesMap& formula, double val, const std::string& units)
+void ChemicalEngineMaps::add_amt_from_formula(const ValuesMap& formula, double val, const std::string& units)
 {
     if( units  == "kg" ) {
         double molarmass =0.0;
@@ -469,7 +469,7 @@ void GEMSEngine::add_amt_from_formula(const ValuesMap& formula, double val, cons
 
 // returns a bulk vector b from user-defined formula (as dict. {"H":2,"O":1} )
 // and amount of the formula [object] in units of 'moles' or 'kg'
-Vector GEMSEngine::get_b_from_formula(const ValuesMap& formula, double val, const std::string& units)
+Vector ChemicalEngineMaps::get_b_from_formula(const ValuesMap& formula, double val, const std::string& units)
 {
     Vector bx(b_amounts.size()); //   bx = [v for v in self.b]
     clear_vector(bx, 1e-15);
@@ -489,7 +489,7 @@ Vector GEMSEngine::get_b_from_formula(const ValuesMap& formula, double val, cons
 }
 
 //     constrain species amount to a specified lower bound, units= moles,kg,m3
-void GEMSEngine::set_multiple_species_lower_bound(const ValuesMap& input_dict, const std::string& units)
+void ChemicalEngineMaps::set_multiple_species_lower_bound(const ValuesMap& input_dict, const std::string& units)
 {
     for(const auto& el: input_dict) {
         set_species_lower_bound(el.first, el.second, units);
@@ -497,7 +497,7 @@ void GEMSEngine::set_multiple_species_lower_bound(const ValuesMap& input_dict, c
 }
 
 //     constrain species amount to a specified lower bound, units= moles,kg,m3
-void GEMSEngine::set_multiple_species_upper_bound(const ValuesMap& input_dict, const std::string& units)
+void ChemicalEngineMaps::set_multiple_species_upper_bound(const ValuesMap& input_dict, const std::string& units)
 {
     for(const auto& el: input_dict) {
         set_species_upper_bound(el.first, el.second, units);
@@ -505,7 +505,7 @@ void GEMSEngine::set_multiple_species_upper_bound(const ValuesMap& input_dict, c
 }
 
 //  constrain species amount to a specified lower bound, units= moles,kg,m3
-void GEMSEngine::set_species_lower_bound(const std::string& species, double val, const std::string& units)
+void ChemicalEngineMaps::set_species_lower_bound(const std::string& species, double val, const std::string& units)
 {
     if( units == "kg") {
         val/=m_species_molar_mass[species];
@@ -517,7 +517,7 @@ void GEMSEngine::set_species_lower_bound(const std::string& species, double val,
 }
 
 //  constrain species amount to a specified upper bound, units= moles,kg,m3
-void GEMSEngine::set_species_upper_bound(const std::string& species, double val, const std::string& units)
+void ChemicalEngineMaps::set_species_upper_bound(const std::string& species, double val, const std::string& units)
 {
     if( units == "kg") {
         val/=m_species_molar_mass[species];
@@ -529,7 +529,7 @@ void GEMSEngine::set_species_upper_bound(const std::string& species, double val,
 }
 
 //  constrain species amount to a specified lower bound, units= moles,kg,m3
-void GEMSEngine::set_species_lower_bound(Index ispecies, double val, const std::string& units)
+void ChemicalEngineMaps::set_species_lower_bound(Index ispecies, double val, const std::string& units)
 {
     if( units == "kg") {
         val/=m_species_molar_mass[m_species_names[ispecies]];
@@ -541,7 +541,7 @@ void GEMSEngine::set_species_lower_bound(Index ispecies, double val, const std::
 }
 
 //  constrain species amount to a specified upper bound, units= moles,kg,m3
-void GEMSEngine::set_species_upper_bound(Index ispecies, double val, const std::string& units)
+void ChemicalEngineMaps::set_species_upper_bound(Index ispecies, double val, const std::string& units)
 {
     if( units == "kg") {
         val/=m_species_molar_mass[m_species_names[ispecies]];
@@ -554,13 +554,13 @@ void GEMSEngine::set_species_upper_bound(Index ispecies, double val, const std::
 
 
 // supresses a phase in GEM calculation
-void GEMSEngine::supress_phase(const std::string& phase_name)
+void ChemicalEngineMaps::supress_phase(const std::string& phase_name)
 {
     supress_multiple_species(m_species_in_phase[phase_name]);
 }
 
 // supresses multiple phase in calculation as given in phase names list
-void GEMSEngine::supress_multiple_phases(const std::vector<std::string>& phase_name_list)
+void ChemicalEngineMaps::supress_multiple_phases(const std::vector<std::string>& phase_name_list)
 {
     for( const auto& phase: phase_name_list) {
         supress_phase(phase);
@@ -568,14 +568,14 @@ void GEMSEngine::supress_multiple_phases(const std::vector<std::string>& phase_n
 }
 
 // supresses species in calculation
-void GEMSEngine::supress_species(const std::string& species_name)
+void ChemicalEngineMaps::supress_species(const std::string& species_name)
 {
     set_species_lower_bound(species_name, 0);
     set_species_upper_bound(species_name, 1e-15);
 }
 
 // supresses multiple species in GEM calculation as given in species name list
-void GEMSEngine::supress_multiple_species(const std::vector<std::string>& species_list)
+void ChemicalEngineMaps::supress_multiple_species(const std::vector<std::string>& species_list)
 {
     for( const auto& species: species_list) {
         supress_species(species);
@@ -583,13 +583,13 @@ void GEMSEngine::supress_multiple_species(const std::vector<std::string>& specie
 }
 
 // activate supressed phase
-void GEMSEngine::activate_phase(const std::string& phase_name)
+void ChemicalEngineMaps::activate_phase(const std::string& phase_name)
 {
     activate_multiple_species(m_species_in_phase[phase_name]);
 }
 
 // activate multiple supressed phases given in list
-void GEMSEngine::activate_multiple_phases(const std::vector<std::string>& phase_name_list)
+void ChemicalEngineMaps::activate_multiple_phases(const std::vector<std::string>& phase_name_list)
 {
     for( const auto& phase: phase_name_list) {
         activate_phase(phase);
@@ -597,7 +597,7 @@ void GEMSEngine::activate_multiple_phases(const std::vector<std::string>& phase_
 }
 
 // activate multiple supressed species given in the list
-void GEMSEngine::activate_multiple_species(const std::vector<std::string>& species_list)
+void ChemicalEngineMaps::activate_multiple_species(const std::vector<std::string>& species_list)
 {
     for( const auto& species: species_list) {
         activate_species(species);
@@ -605,7 +605,7 @@ void GEMSEngine::activate_multiple_species(const std::vector<std::string>& speci
 }
 
 // activate a supressed species in phase
-void GEMSEngine::activate_species(const std::string& species_name)
+void ChemicalEngineMaps::activate_species(const std::string& species_name)
 {
     set_species_lower_bound(species_name, 0);
     set_species_upper_bound(species_name, 1e6);
@@ -613,37 +613,37 @@ void GEMSEngine::activate_species(const std::string& species_name)
 
 
 // returns pH of the solution
-double GEMSEngine::pH()
+double ChemicalEngineMaps::pH()
 {
     return gem.pH();
 }
 
 // returns pE of the solution
-double GEMSEngine::pE()
+double ChemicalEngineMaps::pE()
 {
     return gem.pe();
 }
 
 // returns ionic strength of the solution
-double GEMSEngine::ionic_strength()
+double ChemicalEngineMaps::ionic_strength()
 {
     return gem.ionicStrength();
 }
 
 // returns volume of the system in m3
-double GEMSEngine::system_volume()
+double ChemicalEngineMaps::system_volume()
 {
     return gem.systemVolume();
 }
 
 // returns mass of the system in kg
-double GEMSEngine::system_mass()
+double ChemicalEngineMaps::system_mass()
 {
     return gem.systemMass();
 }
 
 // returns molar volume of phases in m3/mol
-ValuesMap GEMSEngine::phases_molar_volume()
+ValuesMap ChemicalEngineMaps::phases_molar_volume()
 {
     ValuesMap phase_mvol;
     for(Index i = 0; i < nphases(); ++i) {
@@ -653,7 +653,7 @@ ValuesMap GEMSEngine::phases_molar_volume()
 }
 
 // returns saturation indices of phases
-ValuesMap GEMSEngine::phase_sat_indices()
+ValuesMap ChemicalEngineMaps::phase_sat_indices()
 {
     return to_map(m_phase_names, gem.phaseSatIndices());
 }
