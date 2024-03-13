@@ -15,7 +15,7 @@ if(XGEMS_USE_THERMOFUN MATCHES ON)
 
 endif()
 
-if(USE_SPDLOG_PRECOMPILED)
+if(USE_SPDLOG_PRECOMPILED MATCHES ON)
  if(NOT TARGET spdlog::spdlog)
     find_package(spdlog CONFIG REQUIRED)
     if(NOT spdlog_FOUND)
@@ -23,6 +23,8 @@ if(USE_SPDLOG_PRECOMPILED)
     else()
        message(STATUS "Found spdlog v${spdlog_VERSION}")
     endif()
+  else()
+   message(STATUS "Found spdlog v${spdlog_VERSION}")
   endif()
 endif()
 
