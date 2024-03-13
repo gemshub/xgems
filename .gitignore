@@ -11,6 +11,8 @@ build/
 .ptp-sync/
 .DS_Store
 demos/ipmlog.txt
+demos/*.log
+demos/demo.pro.user*
 .ipmlog.txt
 .vscode/
 CMakeLists.txt.user
