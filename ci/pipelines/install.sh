@@ -32,4 +32,5 @@ else
     echo "The make step failed" >&2
     exit 1
 fi
+ctest --test-dir tests
 conda list
