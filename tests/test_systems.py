@@ -20,8 +20,6 @@ import unittest
 from xgems import *
 from numpy import *
 
-
-
 def gems3k_equilibrate(fullpath, T=None, P=None):
     engine = ChemicalEngine(fullpath)
 
@@ -30,27 +28,39 @@ def gems3k_equilibrate(fullpath, T=None, P=None):
     b = engine.elementAmounts()
 
     ret = engine.equilibrate(T1, P1, b)
-    print("Run: ", fullpath, " result: ", ret, "time: ", engine.elapsedTime())
+    #print("Run: ", fullpath, " result: ", ret, "time: ", engine.elapsedTime())
+    return ret
 
-
-def gems3k_folder(name, fullpath, T=None, P=None):
-    #print(name + " " + fullpath)
+def gems3k_folder(fullpath):
     for x in os.listdir(fullpath):
         if x.endswith("-dat.lst"):
-            gems3k_equilibrate(os.path.join(fullpath, x), T, P)
+            return os.path.join(fullpath, x)
+    return None
+
+class TestCalculations(unittest.TestCase):
+
+    def setUp(self):
+        path = "gems3k"
+        self.dirs = [os.path.join(path, name) for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
+        print(self.dirs)
 
 
-def gems3k_folders(path=".", T=None, P=None):
-    for name in os.listdir(path):
-        thepath = os.path.join(path, name)
-        if os.path.isdir(thepath):
-            gems3k_folder(name, thepath, T, P)
+    def test_equilibrate(self):
+        for folder in self.dirs:
+            with self.subTest(msg = folder):
+                lst_file = gems3k_folder(folder)
+                if lst_file is not None:
+                    self.assertEqual(gems3k_equilibrate(lst_file), 2)
+
+    def test_equilibrate_1_25(self):
+        for folder in self.dirs:
+            with self.subTest(msg = folder):
+                lst_file = gems3k_folder(folder)
+                if lst_file is not None:
+                    self.assertEqual(gems3k_equilibrate(lst_file, 298.15, 100000), 2)
 
 
-if __name__ == "__main__":
-    #connect all loggers
-    #update_loggers(True, "test_demo1.log", 0)
-    gems3k_folders("gems3k")
-
+if __name__ == '__main__':
+    unittest.main()
 
 
