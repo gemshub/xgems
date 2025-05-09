@@ -50,7 +50,7 @@ class TestCalculations(unittest.TestCase):
             with self.subTest(msg = folder):
                 lst_file = gems3k_folder(folder)
                 if lst_file is not None:
-                    self.assertEqual(gems3k_equilibrate(lst_file), 2)
+                    self.assertEqual(gems3k_equilibrate(lst_file), 3)
 
     def test_equilibrate_1_25(self):
         for folder in self.dirs:
