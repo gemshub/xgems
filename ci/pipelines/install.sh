@@ -25,6 +25,7 @@ cmake \
     -DCMAKE_INSTALL_LIBDIR=lib \
     ..
 make install
+ctest --test-dir tests
 if [ $? -eq 0 ]
 then
     echo "The make step ran OK"
@@ -32,5 +33,4 @@ else
     echo "The make step failed" >&2
     exit 1
 fi
-ctest --test-dir tests
 conda list
