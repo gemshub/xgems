@@ -1,0 +1,132 @@
+
+#  GEMS3K v3.9.7 c.6606501
+# Comments can be marked with # $ ; as the first character in the line
+# DBR text input file for node system recipe and speciation data
+# (should be read only after the DCH and the IPM files)
+
+# (1): Flags controlling GEM IPM-3 operation and data exchange
+# NodeHandle: Node identification handle
+<NodeHandle>  0
+# NodeTypeHY:  Node type code (hydraulic), not used on TNode level; see typedef NODETYPE
+<NodeTypeHY>  0
+# NodeTypeMT:  Node type (mass transport), not used on TNode level; see typedef NODETYPE
+<NodeTypeMT>  0
+# NodeStatusFMT:  Node status code in FMT part, not used on TNode level; see typedef NODECODEFMT
+<NodeStatusFMT>  -1
+# NodeStatusCH: Node status code and control in GEM input and output; see typedef NODECODECH
+<NodeStatusCH>  1
+# IterDone:  Number of iterations performed by GEM IPM in the last run (GEM output)
+<IterDone>  130
+
+## (2) Chemical scalar properies of the node system
+# TK: Node temperature T, Kelvin. This value must always be provided (GEM input)
+<TK>  298.15
+# P:  Node Pressure P, Pa. This value must always be provided (GEM input)
+<P>  100000
+# Vs: Volume V of reactive subsystem, m3 (GEM output)
+<Vs>  0.0134007555175108
+# Vi: Volume of inert subsystem, m3 (mass transport)
+<Vi>  0
+# Ms: Mass of reactive subsystem, kg (GEM output)
+<Ms>  1.03351311372714
+# Mi: Mass of inert subsystem, kg (mass transport)
+<Mi>  0
+# Hs: Total enthalpy of reactive subsystem, J (reserved)
+<Hs>  0
+# Hi: Total enthalpy of inert subsystem, J (reserved, mass transport) 
+<Hi>  0
+# Gs: Total Gibbs energy of the reactive subsystem, J/(RT) (GEM output)
+<Gs>  -5392.41244948701
+# IS: Effective aqueous ionic strength, molal (GEM output)
+<IS>  0.298883151887685
+# pH: pH of aqueous solution in molal activity scale (GEM output)
+<pH>  3.57001775025554
+# pe: pe of aqueous solution in molal activity scale (GEM output)
+<pe>  16.453288937216
+# Eh: Eh of aqueous solution, V (GEM output)
+<Eh>  0.971408007163372
+# Tm: Actual total simulation time, s (kinetics, metastability, transport)
+<Tm>  0
+# dt: Actual time step, s (kinetics, metastability, transport)
+<dt>  0
+
+### Arrays: for dimensions and index lists, see Section (2) of DCH file
+
+## (4) Data for Independent Components
+#  'Al' 'Cl' 'H' 'Na' 'Nit' 'O' 'Zz' 
+# bIC: Bulk composition of reactive subsystem (main GEM input), moles of ICs [nICb]
+<bIC>
+0.1281992281926 0.2 111.501345333114 0.100001 1 55.8939720042906 0 
+
+# rMB: Mass balance residuals, moles (GEM output) [nICb]
+<rMB>
+0 0 -8.62186078977862e-15 0 0 -4.12349863858977e-15 8.56621698712719e-18 
+
+# uIC: Chemical potentials of ICs in equilibrium (dual solution), J/(RT) (GEM output) [nICb]
+<uIC>
+-315.618640127467 -17.0292567254667 -46.1053675849076 -146.172226234585 -0.00049912517556494 -3.45504433537305 37.8850979163513 
+
+# bSP: Output bulk composition of the equilibrium solid part of the system, moles 
+<bSP>
+0.0949258824502687 0 0.284777647350806 0 0 0.284777647350806 0 
+
+## (5) Data for Dependent Components
+#  'Al(OH)+2' 'Al(OH)2+' 'Al(OH)3@' 'Al(OH)4-' 'Al+3' 'Na(OH)@' 'Na+' 'ClO4-' 'Cl-' 'Nit2@' 'H2@' 'O2@' 'OH-' 'H+' 'H2O@' 'H2' 'N2-atm' 'O2' 'gibbsite' 
+# xDC: Speciation - amounts of DCs in equilibrium (primal solution), moles (GEM output/input) [nDCb]
+<xDC>
+0.000199429950708163 5.37550186233797e-07 2.08424714681702e-09 3.89662349435641e-12 0.0330733761532929 1.76568386399e-12 0.100000999998234 6.21524827300654e-29 0.2 0.000650089408899882 0 1.31412922244176e-06 5.30111338550641e-11 0.000379474147192286 55.607994389763 0 0.4993499105911 0.000498683593190922 0.0949258824502687 
+
+# gam: Activity coefficients of DCs in their respective phases (GEM output/input) [nDCb]
+<gam>
+0.223329142205829 0.710520973549494 0.999982073053232 0.710520973549494 0.0324508609782535 0.999982073053232 0.710520973549494 0.710520973549494 0.710520973549494 0.999982073053232 0.999982073053232 0.999982073053232 0.710520973549494 0.710520973549494 1.00088357285795 1 1 1 1 
+
+# dll: Lower metastability restrictions on amounts of DCs, moles (GEM input) [nDCb]
+<dll>
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+# dul: Upper metastability constraints on amounts of DCs, moles (GEM input) [nDCb]
+<dul>
+1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 1000000 
+
+## (6) Data for Phases
+#  'aq_gen' 'gas_gen' 'Gibbsite' 
+# aPH: Specific surface areas of phases, m2/kg (GEM input) [nPHb]
+<aPH>
+0 0 0 
+
+# xPH: Amounts of phases in equilibrium state, moles (GEM output) [nPHb]
+<xPH>
+55.9422996132436 0.499848594184291 0.0949258824502687 
+
+# vPS: Volumes of multicomponent phases, m3 (GEM output) [nPSb]
+<vPS>
+0.00100661958998074 0.0123911024759993 
+
+# mPS: Masses of multicomponent phases, kg (GEM output) [nPSb]
+<mPS>
+1.01210410839804 0.0140044456246951 
+
+# xPA: Amount of carrier (sorbent or solvent) in multicomponent phases, moles (GEM output) [nPSb]
+<xPA>
+55.607994389763 0 
+
+# amru: Upper AMRs on amounts of multi-component phases (mol) [nPSb]  
+<amru>
+1000000 1000000 
+
+# amrl: Lower AMRs on amounts of multi-component phases (mol) [nPSb]
+<amrl>
+0 0 
+
+# omPH: stability (saturation) indices of phases in log10 scale, can change in GEM [nPHb] 
+<omPH>
+6.39257498745031e-10 -3.60117563358304e-08 -5.14443182572623e-08 
+
+# bPS: Bulk elemental compositions of multicomponent phases, moles (GEM output) [nPSb*nICb]
+#  'Al' 'Cl' 'H' 'Na' 'Nit' 'O' 'Zz' 
+<bPS>
+0.033273345742331 0.2 111.216567685763 0.100001 0.00130017881779976 55.6081969897534 -8.56621698712719e-18 
+0 0 0 0 0.9986998211822 0.000997367186381845 0 
+
+# End of file
+
