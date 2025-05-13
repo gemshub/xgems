@@ -15,4 +15,5 @@ demos/ipmlog.txt
 .vscode/
 CMakeLists.txt.user
 environment.yml
+*log*
 

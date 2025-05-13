@@ -15,6 +15,15 @@ if(XGEMS_USE_THERMOFUN MATCHES ON)
 
 endif()
 
+if(XGEMS_USE_PYTHON MATCHES ON)
+  find_package(Python REQUIRED COMPONENTS Interpreter Development)
+  if(NOT Python_FOUND)
+    message(FATAL_ERROR "Python library not found")
+  else()
+    message(STATUS "Found Python ${Python_VERSION}")
+  endif()
+endif()
+
 if(USE_SPDLOG_PRECOMPILED MATCHES ON)
  if(NOT TARGET spdlog::spdlog)
     find_package(spdlog CONFIG REQUIRED)
