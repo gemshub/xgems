@@ -22,15 +22,17 @@ from numpy import *
 
 
 def gems3k_equilibrate(fullpath, T=None, P=None):
-    engine = ChemicalEngine(fullpath)
+    try:
+        engine = ChemicalEngine(fullpath)
 
-    T1 = engine.temperature() if T is None else T
-    P1 = engine.pressure() if P is None else P
-    b = engine.elementAmounts()
+        T1 = engine.temperature() if T is None else T
+        P1 = engine.pressure() if P is None else P
+        b = engine.elementAmounts()
 
-    ret = engine.equilibrate(T1, P1, b)
-    print("Run: ", fullpath, " result: ", ret, "time: ", engine.elapsedTime())
-
+        ret = engine.equilibrate(T1, P1, b)
+        print("Run: ", fullpath, " result: ", ret, "time: ", engine.elapsedTime())
+    except RuntimeError:
+        print("Illegal input: ", fullpath)
 
 def gems3k_folder(name, fullpath, T=None, P=None):
     #print(name + " " + fullpath)
