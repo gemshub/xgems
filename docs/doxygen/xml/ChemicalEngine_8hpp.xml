@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="ChemicalEngine_8hpp" kind="file" language="C++">
+    <compoundname>ChemicalEngine.hpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">memory</includes>
+    <includes local="no">string</includes>
+    <includes refid="Index_8hpp" local="no">xGEMS/Index.hpp</includes>
+    <includes refid="Eigen_8hpp" local="no">xGEMS/Eigen.hpp</includes>
+    <includedby refid="ChemicalEngine_8cpp" local="yes">xGEMS/ChemicalEngine.cpp</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="5">
+        <label>xGEMS/Index.hpp</label>
+        <link refid="Index_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>xGEMS/ChemicalEngine.hpp</label>
+        <link refid="ChemicalEngine_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>iostream</label>
+      </node>
+      <node id="6">
+        <label>cstddef</label>
+      </node>
+      <node id="8">
+        <label>eigen3/Eigen/Core</label>
+      </node>
+      <node id="7">
+        <label>xGEMS/Eigen.hpp</label>
+        <link refid="Eigen_8hpp"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>memory</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>xGEMS/ChemicalEngine.hpp</label>
+        <link refid="ChemicalEngine_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>xGEMS/ChemicalEngine.cpp</label>
+        <link refid="ChemicalEngine_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structxGEMS_1_1ChemicalEngineOptions" prot="public">xGEMS::ChemicalEngineOptions</innerclass>
+    <innerclass refid="classxGEMS_1_1ChemicalEngine" prot="public">xGEMS::ChemicalEngine</innerclass>
+    <innernamespace refid="namespacexGEMS">xGEMS</innernamespace>
+    <briefdescription>
+<para>Header file for the ChemicalEngine class. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespacexGEMS" kindref="compound">xGEMS</ref> is a C++ and Python library for thermodynamic modeling by Gibbs energy minimization This file defines the classes and functions for Gibbs-energy minimization thermodynamic modeling with <ref refid="namespacexGEMS" kindref="compound">xGEMS</ref>. Units used throughout the API are:<itemizedlist>
+<listitem><para>Temperature: Kelvin (K)</para>
+</listitem><listitem><para>Pressure: Pascals (Pa)</para>
+</listitem><listitem><para>Amounts: moles (mol)</para>
+</listitem><listitem><para>Mass: kilograms (kg)</para>
+</listitem><listitem><para>Volume: cubic meters (m³)</para>
+</listitem><listitem><para>Energies: Joules (J) or Joules per mole (J/mol) as appropriate.</para>
+</listitem></itemizedlist>
+</para>
+<para>Example applications of these functions can be found in the demos at: <ulink url="https://bitbucket.org/gems4/xgems/src/master/demos/">https://bitbucket.org/gems4/xgems/src/master/demos/</ulink></para>
+<para><simplesect kind="note"><para>The examples below are indicative; please ensure that your vectors and matrices (such as VectorConstRef) are properly defined (e.g., using Eigen).</para>
+</simplesect>
+<simplesect kind="author"><para>Allan Leal, Dmitrii Kulik, G.D. Miron </para>
+</simplesect>
+<simplesect kind="date"><para>2025</para>
+</simplesect>
+@license GNU General Public License v3 or later </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/>#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/></highlight><highlight class="comment">//<sp/>C++<sp/>includes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/>#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/>#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/>#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/></highlight><highlight class="comment">//<sp/>xGEMS<sp/>includes<sp/>(assumed<sp/>to<sp/>define<sp/>Index<sp/>and<sp/>Eigen-based<sp/>vector/matrix<sp/>types)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/>#include<sp/>&lt;<ref refid="Index_8hpp" kindref="compound">xGEMS/Index.hpp</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/>#include<sp/>&lt;<ref refid="Eigen_8hpp" kindref="compound">xGEMS/Eigen.hpp</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacexGEMS" kindref="compound">xGEMS</ref><sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacexGEMS_1a8789f3ad28ccb35698ac468d711270fd" kindref="member">update_loggers</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_cout,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>logfile_name,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>log_level);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="71" refid="structxGEMS_1_1ChemicalEngineOptions" refkind="compound"><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structxGEMS_1_1ChemicalEngineOptions" kindref="compound">ChemicalEngineOptions</ref></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="74" refid="structxGEMS_1_1ChemicalEngineOptions_1a68386d1bc85163e15542f46d4ae43348" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structxGEMS_1_1ChemicalEngineOptions_1a68386d1bc85163e15542f46d4ae43348" kindref="member">warmstart</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="85" refid="classxGEMS_1_1ChemicalEngine" refkind="compound"><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abbdf1e29d16cfe6eeda862324501cf13" kindref="member">ChemicalEngine</ref>();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abbdf1e29d16cfe6eeda862324501cf13" kindref="member">ChemicalEngine</ref>(std::string<sp/>filename);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a9dfbb6c6338674ceda12cb6b12c38a51" kindref="member">~ChemicalEngine</ref>();</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="122" refid="classxGEMS_1_1ChemicalEngine_1a175e238de248bb3cb1830a7a7d0a603a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a175e238de248bb3cb1830a7a7d0a603a" kindref="member">ChemicalEngine</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="125" refid="classxGEMS_1_1ChemicalEngine_1a1e558150af08928a1ba69f52d197e4bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a1e558150af08928a1ba69f52d197e4bc" kindref="member">operator=</ref>(<ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref><sp/>other)<sp/>-&gt;<sp/><ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>&amp;<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ae38f6c6d90de689c87285ed5db6860d3" kindref="member">reallocateEngineArrays</ref>()<sp/>-&gt;<sp/>void;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1af44ab5d937a2beba0f1f421133d00f43" kindref="member">initialize</ref>(std::string<sp/>filename)<sp/>-&gt;<sp/>void;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a996780714e5692fbcea393e6e8c777a6" kindref="member">initializeFromJsonStrings</ref>(std::string<sp/>dch_json,<sp/>std::string<sp/>ipm_json,<sp/>std::string<sp/>dbr_json)<sp/>-&gt;<sp/>void;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a0cac5a88a71c907c74b19347111076f6" kindref="member">readDbrFromFile</ref>(std::string<sp/>filename)<sp/>-&gt;<sp/>void;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aa912f211455f3e9ece8be3f1bfb5201c" kindref="member">readDbrFromJsonString</ref>(std::string<sp/>dbr_json)<sp/>-&gt;<sp/>void;</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a971d3324991f8b3833c6a25e45768777" kindref="member">writeDbrToFile</ref>(std::string<sp/>filename)<sp/>-&gt;<sp/>void;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a3650f77f77d419add16dc07a7471bfa3" kindref="member">writeDbrToJsonString</ref>()<sp/>-&gt;<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a68685e12d2d666190c1039e71fd88325" kindref="member">numElements</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a4f6aa6be1539e4225f83167d2837186a" kindref="member">numSpecies</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a928717a9a4057e4d2ffdc1f25100b2ff" kindref="member">numPhases</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abdd726b9e3c30ec9316a2f69133385cf" kindref="member">numSpeciesInPhase</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1accb60dae91356a8c0c68220eec60b293" kindref="member">elementName</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ielement)<sp/>const<sp/>-&gt;<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a8b3ca18f390bd0f5e2ff6c489052000a" kindref="member">speciesName</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a0d913efd17cd84c2308cca96b4ef77b4" kindref="member">speciesCharge</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a380a5c4bf0d8cfb03c2931d36f9114eb" kindref="member">phaseName</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a44614c89652b36c2c44e06b99acf401a" kindref="member">indexElement</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>element)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ab250290cfad24d83ff10d7810ef80b61" kindref="member">indexSpecies</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>species)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ae7448d17d026ce7262c341bd421f1e15" kindref="member">indexSpeciesAll</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>species)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" kindref="member">VectorXi</ref>;</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ac1db0a4f7e18cec87cd7395206c20b62" kindref="member">indexPhase</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>phase)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="406"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a35c07e0110d82ce18b2fbfb61113f5e5" kindref="member">indexPhaseAll</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>phase)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" kindref="member">VectorXi</ref>;</highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a69fdea5700faa9e99c74a1d3df520ba3" kindref="member">indexPhaseWithSpecies</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="432"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a81e6b2c61dcd911b2fa734dae2231a38" kindref="member">indexFirstSpeciesInPhase</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="433"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="444"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a972e27461d1ceb86e12e8b4ed5d769bd" kindref="member">elementMolarMasses</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="445"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="456"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abd6cebdbbda95d5de210cc6bd2580c20" kindref="member">speciesMolarMasses</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="469"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a30b0722581e95a8b68a7407658d29796" kindref="member">formulaMatrix</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a8088725abe195d7fb880c8b0c300f731" kindref="member">MatrixConstRef</ref>;</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a117ed9c252ca3ae11d91c7431f437346" kindref="member">setSpeciesAmounts</ref>(<ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref><sp/>n)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="484"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="496"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a5ba6f40da716ec3f48c0f6189ad5204c" kindref="member">setSpeciesAmount</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>name,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>amount)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a5ba6f40da716ec3f48c0f6189ad5204c" kindref="member">setSpeciesAmount</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>amount)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="523"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1af577483a0e44c1b0d581f53431abf4b1" kindref="member">setOptions</ref>(const<sp/><ref refid="structxGEMS_1_1ChemicalEngineOptions" kindref="compound">ChemicalEngineOptions</ref>&amp;<sp/>options)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="524"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="535"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a98e3aeef2bee3ba3e97fea5863029647" kindref="member">setWarmStart</ref>()<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="536"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="547"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ad04ff99945dbd6da25e6b8a6f94d52b5" kindref="member">setColdStart</ref>()<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="548"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="562"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aac159f0ede7c6b611369367811a4abf2" kindref="member">setSpeciesUpperLimit</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>name,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>amount)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="563"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="577"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abbb0bf6c60612d298fa8ef93cd71c93b" kindref="member">setSpeciesLowerLimit</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>name,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>amount)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="578"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="592"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aac159f0ede7c6b611369367811a4abf2" kindref="member">setSpeciesUpperLimit</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>amount)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="593"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="607"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abbb0bf6c60612d298fa8ef93cd71c93b" kindref="member">setSpeciesLowerLimit</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>amount)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="608"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="620"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ac293abac4b28b8e819f8dd73ba65c8ee" kindref="member">setStandardMolarGibbsEnergy</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>name,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>value)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="621"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="632"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a9e190c4c2a371784b0d839a0a7ecc8ff" kindref="member">setSpeciesUpperLimits</ref>(<ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref><sp/>n)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="633"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="644"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1acf3c118da1bcb67130dbf46721756e22" kindref="member">setSpeciesLowerLimits</ref>(<ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref><sp/>n)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="645"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="659"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aba879fcdcc242ab8d9732b9c0c8f8d7d" kindref="member">setPT</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>P,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>T)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="660"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="671"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a875274ea3ad2e0fcc398676809d7a179" kindref="member">setB</ref>(<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref><sp/>b)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="672"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="684"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ad2aa9436a881160c1588a6c880d683be" kindref="member">reequilibrate</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>warmstart)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="685"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="703"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ae738ec49a56f46652fbc59684f4d4242" kindref="member">equilibrate</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>P,<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref><sp/>b)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="704"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="715"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a66e620ff8347770a9f4e7a3cd77b32a8" kindref="member">converged</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="716"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="728"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a308c66c8770ce659b9fc31c89977392e" kindref="member">numIterations</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="729"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="741"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a56c0e9a394e544ca29ac8be0efceb6ac" kindref="member">elapsedTime</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="742"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="754"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a8da8136e90e7c1ffe5c07521afb7e211" kindref="member">temperature</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="755"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="767"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ad9d26f4ffbbc2ae146ec7b9dd60d1c2e" kindref="member">pressure</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="768"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="779"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a1b76d139cdfb62a2a44bd1c3e811d4b3" kindref="member">elementAmounts</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="780"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="791"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a77c8072cc424de28e6a4f1689ae52482" kindref="member">speciesAmounts</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="792"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="804"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a5e65231a7fc29591133826819677f878" kindref="member">speciesAmount</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="805"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="817"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a5e65231a7fc29591133826819677f878" kindref="member">speciesAmount</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>name)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="818"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="829"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ae529bea2791a6b26292c3ba0820f7858" kindref="member">speciesUpperLimits</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="830"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="841"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a1647d845739e13a7925bc0ea3e74f1d1" kindref="member">speciesLowerLimits</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="842"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="855"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1abf459bf4dec333aaf07cb92de29650fb" kindref="member">speciesMolalities</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="856"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="867"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a83634c872bb65f70b421021b9a852589" kindref="member">moleFractions</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="868"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="879"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1afe8d352dfc13bddabf8ddf4026f1db4b" kindref="member">lnActivityCoefficients</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="880"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="891"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ab1b3b690c53ba14f92a099873c8788ed" kindref="member">lnActivities</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="892"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="903"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a48d9ce0b48ef1838e270a6d84bb118bd" kindref="member">lnConcentrations</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="904"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="915"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a2b5f9b1fab400893a1d98e471c3ddc3a" kindref="member">chemicalPotentials</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="916"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="928"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a32d9095fd2518fd49018675c23f7b19d" kindref="member">standardMolarGibbsEnergy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="929"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="940"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ad8598925e20fef980e57170f0d9ac26e" kindref="member">standardMolarEnthalpy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="941"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="952"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a0ce9161690808dde60235d323e5135e1" kindref="member">standardMolarVolume</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="953"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="964"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a4775eb491e71c5c3ea1a6fb1c5f121ab" kindref="member">standardMolarEntropy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="965"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="976"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a918c04e94cbe404b121b8b10ce6d6c5c" kindref="member">standardMolarHeatCapacityConstP</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="977"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="988"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a093c008c4cf4f6f3eebe49de2dd379c5" kindref="member">phaseMolarGibbsEnergy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="989"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1000"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ad7ce346b57e8b96374572fb25f325660" kindref="member">phaseMolarEnthalpy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1001"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1012"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1af5b9f0d9c7463cee72762d80f6806b56" kindref="member">phaseMolarVolume</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1013"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1024"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a80266554cc7ec0f98f6457c0d8bd86fe" kindref="member">phaseMolarEntropy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1025"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1036"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aa241b9444ccb033f7295993e283b3b2b" kindref="member">phaseMolarHeatCapacityConstP</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1037"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1048"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a72cad3a639bada69195f1b0c8b6bbdca" kindref="member">phaseSpecificGibbsEnergy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1049"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1060"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ae81708e851400cee5f2c154cd9fc55a1" kindref="member">phaseSpecificEnthalpy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1061"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1072"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a4eb9e3afd12d6fc69c520f8f33e64c2b" kindref="member">phaseSpecificVolume</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1073"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="1084"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a088837d5b02b0e1a11a9a3cafa8fdb99" kindref="member">phaseSpecificEntropy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1085"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1096"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1add034f7010c4f0c1f2c24fd08cd6740a" kindref="member">phaseSpecificHeatCapacityConstP</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1097"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a90c114ffbb5d896d22eefe761a8a0050" kindref="member">phaseDensities</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1108"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a4057e674d061f86fc4a696540e6c3def" kindref="member">phaseDensity</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1120"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a66e67e20ca37c338eb4173f222073f62" kindref="member">phaseMasses</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1131"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="1142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aa80af95c009d015f52e8ea67b2dbcf76" kindref="member">phaseMass</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="1153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aaba628159fdcf223ce81b42a4b4486d8" kindref="member">phaseAmounts</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1154"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a05b7a348373f4c1143e5f3107fb2c548" kindref="member">phaseAmount</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1166"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a55a2519a5dcc6fdbc8c6f5bcb61aec21" kindref="member">phaseVolumes</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1177"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="1188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ab95f13460b50b8b83c16b81c1b7d991d" kindref="member">phaseVolume</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="1189"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1ad3ddb3c192cf8bebbe5446a0f947c502" kindref="member">phaseEnthalpies</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="1211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a9ed25ed628ee3f12a21abc07baf281c5" kindref="member">phaseEnthalpy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1212"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a2377f618e299c103fa3710bc64fea704" kindref="member">phaseEntropies</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="1234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a809de50a74bdae2dafd0a3e101fc0b09" kindref="member">phaseEntropy</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1235"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a5a507be8e9ac12971ff7a71e8a5f4db0" kindref="member">phaseHeatCapacitiesConstP</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="1257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a4fad168d27c0648002a73a1138b8e0d8" kindref="member">phaseHeatCapacityConstP</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1258"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a9b1520b5719b61cf6cc4eec85797005c" kindref="member">phaseSatIndices</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref>;</highlight></codeline>
+<codeline lineno="1269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="1280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a278d8d2f98dc9ee0c183c5c848702075" kindref="member">phaseSatIndex</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1281"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1af9aa5ee056dad0df97f7ba7b3025c112" kindref="member">systemMass</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1293"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1adb6ba84a8dc491766ac3363c3cfe04a0" kindref="member">systemVolume</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1305"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1aa046a7fc580b7a089a08d3d35f3b53fb" kindref="member">ionicStrength</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1316"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1326"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a5227987c0bca07dd5eea93faf79a8762" kindref="member">pH</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1327"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a2c27de428af0699e498e5bb8db7099a6" kindref="member">pe</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1338"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a0c1d3bd99fe6a362ea7e6f0bf8e0f5cf" kindref="member">Eh</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1349"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a55662ec4f51f03122f5c0156a7d3b50f" kindref="member">systemGibbsEnergy</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1360"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a0a9f484f5d2313dc638c94a2b77b2ad8" kindref="member">systemEnthalpy</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1371"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1381"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1acace05fb50f6e85b24db3136e9c9fb32" kindref="member">systemEntropy</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1382"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1392"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1ChemicalEngine_1a87ed18f716d47cd985867604685b2c96" kindref="member">systemHeatCapacityConstP</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1393"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1394"><highlight class="normal"><sp/>private:</highlight></codeline>
+<codeline lineno="1395"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>struct<sp/><ref refid="structxGEMS_1_1ChemicalEngine_1_1Impl" kindref="compound">Impl</ref>;</highlight></codeline>
+<codeline lineno="1396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>std::unique_ptr&lt;<ref refid="structxGEMS_1_1ChemicalEngine_1_1Impl" kindref="compound">Impl</ref>&gt;<sp/>pimpl;</highlight></codeline>
+<codeline lineno="1397"><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="1398"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1413"><highlight class="normal"><sp/>auto<sp/>operator&lt;&lt;(std::ostream&amp;<sp/>out,<sp/>const<sp/><ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>&amp;<sp/>engine)<sp/>-&gt;<sp/>std::ostream&amp;;</highlight></codeline>
+<codeline lineno="1414"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="1415"><highlight class="normal"><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>xGEMS</highlight></codeline>
+    </programlisting>
+    <location file="xGEMS/ChemicalEngine.hpp"/>
+  </compounddef>
+</doxygen>

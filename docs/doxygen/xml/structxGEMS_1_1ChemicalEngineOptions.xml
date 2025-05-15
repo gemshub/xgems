@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structxGEMS_1_1ChemicalEngineOptions" kind="struct" language="C++" prot="public">
+    <compoundname>xGEMS::ChemicalEngineOptions</compoundname>
+    <includes refid="ChemicalEngine_8hpp" local="no">ChemicalEngine.hpp</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngineOptions_1a68386d1bc85163e15542f46d4ae43348" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool xGEMS::ChemicalEngineOptions::warmstart</definition>
+        <argsstring></argsstring>
+        <name>warmstart</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Use smart start initial approximation (faster convergence, may be less accurate). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="74" column="11" bodyfile="xGEMS/ChemicalEngine.hpp" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Options for configuring a <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> instance. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This structure contains settings (e.g., initial approximation method) that affect the performance and accuracy of the equilibrium computations.</para>
+<para><simplesect kind="note"><para>The member <computeroutput>warmstart</computeroutput> indicates whether a &quot;smart&quot; (fast but possibly less accurate) initial approximation is used.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Disable<sp/>warm<sp/>start<sp/>when<sp/>a<sp/>more<sp/>robust<sp/>(cold<sp/>start)<sp/>solution<sp/>is<sp/>needed.</highlight></codeline>
+<codeline><highlight class="normal">xGEMS::ChemicalEngineOptions<sp/>options;</highlight></codeline>
+<codeline><highlight class="normal">options.warmstart<sp/>=<sp/>false;</highlight></codeline>
+</programlisting> </para>
+    </detaileddescription>
+    <location file="xGEMS/ChemicalEngine.hpp" line="71" column="2" bodyfile="xGEMS/ChemicalEngine.hpp" bodystart="72" bodyend="75"/>
+    <listofallmembers>
+      <member refid="structxGEMS_1_1ChemicalEngineOptions_1a68386d1bc85163e15542f46d4ae43348" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngineOptions</scope><name>warmstart</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

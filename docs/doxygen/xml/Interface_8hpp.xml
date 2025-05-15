@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="Interface_8hpp" kind="file" language="C++">
+    <compoundname>Interface.hpp</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">memory</includes>
+    <includes local="no">Reaktoro/Math/Matrix.hpp</includes>
+    <includes local="no">Reaktoro/Thermodynamics/Models/PhaseChemicalModel.hpp</includes>
+    <includes local="no">Reaktoro/Thermodynamics/Models/PhaseThermoModel.hpp</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>Reaktoro/Math/Matrix.hpp</label>
+      </node>
+      <node id="6">
+        <label>Reaktoro/Thermodynamics/Models/PhaseThermoModel.hpp</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="1">
+        <label>xGEMS/Interface.hpp</label>
+        <link refid="Interface_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Reaktoro/Thermodynamics/Models/PhaseChemicalModel.hpp</label>
+      </node>
+      <node id="3">
+        <label>memory</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="classxGEMS_1_1Interface" prot="public">xGEMS::Interface</innerclass>
+    <innernamespace refid="namespacexGEMS">xGEMS</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>xGEMS<sp/>is<sp/>a<sp/>C++<sp/>and<sp/>Python<sp/>library<sp/>for<sp/>thermodynamic<sp/>modeling<sp/>by<sp/>Gibbs<sp/>energy<sp/>minimization</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Copyright<sp/>(C)<sp/>2018<sp/>Allan<sp/>Leal,<sp/>Dmitrii<sp/>Kulik</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>program<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>program<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/>along<sp/>with<sp/>this<sp/>program.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/>C++<sp/>includes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Reaktoro<sp/>includes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Reaktoro/Math/Matrix.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Reaktoro/Thermodynamics/Models/PhaseChemicalModel.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Reaktoro/Thermodynamics/Models/PhaseThermoModel.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacexGEMS" kindref="compound">xGEMS</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Forward<sp/>declarations</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">ChemicalState;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">ChemicalSystem;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="classxGEMS_1_1Interface" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classxGEMS_1_1Interface" kindref="compound">Interface</ref></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="40" refid="classxGEMS_1_1Interface_1a4347e796d47f5c77001567e283487aec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1Interface_1a4347e796d47f5c77001567e283487aec" kindref="member">~Interface</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="classxGEMS_1_1Interface_1a1692b85250638f785776e939069f01d6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classxGEMS_1_1Interface_1a1692b85250638f785776e939069f01d6" kindref="member">temperature</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="classxGEMS_1_1Interface_1a68a6c107d435fa7cf1be7766a609b0ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a68a6c107d435fa7cf1be7766a609b0ae" kindref="member">pressure</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="classxGEMS_1_1Interface_1a4364e72dca448238b819ea710db2bb4c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a4364e72dca448238b819ea710db2bb4c" kindref="member">speciesAmounts</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classxGEMS_1_1Interface_1a09bdf571d372d509094f4638cfb31d0f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a09bdf571d372d509094f4638cfb31d0f" kindref="member">numElements</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="classxGEMS_1_1Interface_1ac5ef27901feb443eef130dca6f186165" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1ac5ef27901feb443eef130dca6f186165" kindref="member">numSpecies</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classxGEMS_1_1Interface_1a937a9ac2728c09fb447a432d4fee2b79" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a937a9ac2728c09fb447a432d4fee2b79" kindref="member">numPhases</ref>()<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="classxGEMS_1_1Interface_1a34d4ecca6449bf993906cfa8e0643910" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a34d4ecca6449bf993906cfa8e0643910" kindref="member">numSpeciesInPhase</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="classxGEMS_1_1Interface_1a90f8ae0bea63fa0ffd692b33213d2779" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a90f8ae0bea63fa0ffd692b33213d2779" kindref="member">elementName</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ielement)<sp/>const<sp/>-&gt;<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="classxGEMS_1_1Interface_1a3c405ecf755e06c02d35c7586dba2942" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a3c405ecf755e06c02d35c7586dba2942" kindref="member">elementMolarMass</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ielement)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="classxGEMS_1_1Interface_1ad88e33592e92df16303ecf593f69903b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1ad88e33592e92df16303ecf593f69903b" kindref="member">elementStoichiometry</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies,<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ielement)<sp/>const<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="classxGEMS_1_1Interface_1ada738847c50d54285be09af314fba4a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1ada738847c50d54285be09af314fba4a0" kindref="member">speciesName</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="classxGEMS_1_1Interface_1a47cb423b86d1107d8ccb2621d4aa7437" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a47cb423b86d1107d8ccb2621d4aa7437" kindref="member">phaseName</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="classxGEMS_1_1Interface_1af0b7e40e40ab4165ad08aa179132c17e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1af0b7e40e40ab4165ad08aa179132c17e" kindref="member">properties</ref>(PhaseThermoModelResult&amp;<sp/>res,<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>P)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="classxGEMS_1_1Interface_1a1f531b1a66310b0934f249ebbeafc454" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1af0b7e40e40ab4165ad08aa179132c17e" kindref="member">properties</ref>(PhaseChemicalModelResult&amp;<sp/>res,<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>P,<sp/><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref><sp/>nphase)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="classxGEMS_1_1Interface_1a3591604ccb32280936a483bbf15dc104" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a3591604ccb32280936a483bbf15dc104" kindref="member">clone</ref>()<sp/>const<sp/>-&gt;<sp/>std::shared_ptr&lt;<ref refid="classxGEMS_1_1Interface" kindref="compound">Interface</ref>&gt;<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="classxGEMS_1_1Interface_1a665f3c5acd5cfbeb8c905aaea6e6904f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a665f3c5acd5cfbeb8c905aaea6e6904f" kindref="member">formulaMatrix</ref>()<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1a75b82282df7ef9a8f1d9c08d33b27acc" kindref="member">Matrix</ref>;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="classxGEMS_1_1Interface_1a54d03e4de3f3831a7bf2df6e04284559" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a54d03e4de3f3831a7bf2df6e04284559" kindref="member">indexElement</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>element)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="classxGEMS_1_1Interface_1a0e5bce32a55d1a7dd8987e5b3a0171a8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a0e5bce32a55d1a7dd8987e5b3a0171a8" kindref="member">indexSpecies</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>species)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="classxGEMS_1_1Interface_1a29e405617fb09fae9b4299255cf29535" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a29e405617fb09fae9b4299255cf29535" kindref="member">indexPhase</ref>(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>phase)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107" refid="classxGEMS_1_1Interface_1ab5e83b916aab03f91c8c800318cd9cbc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1ab5e83b916aab03f91c8c800318cd9cbc" kindref="member">indexPhaseWithSpecies</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>ispecies)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="classxGEMS_1_1Interface_1a368592b8fa7302992af87265c27f659a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a368592b8fa7302992af87265c27f659a" kindref="member">indexFirstSpeciesInPhase</ref>(<ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref><sp/>iphase)<sp/>const<sp/>-&gt;<sp/><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref>;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="classxGEMS_1_1Interface_1ab0292e85f9b25f7c4fe97581b0ae901c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1ab0292e85f9b25f7c4fe97581b0ae901c" kindref="member">system</ref>()<sp/>const<sp/>-&gt;<sp/>ChemicalSystem;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="classxGEMS_1_1Interface_1a2fbf40c502a5aa696ecf8f3ecb39dbbf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/><ref refid="classxGEMS_1_1Interface_1a2fbf40c502a5aa696ecf8f3ecb39dbbf" kindref="member">state</ref>(const<sp/>ChemicalSystem&amp;<sp/><ref refid="classxGEMS_1_1Interface_1ab0292e85f9b25f7c4fe97581b0ae901c" kindref="member">system</ref>)<sp/>const<sp/>-&gt;<sp/>ChemicalState;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="classxGEMS_1_1Interface_1a1432d8cea3fd218038d99adfeec4cfa5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>operator<sp/>ChemicalSystem()<sp/>const;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>xGEMS</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="xGEMS/Interface.hpp"/>
+  </compounddef>
+</doxygen>

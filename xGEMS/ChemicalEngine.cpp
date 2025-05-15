@@ -23,7 +23,7 @@
 #include <memory>
 
 // GEMS3K includes
-#define IPMGEMPLUGIN
+//#define IPMGEMPLUGIN
 //#define NODEARRAYLEVEL
 #include <GEMS3K/node.h>
 #include <GEMS3K/gems3k_impex.h>

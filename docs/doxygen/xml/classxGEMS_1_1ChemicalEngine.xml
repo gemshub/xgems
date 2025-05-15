@@ -1,0 +1,2992 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classxGEMS_1_1ChemicalEngine" kind="class" language="C++" prot="public">
+    <compoundname>xGEMS::ChemicalEngine</compoundname>
+    <includes refid="ChemicalEngine_8hpp" local="no">ChemicalEngine.hpp</includes>
+    <innerclass refid="structxGEMS_1_1ChemicalEngine_1_1Impl" prot="public">xGEMS::ChemicalEngine::Impl</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classxGEMS_1_1ChemicalEngine_1a15c65931b2cded689267ff198ac4df12" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="structxGEMS_1_1ChemicalEngine_1_1Impl" kindref="compound">Impl</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Impl&gt; xGEMS::ChemicalEngine::pimpl</definition>
+        <argsstring></argsstring>
+        <name>pimpl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1396" column="22" bodyfile="xGEMS/ChemicalEngine.hpp" bodystart="1395" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1abbdf1e29d16cfe6eeda862324501cf13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>xGEMS::ChemicalEngine::ChemicalEngine</definition>
+        <argsstring>()</argsstring>
+        <name>ChemicalEngine</name>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates an empty <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> instance. Use one of the initialization routines (such as <ref refid="classxGEMS_1_1ChemicalEngine_1af44ab5d937a2beba0f1f421133d00f43" kindref="member">initialize()</ref> or <ref refid="classxGEMS_1_1ChemicalEngine_1a996780714e5692fbcea393e6e8c777a6" kindref="member">initializeFromJsonStrings()</ref>) to configure the system.</para>
+<para><programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Create<sp/>an<sp/>engine<sp/>and<sp/>then<sp/>initialize<sp/>it<sp/>with<sp/>a<sp/>system<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">xGEMS::ChemicalEngine<sp/>engine;</highlight></codeline>
+<codeline><highlight class="normal">engine.initialize(&quot;my-system-dat.lst&quot;);<sp/>//<sp/>Temperature<sp/>in<sp/>K,<sp/>Pressure<sp/>in<sp/>Pa.</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="100" column="6" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="130" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a8a230af8984196fe12bf66404280ffcc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>xGEMS::ChemicalEngine::ChemicalEngine</definition>
+        <argsstring>(std::string filename)</argsstring>
+        <name>ChemicalEngine</name>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> instance by loading a GEM-Selektor project file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The file path for the chemical system definition (e.g., &quot;my-system-dat.lst&quot;).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Directly<sp/>initialize<sp/>the<sp/>engine<sp/>from<sp/>a<sp/>project<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">xGEMS::ChemicalEngine<sp/>engine(&quot;my-system-dat.lst&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="112" column="6" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="135" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a9dfbb6c6338674ceda12cb6b12c38a51" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>xGEMS::ChemicalEngine::~ChemicalEngine</definition>
+        <argsstring>()</argsstring>
+        <name>~ChemicalEngine</name>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans up resources. No explicit example is necessary. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="119" column="14" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="141" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a175e238de248bb3cb1830a7a7d0a603a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>xGEMS::ChemicalEngine::ChemicalEngine</definition>
+        <argsstring>(const ChemicalEngine &amp;other)=delete</argsstring>
+        <name>ChemicalEngine</name>
+        <param>
+          <type>const <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="122" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a1e558150af08928a1ba69f52d197e4bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::operator=</definition>
+        <argsstring>(ChemicalEngine other) -&gt; ChemicalEngine &amp;=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Deleted assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="125" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ae38f6c6d90de689c87285ed5db6860d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::reallocateEngineArrays</definition>
+        <argsstring>() -&gt; void</argsstring>
+        <name>reallocateEngineArrays</name>
+        <briefdescription>
+<para>Reallocates internal arrays. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Should be invoked after the system composition changes to ensure proper memory configuration.</para>
+<para><programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>After<sp/>modifying<sp/>system<sp/>composition,<sp/>reallocate<sp/>arrays.</highlight></codeline>
+<codeline><highlight class="normal">engine.reallocateEngineArrays();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="138" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="144" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1af44ab5d937a2beba0f1f421133d00f43" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::initialize</definition>
+        <argsstring>(std::string filename) -&gt; void</argsstring>
+        <name>initialize</name>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+<para>Initializes the <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> from a GEM-Selektor project file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads the file and configures the chemical system defined inside it.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the system definition file (e.g., &quot;my-system-dat.lst&quot;).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Initialize<sp/>using<sp/>the<sp/>system<sp/>definition<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">xGEMS::ChemicalEngine<sp/>engine;</highlight></codeline>
+<codeline><highlight class="normal">engine.initialize(&quot;my-system-dat.lst&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="153" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="183" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a996780714e5692fbcea393e6e8c777a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::initializeFromJsonStrings</definition>
+        <argsstring>(std::string dch_json, std::string ipm_json, std::string dbr_json) -&gt; void</argsstring>
+        <name>initializeFromJsonStrings</name>
+        <param>
+          <type>std::string</type>
+          <declname>dch_json</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>ipm_json</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>dbr_json</declname>
+        </param>
+        <briefdescription>
+<para>Initializes the <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> using JSON strings. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Configures the engine from three JSON strings:<itemizedlist>
+<listitem><para>dch_json: Defines the chemical system.</para>
+</listitem><listitem><para>ipm_json: Contains calculation parameters and settings.</para>
+</listitem><listitem><para>dbr_json: Specifies the input node composition.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dch_json</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON string describing the chemical system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ipm_json</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON string with parameter and algorithm settings. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dbr_json</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON string containing node composition details.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Initialize<sp/>using<sp/>JSON-based<sp/>input.</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>dch<sp/>=<sp/>&quot;{}&quot;;</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>ipm<sp/>=<sp/>&quot;{}&quot;;</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>dbr<sp/>=<sp/>&quot;{}&quot;;</highlight></codeline>
+<codeline><highlight class="normal">engine.initializeFromJsonStrings(dch,<sp/>ipm,<sp/>dbr);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="175" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="211" bodyend="233"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a0cac5a88a71c907c74b19347111076f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::readDbrFromFile</definition>
+        <argsstring>(std::string filename) -&gt; void</argsstring>
+        <name>readDbrFromFile</name>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+<para>Reads a DBR file from disk. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads system composition and parameter data from a DBR file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the input DBR file (e.g., &quot;input.dbr&quot;).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Read<sp/>system<sp/>composition<sp/>from<sp/>a<sp/>DBR<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">engine.readDbrFromFile(&quot;input.dbr&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="189" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="236" bodyend="252"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aa912f211455f3e9ece8be3f1bfb5201c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::readDbrFromJsonString</definition>
+        <argsstring>(std::string dbr_json) -&gt; void</argsstring>
+        <name>readDbrFromJsonString</name>
+        <param>
+          <type>std::string</type>
+          <declname>dbr_json</declname>
+        </param>
+        <briefdescription>
+<para>Reads System DBR composition from a JSON string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the system composition using JSON information.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dbr_json</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON string containing DBR composition data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Update<sp/>composition<sp/>dynamically<sp/>from<sp/>a<sp/>JSON<sp/>string.</highlight></codeline>
+<codeline><highlight class="normal">engine.readDbrFromJsonString(&quot;{\&quot;dbr\&quot;:<sp/>\&quot;new<sp/>composition<sp/>details\&quot;}&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="203" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="254" bodyend="271"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a971d3324991f8b3833c6a25e45768777" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::writeDbrToFile</definition>
+        <argsstring>(std::string filename) -&gt; void</argsstring>
+        <name>writeDbrToFile</name>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+<para>Writes the current DBR to a file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Saves the state of the system (after equilibrium calculations) into a DBR file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the output DBR file (e.g., &quot;output.dbr&quot;).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Save<sp/>the<sp/>current<sp/>state<sp/>to<sp/>&quot;output.dbr&quot;.</highlight></codeline>
+<codeline><highlight class="normal">engine.writeDbrToFile(&quot;output.dbr&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="217" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="273" bodyend="277"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a3650f77f77d419add16dc07a7471bfa3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::writeDbrToJsonString</definition>
+        <argsstring>() -&gt; const std::string</argsstring>
+        <name>writeDbrToJsonString</name>
+        <briefdescription>
+<para>Returns the current DBR as a JSON string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A JSON string representing the system composition.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>system<sp/>state<sp/>as<sp/>JSON.</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>json_state<sp/>=<sp/>engine.writeDbrToJsonString();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>json_state<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="230" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="279" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a68685e12d2d666190c1039e71fd88325" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::numElements</definition>
+        <argsstring>() const -&gt; Index</argsstring>
+        <name>numElements</name>
+        <briefdescription>
+<para>Returns the number of elements in the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(Index) Total number of elements.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>number<sp/>of<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>nElements<sp/>=<sp/>engine.numElements();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Elements:<sp/>&quot;<sp/>&lt;&lt;<sp/>nElements<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="243" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="294" bodyend="297"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a4f6aa6be1539e4225f83167d2837186a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::numSpecies</definition>
+        <argsstring>() const -&gt; Index</argsstring>
+        <name>numSpecies</name>
+        <briefdescription>
+<para>Returns the number of species in the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(Index) Total number of chemical species.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Display<sp/>the<sp/>number<sp/>of<sp/>species.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>speciesCount<sp/>=<sp/>engine.numSpecies();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Species:<sp/>&quot;<sp/>&lt;&lt;<sp/>speciesCount<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="256" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="299" bodyend="302"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a928717a9a4057e4d2ffdc1f25100b2ff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::numPhases</definition>
+        <argsstring>() const -&gt; Index</argsstring>
+        <name>numPhases</name>
+        <briefdescription>
+<para>Returns the number of phases in the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(Index) Total number of phases.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Print<sp/>the<sp/>number<sp/>of<sp/>phases.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>phases<sp/>=<sp/>engine.numPhases();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Phases:<sp/>&quot;<sp/>&lt;&lt;<sp/>phases<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="269" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="304" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1abdd726b9e3c30ec9316a2f69133385cf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::numSpeciesInPhase</definition>
+        <argsstring>(Index iphase) const -&gt; Index</argsstring>
+        <name>numSpeciesInPhase</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the number of species in a given phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the phase. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(Index) Number of species in that phase.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>For<sp/>phase<sp/>with<sp/>index<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>sppInPhase<sp/>=<sp/>engine.numSpeciesInPhase(0);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Species<sp/>in<sp/>phase<sp/>0:<sp/>&quot;<sp/>&lt;&lt;<sp/>sppInPhase<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="283" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="309" bodyend="312"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1accb60dae91356a8c0c68220eec60b293" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::elementName</definition>
+        <argsstring>(Index ielement) const -&gt; std::string</argsstring>
+        <name>elementName</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ielement</declname>
+        </param>
+        <briefdescription>
+<para>Returns the name of an element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ielement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(std::string) Element name.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>name<sp/>of<sp/>the<sp/>first<sp/>element.</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>element<sp/>=<sp/>engine.elementName(0);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Element<sp/>0:<sp/>&quot;<sp/>&lt;&lt;<sp/>element<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="297" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="314" bodyend="320"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a8b3ca18f390bd0f5e2ff6c489052000a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesName</definition>
+        <argsstring>(Index ispecies) const -&gt; std::string</argsstring>
+        <name>speciesName</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the name of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(std::string) Species name.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>name<sp/>of<sp/>species<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>spName<sp/>=<sp/>engine.speciesName(0);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Species<sp/>0:<sp/>&quot;<sp/>&lt;&lt;<sp/>spName<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="311" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="322" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a0d913efd17cd84c2308cca96b4ef77b4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesCharge</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>speciesCharge</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the electrical charge of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Charge of the species.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>charge<sp/>of<sp/>species<sp/>with<sp/>index<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>charge<sp/>=<sp/>engine.speciesCharge(0);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Charge:<sp/>&quot;<sp/>&lt;&lt;<sp/>charge<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="325" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="330" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a380a5c4bf0d8cfb03c2931d36f9114eb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseName</definition>
+        <argsstring>(Index iphase) const -&gt; std::string</argsstring>
+        <name>phaseName</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the name of the phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the phase. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(std::string) Phase name.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>name<sp/>of<sp/>phase<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">std::string<sp/>phase<sp/>=<sp/>engine.phaseName(0);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Phase<sp/>0:<sp/>&quot;<sp/>&lt;&lt;<sp/>phase<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="339" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="337" bodyend="343"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a44614c89652b36c2c44e06b99acf401a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexElement</definition>
+        <argsstring>(std::string element) const -&gt; Index</argsstring>
+        <name>indexElement</name>
+        <param>
+          <type>std::string</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+<para>Returns the index of an element by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>element</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Element symbol or name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(Index) Index of the element (or total elements if not found).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>index<sp/>of<sp/>Oxygen<sp/>(&quot;O&quot;).</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>idx<sp/>=<sp/>engine.indexElement(&quot;O&quot;);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Index<sp/>of<sp/>O:<sp/>&quot;<sp/>&lt;&lt;<sp/>idx<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="353" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="400" bodyend="407"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ab250290cfad24d83ff10d7810ef80b61" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexSpecies</definition>
+        <argsstring>(std::string species) const -&gt; Index</argsstring>
+        <name>indexSpecies</name>
+        <param>
+          <type>std::string</type>
+          <declname>species</declname>
+        </param>
+        <briefdescription>
+<para>Returns the index of a species by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>species</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Name of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(Index) Index of the species (or total species if not found).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>index<sp/>of<sp/>water<sp/>(&quot;H2O&quot;).</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>idx<sp/>=<sp/>engine.indexSpecies(&quot;H2O&quot;);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Index<sp/>of<sp/>H2O:<sp/>&quot;<sp/>&lt;&lt;<sp/>idx<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="367" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="409" bodyend="416"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ae7448d17d026ce7262c341bd421f1e15" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexSpeciesAll</definition>
+        <argsstring>(std::string species) const -&gt; VectorXi</argsstring>
+        <name>indexSpeciesAll</name>
+        <param>
+          <type>std::string</type>
+          <declname>species</declname>
+        </param>
+        <briefdescription>
+<para>Returns all indices of species matching the specified name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>species</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Name of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(VectorXi) Vector of indices.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>all<sp/>indices<sp/>where<sp/>the<sp/>species<sp/>&quot;H2O&quot;<sp/>appears.</highlight></codeline>
+<codeline><highlight class="normal">VectorXi<sp/>allIndices<sp/>=<sp/>engine.indexSpeciesAll(&quot;H2O&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="380" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="418" bodyend="436"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ac1db0a4f7e18cec87cd7395206c20b62" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexPhase</definition>
+        <argsstring>(std::string phase) const -&gt; Index</argsstring>
+        <name>indexPhase</name>
+        <param>
+          <type>std::string</type>
+          <declname>phase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the index of a phase by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>phase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Name of the phase. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(Index) Index of the phase.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>index<sp/>for<sp/>the<sp/>&quot;aqueous&quot;<sp/>phase.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>aqueousIndex<sp/>=<sp/>engine.indexPhase(&quot;aqueous&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="393" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="439" bodyend="446"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a35c07e0110d82ce18b2fbfb61113f5e5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexPhaseAll</definition>
+        <argsstring>(std::string phase) const -&gt; VectorXi</argsstring>
+        <name>indexPhaseAll</name>
+        <param>
+          <type>std::string</type>
+          <declname>phase</declname>
+        </param>
+        <briefdescription>
+<para>Returns all indices for phases that match the given name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>phase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Name of the phase. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(VectorXi) Vector of indices for matching phases.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>all<sp/>indices<sp/>for<sp/>phase<sp/>&quot;aqueous&quot;.</highlight></codeline>
+<codeline><highlight class="normal">VectorXi<sp/>phaseIndices<sp/>=<sp/>engine.indexPhaseAll(&quot;aqueous&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="406" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="448" bodyend="466"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a69fdea5700faa9e99c74a1d3df520ba3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexPhaseWithSpecies</definition>
+        <argsstring>(Index ispecies) const -&gt; Index</argsstring>
+        <name>indexPhaseWithSpecies</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the index of the phase containing a given species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(Index) Index of the phase that contains the species.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Find<sp/>the<sp/>phase<sp/>of<sp/>the<sp/>species<sp/>with<sp/>index<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>phaseIdx<sp/>=<sp/>engine.indexPhaseWithSpecies(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="419" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="468" bodyend="478"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a81e6b2c61dcd911b2fa734dae2231a38" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::indexFirstSpeciesInPhase</definition>
+        <argsstring>(Index iphase) const -&gt; Index</argsstring>
+        <name>indexFirstSpeciesInPhase</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the index of the first species in a specified phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the phase. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(Index) Index of the first species in that phase.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>first<sp/>species<sp/>index<sp/>in<sp/>phase<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>firstSpec<sp/>=<sp/>engine.indexFirstSpeciesInPhase(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="432" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="480" bodyend="486"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a972e27461d1ceb86e12e8b4ed5d769bd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::elementMolarMasses</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>elementMolarMasses</name>
+        <briefdescription>
+<para>Returns molar masses of elements. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of molar masses (kg/mol) for each element.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>element<sp/>molar<sp/>masses<sp/>vector.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>molarMasses<sp/>=<sp/>engine.elementMolarMasses();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="444" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="488" bodyend="493"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1abd6cebdbbda95d5de210cc6bd2580c20" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesMolarMasses</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>speciesMolarMasses</name>
+        <briefdescription>
+<para>Returns molar masses of species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of species molar masses (kg/mol).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>species<sp/>molar<sp/>masses.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>spMolarMasses<sp/>=<sp/>engine.speciesMolarMasses();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="456" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="495" bodyend="500"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a30b0722581e95a8b68a7407658d29796" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::formulaMatrix</definition>
+        <argsstring>() const -&gt; MatrixConstRef</argsstring>
+        <name>formulaMatrix</name>
+        <briefdescription>
+<para>Returns the formula matrix (elements x species). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(MatrixConstRef) Formula matrix where rows correspond to elements and columns correspond to species.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>formula<sp/>matrix.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>fMatrix<sp/>=<sp/>engine.formulaMatrix();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="469" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="502" bodyend="505"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a117ed9c252ca3ae11d91c7431f437346" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesAmounts</definition>
+        <argsstring>(VectorConstRef n) -&gt; void</argsstring>
+        <name>setSpeciesAmounts</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref></type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Sets the complete species amounts vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(VectorConstRef) Vector of species amounts (mol).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>all<sp/>species<sp/>amounts<sp/>to<sp/>1.0<sp/>mol.</highlight></codeline>
+<codeline><highlight class="normal">Eigen::VectorXd<sp/>n(engine.numSpecies());</highlight></codeline>
+<codeline><highlight class="normal">n.setOnes();</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesAmounts(n);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="483" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="582" bodyend="598"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a5ba6f40da716ec3f48c0f6189ad5204c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesAmount</definition>
+        <argsstring>(std::string name, double amount) -&gt; void</argsstring>
+        <name>setSpeciesAmount</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+<para>Sets the amount for a species identified by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Species name. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) New amount in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>the<sp/>amount<sp/>of<sp/>&quot;H2O&quot;<sp/>to<sp/>2.0<sp/>mol.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesAmount(&quot;H2O&quot;,<sp/>2.0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="496" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="604" bodyend="619"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a34a118733c5a2a0280c4bc09bd2f84a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesAmount</definition>
+        <argsstring>(Index ispecies, double amount) -&gt; void</argsstring>
+        <name>setSpeciesAmount</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+<para>Sets the amount for a species identified by its index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the species. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) New amount in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>species<sp/>at<sp/>index<sp/>0<sp/>to<sp/>2.0<sp/>mol.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesAmount(0,<sp/>2.0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="509" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="622" bodyend="636"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1af577483a0e44c1b0d581f53431abf4b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setOptions</definition>
+        <argsstring>(const ChemicalEngineOptions &amp;options) -&gt; void</argsstring>
+        <name>setOptions</name>
+        <param>
+          <type>const <ref refid="structxGEMS_1_1ChemicalEngineOptions" kindref="compound">ChemicalEngineOptions</ref> &amp;</type>
+          <declname>options</declname>
+        </param>
+        <briefdescription>
+<para>Sets the options for the <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>options</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(const <ref refid="structxGEMS_1_1ChemicalEngineOptions" kindref="compound">ChemicalEngineOptions</ref>&amp;) Configuration options.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Disable<sp/>warm<sp/>start<sp/>for<sp/>higher<sp/>accuracy.</highlight></codeline>
+<codeline><highlight class="normal">xGEMS::ChemicalEngineOptions<sp/>opt;</highlight></codeline>
+<codeline><highlight class="normal">opt.warmstart<sp/>=<sp/>false;</highlight></codeline>
+<codeline><highlight class="normal">engine.setOptions(opt);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="523" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="507" bodyend="510"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a98e3aeef2bee3ba3e97fea5863029647" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setWarmStart</definition>
+        <argsstring>() -&gt; void</argsstring>
+        <name>setWarmStart</name>
+        <briefdescription>
+<para>Configures the engine to use a warm (smart) start. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses previous equilibrium as initial guess (faster convergence).</para>
+<para><programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>smart<sp/>initial<sp/>approximation.</highlight></codeline>
+<codeline><highlight class="normal">engine.setWarmStart();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="535" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="512" bodyend="515"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ad04ff99945dbd6da25e6b8a6f94d52b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setColdStart</definition>
+        <argsstring>() -&gt; void</argsstring>
+        <name>setColdStart</name>
+        <briefdescription>
+<para>Configures the engine to use a cold start. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses a simplex LP initial guess (slower but may yield more accurate results).</para>
+<para><programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Force<sp/>a<sp/>cold<sp/>start.</highlight></codeline>
+<codeline><highlight class="normal">engine.setColdStart();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="547" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="517" bodyend="520"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aac159f0ede7c6b611369367811a4abf2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesUpperLimit</definition>
+        <argsstring>(std::string name, double amount) -&gt; void</argsstring>
+        <name>setSpeciesUpperLimit</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+<para>Sets an upper bound for a species identified by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If amount &lt; 0, resets to default 1e6.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Species name. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) Upper limit in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>the<sp/>upper<sp/>limit<sp/>for<sp/>&quot;H2O&quot;<sp/>to<sp/>5.0<sp/>mol.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesUpperLimit(&quot;H2O&quot;,<sp/>5.0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="562" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="349" bodyend="354"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1abbb0bf6c60612d298fa8ef93cd71c93b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesLowerLimit</definition>
+        <argsstring>(std::string name, double amount) -&gt; void</argsstring>
+        <name>setSpeciesLowerLimit</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+<para>Sets a lower bound for a species identified by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If amount &lt; 0, resets to default 0.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Species name. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) Lower limit in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>the<sp/>lower<sp/>limit<sp/>for<sp/>&quot;H2O&quot;<sp/>to<sp/>0.1<sp/>mol.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesLowerLimit(&quot;H2O&quot;,<sp/>0.1);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="577" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="356" bodyend="361"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a9539a202b4d1a143fad5ba4fe736e32d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesUpperLimit</definition>
+        <argsstring>(Index ispecies, double amount) -&gt; void</argsstring>
+        <name>setSpeciesUpperLimit</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+<para>Sets an upper bound for a species identified by its index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If amount &lt; 0, resets to default 1e6.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) Upper limit in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>upper<sp/>limit<sp/>for<sp/>species<sp/>index<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesUpperLimit(0,<sp/>5.0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="592" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="364" bodyend="368"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ab2273540dd4bfb038b49368943e7410f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesLowerLimit</definition>
+        <argsstring>(Index ispecies, double amount) -&gt; void</argsstring>
+        <name>setSpeciesLowerLimit</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+<para>Sets a lower bound for a species identified by its index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If amount &lt; 0, resets to default 0.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) Lower limit in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>lower<sp/>limit<sp/>for<sp/>species<sp/>index<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesLowerLimit(0,<sp/>0.1);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="607" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="371" bodyend="375"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ac293abac4b28b8e819f8dd73ba65c8ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setStandardMolarGibbsEnergy</definition>
+        <argsstring>(std::string name, double value) -&gt; void</argsstring>
+        <name>setStandardMolarGibbsEnergy</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sets the standard molar Gibbs energy for a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Species name. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(double) Standard molar Gibbs energy in J/mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>the<sp/>standard<sp/>molar<sp/>Gibbs<sp/>energy<sp/>of<sp/>H2O.</highlight></codeline>
+<codeline><highlight class="normal">engine.setStandardMolarGibbsEnergy(&quot;H2O&quot;,<sp/>-237130);<sp/>//<sp/>Value<sp/>in<sp/>J/mol.</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="620" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="391" bodyend="398"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a9e190c4c2a371784b0d839a0a7ecc8ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesUpperLimits</definition>
+        <argsstring>(VectorConstRef n) -&gt; void</argsstring>
+        <name>setSpeciesUpperLimits</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref></type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Sets upper limits for all species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(VectorConstRef) Vector of upper limits in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>all<sp/>species&apos;<sp/>upper<sp/>limits<sp/>to<sp/>values<sp/>provided<sp/>in<sp/>vector<sp/>&quot;limits&quot;.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesUpperLimits(limits);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="632" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="377" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1acf3c118da1bcb67130dbf46721756e22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setSpeciesLowerLimits</definition>
+        <argsstring>(VectorConstRef n) -&gt; void</argsstring>
+        <name>setSpeciesLowerLimits</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref></type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Sets lower limits for all species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(VectorConstRef) Vector of lower limits in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>all<sp/>species&apos;<sp/>lower<sp/>limits.</highlight></codeline>
+<codeline><highlight class="normal">engine.setSpeciesLowerLimits(lowerLimits);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="644" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="384" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aba879fcdcc242ab8d9732b9c0c8f8d7d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setPT</definition>
+        <argsstring>(double P, double T) const -&gt; bool</argsstring>
+        <name>setPT</name>
+        <param>
+          <type>double</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+<para>Sets the pressure and temperature without computing equilibrium. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>P</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pressure in Pascals (Pa). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Temperature in Kelvin (K). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(bool) False if PT was set correctly, true if out of range.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>PT<sp/>to<sp/>101325<sp/>Pa<sp/>and<sp/>298.15<sp/>K.</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/>error<sp/>=<sp/>engine.setPT(101325,<sp/>298.15);</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>(error<sp/>?<sp/>&quot;PT<sp/>error&quot;<sp/>:<sp/>&quot;PT<sp/>set<sp/>correctly&quot;)<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="659" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="522" bodyend="531"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a875274ea3ad2e0fcc398676809d7a179" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::setB</definition>
+        <argsstring>(VectorConstRef b) -&gt; void</argsstring>
+        <name>setB</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref></type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Sets the amounts of elements (vector b) without computing equilibrium. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(VectorConstRef) Vector of element amounts in mol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Set<sp/>elemental<sp/>amounts<sp/>to<sp/>a<sp/>dummy<sp/>vector<sp/>b.</highlight></codeline>
+<codeline><highlight class="normal">engine.setB(b);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="671" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="533" bodyend="538"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ad2aa9436a881160c1588a6c880d683be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::reequilibrate</definition>
+        <argsstring>(bool warmstart) -&gt; int</argsstring>
+        <name>reequilibrate</name>
+        <param>
+          <type>bool</type>
+          <declname>warmstart</declname>
+        </param>
+        <briefdescription>
+<para>Re-equilibrates the system with (or without) a warm start. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>warmstart</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(bool) If true, uses previous data as an initial guess. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(int) Return code of the re-equilibration.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Re-equilibrate<sp/>with<sp/>a<sp/>warm<sp/>start.</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>status<sp/>=<sp/>engine.reequilibrate(true);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="684" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="540" bodyend="554"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ae738ec49a56f46652fbc59684f4d4242" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::equilibrate</definition>
+        <argsstring>(double T, double P, VectorConstRef b) -&gt; int</argsstring>
+        <name>equilibrate</name>
+        <param>
+          <type>double</type>
+          <declname>T</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref></type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Computes the equilibrium state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Temperature in Kelvin (K). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>P</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pressure in Pascals (Pa). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of element amounts (mol). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(int) Return code of the equilibrium solver.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Equilibrate<sp/>a<sp/>system<sp/>with<sp/>3<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">Eigen::VectorXd<sp/>b(3);</highlight></codeline>
+<codeline><highlight class="normal">b<sp/>&lt;&lt;<sp/>1.0,<sp/>0.5,<sp/>2.0;<sp/><sp/>//<sp/>in<sp/>mol</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>retcode<sp/>=<sp/>engine.equilibrate(298.15,<sp/>101325,<sp/>b);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="703" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="556" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a66e620ff8347770a9f4e7a3cd77b32a8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::converged</definition>
+        <argsstring>() const -&gt; bool</argsstring>
+        <name>converged</name>
+        <briefdescription>
+<para>Checks if the equilibrium calculation converged. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(bool) True if converged, false otherwise.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Check<sp/>convergence<sp/>status.</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/>isConverged<sp/>=<sp/>engine.converged();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="715" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="638" bodyend="642"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a308c66c8770ce659b9fc31c89977392e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::numIterations</definition>
+        <argsstring>() const -&gt; Index</argsstring>
+        <name>numIterations</name>
+        <briefdescription>
+<para>Returns the number of iterations performed during equilibrium. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(Index) The number of iterations.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Display<sp/>the<sp/>number<sp/>of<sp/>iterations.</highlight></codeline>
+<codeline><highlight class="normal">Index<sp/>iters<sp/>=<sp/>engine.numIterations();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Iterations:<sp/>&quot;<sp/>&lt;&lt;<sp/>iters<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="728" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="644" bodyend="647"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a56c0e9a394e544ca29ac8be0efceb6ac" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::elapsedTime</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>elapsedTime</name>
+        <briefdescription>
+<para>Returns the elapsed time of the equilibrium computation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Elapsed time in seconds.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>computation<sp/>time.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>timeSec<sp/>=<sp/>engine.elapsedTime();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Time:<sp/>&quot;<sp/>&lt;&lt;<sp/>timeSec<sp/>&lt;&lt;<sp/>&quot;<sp/>s&quot;<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="741" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="649" bodyend="652"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a8da8136e90e7c1ffe5c07521afb7e211" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::temperature</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>temperature</name>
+        <briefdescription>
+<para>Returns the current temperature of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Temperature in Kelvin (K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>system<sp/>temperature.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>temp<sp/>=<sp/>engine.temperature();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Temperature:<sp/>&quot;<sp/>&lt;&lt;<sp/>temp<sp/>&lt;&lt;<sp/>&quot;<sp/>K&quot;<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="754" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="654" bodyend="657"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ad9d26f4ffbbc2ae146ec7b9dd60d1c2e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::pressure</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>pressure</name>
+        <briefdescription>
+<para>Returns the current pressure of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Pressure in Pascals (Pa).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>system<sp/>pressure.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>press<sp/>=<sp/>engine.pressure();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;Pressure:<sp/>&quot;<sp/>&lt;&lt;<sp/>press<sp/>&lt;&lt;<sp/>&quot;<sp/>Pa&quot;<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="767" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="659" bodyend="662"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a1b76d139cdfb62a2a44bd1c3e811d4b3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::elementAmounts</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>elementAmounts</name>
+        <briefdescription>
+<para>Returns the amounts of the elements. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of element amounts in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>element<sp/>amounts.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>eAmounts<sp/>=<sp/>engine.elementAmounts();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="779" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="664" bodyend="667"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a77c8072cc424de28e6a4f1689ae52482" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesAmounts</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>speciesAmounts</name>
+        <briefdescription>
+<para>Returns the amounts of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of species amounts in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>the<sp/>species<sp/>amounts.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>spAmounts<sp/>=<sp/>engine.speciesAmounts();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="791" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="701" bodyend="704"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a5e65231a7fc29591133826819677f878" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesAmount</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>speciesAmount</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the amount of a species by index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Index of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Amount in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>species<sp/>amount<sp/>at<sp/>index<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>amount<sp/>=<sp/>engine.speciesAmount(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="804" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="691" bodyend="694"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a9b38facaeb653ac846170f553dc83d75" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesAmount</definition>
+        <argsstring>(std::string name) const -&gt; double</argsstring>
+        <name>speciesAmount</name>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>Returns the amount of a species identified by name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(std::string) Species name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Amount in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>amount<sp/>of<sp/>&quot;H2O&quot;.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>waterAmt<sp/>=<sp/>engine.speciesAmount(&quot;H2O&quot;);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="817" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="696" bodyend="699"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ae529bea2791a6b26292c3ba0820f7858" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesUpperLimits</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>speciesUpperLimits</name>
+        <briefdescription>
+<para>Returns the upper limits for all species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of upper limits in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Fetch<sp/>all<sp/>species<sp/>upper<sp/>limits.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>upperLimits<sp/>=<sp/>engine.speciesUpperLimits();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="829" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="706" bodyend="709"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a1647d845739e13a7925bc0ea3e74f1d1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesLowerLimits</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>speciesLowerLimits</name>
+        <briefdescription>
+<para>Returns the lower limits for all species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of lower limits in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>the<sp/>species<sp/>lower<sp/>limits.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>lowerLimits<sp/>=<sp/>engine.speciesLowerLimits();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="841" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="710" bodyend="713"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1abf459bf4dec333aaf07cb92de29650fb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::speciesMolalities</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>speciesMolalities</name>
+        <briefdescription>
+<para>Returns the molalities of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Assumes the aqueous phase is the first phase.</para>
+<para><simplesect kind="return"><para>(VectorConstRef) Species molalities (mol/kg).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>species<sp/>molalities.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>molalities<sp/>=<sp/>engine.speciesMolalities();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="855" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="719" bodyend="733"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a83634c872bb65f70b421021b9a852589" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::moleFractions</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>moleFractions</name>
+        <briefdescription>
+<para>Returns the mole fractions of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Mole fractions.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>species<sp/>mole<sp/>fractions.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>moleFrac<sp/>=<sp/>engine.moleFractions();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="867" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="735" bodyend="762"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1afe8d352dfc13bddabf8ddf4026f1db4b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::lnActivityCoefficients</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>lnActivityCoefficients</name>
+        <briefdescription>
+<para>Returns the ln activity coefficients of the species (mole fraction scale). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) ln Activity coefficients.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>ln<sp/>activity<sp/>coefficients.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>lnActCoeff<sp/>=<sp/>engine.lnActivityCoefficients();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="879" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="764" bodyend="769"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ab1b3b690c53ba14f92a099873c8788ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::lnActivities</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>lnActivities</name>
+        <briefdescription>
+<para>Returns the ln activities of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) ln Activities.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Fetch<sp/>ln<sp/>activities.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>lnActivities<sp/>=<sp/>engine.lnActivities();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="891" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="771" bodyend="776"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a48d9ce0b48ef1838e270a6d84bb118bd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::lnConcentrations</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>lnConcentrations</name>
+        <briefdescription>
+<para>Returns the ln of species concentrations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) ln concentrations.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Get<sp/>ln<sp/>concentrations.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>lnConcs<sp/>=<sp/>engine.lnConcentrations();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="903" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="778" bodyend="783"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a2b5f9b1fab400893a1d98e471c3ddc3a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::chemicalPotentials</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>chemicalPotentials</name>
+        <briefdescription>
+<para>Returns the chemical potentials of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Chemical potentials in J/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Retrieve<sp/>species<sp/>chemical<sp/>potentials.</highlight></codeline>
+<codeline><highlight class="normal">auto<sp/>chemPot<sp/>=<sp/>engine.chemicalPotentials();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="915" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="785" bodyend="792"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a32d9095fd2518fd49018675c23f7b19d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::standardMolarGibbsEnergy</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>standardMolarGibbsEnergy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the standard molar Gibbs energy of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Standard molar Gibbs energy in J/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>For<sp/>species<sp/>0.</highlight></codeline>
+<codeline><highlight class="normal">double<sp/>stdGibbs<sp/>=<sp/>engine.standardMolarGibbsEnergy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="928" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="808" bodyend="815"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ad8598925e20fef980e57170f0d9ac26e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::standardMolarEnthalpy</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>standardMolarEnthalpy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the standard molar enthalpy of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Standard molar enthalpy in J/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>stdEnthalpy<sp/>=<sp/>engine.standardMolarEnthalpy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="940" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="818" bodyend="825"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a0ce9161690808dde60235d323e5135e1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::standardMolarVolume</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>standardMolarVolume</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the standard molar volume of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Standard molar volume in m³/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>stdVolume<sp/>=<sp/>engine.standardMolarVolume(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="952" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="828" bodyend="835"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a4775eb491e71c5c3ea1a6fb1c5f121ab" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::standardMolarEntropy</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>standardMolarEntropy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the standard molar entropy of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Standard molar entropy in J/(mol·K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>stdEntropy<sp/>=<sp/>engine.standardMolarEntropy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="964" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="838" bodyend="845"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a918c04e94cbe404b121b8b10ce6d6c5c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::standardMolarHeatCapacityConstP</definition>
+        <argsstring>(Index ispecies) const -&gt; double</argsstring>
+        <name>standardMolarHeatCapacityConstP</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Returns the standard molar isobaric heat capacity of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ispecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Species index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Heat capacity in J/(mol·K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>heatCap<sp/>=<sp/>engine.standardMolarHeatCapacityConstP(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="976" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="868" bodyend="875"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a093c008c4cf4f6f3eebe49de2dd379c5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMolarGibbsEnergy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseMolarGibbsEnergy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the molar Gibbs energy of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Molar Gibbs energy in J/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>phaseGibbs<sp/>=<sp/>engine.phaseMolarGibbsEnergy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="988" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="887" bodyend="893"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ad7ce346b57e8b96374572fb25f325660" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMolarEnthalpy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseMolarEnthalpy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the molar enthalpy of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Molar enthalpy in J/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>phaseEnthalpy<sp/>=<sp/>engine.phaseMolarEnthalpy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1000" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="895" bodyend="901"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1af5b9f0d9c7463cee72762d80f6806b56" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMolarVolume</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseMolarVolume</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the molar volume of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Molar volume in m³/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>phaseVol<sp/>=<sp/>engine.phaseMolarVolume(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1012" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="903" bodyend="909"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a80266554cc7ec0f98f6457c0d8bd86fe" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMolarEntropy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseMolarEntropy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the molar entropy of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Molar entropy in J/(mol·K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>phaseEnt<sp/>=<sp/>engine.phaseMolarEntropy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1024" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="911" bodyend="917"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aa241b9444ccb033f7295993e283b3b2b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMolarHeatCapacityConstP</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseMolarHeatCapacityConstP</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the molar isobaric heat capacity of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Heat capacity in J/(mol·K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>phaseCp<sp/>=<sp/>engine.phaseMolarHeatCapacityConstP(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1036" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="931" bodyend="937"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a72cad3a639bada69195f1b0c8b6bbdca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSpecificGibbsEnergy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseSpecificGibbsEnergy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the specific Gibbs energy of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Specific Gibbs energy in J/kg.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>specGibbs<sp/>=<sp/>engine.phaseSpecificGibbsEnergy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1048" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="945" bodyend="951"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ae81708e851400cee5f2c154cd9fc55a1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSpecificEnthalpy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseSpecificEnthalpy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the specific enthalpy of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Specific enthalpy in J/kg.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>specEnthalpy<sp/>=<sp/>engine.phaseSpecificEnthalpy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1060" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="953" bodyend="959"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a4eb9e3afd12d6fc69c520f8f33e64c2b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSpecificVolume</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseSpecificVolume</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the specific volume of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Specific volume in m³/kg.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>specVolume<sp/>=<sp/>engine.phaseSpecificVolume(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1072" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="961" bodyend="967"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a088837d5b02b0e1a11a9a3cafa8fdb99" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSpecificEntropy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseSpecificEntropy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the specific entropy of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Specific entropy in J/(kg·K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>specEntropy<sp/>=<sp/>engine.phaseSpecificEntropy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1084" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="969" bodyend="975"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1add034f7010c4f0c1f2c24fd08cd6740a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSpecificHeatCapacityConstP</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseSpecificHeatCapacityConstP</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the specific isobaric heat capacity of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Heat capacity in J/(kg·K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>specCp<sp/>=<sp/>engine.phaseSpecificHeatCapacityConstP(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1096" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="989" bodyend="995"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a90c114ffbb5d896d22eefe761a8a0050" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseDensities</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseDensities</name>
+        <briefdescription>
+<para>Returns the densities of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of densities in kg/m³.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>densities<sp/>=<sp/>engine.phaseDensities();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1107" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1002" bodyend="1012"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a4057e674d061f86fc4a696540e6c3def" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseDensity</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseDensity</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the density of a specified phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Density in kg/m³.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>density<sp/>=<sp/>engine.phaseDensity(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1119" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1056" bodyend="1061"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a66e67e20ca37c338eb4173f222073f62" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMasses</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseMasses</name>
+        <briefdescription>
+<para>Returns the masses of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of masses in kg.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>masses<sp/>=<sp/>engine.phaseMasses();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1130" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1014" bodyend="1019"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aa80af95c009d015f52e8ea67b2dbcf76" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseMass</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseMass</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the mass of a specified phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Mass in kg.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>mass<sp/>=<sp/>engine.phaseMass(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1142" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1063" bodyend="1066"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aaba628159fdcf223ce81b42a4b4486d8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseAmounts</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseAmounts</name>
+        <briefdescription>
+<para>Returns the molar amounts of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of phase amounts in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>phaseMol<sp/>=<sp/>engine.phaseAmounts();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1153" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1021" bodyend="1026"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a05b7a348373f4c1143e5f3107fb2c548" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseAmount</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseAmount</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the molar amount of a specific phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Amount in mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>amt<sp/>=<sp/>engine.phaseAmount(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1165" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1068" bodyend="1071"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a55a2519a5dcc6fdbc8c6f5bcb61aec21" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseVolumes</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseVolumes</name>
+        <briefdescription>
+<para>Returns the volumes of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of volumes in m³.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>volumes<sp/>=<sp/>engine.phaseVolumes();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1176" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1028" bodyend="1033"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ab95f13460b50b8b83c16b81c1b7d991d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseVolume</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseVolume</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the volume of a specific phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Volume in m³.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>vol<sp/>=<sp/>engine.phaseVolume(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1188" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1073" bodyend="1076"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1ad3ddb3c192cf8bebbe5446a0f947c502" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseEnthalpies</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseEnthalpies</name>
+        <briefdescription>
+<para>Returns the enthalpies of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of enthalpies in J.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>enth<sp/>=<sp/>engine.phaseEnthalpies();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1199" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1035" bodyend="1040"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a9ed25ed628ee3f12a21abc07baf281c5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseEnthalpy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseEnthalpy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the enthalpy of a specific phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Enthalpy in J.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>enth0<sp/>=<sp/>engine.phaseEnthalpy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1211" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1078" bodyend="1081"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a2377f618e299c103fa3710bc64fea704" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseEntropies</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseEntropies</name>
+        <briefdescription>
+<para>Returns the entropies of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of entropies in J/K.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>ents<sp/>=<sp/>engine.phaseEntropies();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1222" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1042" bodyend="1047"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a809de50a74bdae2dafd0a3e101fc0b09" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseEntropy</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseEntropy</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the entropy of a specified phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Entropy in J/(K).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>ent0<sp/>=<sp/>engine.phaseEntropy(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1234" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1083" bodyend="1086"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a5a507be8e9ac12971ff7a71e8a5f4db0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseHeatCapacitiesConstP</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseHeatCapacitiesConstP</name>
+        <briefdescription>
+<para>Returns the heat capacities (Cp) of all phases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of heat capacities in J/K.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>cps<sp/>=<sp/>engine.phaseHeatCapacitiesConstP();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1245" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1049" bodyend="1054"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a4fad168d27c0648002a73a1138b8e0d8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseHeatCapacityConstP</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseHeatCapacityConstP</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the heat capacity of a specified phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Heat capacity in J/K.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>cp0<sp/>=<sp/>engine.phaseHeatCapacityConstP(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1257" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1088" bodyend="1091"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a9b1520b5719b61cf6cc4eec85797005c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSatIndices</definition>
+        <argsstring>() const -&gt; VectorConstRef</argsstring>
+        <name>phaseSatIndices</name>
+        <briefdescription>
+<para>Returns the saturation indices of all phases (log₁₀ units). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(VectorConstRef) Vector of saturation indices.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">auto<sp/>satIdx<sp/>=<sp/>engine.phaseSatIndices();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1268" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1093" bodyend="1098"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a278d8d2f98dc9ee0c183c5c848702075" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::phaseSatIndex</definition>
+        <argsstring>(Index iphase) const -&gt; double</argsstring>
+        <name>phaseSatIndex</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Returns the saturation index of a specific phase (log₁₀ units). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Index) Phase index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(double) Saturation index.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sat0<sp/>=<sp/>engine.phaseSatIndex(0);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1280" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1100" bodyend="1103"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1af9aa5ee056dad0df97f7ba7b3025c112" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::systemMass</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>systemMass</name>
+        <briefdescription>
+<para>Returns the total mass of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) System mass in kg.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sysMass<sp/>=<sp/>engine.systemMass();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;System<sp/>mass:<sp/>&quot;<sp/>&lt;&lt;<sp/>sysMass<sp/>&lt;&lt;<sp/>&quot;<sp/>kg&quot;<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1292" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1111" bodyend="1115"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1adb6ba84a8dc491766ac3363c3cfe04a0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::systemVolume</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>systemVolume</name>
+        <briefdescription>
+<para>Returns the total volume of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Volume in m³.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sysVol<sp/>=<sp/>engine.systemVolume();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>&quot;System<sp/>volume:<sp/>&quot;<sp/>&lt;&lt;<sp/>sysVol<sp/>&lt;&lt;<sp/>&quot;<sp/>m³&quot;<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1304" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1105" bodyend="1109"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1aa046a7fc580b7a089a08d3d35f3b53fb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::ionicStrength</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>ionicStrength</name>
+        <briefdescription>
+<para>Returns the ionic strength of the aqueous phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Ionic strength in molal.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>ionicStr<sp/>=<sp/>engine.ionicStrength();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1315" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1117" bodyend="1120"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a5227987c0bca07dd5eea93faf79a8762" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::pH</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>pH</name>
+        <briefdescription>
+<para>Returns the pH of the aqueous phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) pH (unitless).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>ph<sp/>=<sp/>engine.pH();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1326" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1122" bodyend="1125"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a2c27de428af0699e498e5bb8db7099a6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::pe</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>pe</name>
+        <briefdescription>
+<para>Returns the pe of the aqueous phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) pe (unitless).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>pe<sp/>=<sp/>engine.pe();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1337" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1127" bodyend="1130"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a0c1d3bd99fe6a362ea7e6f0bf8e0f5cf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::Eh</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>Eh</name>
+        <briefdescription>
+<para>Returns the Eh of the aqueous phase. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Eh (unitless).</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>eh<sp/>=<sp/>engine.Eh();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1348" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1132" bodyend="1135"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a55662ec4f51f03122f5c0156a7d3b50f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::systemGibbsEnergy</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>systemGibbsEnergy</name>
+        <briefdescription>
+<para>Returns the total Gibbs energy of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Gibbs energy in J/mol.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sysGibbs<sp/>=<sp/>engine.systemGibbsEnergy();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1359" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1137" bodyend="1140"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a0a9f484f5d2313dc638c94a2b77b2ad8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::systemEnthalpy</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>systemEnthalpy</name>
+        <briefdescription>
+<para>Returns the total enthalpy of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Enthalpy in J.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sysEnthalpy<sp/>=<sp/>engine.systemEnthalpy();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1370" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1142" bodyend="1151"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1acace05fb50f6e85b24db3136e9c9fb32" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::systemEntropy</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>systemEntropy</name>
+        <briefdescription>
+<para>Returns the total entropy of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Entropy in J/K.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sysEntropy<sp/>=<sp/>engine.systemEntropy();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1381" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1153" bodyend="1156"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1ChemicalEngine_1a87ed18f716d47cd985867604685b2c96" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::ChemicalEngine::systemHeatCapacityConstP</definition>
+        <argsstring>() const -&gt; double</argsstring>
+        <name>systemHeatCapacityConstP</name>
+        <briefdescription>
+<para>Returns the total isobaric heat capacity of the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>(double) Heat capacity in J/K.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">double<sp/>sysCp<sp/>=<sp/>engine.systemHeatCapacityConstP();</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.hpp" line="1392" column="11" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1158" bodyend="1161"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Class for equilibrium computations and thermodynamic analysis. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> performs Gibbs energy minimization to compute the equilibrium state of a chemical system. Its API provides methods to load system data, update component amounts, set options, and query resulting thermodynamic properties. </para>
+    </detaileddescription>
+    <location file="xGEMS/ChemicalEngine.hpp" line="85" column="2" bodyfile="xGEMS/ChemicalEngine.hpp" bodystart="86" bodyend="1397"/>
+    <listofallmembers>
+      <member refid="classxGEMS_1_1ChemicalEngine_1abbdf1e29d16cfe6eeda862324501cf13" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>ChemicalEngine</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a8a230af8984196fe12bf66404280ffcc" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>ChemicalEngine</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a175e238de248bb3cb1830a7a7d0a603a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>ChemicalEngine</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a2b5f9b1fab400893a1d98e471c3ddc3a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>chemicalPotentials</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a66e620ff8347770a9f4e7a3cd77b32a8" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>converged</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a0c1d3bd99fe6a362ea7e6f0bf8e0f5cf" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>Eh</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a56c0e9a394e544ca29ac8be0efceb6ac" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>elapsedTime</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a1b76d139cdfb62a2a44bd1c3e811d4b3" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>elementAmounts</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a972e27461d1ceb86e12e8b4ed5d769bd" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>elementMolarMasses</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1accb60dae91356a8c0c68220eec60b293" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>elementName</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ae738ec49a56f46652fbc59684f4d4242" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>equilibrate</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a30b0722581e95a8b68a7407658d29796" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>formulaMatrix</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a44614c89652b36c2c44e06b99acf401a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexElement</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a81e6b2c61dcd911b2fa734dae2231a38" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexFirstSpeciesInPhase</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ac1db0a4f7e18cec87cd7395206c20b62" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexPhase</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a35c07e0110d82ce18b2fbfb61113f5e5" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexPhaseAll</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a69fdea5700faa9e99c74a1d3df520ba3" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexPhaseWithSpecies</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ab250290cfad24d83ff10d7810ef80b61" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexSpecies</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ae7448d17d026ce7262c341bd421f1e15" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>indexSpeciesAll</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1af44ab5d937a2beba0f1f421133d00f43" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>initialize</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a996780714e5692fbcea393e6e8c777a6" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>initializeFromJsonStrings</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aa046a7fc580b7a089a08d3d35f3b53fb" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>ionicStrength</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ab1b3b690c53ba14f92a099873c8788ed" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>lnActivities</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1afe8d352dfc13bddabf8ddf4026f1db4b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>lnActivityCoefficients</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a48d9ce0b48ef1838e270a6d84bb118bd" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>lnConcentrations</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a83634c872bb65f70b421021b9a852589" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>moleFractions</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a68685e12d2d666190c1039e71fd88325" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>numElements</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a308c66c8770ce659b9fc31c89977392e" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>numIterations</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a928717a9a4057e4d2ffdc1f25100b2ff" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>numPhases</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a4f6aa6be1539e4225f83167d2837186a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>numSpecies</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1abdd726b9e3c30ec9316a2f69133385cf" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>numSpeciesInPhase</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a1e558150af08928a1ba69f52d197e4bc" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>operator=</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a2c27de428af0699e498e5bb8db7099a6" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>pe</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a5227987c0bca07dd5eea93faf79a8762" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>pH</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a05b7a348373f4c1143e5f3107fb2c548" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseAmount</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aaba628159fdcf223ce81b42a4b4486d8" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseAmounts</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a90c114ffbb5d896d22eefe761a8a0050" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseDensities</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a4057e674d061f86fc4a696540e6c3def" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseDensity</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ad3ddb3c192cf8bebbe5446a0f947c502" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseEnthalpies</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a9ed25ed628ee3f12a21abc07baf281c5" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseEnthalpy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a2377f618e299c103fa3710bc64fea704" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseEntropies</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a809de50a74bdae2dafd0a3e101fc0b09" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseEntropy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a5a507be8e9ac12971ff7a71e8a5f4db0" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseHeatCapacitiesConstP</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a4fad168d27c0648002a73a1138b8e0d8" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseHeatCapacityConstP</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aa80af95c009d015f52e8ea67b2dbcf76" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMass</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a66e67e20ca37c338eb4173f222073f62" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMasses</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ad7ce346b57e8b96374572fb25f325660" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMolarEnthalpy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a80266554cc7ec0f98f6457c0d8bd86fe" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMolarEntropy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a093c008c4cf4f6f3eebe49de2dd379c5" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMolarGibbsEnergy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aa241b9444ccb033f7295993e283b3b2b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMolarHeatCapacityConstP</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1af5b9f0d9c7463cee72762d80f6806b56" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseMolarVolume</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a380a5c4bf0d8cfb03c2931d36f9114eb" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseName</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a278d8d2f98dc9ee0c183c5c848702075" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSatIndex</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a9b1520b5719b61cf6cc4eec85797005c" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSatIndices</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ae81708e851400cee5f2c154cd9fc55a1" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSpecificEnthalpy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a088837d5b02b0e1a11a9a3cafa8fdb99" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSpecificEntropy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a72cad3a639bada69195f1b0c8b6bbdca" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSpecificGibbsEnergy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1add034f7010c4f0c1f2c24fd08cd6740a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSpecificHeatCapacityConstP</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a4eb9e3afd12d6fc69c520f8f33e64c2b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseSpecificVolume</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ab95f13460b50b8b83c16b81c1b7d991d" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseVolume</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a55a2519a5dcc6fdbc8c6f5bcb61aec21" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>phaseVolumes</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a15c65931b2cded689267ff198ac4df12" prot="private" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>pimpl</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ad9d26f4ffbbc2ae146ec7b9dd60d1c2e" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>pressure</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a0cac5a88a71c907c74b19347111076f6" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>readDbrFromFile</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aa912f211455f3e9ece8be3f1bfb5201c" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>readDbrFromJsonString</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ae38f6c6d90de689c87285ed5db6860d3" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>reallocateEngineArrays</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ad2aa9436a881160c1588a6c880d683be" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>reequilibrate</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a875274ea3ad2e0fcc398676809d7a179" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setB</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ad04ff99945dbd6da25e6b8a6f94d52b5" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setColdStart</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1af577483a0e44c1b0d581f53431abf4b1" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setOptions</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aba879fcdcc242ab8d9732b9c0c8f8d7d" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setPT</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a5ba6f40da716ec3f48c0f6189ad5204c" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesAmount</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a34a118733c5a2a0280c4bc09bd2f84a0" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesAmount</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a117ed9c252ca3ae11d91c7431f437346" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesAmounts</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1abbb0bf6c60612d298fa8ef93cd71c93b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesLowerLimit</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ab2273540dd4bfb038b49368943e7410f" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesLowerLimit</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1acf3c118da1bcb67130dbf46721756e22" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesLowerLimits</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1aac159f0ede7c6b611369367811a4abf2" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesUpperLimit</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a9539a202b4d1a143fad5ba4fe736e32d" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesUpperLimit</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a9e190c4c2a371784b0d839a0a7ecc8ff" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setSpeciesUpperLimits</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ac293abac4b28b8e819f8dd73ba65c8ee" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setStandardMolarGibbsEnergy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a98e3aeef2bee3ba3e97fea5863029647" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>setWarmStart</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a5e65231a7fc29591133826819677f878" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesAmount</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a9b38facaeb653ac846170f553dc83d75" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesAmount</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a77c8072cc424de28e6a4f1689ae52482" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesAmounts</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a0d913efd17cd84c2308cca96b4ef77b4" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesCharge</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a1647d845739e13a7925bc0ea3e74f1d1" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesLowerLimits</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1abf459bf4dec333aaf07cb92de29650fb" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesMolalities</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1abd6cebdbbda95d5de210cc6bd2580c20" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesMolarMasses</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a8b3ca18f390bd0f5e2ff6c489052000a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesName</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ae529bea2791a6b26292c3ba0820f7858" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>speciesUpperLimits</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1ad8598925e20fef980e57170f0d9ac26e" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>standardMolarEnthalpy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a4775eb491e71c5c3ea1a6fb1c5f121ab" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>standardMolarEntropy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a32d9095fd2518fd49018675c23f7b19d" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>standardMolarGibbsEnergy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a918c04e94cbe404b121b8b10ce6d6c5c" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>standardMolarHeatCapacityConstP</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a0ce9161690808dde60235d323e5135e1" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>standardMolarVolume</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a0a9f484f5d2313dc638c94a2b77b2ad8" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>systemEnthalpy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1acace05fb50f6e85b24db3136e9c9fb32" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>systemEntropy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a55662ec4f51f03122f5c0156a7d3b50f" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>systemGibbsEnergy</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a87ed18f716d47cd985867604685b2c96" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>systemHeatCapacityConstP</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1af9aa5ee056dad0df97f7ba7b3025c112" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>systemMass</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1adb6ba84a8dc491766ac3363c3cfe04a0" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>systemVolume</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a8da8136e90e7c1ffe5c07521afb7e211" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>temperature</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a971d3324991f8b3833c6a25e45768777" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>writeDbrToFile</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a3650f77f77d419add16dc07a7471bfa3" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine</scope><name>writeDbrToJsonString</name></member>
+      <member refid="classxGEMS_1_1ChemicalEngine_1a9dfbb6c6338674ceda12cb6b12c38a51" prot="public" virt="virtual"><scope>xGEMS::ChemicalEngine</scope><name>~ChemicalEngine</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,547 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classxGEMS_1_1Interface" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>xGEMS::Interface</compoundname>
+    <includes refid="Interface_8hpp" local="no">Interface.hpp</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a4347e796d47f5c77001567e283487aec" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type></type>
+        <definition>virtual xGEMS::Interface::~Interface</definition>
+        <argsstring>()=0</argsstring>
+        <name>~Interface</name>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="40" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a1692b85250638f785776e939069f01d6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::temperature</definition>
+        <argsstring>() const -&gt; double=0</argsstring>
+        <name>temperature</name>
+        <briefdescription>
+<para>Return the temperature (in units of K) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="43" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a68a6c107d435fa7cf1be7766a609b0ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::pressure</definition>
+        <argsstring>() const -&gt; double=0</argsstring>
+        <name>pressure</name>
+        <briefdescription>
+<para>Return the pressure (in units of Pa) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="46" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a4364e72dca448238b819ea710db2bb4c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::speciesAmounts</definition>
+        <argsstring>() const -&gt; Vector=0</argsstring>
+        <name>speciesAmounts</name>
+        <briefdescription>
+<para>Return the amounts of the species (in units of mol) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="49" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a09bdf571d372d509094f4638cfb31d0f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::numElements</definition>
+        <argsstring>() const -&gt; unsigned=0</argsstring>
+        <name>numElements</name>
+        <briefdescription>
+<para>Return the number of elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="52" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1ac5ef27901feb443eef130dca6f186165" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::numSpecies</definition>
+        <argsstring>() const -&gt; unsigned=0</argsstring>
+        <name>numSpecies</name>
+        <briefdescription>
+<para>Return the number of species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="55" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a937a9ac2728c09fb447a432d4fee2b79" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::numPhases</definition>
+        <argsstring>() const -&gt; unsigned=0</argsstring>
+        <name>numPhases</name>
+        <briefdescription>
+<para>Return the number of phases. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="58" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a34d4ecca6449bf993906cfa8e0643910" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::numSpeciesInPhase</definition>
+        <argsstring>(Index iphase) const -&gt; unsigned=0</argsstring>
+        <name>numSpeciesInPhase</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Return the number of species in a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="61" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a90f8ae0bea63fa0ffd692b33213d2779" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::elementName</definition>
+        <argsstring>(Index ielement) const -&gt; std::string=0</argsstring>
+        <name>elementName</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ielement</declname>
+        </param>
+        <briefdescription>
+<para>Return the name of an element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="64" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a3c405ecf755e06c02d35c7586dba2942" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::elementMolarMass</definition>
+        <argsstring>(Index ielement) const -&gt; double=0</argsstring>
+        <name>elementMolarMass</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ielement</declname>
+        </param>
+        <briefdescription>
+<para>Return the molar mass of an element (in units of kg/mol) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="67" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1ad88e33592e92df16303ecf593f69903b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::elementStoichiometry</definition>
+        <argsstring>(Index ispecies, Index ielement) const -&gt; double=0</argsstring>
+        <name>elementStoichiometry</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ielement</declname>
+        </param>
+        <briefdescription>
+<para>Return the stoichiometry of an element in a species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="70" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1ada738847c50d54285be09af314fba4a0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::speciesName</definition>
+        <argsstring>(Index ispecies) const -&gt; std::string=0</argsstring>
+        <name>speciesName</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Return the name of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="73" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a47cb423b86d1107d8ccb2621d4aa7437" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::phaseName</definition>
+        <argsstring>(Index iphase) const -&gt; std::string=0</argsstring>
+        <name>phaseName</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Return the name of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="76" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1af0b7e40e40ab4165ad08aa179132c17e" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::properties</definition>
+        <argsstring>(PhaseThermoModelResult &amp;res, Index iphase, double T, double P) -&gt; void=0</argsstring>
+        <name>properties</name>
+        <param>
+          <type>PhaseThermoModelResult &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>T</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>P</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return the thermodynamic properties of a phase. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The index of the phase </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The temperature (in units of K) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>P</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The pressure (in units of Pa) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="82" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a1f531b1a66310b0934f249ebbeafc454" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::properties</definition>
+        <argsstring>(PhaseChemicalModelResult &amp;res, Index iphase, double T, double P, VectorConstRef nphase) -&gt; void=0</argsstring>
+        <name>properties</name>
+        <param>
+          <type>PhaseChemicalModelResult &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>T</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" kindref="member">VectorConstRef</ref></type>
+          <declname>nphase</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return the chemical properties of a phase. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The index of the phase </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The temperature (in units of K) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>P</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The pressure (in units of Pa) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nphase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The amounts of the species in the phase (in units of mol) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="89" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a3591604ccb32280936a483bbf15dc104" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto xGEMS::Interface::clone</definition>
+        <argsstring>() const -&gt; std::shared_ptr&lt; Interface &gt;=0</argsstring>
+        <name>clone</name>
+        <briefdescription>
+<para>Return a clone of this <ref refid="classxGEMS_1_1Interface" kindref="compound">Interface</ref> instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="92" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a665f3c5acd5cfbeb8c905aaea6e6904f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::formulaMatrix</definition>
+        <argsstring>() const -&gt; Matrix</argsstring>
+        <name>formulaMatrix</name>
+        <briefdescription>
+<para>Return the formula matrix of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="95" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a54d03e4de3f3831a7bf2df6e04284559" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::indexElement</definition>
+        <argsstring>(std::string element) const -&gt; Index</argsstring>
+        <name>indexElement</name>
+        <param>
+          <type>std::string</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+<para>Return the index of an element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="98" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a0e5bce32a55d1a7dd8987e5b3a0171a8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::indexSpecies</definition>
+        <argsstring>(std::string species) const -&gt; Index</argsstring>
+        <name>indexSpecies</name>
+        <param>
+          <type>std::string</type>
+          <declname>species</declname>
+        </param>
+        <briefdescription>
+<para>Return the index of a species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="101" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a29e405617fb09fae9b4299255cf29535" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::indexPhase</definition>
+        <argsstring>(std::string phase) const -&gt; Index</argsstring>
+        <name>indexPhase</name>
+        <param>
+          <type>std::string</type>
+          <declname>phase</declname>
+        </param>
+        <briefdescription>
+<para>Return the index of a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="104" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1ab5e83b916aab03f91c8c800318cd9cbc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::indexPhaseWithSpecies</definition>
+        <argsstring>(Index ispecies) const -&gt; Index</argsstring>
+        <name>indexPhaseWithSpecies</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>ispecies</declname>
+        </param>
+        <briefdescription>
+<para>Return the index of the phase with a species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="107" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a368592b8fa7302992af87265c27f659a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::indexFirstSpeciesInPhase</definition>
+        <argsstring>(Index iphase) const -&gt; Index</argsstring>
+        <name>indexFirstSpeciesInPhase</name>
+        <param>
+          <type><ref refid="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" kindref="member">Index</ref></type>
+          <declname>iphase</declname>
+        </param>
+        <briefdescription>
+<para>Return the index of the first species in a phase. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="110" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1ab0292e85f9b25f7c4fe97581b0ae901c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::system</definition>
+        <argsstring>() const -&gt; ChemicalSystem</argsstring>
+        <name>system</name>
+        <briefdescription>
+<para>Return a ChemicalSystem instance created from an instance of a class derived from <ref refid="classxGEMS_1_1Interface" kindref="compound">Interface</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="113" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a2fbf40c502a5aa696ecf8f3ecb39dbbf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::Interface::state</definition>
+        <argsstring>(const ChemicalSystem &amp;system) const -&gt; ChemicalState</argsstring>
+        <name>state</name>
+        <param>
+          <type>const ChemicalSystem &amp;</type>
+          <declname>system</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return a ChemicalState instance created from an instance of a class derived from <ref refid="classxGEMS_1_1Interface" kindref="compound">Interface</ref>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>system</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The chemical system created using method <ref refid="classxGEMS_1_1Interface_1ab0292e85f9b25f7c4fe97581b0ae901c" kindref="member">system</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="117" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classxGEMS_1_1Interface_1a1432d8cea3fd218038d99adfeec4cfa5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>xGEMS::Interface::operator ChemicalSystem</definition>
+        <argsstring>() const</argsstring>
+        <name>operator ChemicalSystem</name>
+        <briefdescription>
+<para>Convert the classes derived from <ref refid="classxGEMS_1_1Interface" kindref="compound">Interface</ref> into a ChemicalSystem instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Interface.hpp" line="120" column="5"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>A class used to interface other codes with Reaktoro. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="xGEMS/Interface.hpp" line="36" column="1" bodyfile="xGEMS/Interface.hpp" bodystart="37" bodyend="121"/>
+    <listofallmembers>
+      <member refid="classxGEMS_1_1Interface_1a3591604ccb32280936a483bbf15dc104" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>clone</name></member>
+      <member refid="classxGEMS_1_1Interface_1a3c405ecf755e06c02d35c7586dba2942" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>elementMolarMass</name></member>
+      <member refid="classxGEMS_1_1Interface_1a90f8ae0bea63fa0ffd692b33213d2779" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>elementName</name></member>
+      <member refid="classxGEMS_1_1Interface_1ad88e33592e92df16303ecf593f69903b" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>elementStoichiometry</name></member>
+      <member refid="classxGEMS_1_1Interface_1a665f3c5acd5cfbeb8c905aaea6e6904f" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>formulaMatrix</name></member>
+      <member refid="classxGEMS_1_1Interface_1a54d03e4de3f3831a7bf2df6e04284559" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>indexElement</name></member>
+      <member refid="classxGEMS_1_1Interface_1a368592b8fa7302992af87265c27f659a" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>indexFirstSpeciesInPhase</name></member>
+      <member refid="classxGEMS_1_1Interface_1a29e405617fb09fae9b4299255cf29535" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>indexPhase</name></member>
+      <member refid="classxGEMS_1_1Interface_1ab5e83b916aab03f91c8c800318cd9cbc" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>indexPhaseWithSpecies</name></member>
+      <member refid="classxGEMS_1_1Interface_1a0e5bce32a55d1a7dd8987e5b3a0171a8" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>indexSpecies</name></member>
+      <member refid="classxGEMS_1_1Interface_1a09bdf571d372d509094f4638cfb31d0f" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>numElements</name></member>
+      <member refid="classxGEMS_1_1Interface_1a937a9ac2728c09fb447a432d4fee2b79" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>numPhases</name></member>
+      <member refid="classxGEMS_1_1Interface_1ac5ef27901feb443eef130dca6f186165" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>numSpecies</name></member>
+      <member refid="classxGEMS_1_1Interface_1a34d4ecca6449bf993906cfa8e0643910" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>numSpeciesInPhase</name></member>
+      <member refid="classxGEMS_1_1Interface_1a1432d8cea3fd218038d99adfeec4cfa5" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>operator ChemicalSystem</name></member>
+      <member refid="classxGEMS_1_1Interface_1a47cb423b86d1107d8ccb2621d4aa7437" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>phaseName</name></member>
+      <member refid="classxGEMS_1_1Interface_1a68a6c107d435fa7cf1be7766a609b0ae" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>pressure</name></member>
+      <member refid="classxGEMS_1_1Interface_1af0b7e40e40ab4165ad08aa179132c17e" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>properties</name></member>
+      <member refid="classxGEMS_1_1Interface_1a1f531b1a66310b0934f249ebbeafc454" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>properties</name></member>
+      <member refid="classxGEMS_1_1Interface_1a4364e72dca448238b819ea710db2bb4c" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>speciesAmounts</name></member>
+      <member refid="classxGEMS_1_1Interface_1ada738847c50d54285be09af314fba4a0" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>speciesName</name></member>
+      <member refid="classxGEMS_1_1Interface_1a2fbf40c502a5aa696ecf8f3ecb39dbbf" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>state</name></member>
+      <member refid="classxGEMS_1_1Interface_1ab0292e85f9b25f7c4fe97581b0ae901c" prot="public" virt="non-virtual"><scope>xGEMS::Interface</scope><name>system</name></member>
+      <member refid="classxGEMS_1_1Interface_1a1692b85250638f785776e939069f01d6" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>temperature</name></member>
+      <member refid="classxGEMS_1_1Interface_1a4347e796d47f5c77001567e283487aec" prot="public" virt="pure-virtual"><scope>xGEMS::Interface</scope><name>~Interface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

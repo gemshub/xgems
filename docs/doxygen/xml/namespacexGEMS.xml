@@ -1,0 +1,566 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacexGEMS" kind="namespace" language="C++">
+    <compoundname>xGEMS</compoundname>
+    <innerclass refid="structxGEMS_1_1ChemicalEngineOptions" prot="public">xGEMS::ChemicalEngineOptions</innerclass>
+    <innerclass refid="classxGEMS_1_1ChemicalEngine" prot="public">xGEMS::ChemicalEngine</innerclass>
+    <innerclass refid="classxGEMS_1_1Interface" prot="public">xGEMS::Interface</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespacexGEMS_1aba119675278404afcba5e52c247014b4" prot="public" static="no">
+        <type>Eigen::VectorXd</type>
+        <definition>using xGEMS::Vector = typedef Eigen::VectorXd</definition>
+        <argsstring></argsstring>
+        <name>Vector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="25" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" prot="public" static="no">
+        <type>Eigen::VectorXd</type>
+        <definition>using xGEMS::VectorXd = typedef Eigen::VectorXd</definition>
+        <argsstring></argsstring>
+        <name>VectorXd</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::VectorXd. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="26" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" prot="public" static="no">
+        <type>Eigen::VectorXi</type>
+        <definition>using xGEMS::VectorXi = typedef Eigen::VectorXi</definition>
+        <argsstring></argsstring>
+        <name>VectorXi</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::VectorXd. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="27" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a45d2d8022f04d698e8af276589830b9e" prot="public" static="no">
+        <type>Eigen::Ref&lt; <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorRef = typedef Eigen::Ref&lt;VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="29" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1ab48bcb5979c1b784b1701b7fa21d2965" prot="public" static="no">
+        <type>Eigen::Ref&lt; <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorXdRef = typedef Eigen::Ref&lt;VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXdRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="30" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1af2b00c95fc09d5067b4c81dc5a79a657" prot="public" static="no">
+        <type>Eigen::Ref&lt; <ref refid="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" kindref="member">VectorXi</ref> &gt;</type>
+        <definition>using xGEMS::VectorXiRef = typedef Eigen::Ref&lt;VectorXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXiRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;VectorXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="31" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a7b8bca964ce3d784a99442afafd04ef6" prot="public" static="no">
+        <type>Eigen::Ref&lt; const <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorConstRef = typedef Eigen::Ref&lt;const VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorConstRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;const VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="33" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a149c8618b4b42c81ebdf72a9721b3e0f" prot="public" static="no">
+        <type>Eigen::Ref&lt; const <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorXdConstRef = typedef Eigen::Ref&lt;const VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXdConstRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;const VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="34" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a2cb15c9740fded6ed0e132abd3d07b69" prot="public" static="no">
+        <type>Eigen::Ref&lt; const <ref refid="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" kindref="member">VectorXi</ref> &gt;</type>
+        <definition>using xGEMS::VectorXiConstRef = typedef Eigen::Ref&lt;const VectorXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXiConstRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;const VectorXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="35" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a3b0ffe5b389cb2b0b27dc7a128273cd0" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorMap = typedef Eigen::Map&lt;VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="37" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a95f8a8f9899caa8c4fd2fe040643aad9" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorXdMap = typedef Eigen::Map&lt;VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXdMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="38" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a0696d7f17634f38e497ca7301a5bc336" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" kindref="member">VectorXi</ref> &gt;</type>
+        <definition>using xGEMS::VectorXiMap = typedef Eigen::Map&lt;VectorXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXiMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;VectorXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="39" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a8b8c0bc6d6f687f31f1245f469e57f40" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorConstMap = typedef Eigen::Map&lt;const VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorConstMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;const VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="41" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a69712993203186f6ca6185ae80509431" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="namespacexGEMS_1a8b87e489a1a89694ef1a586aef36a373" kindref="member">VectorXd</ref> &gt;</type>
+        <definition>using xGEMS::VectorXdConstMap = typedef Eigen::Map&lt;const VectorXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXdConstMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;const VectorXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="42" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a313ef7ab4a85ad1c5ba0e8aac4f4b744" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="namespacexGEMS_1ae0fb048a05209bc42353c01853ca4e87" kindref="member">VectorXi</ref> &gt;</type>
+        <definition>using xGEMS::VectorXiConstMap = typedef Eigen::Map&lt;const VectorXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXiConstMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;const VectorXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="43" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a75b82282df7ef9a8f1d9c08d33b27acc" prot="public" static="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>using xGEMS::Matrix = typedef Eigen::MatrixXd</definition>
+        <argsstring></argsstring>
+        <name>Matrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="45" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" prot="public" static="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>using xGEMS::MatrixXd = typedef Eigen::MatrixXd</definition>
+        <argsstring></argsstring>
+        <name>MatrixXd</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::MatrixXd. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="46" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a66749512db5396776f606a31c715161b" prot="public" static="no">
+        <type>Eigen::MatrixXi</type>
+        <definition>using xGEMS::MatrixXi = typedef Eigen::MatrixXi</definition>
+        <argsstring></argsstring>
+        <name>MatrixXi</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::MatrixXd. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="47" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a71f635b04b6cda9da249e3fbb739af6f" prot="public" static="no">
+        <type>Eigen::Ref&lt; <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixRef = typedef Eigen::Ref&lt;MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="49" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1ad1b3a26975defac94eae88a5b83e93ea" prot="public" static="no">
+        <type>Eigen::Ref&lt; <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXdRef = typedef Eigen::Ref&lt;MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXdRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="50" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a3562df52ae6262d82148d652476e7008" prot="public" static="no">
+        <type>Eigen::Ref&lt; <ref refid="namespacexGEMS_1a66749512db5396776f606a31c715161b" kindref="member">MatrixXi</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXiRef = typedef Eigen::Ref&lt;MatrixXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXiRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;MatrixXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="51" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a8088725abe195d7fb880c8b0c300f731" prot="public" static="no">
+        <type>Eigen::Ref&lt; const <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixConstRef = typedef Eigen::Ref&lt;const MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixConstRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;const MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="53" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a138194285102e5159fbff820fe85714b" prot="public" static="no">
+        <type>Eigen::Ref&lt; const <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXdConstRef = typedef Eigen::Ref&lt;const MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXdConstRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;const MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="54" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1addc41b9b9024dc06ba01a733be1bc4da" prot="public" static="no">
+        <type>Eigen::Ref&lt; const <ref refid="namespacexGEMS_1a66749512db5396776f606a31c715161b" kindref="member">MatrixXi</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXiConstRef = typedef Eigen::Ref&lt;const MatrixXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXiConstRef</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Ref&lt;const MatrixXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="55" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1ace25fb878c27aeb4c35c065a5aff710a" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixMap = typedef Eigen::Map&lt;MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="57" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1acec2d5d8ca970783bb75cdf59afdb2e3" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXdMap = typedef Eigen::Map&lt;MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXdMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="58" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a2c5c7f6009bf6a0a051ce70cc8d44d6a" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespacexGEMS_1a66749512db5396776f606a31c715161b" kindref="member">MatrixXi</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXiMap = typedef Eigen::Map&lt;MatrixXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXiMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;MatrixXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="59" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a5405a8e7eefbe4c827cfff6735cd36bc" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixConstMap = typedef Eigen::Map&lt;const MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixConstMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;const MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="61" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1a18a6efbad9b1ed32c905507464d03c85" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="namespacexGEMS_1a630b51d6be7fe6540e3e7d9d2330ce55" kindref="member">MatrixXd</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXdConstMap = typedef Eigen::Map&lt;const MatrixXd&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXdConstMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;const MatrixXd&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="62" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1aba33b5c01f2ad7cc5d610208b60bce4e" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="namespacexGEMS_1a66749512db5396776f606a31c715161b" kindref="member">MatrixXi</ref> &gt;</type>
+        <definition>using xGEMS::MatrixXiConstMap = typedef Eigen::Map&lt;const MatrixXi&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXiConstMap</name>
+        <briefdescription>
+<para>Alias to Eigen type Eigen::Map&lt;const MatrixXi&gt;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="63" column="1" bodyfile="xGEMS/Eigen.hpp" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacexGEMS_1afa8961b737f0bf9d3854ed388e82277f" prot="public" static="no">
+        <type>std::ptrdiff_t</type>
+        <definition>using xGEMS::Index = typedef std::ptrdiff_t</definition>
+        <argsstring></argsstring>
+        <name>Index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Index.hpp" line="25" column="1" bodyfile="xGEMS/Index.hpp" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacexGEMS_1a28d098b7e1ccc941b2482ef9b38a5f9e" prot="public" static="no" mutable="no">
+        <type>const auto</type>
+        <definition>const auto xGEMS::all</definition>
+        <argsstring></argsstring>
+        <name>all</name>
+        <initializer>= Eigen::all</initializer>
+        <briefdescription>
+<para>Alias to Eigen placeholder value Eigen::placeholder::all. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/Eigen.hpp" line="65" column="12" bodyfile="xGEMS/Eigen.hpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacexGEMS_1a8789f3ad28ccb35698ac468d711270fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void xGEMS::update_loggers</definition>
+        <argsstring>(bool use_cout, const std::string &amp;logfile_name, size_t log_level)</argsstring>
+        <name>update_loggers</name>
+        <param>
+          <type>bool</type>
+          <declname>use_cout</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>logfile_name</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>log_level</declname>
+        </param>
+        <briefdescription>
+<para>Updates logger settings. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Configures logging behavior for the <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>use_cout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, prints log messages to stdout. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>logfile_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filename for a rotating log file. If empty, file logging is disabled. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>log_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Verbosity level for logging (trace = 0, debug = 1, info = 2, warn = 3, err = 4, critical = 5, off = 6 ).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Enable<sp/>stdout<sp/>logging<sp/>and<sp/>log<sp/>to<sp/>&quot;chemical_log.txt&quot;<sp/>with<sp/>verbosity<sp/>level<sp/>2.</highlight></codeline>
+<codeline><highlight class="normal">xGEMS::update_loggers(true,<sp/>&quot;chemical_log.txt&quot;,<sp/>2);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="37" column="6" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="37" bodyend="40" declfile="xGEMS/ChemicalEngine.hpp" declline="54" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacexGEMS_1a2894140b028de3a6daecc379e33eeb0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto xGEMS::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;out, const ChemicalEngine &amp;engine) -&gt; std::ostream &amp;</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> &amp;</type>
+          <declname>engine</declname>
+        </param>
+        <briefdescription>
+<para>Outputs the state of the <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Overloaded stream operator for convenient printing of engine details.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Output stream. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>engine</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>(std::ostream&amp;) Updated output stream.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">//<sp/>Example:<sp/>Print<sp/>the<sp/>engine<sp/>state.</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>engine<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="1163" column="1" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="1163" bodyend="1291" declfile="xGEMS/ChemicalEngine.hpp" declline="1413" declcolumn="2"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="xGEMS/ChemicalEngine.cpp" line="35" column="1"/>
+  </compounddef>
+</doxygen>
