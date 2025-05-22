@@ -91,6 +91,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine5setPTEdd"><code class="docutils literal notranslate"><span class="pre">setPT()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine4setBE14VectorConstRef"><code class="docutils literal notranslate"><span class="pre">setB()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEdd14VectorConstRef"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine9convergedEv"><code class="docutils literal notranslate"><span class="pre">converged()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine13numIterationsEv"><code class="docutils literal notranslate"><span class="pre">numIterations()</span></code></a></li>
@@ -192,6 +193,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS16MatrixXiConstMapE"><code class="docutils literal notranslate"><span class="pre">MatrixXiConstMap</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS5IndexE"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14update_loggersEbRKNSt6stringE6size_t"><code class="docutils literal notranslate"><span class="pre">update_loggers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS17printWrappedTableERNSt7ostreamERKNSt6stringERKNSt6vectorINSt6stringEEERKNSt6vectorINSt6stringEEERKNSt6vectorI6VectorEENSt6size_tENSt6size_tE"><code class="docutils literal notranslate"><span class="pre">printWrappedTable()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMSlsERNSt7ostreamERK14ChemicalEngine"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS3allE"><code class="docutils literal notranslate"><span class="pre">all</span></code></a></li>
 </ul>
@@ -460,11 +462,53 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.equilibrate">
 <span class="sig-name descname"><span class="pre">equilibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">[</span></span><span class="pre">m</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.equilibrate" title="Link to this definition"></a></dt>
-<dd><p>Equilibrates the system from scratch.</p>
-<p>This method resets the initial guess and computes the equilibrium state.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">()</span>
+<dd><p>Compute the chemical equilibrium state from temperature, pressure, and element amounts.</p>
+<p>This method resets any existing state and computes a new equilibrium based on the
+provided temperature (in Kelvin), pressure (in Pascals), and vector of element amounts (in mol).
+The order of the elements in the vector must match the chemical system’s element ordering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em>) – Temperature in Kelvin.</p></li>
+<li><p><strong>P</strong> (<em>float</em>) – Pressure in Pascals.</p></li>
+<li><p><strong>b</strong> (<em>numpy.ndarray</em><em> or </em><em>Eigen::VectorXd</em>) – Vector of element amounts (in mol). Must be a NumPy array or Eigen vector of correct length.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer return code indicating the status of the equilibrium computation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Element amounts in mol (order: C, Ca, Cl, H, Mg, O, Zz)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">,</span> <span class="mf">110.6837</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">55.34405</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="c1"># Compute equilibrium</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="mf">298.15</span><span class="p">,</span> <span class="mi">101325</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
+</div>
+<p><strong>Return Codes</strong></p>
+<p>The function returns an integer code indicating the status:</p>
+<ul class="simple">
+<li><p>0: No GEM re-calculation needed</p></li>
+<li><p>1: Need GEM calculation with LPP (automatic) initial approximation (AIA)</p></li>
+<li><p>2: OK after GEM calculation with LPP AIA</p></li>
+<li><p>3: Bad (not fully trustful) result after GEM calculation with LPP AIA</p></li>
+<li><p>4: Failure (no result) in GEM calculation with LPP AIA</p></li>
+<li><p>5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation</p></li>
+<li><p>6: OK after GEM calculation with SIA</p></li>
+<li><p>7: Bad (not fully trustful) result after GEM calculation with SIA</p></li>
+<li><p>8: Failure (no result) in GEM calculation with SIA</p></li>
+<li><p>9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure the <cite>b</cite> vector is properly ordered and matches the number of elements
+defined in the chemical system.</p>
 </div>
 </dd></dl>
 
@@ -1158,12 +1202,61 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.reequilibrate">
-<span class="sig-name descname"><span class="pre">reequilibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.reequilibrate" title="Link to this definition"></a></dt>
-<dd><p>Re-equilibrates the system using the current state as the initial guess.</p>
+<span class="sig-name descname"><span class="pre">reequilibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.reequilibrate" title="Link to this definition"></a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic">
+<li><p>reequilibrate(self: xgems.PyxGEMS.ChemicalEngine) -&gt; int</p>
+<blockquote>
+<div><p>Re-equilibrates the system using the current state as the initial guess. Default with automatic inital guess.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">reequilibrate</span><span class="p">()</span>
 </pre></div>
 </div>
+<p><strong>Return Codes</strong></p>
+<p>The function returns an integer code indicating the status:</p>
+<ul class="simple">
+<li><p>0: No GEM re-calculation needed</p></li>
+<li><p>1: Need GEM calculation with LPP (automatic) initial approximation (AIA)</p></li>
+<li><p>2: OK after GEM calculation with LPP AIA</p></li>
+<li><p>3: Bad (not fully trustful) result after GEM calculation with LPP AIA</p></li>
+<li><p>4: Failure (no result) in GEM calculation with LPP AIA</p></li>
+<li><p>5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation</p></li>
+<li><p>6: OK after GEM calculation with SIA</p></li>
+<li><p>7: Bad (not fully trustful) result after GEM calculation with SIA</p></li>
+<li><p>8: Failure (no result) in GEM calculation with SIA</p></li>
+<li><p>9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>reequilibrate(self: xgems.PyxGEMS.ChemicalEngine, arg0: bool) -&gt; int</p>
+<blockquote>
+<div><p>Re-equilibrates the system using the current state as the initial guess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param bool warmstart<span class="colon">:</span></dt>
+<dd class="field-odd"><p>equilibration with smart initial guess.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">reequilibrate</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Return Codes</strong></p>
+<p>The function returns an integer code indicating the status:</p>
+<ul class="simple">
+<li><p>0: No GEM re-calculation needed</p></li>
+<li><p>1: Need GEM calculation with LPP (automatic) initial approximation (AIA)</p></li>
+<li><p>2: OK after GEM calculation with LPP AIA</p></li>
+<li><p>3: Bad (not fully trustful) result after GEM calculation with LPP AIA</p></li>
+<li><p>4: Failure (no result) in GEM calculation with LPP AIA</p></li>
+<li><p>5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation</p></li>
+<li><p>6: OK after GEM calculation with SIA</p></li>
+<li><p>7: Bad (not fully trustful) result after GEM calculation with SIA</p></li>
+<li><p>8: Failure (no result) in GEM calculation with SIA</p></li>
+<li><p>9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
 </dd></dl>
 
 <dl class="py method">

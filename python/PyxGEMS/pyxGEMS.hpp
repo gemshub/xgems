@@ -595,6 +595,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                    - 7: Bad (not fully trustful) result after GEM calculation with SIA
                    - 8: Failure (no result) in GEM calculation with SIA
                    - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+                   
               )doc")
 
     .def("reequilibrate", reequilibrate2,
@@ -609,7 +610,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                    
                        engine.reequilibrate(True)
                    **Return Codes**
-               
+
                    The function returns an integer code indicating the status:
                    
                    - 0: No GEM re-calculation needed
@@ -622,6 +623,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                    - 7: Bad (not fully trustful) result after GEM calculation with SIA
                    - 8: Failure (no result) in GEM calculation with SIA
                    - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
               )doc")
 
     .def("equilibrate", &ChemicalEngine::equilibrate,
