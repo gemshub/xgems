@@ -686,8 +686,42 @@
       * // Example: Re-equilibrate with a warm start.
       * int status = engine.reequilibrate(true);
       * @endcode
+      * 
+      * - 0: No GEM re-calculation needed
+      * - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
+      * - 2: OK after GEM calculation with LPP AIA
+      * - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
+      * - 4: Failure (no result) in GEM calculation with LPP AIA
+      * - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
+      * - 6: OK after GEM calculation with SIA
+      * - 7: Bad (not fully trustful) result after GEM calculation with SIA
+      * - 8: Failure (no result) in GEM calculation with SIA
+      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
       */
      auto reequilibrate(bool warmstart) -> int;
+
+     /**
+      * @brief Re-equilibrates the system with (or without) a warm start.
+      *
+      * @return (int) Return code of the re-equilibration.
+      *
+      * @code
+      * // Example: Re-equilibrate.
+      * int status = engine.reequilibrate();
+      * @endcode
+      * 
+      * - 0: No GEM re-calculation needed
+      * - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
+      * - 2: OK after GEM calculation with LPP AIA
+      * - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
+      * - 4: Failure (no result) in GEM calculation with LPP AIA
+      * - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
+      * - 6: OK after GEM calculation with SIA
+      * - 7: Bad (not fully trustful) result after GEM calculation with SIA
+      * - 8: Failure (no result) in GEM calculation with SIA
+      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+      */
+     auto reequilibrate() -> int;
  
      /**
       * @brief Computes the equilibrium state.
@@ -709,6 +743,16 @@
       * 
       * int retcode = engine.equilibrate(298.15, 101325, b);
       * @endcode
+      * - 0: No GEM re-calculation needed
+      * - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
+      * - 2: OK after GEM calculation with LPP AIA
+      * - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
+      * - 4: Failure (no result) in GEM calculation with LPP AIA
+      * - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
+      * - 6: OK after GEM calculation with SIA
+      * - 7: Bad (not fully trustful) result after GEM calculation with SIA
+      * - 8: Failure (no result) in GEM calculation with SIA
+      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
       */
      auto equilibrate(double T, double P, VectorConstRef b) -> int;
  
