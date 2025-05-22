@@ -519,7 +519,7 @@ auto ChemicalEngine::setColdStart() -> void
     pimpl->options.warmstart = false;
 }
 
-auto ChemicalEngine::setPT( double P, double T) const -> bool
+auto ChemicalEngine::setPT(double P, double T) const -> bool
 {
     // Check if P, T are feasible
     if(pimpl->node->check_TP( T, P )==false)
@@ -551,6 +551,11 @@ auto ChemicalEngine::reequilibrate( bool warmstart ) -> int
     // Set the elapsed time member
     pimpl->elapsed_time = std::chrono::duration<double>(end - begin).count();
     return valueOutputGem;
+}
+
+auto ChemicalEngine::reequilibrate( ) -> int
+{
+    return reequilibrate(pimpl->options.warmstart);
 }
 
 auto ChemicalEngine::equilibrate(double T, double P, VectorConstRef b) -> int
@@ -1160,21 +1165,49 @@ auto ChemicalEngine::systemHeatCapacityConstP() const -> double
     return 0.0;
 }
 
+void printWrappedTable(std::ostream& out,
+    const std::string& row_label,
+    const std::vector<std::string>& column_names,
+    const std::vector<std::string>& row_names,
+    const std::vector<Vector>& rows,
+    std::size_t max_width = 175,
+    std::size_t col_width = 25)
+{
+const Index n_cols = column_names.size();
+const Index cols_per_row = std::max<Index>((max_width - col_width) / col_width, 1);
+
+for (Index start = 0; start < n_cols; start += cols_per_row)
+{
+out << std::string(max_width, '=') << std::endl;
+out << std::left << std::setw(col_width) << row_label;
+for (Index i = start; i < std::min(start + cols_per_row, n_cols); ++i)
+out << std::left << std::setw(col_width) << column_names[i];
+out << std::endl;
+out << std::string(max_width, '-') << std::endl;
+
+for (Index r = 0; r < rows.size(); ++r)
+{
+out << std::left << std::setw(col_width) << row_names[r];
+for (Index i = start; i < std::min(start + cols_per_row, n_cols); ++i)
+out << std::left << std::setw(col_width) << rows[r][i];
+out << std::endl;
+}
+}
+}
+
 auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
 {
     const double T = state.temperature();
     const double P = state.pressure();
     VectorConstRef n = state.speciesAmounts();
     const Vector activity_coeffs = state.lnActivityCoefficients().array().exp();
-    const Vector activities = state.lnActivities().array() * 0.4343; // .exp();
+    const Vector activities = state.lnActivities().array() * 0.4343;
     const Vector chemical_potentials = state.chemicalPotentials().array() / 1000.;
     const Vector concentrations = state.lnConcentrations().array().exp();
-//    const Vector molalities = state.speciesMolalities().array();
     const Vector molfractions = state.moleFractions().array();
-//    const Vector satindices = state.phaseSatIndices().array();
 
     const Index num_phases = state.numPhases();
-    const Index bar_size = std::max(Index(9), num_phases + 2) * 25;
+    const Index bar_size = 175;
     const std::string bar1(bar_size, '=');
     const std::string bar2(bar_size, '-');
 
@@ -1183,7 +1216,6 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
     out << std::left << std::setw(25) << "Temperature[C]";
     out << std::left << std::setw(25) << "Pressure[MPa]";
     out << std::endl << bar2 << std::endl;
-
     out << std::left << std::setw(25) << T;
     out << std::left << std::setw(25) << T - 273.15;
     out << std::left << std::setw(25) << P * 1e-6;
@@ -1191,103 +1223,103 @@ auto operator<<(std::ostream& out, const ChemicalEngine& state) -> std::ostream&
 
     // Set output in scientific notation
     auto flags = out.flags();
-    out << std::setprecision(6);
+    out << std::setprecision(6) << std::scientific;
 
-    // Output the table of the element-related state
-    out << bar1 << std::endl;
-    out << std::left << std::setw(25) << "Element";
-    out << std::left << std::setw(25) << "Amount[mol]";
-    for(Index i = 0; i < state.numPhases(); ++i)
-        out << std::left << std::setw(25) << state.phaseName(i) + "[mol]";
-    out << std::endl;
-    out << bar2 << std::endl;
-    for(Index i = 0; i < state.numElements(); ++i)
-    {
-        out << std::left << std::setw(25) << state.elementName(i);
-        out << std::left << std::setw(25) << state.elementAmounts()[i];
-        for(Index j = 0; j < state.numPhases(); ++j)
-            out << std::left << std::setw(25) << state.elementAmountsInPhase(j)[i];
-        out << std::endl;
-    }
-    out << bar2 << std::endl;
-    out << std::left << std::setw(25) << "PhaseAmount[mol]";
-    out << std::left << std::setw(25) << 0.0;
-    for(Index j = 0; j < state.numPhases(); ++j)
-        out << std::left << std::setw(25) << state.phaseAmounts()[j];
-    out << std::endl;   
-    out << std::left << std::setw(25) << "PhaseMass[kg]";
-    out << std::left << std::setw(25) << 0.0;
-    for(Index j = 0; j < state.numPhases(); ++j)
-        out << std::left << std::setw(25) << state.phaseMasses()[j];
-    out << std::endl;        
-    out << std::left << std::setw(25) << "PhaseVolume[m^3]";
-    out << std::left << std::setw(25) << 0.0;
-    for(Index j = 0; j < state.numPhases(); ++j)
-        out << std::left << std::setw(25) << state.phaseVolumes()[j];
-    out << std::endl;  
-    out << std::left << std::setw(25) << "PhaseDensity[kg/m^3]";
-    out << std::left << std::setw(25) << 0.0;
-    for(Index j = 0; j < state.numPhases(); ++j)
-        out << std::left << std::setw(25) << state.phaseDensities()[j];
-    out << std::endl;    
-    out << std::left << std::setw(25) << "PhaseSatIndex[lg]";
-    out << std::left << std::setw(25) << 0.0;
-    for(Index j = 0; j < state.numPhases(); ++j)
-//        out << std::left << std::setw(25) << satindices[j];    
-        out << std::left << std::setw(25) << state.phaseSatIndices()[j];
-    out << std::endl;
-    out << std::endl;            
+    // Element table (wrapped)
+    std::vector<std::string> phase_names;
+    for (Index i = 0; i < num_phases; ++i)
+        phase_names.push_back(state.phaseName(i) + "[mol]");
 
-    // Output the table of the species-related state
-    out << bar1 << std::endl;
-    out << std::left << std::setw(25) << "Species";
-    out << std::left << std::setw(25) << "Amount[mol]";
-    out << std::left << std::setw(25) << "Concentration[-]";
-    out << std::left << std::setw(25) << "ActivityCoeff[-]";
- //   out << std::left << std::setw(25) << "Molality[mol/kgw]";
-    out << std::left << std::setw(25) << "MoleFraction[-]";
-    out << std::left << std::setw(25) << "ChemPotential[kJ/mol]";
-    out << std::left << std::setw(25) << "Activity[lg]";
-    out << std::endl;
-    out << bar2 << std::endl;
-    for(Index i = 0; i < state.numSpecies(); ++i)
-    {
-        out << std::left << std::setw(25) << state.speciesName(i);
-        out << std::left << std::setw(25) << n[i];
-        out << std::left << std::setw(25) << concentrations[i];
-        out << std::left << std::setw(25) << activity_coeffs[i];
- //       out << std::left << std::setw(25) << molalities[i];
-        out << std::left << std::setw(25) << molfractions[i];
-        out << std::left << std::setw(25) << chemical_potentials[i];
-        out << std::left << std::setw(25) << activities[i];
-        out << std::endl;
+    std::vector<std::string> element_names;
+    std::vector<Vector> element_rows;
+    for (Index i = 0; i < state.numElements(); ++i) {
+        Vector row(num_phases);
+        for (Index j = 0; j < num_phases; ++j)
+            row[j] = state.elementAmountsInPhase(j)[i];
+        element_names.push_back(state.elementName(i));
+        element_rows.push_back(row);
     }
 
-    // Output the table of the aqueous phase related state
-    out << bar1 << std::endl;
-    out << std::left << std::setw(25) << "Mass[kg]";
-    out << std::left << std::setw(25) << "Volume[m^3]";
-    out << std::left << std::setw(25) << "G[norm]";
-    out << std::left << std::setw(25) << "H[kJ]";
-    out << std::left << std::setw(25) << "IonicStrength[molal]";
-    out << std::left << std::setw(25) << "pH";
-    out << std::left << std::setw(25) << "pE";
-    out << std::left << std::setw(25) << "Eh[V]";
-    out << std::endl << bar2 << std::endl;
-    out << std::left << std::setw(25) << state.systemMass();
-    out << std::left << std::setw(25) << state.systemVolume();
-    out << std::left << std::setw(25) << state.systemGibbsEnergy();
-    out << std::left << std::setw(25) << state.systemEnthalpy()/1000.0;
-    out << std::left << std::setw(25) << state.ionicStrength();
-    out << std::left << std::setw(25) << state.pH();
-    out << std::left << std::setw(25) << state.pe();
-    out << std::left << std::setw(25) << state.Eh();
-    out << std::endl << bar1 << std::endl;
+    printWrappedTable(out, "Element", phase_names, element_names, element_rows);
 
-    // Recover the previous state of `out`
-    out.flags(flags);
+    // Phase state properties
+    phase_names.clear();
+    for (Index i = 0; i < state.numPhases(); ++i)
+        phase_names.push_back(state.phaseName(i));
 
+    std::vector<std::string> row_labels = {
+        "PhaseAmount[mol]",
+        "PhaseMass[kg]",
+        "PhaseVolume[m^3]",
+        "PhaseDensity[kg/m^3]",
+        "PhaseSatIndex[lg]"
+    };
+
+    std::vector<Vector> values1 = {
+        state.phaseAmounts(),
+        state.phaseMasses(),
+        state.phaseVolumes(),
+        state.phaseDensities(),
+        state.phaseSatIndices()
+    };
+
+    printWrappedTable(out, "Property", phase_names, row_labels, values1);
+    out << std::endl;
+
+    // Species-related data
+    std::vector<std::string> column_labels = {
+        "Amount[mol]",
+        "Concentration[-]",
+        "ActivityCoeff[-]",
+        "MoleFraction[-]",
+        "ChemPotential[kJ/mol]",
+        "Activity[lg]"
+    };
+
+    std::vector<std::string> species_labels;
+    std::vector<Vector> values(column_labels.size(), Vector(state.numSpecies()));
+
+    for (Index i = 0; i < state.numSpecies(); ++i) {
+        species_labels.push_back(state.speciesName(i));
+        values[0][i] = n[i];
+        values[1][i] = concentrations[i];
+        values[2][i] = activity_coeffs[i];
+        values[3][i] = molfractions[i];
+        values[4][i] = chemical_potentials[i];
+        values[5][i] = activities[i];
+    }
+
+    printWrappedTable(out, "Species", column_labels, species_labels, values);
+    out << std::endl;
+
+    // System properties
+    std::vector<std::string> row_labels2 = {
+        "Mass[kg]",
+        "Volume[m^3]",
+        "G[norm]",
+        "H[kJ]",
+        "IonicStrength[molal]",
+        "pH",
+        "pE",
+        "Eh[V]"
+    };
+
+    values.clear();
+    values.emplace_back(Vector::Constant(1, state.systemMass()));
+    values.emplace_back(Vector::Constant(1, state.systemVolume()));
+    values.emplace_back(Vector::Constant(1, state.systemGibbsEnergy()));
+    values.emplace_back(Vector::Constant(1, state.systemEnthalpy() / 1000.0));
+    values.emplace_back(Vector::Constant(1, state.ionicStrength()));
+    values.emplace_back(Vector::Constant(1, state.pH()));
+    values.emplace_back(Vector::Constant(1, state.pe()));
+    values.emplace_back(Vector::Constant(1, state.Eh()));
+
+    printWrappedTable(out, "Property", std::vector<std::string>{""}, row_labels2, values);
+    out << std::endl;
+
+    out.flags(flags); // restore flags
     return out;
 }
+
 
 } // namespace xGEMS

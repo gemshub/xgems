@@ -27,6 +27,9 @@ using namespace xGEMS;
 
 void exportChemicalEngine(py::module &m)
 {
+    auto reequilibrate1 = static_cast<int (ChemicalEngine::*)()>(&ChemicalEngine::reequilibrate);
+    auto reequilibrate2 = static_cast<int (ChemicalEngine::*)(bool)>(&ChemicalEngine::reequilibrate);    
+
     auto speciesAmount1 = static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::speciesAmount);
     auto speciesAmount2 = static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::speciesAmount);
 
@@ -535,63 +538,145 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 )doc",
              py::arg("index"), py::arg("value"))
 
-             .def("setPT", &ChemicalEngine::setPT,
+    .def("setPT", &ChemicalEngine::setPT,
+             R"doc(
+                   Sets the temperature and pressure of the system.
+                   
+                   :param float temperature: Temperature in Kelvin (K).
+                   :param float pressure: Pressure in Pascals (Pa).
+                   
+                   **Example:**
+                   
+                   .. code-block:: python
+                   
+                       engine.setPT(298.15, 101325)
+              )doc",
+             py::arg("temperature"), py::arg("pressure"))
+
+    .def("setB", &ChemicalEngine::setB,
+             R"doc(
+                   Sets the bulk composition of the system.
+                   
+                   :param list[float] composition: List of element amounts (mol).
+                   
+                   Set element amounts of a solution with 0.001 M MgCl2 and 0.001 M CO2:
+                   - **elements order:** C, Ca, Cl, H, Mg, O, Zz (charge)
+                   - **Note:** The order of elements in the list should match the order in the chemical system.
+                   
+                   **Example:**
+                   
+                   .. code-block:: python
+                   
+                       engine.setB([0.001, 1e-09, 0.004, 110.6837, 0.002, 55.34405, 0])
+              )doc",
+             py::arg("composition"))
+
+    .def("reequilibrate", reequilibrate1,
+             R"doc(
+                   Re-equilibrates the system using the current state as the initial guess. Default with automatic inital guess.
+                   
+                   **Example:**
+                   
+                   .. code-block:: python
+                   
+                       engine.reequilibrate()
+                  
+                   **Return Codes**
+
+                   The function returns an integer code indicating the status:
+                   
+                   - 0: No GEM re-calculation needed
+                   - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
+                   - 2: OK after GEM calculation with LPP AIA
+                   - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
+                   - 4: Failure (no result) in GEM calculation with LPP AIA
+                   - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
+                   - 6: OK after GEM calculation with SIA
+                   - 7: Bad (not fully trustful) result after GEM calculation with SIA
+                   - 8: Failure (no result) in GEM calculation with SIA
+                   - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+              )doc")
+
+    .def("reequilibrate", reequilibrate2,
+             R"doc(
+                   Re-equilibrates the system using the current state as the initial guess.
+   
+                   :param bool warmstart: equilibration with smart initial guess.
+                   
+                   **Example:**
+                   
+                   .. code-block:: python
+                   
+                       engine.reequilibrate(True)
+                  
+                   **Return Codes**
+
+                   The function returns an integer code indicating the status:
+                   
+                   - 0: No GEM re-calculation needed
+                   - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
+                   - 2: OK after GEM calculation with LPP AIA
+                   - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
+                   - 4: Failure (no result) in GEM calculation with LPP AIA
+                   - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
+                   - 6: OK after GEM calculation with SIA
+                   - 7: Bad (not fully trustful) result after GEM calculation with SIA
+                   - 8: Failure (no result) in GEM calculation with SIA
+                   - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+              )doc")
+
+    .def("equilibrate", &ChemicalEngine::equilibrate,
                 R"doc(
-            Sets the temperature and pressure of the system.
-            
-            :param float temperature: Temperature in Kelvin (K).
-            :param float pressure: Pressure in Pascals (Pa).
-            
-            **Example:**
-            
-            .. code-block:: python
-            
-                engine.setPT(298.15, 101325)
-            )doc", py::arg("temperature"), py::arg("pressure"))
-            
-            .def("setB", &ChemicalEngine::setB,
-                R"doc(
-            Sets the bulk composition of the system.
-            
-            :param list[float] composition: List of element amounts (mol).
-            
-            Set element amounts of a solution with 0.001 M MgCl2 and 0.001 M CO2:
-            - **elements order:** C, Ca, Cl, H, Mg, O, Zz (charge)
-            - **Note:** The order of elements in the list should match the order in the chemical system.
-            
-            **Example:**
-            
-            .. code-block:: python
-            
-                engine.setB([0.001, 1e-09, 0.004, 110.6837, 0.002, 55.34405, 0])
-            )doc", py::arg("composition"))
-            
-            .def("reequilibrate", &ChemicalEngine::reequilibrate,
-                R"doc(
-            Re-equilibrates the system using the current state as the initial guess.
-            
-            **Example:**
-            
-            .. code-block:: python
-            
-                engine.reequilibrate()
-            )doc")
-            
-            .def("equilibrate", &ChemicalEngine::equilibrate,
-                R"doc(
-            Equilibrates the system from scratch.
-            
-            This method resets the initial guess and computes the equilibrium state.
-            
-            **Example:**
-            
-            .. code-block:: python
-            
-                engine.equilibrate()
-            )doc")
-            
-            .def("converged", &ChemicalEngine::converged,
-                R"doc(
+           Compute the chemical equilibrium state from temperature, pressure, and element amounts.
+           
+           This method resets any existing state and computes a new equilibrium based on the
+           provided temperature (in Kelvin), pressure (in Pascals), and vector of element amounts (in mol).
+           The order of the elements in the vector must match the chemical system's element ordering.
+           
+           :param float T: Temperature in Kelvin.
+           :param float P: Pressure in Pascals.
+           :param b: Vector of element amounts (in mol). Must be a NumPy array or Eigen vector of correct length.
+           :type b: numpy.ndarray or Eigen::VectorXd
+           :returns: Integer return code indicating the status of the equilibrium computation.
+           :rtype: int
+           
+           **Example**
+           
+           .. code-block:: python
+           
+               import numpy as np
+           
+               # Element amounts in mol (order: C, Ca, Cl, H, Mg, O, Zz)
+               b = np.array([0.001, 1e-9, 0.004, 110.6837, 0.002, 55.34405, 0.0])
+           
+               # Compute equilibrium
+               ret = engine.equilibrate(298.15, 101325, b)
+           
+           **Return Codes**
+           
+           The function returns an integer code indicating the status:
+           
+           - 0: No GEM re-calculation needed
+           - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
+           - 2: OK after GEM calculation with LPP AIA
+           - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
+           - 4: Failure (no result) in GEM calculation with LPP AIA
+           - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
+           - 6: OK after GEM calculation with SIA
+           - 7: Bad (not fully trustful) result after GEM calculation with SIA
+           - 8: Failure (no result) in GEM calculation with SIA
+           - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+           
+           .. note::
+              Ensure the `b` vector is properly ordered and matches the number of elements
+              defined in the chemical system.
+           )doc")
+           
+           
+        .def("converged", &ChemicalEngine::converged,
+             R"doc(
             Checks if the equilibrium computation has converged.
             
             :return bool: True if the computation has converged, False otherwise.
@@ -603,9 +688,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 is_converged = engine.converged()
                 print(is_converged)
             )doc")
-            
-            .def("numIterations", &ChemicalEngine::numIterations,
-                R"doc(
+
+        .def("numIterations", &ChemicalEngine::numIterations,
+             R"doc(
             Returns the number of iterations performed during the last equilibrium computation.
             
             :return int: Number of iterations.
@@ -617,9 +702,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 iterations = engine.numIterations()
                 print(iterations)
             )doc")
-            
-            .def("elapsedTime", &ChemicalEngine::elapsedTime,
-                R"doc(
+
+        .def("elapsedTime", &ChemicalEngine::elapsedTime,
+             R"doc(
             Returns the elapsed time for the last equilibrium computation (in seconds).
             
             :return float: Elapsed time in seconds.
@@ -631,9 +716,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 time = engine.elapsedTime()
                 print(time)
             )doc")
-            
-            .def("temperature", &ChemicalEngine::temperature,
-                R"doc(
+
+        .def("temperature", &ChemicalEngine::temperature,
+             R"doc(
             Returns the current temperature of the system (K).
             
             :return float: Temperature in Kelvin.
@@ -645,9 +730,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 temp = engine.temperature()
                 print(temp)
             )doc")
-            
-            .def("pressure", &ChemicalEngine::pressure,
-                R"doc(
+
+        .def("pressure", &ChemicalEngine::pressure,
+             R"doc(
             Returns the current pressure of the system (Pa).
             
             :return float: Pressure in Pascals.
@@ -659,9 +744,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 pressure = engine.pressure()
                 print(pressure)
             )doc")
-            
-            .def("elementAmounts", &ChemicalEngine::elementAmounts,
-                R"doc(
+
+        .def("elementAmounts", &ChemicalEngine::elementAmounts,
+             R"doc(
             Returns the amounts of all elements in the system (mol).
             
             **Example:**
@@ -671,10 +756,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 amounts = engine.elementAmounts()
                 print(amounts)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("elementAmountsInPhase", &ChemicalEngine::elementAmountsInPhase,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("elementAmountsInPhase", &ChemicalEngine::elementAmountsInPhase,
+             R"doc(
             Returns the amounts of all elements in a specific phase (mol).
             
             :param int phase_index: Index of the phase.
@@ -686,10 +771,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 amounts = engine.elementAmountsInPhase(0)
                 print(amounts)
             )doc",
-                py::arg("phase_index"))
-            
-            .def("elementAmountsInSpecies", &ChemicalEngine::elementAmountsInSpecies,
-                R"doc(
+             py::arg("phase_index"))
+
+        .def("elementAmountsInSpecies", &ChemicalEngine::elementAmountsInSpecies,
+             R"doc(
             Returns the amounts of all elements in a specific species (mol).
             
             :param int species_index: Index of the species.
@@ -701,10 +786,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 amounts = engine.elementAmountsInSpecies(0)
                 print(amounts)
             )doc",
-                py::arg("species_index"))
-            
-            .def("speciesAmount", speciesAmount1,
-                R"doc(
+             py::arg("species_index"))
+
+        .def("speciesAmount", speciesAmount1,
+             R"doc(
             Returns the amount of a species by its index (mol).
             
             :param int index: Index of the species.
@@ -716,9 +801,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 amount = engine.speciesAmount(0)
                 print(amount)
             )doc")
-            
-            .def("speciesAmount", speciesAmount2,
-                R"doc(
+
+        .def("speciesAmount", speciesAmount2,
+             R"doc(
             Returns the amount of a species by its name (mol).
             
             :param str name: Name of the species.
@@ -730,9 +815,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 amount = engine.speciesAmount("H2O")
                 print(amount)
             )doc")
-            
-            .def("setSpeciesAmounts", &ChemicalEngine::setSpeciesAmounts,
-                R"doc(
+
+        .def("setSpeciesAmounts", &ChemicalEngine::setSpeciesAmounts,
+             R"doc(
             Sets the amounts of all species in the system (mol).
             
             :param list[float] amounts: List of species amounts.
@@ -743,10 +828,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             
                 engine.setSpeciesAmounts([1.0, 0.5, 0.2])
             )doc",
-                py::arg("amounts"), py::return_value_policy::reference_internal)
-            
-            .def("speciesAmounts", &ChemicalEngine::speciesAmounts,
-                R"doc(
+             py::arg("amounts"), py::return_value_policy::reference_internal)
+
+        .def("speciesAmounts", &ChemicalEngine::speciesAmounts,
+             R"doc(
             Returns the amounts of all species in the system (mol).
             
             **Example:**
@@ -756,10 +841,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 amounts = engine.speciesAmounts()
                 print(amounts)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("setSpeciesUpperLimits", &ChemicalEngine::setSpeciesUpperLimits,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("setSpeciesUpperLimits", &ChemicalEngine::setSpeciesUpperLimits,
+             R"doc(
             Sets the upper limits for all species in the system (mol).
             
             :param list[float] limits: List of upper limits for species amounts.
@@ -770,10 +855,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             
                 engine.setSpeciesUpperLimits([10.0, 5.0, 2.0])
             )doc",
-                py::arg("limits"), py::return_value_policy::reference_internal)
-            
-            .def("setSpeciesLowerLimits", &ChemicalEngine::setSpeciesLowerLimits,
-                R"doc(
+             py::arg("limits"), py::return_value_policy::reference_internal)
+
+        .def("setSpeciesLowerLimits", &ChemicalEngine::setSpeciesLowerLimits,
+             R"doc(
             Sets the lower limits for all species in the system (mol).
             
             :param list[float] limits: List of lower limits for species amounts.
@@ -784,10 +869,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             
                 engine.setSpeciesLowerLimits([0.1, 0.05, 0.02])
             )doc",
-                py::arg("limits"), py::return_value_policy::reference_internal)
-            
-            .def("speciesUpperLimits", &ChemicalEngine::speciesUpperLimits,
-                R"doc(
+             py::arg("limits"), py::return_value_policy::reference_internal)
+
+        .def("speciesUpperLimits", &ChemicalEngine::speciesUpperLimits,
+             R"doc(
             Returns the upper limits for all species in the system (mol).
             
             **Example:**
@@ -797,10 +882,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 limits = engine.speciesUpperLimits()
                 print(limits)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("speciesLowerLimits", &ChemicalEngine::speciesLowerLimits,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("speciesLowerLimits", &ChemicalEngine::speciesLowerLimits,
+             R"doc(
             Returns the lower limits for all species in the system (mol).
             
             **Example:**
@@ -810,10 +895,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 limits = engine.speciesLowerLimits()
                 print(limits)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("moleFractions", &ChemicalEngine::moleFractions,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("moleFractions", &ChemicalEngine::moleFractions,
+             R"doc(
             Returns the mole fractions of all species in the system.
             
             **Example:**
@@ -823,10 +908,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 fractions = engine.moleFractions()
                 print(fractions)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("speciesMolalities", &ChemicalEngine::speciesMolalities,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("speciesMolalities", &ChemicalEngine::speciesMolalities,
+             R"doc(
             Returns the molalities of all species in the system (mol/kg).
             
             **Example:**
@@ -836,10 +921,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 molalities = engine.speciesMolalities()
                 print(molalities)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("lnActivityCoefficients", &ChemicalEngine::lnActivityCoefficients,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("lnActivityCoefficients", &ChemicalEngine::lnActivityCoefficients,
+             R"doc(
             Returns the natural logarithms of activity coefficients for all species.
             
             **Example:**
@@ -849,10 +934,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 ln_coeffs = engine.lnActivityCoefficients()
                 print(ln_coeffs)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("lnActivities", &ChemicalEngine::lnActivities,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("lnActivities", &ChemicalEngine::lnActivities,
+             R"doc(
             Returns the natural logarithms of activities for all species.
             
             **Example:**
@@ -862,10 +947,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 ln_activities = engine.lnActivities()
                 print(ln_activities)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-            .def("lnConcentrations", &ChemicalEngine::lnConcentrations,
-                R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("lnConcentrations", &ChemicalEngine::lnConcentrations,
+             R"doc(
             Returns the natural logarithms of concentrations for all species.
             
             **Example:**
@@ -875,10 +960,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                 ln_concentrations = engine.lnConcentrations()
                 print(ln_concentrations)
             )doc",
-                py::return_value_policy::reference_internal)
-            
-                .def("chemicalPotentials", &ChemicalEngine::chemicalPotentials,
-                    R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("chemicalPotentials", &ChemicalEngine::chemicalPotentials,
+             R"doc(
                 Returns the chemical potentials of all species in the system (J/mol).
                 
                 **Example:**
@@ -888,10 +973,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                     potentials = engine.chemicalPotentials()
                     print(potentials)
                 )doc",
-                    py::return_value_policy::reference_internal)
-                
-                .def("standardMolarGibbsEnergy", &ChemicalEngine::standardMolarGibbsEnergy,
-                    R"doc(
+             py::return_value_policy::reference_internal)
+
+        .def("standardMolarGibbsEnergy", &ChemicalEngine::standardMolarGibbsEnergy,
+             R"doc(
                 Returns the standard molar Gibbs energy of all species (J/mol).
                 
                 **Example:**
@@ -901,9 +986,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                     gibbs_energy = engine.standardMolarGibbsEnergy()
                     print(gibbs_energy)
                 )doc")
-                
-                .def("standardMolarEnthalpy", &ChemicalEngine::standardMolarEnthalpy,
-                    R"doc(
+
+        .def("standardMolarEnthalpy", &ChemicalEngine::standardMolarEnthalpy,
+             R"doc(
                 Returns the standard molar enthalpy of all species (J/mol).
                 
                 **Example:**
@@ -913,9 +998,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                     enthalpy = engine.standardMolarEnthalpy()
                     print(enthalpy)
                 )doc")
-                
-                .def("standardMolarVolume", &ChemicalEngine::standardMolarVolume,
-                    R"doc(
+
+        .def("standardMolarVolume", &ChemicalEngine::standardMolarVolume,
+             R"doc(
                 Returns the standard molar volume of all species (m³/mol).
                 
                 **Example:**
@@ -925,9 +1010,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                     volume = engine.standardMolarVolume()
                     print(volume)
                 )doc")
-                
-                .def("standardMolarEntropy", &ChemicalEngine::standardMolarEntropy,
-                    R"doc(
+
+        .def("standardMolarEntropy", &ChemicalEngine::standardMolarEntropy,
+             R"doc(
                 Returns the standard molar entropy of all species (J/K/mol).
                 
                 **Example:**
@@ -937,11 +1022,11 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                     entropy = engine.standardMolarEntropy()
                     print(entropy)
                 )doc")
-                
+
         //   .def("standardMolarInternalEnergy", &ChemicalEngine::standardMolarInternalEnergy)
         //   .def("standardMolarHelmholtzEnergy", &ChemicalEngine::standardMolarHelmholtzEnergy)
         .def("standardMolarHeatCapacityConstP", &ChemicalEngine::standardMolarHeatCapacityConstP,
-            R"doc(
+             R"doc(
         Returns the standard molar heat capacity at constant pressure for all species (J/K/mol).
         
         **Example:**
@@ -953,7 +1038,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
         )doc")
         //   .def("standardMolarHeatCapacityConstV", &ChemicalEngine::standardMolarHeatCapacityConstV)
         .def("phaseMolarGibbsEnergy", &ChemicalEngine::phaseMolarGibbsEnergy,
-            R"doc(
+             R"doc(
         Returns the molar Gibbs energy of all phases in the system (J/mol).
         
         **Example:**
@@ -963,9 +1048,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             molar_gibbs_energy = engine.phaseMolarGibbsEnergy()
             print(molar_gibbs_energy)
         )doc")
-        
+
         .def("phaseMolarEnthalpy", &ChemicalEngine::phaseMolarEnthalpy,
-            R"doc(
+             R"doc(
         Returns the molar enthalpy of all phases in the system (J/mol).
         
         **Example:**
@@ -975,9 +1060,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             molar_enthalpy = engine.phaseMolarEnthalpy()
             print(molar_enthalpy)
         )doc")
-        
+
         .def("phaseMolarVolume", &ChemicalEngine::phaseMolarVolume,
-            R"doc(
+             R"doc(
         Returns the molar volume of all phases in the system (m³/mol).
         
         **Example:**
@@ -987,9 +1072,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             molar_volume = engine.phaseMolarVolume()
             print(molar_volume)
         )doc")
-        
+
         .def("phaseMolarEntropy", &ChemicalEngine::phaseMolarEntropy,
-            R"doc(
+             R"doc(
         Returns the molar entropy of all phases in the system (J/K/mol).
         
         **Example:**
@@ -999,11 +1084,11 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             molar_entropy = engine.phaseMolarEntropy()
             print(molar_entropy)
         )doc")
-        
+
         //    .def("phaseMolarInternalEnergy", &ChemicalEngine::phaseMolarInternalEnergy)
         //    .def("phaseMolarHelmholtzEnergy", &ChemicalEngine::phaseMolarHelmholtzEnergy)
         .def("phaseMolarHeatCapacityConstP", &ChemicalEngine::phaseMolarHeatCapacityConstP,
-            R"doc(
+             R"doc(
         Returns the molar heat capacity at constant pressure for all phases in the system (J/K/mol).
         
         **Example:**
@@ -1013,10 +1098,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             molar_heat_capacity = engine.phaseMolarHeatCapacityConstP()
             print(molar_heat_capacity)
         )doc")
-        
+
         //    .def("phaseMolarHeatCapacityConstV", &ChemicalEngine::phaseMolarHeatCapacitiesConstV)
         .def("phaseSpecificGibbsEnergy", &ChemicalEngine::phaseSpecificGibbsEnergy,
-            R"doc(
+             R"doc(
         Returns the specific Gibbs energy of all phases in the system (J/kg).
         
         **Example:**
@@ -1026,9 +1111,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             specific_gibbs_energy = engine.phaseSpecificGibbsEnergy()
             print(specific_gibbs_energy)
         )doc")
-        
+
         .def("phaseSpecificEnthalpy", &ChemicalEngine::phaseSpecificEnthalpy,
-            R"doc(
+             R"doc(
         Returns the specific enthalpy of all phases in the system (J/kg).
         
         **Example:**
@@ -1038,9 +1123,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             specific_enthalpy = engine.phaseSpecificEnthalpy()
             print(specific_enthalpy)
         )doc")
-        
+
         .def("phaseSpecificVolume", &ChemicalEngine::phaseSpecificVolume,
-            R"doc(
+             R"doc(
         Returns the specific volume of all phases in the system (m³/kg).
         
         **Example:**
@@ -1050,9 +1135,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             specific_volume = engine.phaseSpecificVolume()
             print(specific_volume)
         )doc")
-        
+
         .def("phaseSpecificEntropy", &ChemicalEngine::phaseSpecificEntropy,
-            R"doc(
+             R"doc(
         Returns the specific entropy of all phases in the system (J/K/kg).
         
         **Example:**
@@ -1062,11 +1147,11 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             specific_entropy = engine.phaseSpecificEntropy()
             print(specific_entropy)
         )doc")
-        
+
         //    .def("phaseSpecificInternalEnergy", &ChemicalEngine::phaseSpecificInternalEnergy)
         //    .def("phaseSpecificHelmholtzEnergy", &ChemicalEngine::phaseSpecificHelmholtzEnergy)
         .def("phaseSpecificHeatCapacityConstP", &ChemicalEngine::phaseSpecificHeatCapacityConstP,
-            R"doc(
+             R"doc(
         Returns the specific heat capacity at constant pressure for all phases in the system (J/K/kg).
         
         **Example:**
@@ -1076,10 +1161,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             specific_heat_capacity = engine.phaseSpecificHeatCapacityConstP()
             print(specific_heat_capacity)
         )doc")
-        
+
         //    .def("phaseSpecificHeatCapacityConstV", &ChemicalEngine::phaseSpecificHeatCapacityConstVl)
         .def("phaseDensities", &ChemicalEngine::phaseDensities,
-            R"doc(
+             R"doc(
         Returns the densities of all phases in the system (kg/m³).
         
         **Example:**
@@ -1089,10 +1174,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             densities = engine.phaseDensities()
             print(densities)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseDensity", &ChemicalEngine::phaseDensity, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the density of a specific phase by its index (kg/m³).
         
         :param int index: Index of the phase.
@@ -1104,9 +1189,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             density = engine.phaseDensity(0)
             print(density)
         )doc")
-        
+
         .def("phaseMasses", &ChemicalEngine::phaseMasses,
-            R"doc(
+             R"doc(
         Returns the masses of all phases in the system (kg).
         
         **Example:**
@@ -1116,10 +1201,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             masses = engine.phaseMasses()
             print(masses)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseMass", &ChemicalEngine::phaseMass, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the mass of a specific phase by its index (kg).
         
         :param int index: Index of the phase.
@@ -1131,9 +1216,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             mass = engine.phaseMass(0)
             print(mass)
         )doc")
-        
+
         .def("phaseAmounts", &ChemicalEngine::phaseAmounts,
-            R"doc(
+             R"doc(
         Returns the amounts of all phases in the system (mol).
         
         **Example:**
@@ -1143,10 +1228,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             amounts = engine.phaseAmounts()
             print(amounts)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseAmount", &ChemicalEngine::phaseAmount, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the amount of a specific phase by its index (mol).
         
         :param int index: Index of the phase.
@@ -1158,9 +1243,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             amount = engine.phaseAmount(0)
             print(amount)
         )doc")
-        
+
         .def("phaseVolumes", &ChemicalEngine::phaseVolumes,
-            R"doc(
+             R"doc(
         Returns the volumes of all phases in the system (m³).
         
         **Example:**
@@ -1170,10 +1255,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             volumes = engine.phaseVolumes()
             print(volumes)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseVolume", &ChemicalEngine::phaseVolume, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the volume of a specific phase by its index (m³).
         
         :param int index: Index of the phase.
@@ -1185,9 +1270,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             volume = engine.phaseVolume(0)
             print(volume)
         )doc")
-        
+
         .def("phaseEnthalpies", &ChemicalEngine::phaseEnthalpies,
-            R"doc(
+             R"doc(
         Returns the enthalpies of all phases in the system (J).
         
         **Example:**
@@ -1197,10 +1282,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             enthalpies = engine.phaseEnthalpies()
             print(enthalpies)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseEnthalpy", &ChemicalEngine::phaseEnthalpy, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the enthalpy of a specific phase by its index (J).
         
         :param int index: Index of the phase.
@@ -1212,9 +1297,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             enthalpy = engine.phaseEnthalpy(0)
             print(enthalpy)
         )doc")
-        
+
         .def("phaseEntropies", &ChemicalEngine::phaseEntropies,
-            R"doc(
+             R"doc(
         Returns the entropies of all phases in the system (J/K).
         
         **Example:**
@@ -1224,10 +1309,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             entropies = engine.phaseEntropies()
             print(entropies)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseEntropy", &ChemicalEngine::phaseEntropy, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the entropy of a specific phase by its index (J/K).
         
         :param int index: Index of the phase.
@@ -1239,9 +1324,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             entropy = engine.phaseEntropy(0)
             print(entropy)
         )doc")
-        
+
         .def("phaseHeatCapacitiesConstP", &ChemicalEngine::phaseHeatCapacitiesConstP,
-            R"doc(
+             R"doc(
         Returns the isobaric heat capacities of all phases in the system (J/K).
         
         **Example:**
@@ -1251,10 +1336,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             heat_capacities = engine.phaseHeatCapacitiesConstP()
             print(heat_capacities)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseHeatCapacityConstP", &ChemicalEngine::phaseHeatCapacityConstP, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the isobaric heat capacity of a specific phase by its index (J/K).
         
         :param int index: Index of the phase.
@@ -1266,9 +1351,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             heat_capacity = engine.phaseHeatCapacityConstP(0)
             print(heat_capacity)
         )doc")
-        
+
         .def("phaseSatIndices", &ChemicalEngine::phaseSatIndices,
-            R"doc(
+             R"doc(
         Returns the saturation indices of all phases in the system.
         
         **Example:**
@@ -1278,10 +1363,10 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             sat_indices = engine.phaseSatIndices()
             print(sat_indices)
         )doc",
-            py::return_value_policy::reference_internal)
-        
+             py::return_value_policy::reference_internal)
+
         .def("phaseSatIndex", &ChemicalEngine::phaseSatIndex, py::arg("index"),
-            R"doc(
+             R"doc(
         Returns the saturation index of a specific phase by its index.
         
         :param int index: Index of the phase.
@@ -1293,9 +1378,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             sat_index = engine.phaseSatIndex(0)
             print(sat_index)
         )doc")
-        
+
         .def("systemMass", &ChemicalEngine::systemMass,
-            R"doc(
+             R"doc(
         Returns the total mass of the system (kg).
         
         **Example:**
@@ -1305,9 +1390,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             mass = engine.systemMass()
             print(mass)
         )doc")
-        
+
         .def("systemVolume", &ChemicalEngine::systemVolume,
-            R"doc(
+             R"doc(
         Returns the total volume of the system (m³).
         
         **Example:**
@@ -1317,9 +1402,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             volume = engine.systemVolume()
             print(volume)
         )doc")
-        
+
         .def("systemGibbsEnergy", &ChemicalEngine::systemGibbsEnergy,
-            R"doc(
+             R"doc(
         Returns the total Gibbs energy of the system (J).
         
         **Example:**
@@ -1329,9 +1414,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             gibbs_energy = engine.systemGibbsEnergy()
             print(gibbs_energy)
         )doc")
-        
+
         .def("systemEnthalpy", &ChemicalEngine::systemEnthalpy,
-            R"doc(
+             R"doc(
         Returns the total enthalpy of the system (J).
         
         **Example:**
@@ -1341,9 +1426,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             enthalpy = engine.systemEnthalpy()
             print(enthalpy)
         )doc")
-        
+
         .def("systemEntropy", &ChemicalEngine::systemEntropy,
-            R"doc(
+             R"doc(
         Returns the total entropy of the system (J/K).
         
         **Example:**
@@ -1353,9 +1438,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             entropy = engine.systemEntropy()
             print(entropy)
         )doc")
-        
+
         .def("systemHeatCapacityConstP", &ChemicalEngine::systemHeatCapacityConstP,
-            R"doc(
+             R"doc(
         Returns the total isobaric heat capacity of the system (J/K).
         
         **Example:**
@@ -1365,9 +1450,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             heat_capacity = engine.systemHeatCapacityConstP()
             print(heat_capacity)
         )doc")
-        
+
         .def("ionicStrength", &ChemicalEngine::ionicStrength,
-            R"doc(
+             R"doc(
         Returns the ionic strength of the system (mol/L).
         
         **Example:**
@@ -1377,9 +1462,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             ionic_strength = engine.ionicStrength()
             print(ionic_strength)
         )doc")
-        
+
         .def("pH", &ChemicalEngine::pH,
-            R"doc(
+             R"doc(
         Returns the pH of the system (dimensionless).
         
         **Example:**
@@ -1389,9 +1474,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             ph_value = engine.pH()
             print(ph_value)
         )doc")
-        
+
         .def("pe", &ChemicalEngine::pe,
-            R"doc(
+             R"doc(
         Returns the pe (electron activity) of the system (dimensionless).
         
         **Example:**
@@ -1401,9 +1486,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             pe_value = engine.pe()
             print(pe_value)
         )doc")
-        
+
         .def("Eh", &ChemicalEngine::Eh,
-            R"doc(
+             R"doc(
         Returns the redox potential (Eh) of the system (V).
         
         **Example:**
@@ -1413,12 +1498,12 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             eh_value = engine.Eh()
             print(eh_value)
         )doc")
-        
-        .def("__repr__", [](const ChemicalEngine &self) {
+
+        .def("__repr__", [](const ChemicalEngine &self)
+             {
             std::stringstream ss;
             ss << self;
-            return ss.str();
-        }, R"doc(
+            return ss.str(); }, R"doc(
         Returns a string representation of the ChemicalEngine instance.
         
         **Example:**
@@ -1427,5 +1512,4 @@ Sets the standard molar Gibbs energy for a species (J/mol).
         
             print(engine)
         )doc");
-        
 }
