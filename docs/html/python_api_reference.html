@@ -79,6 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine16setSpeciesAmountENSt6stringEd"><code class="docutils literal notranslate"><span class="pre">setSpeciesAmount()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine16setSpeciesAmountE5Indexd"><code class="docutils literal notranslate"><span class="pre">setSpeciesAmount()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine10setOptionsERK21ChemicalEngineOptions"><code class="docutils literal notranslate"><span class="pre">setOptions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine7optionsEv"><code class="docutils literal notranslate"><span class="pre">options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine12setWarmStartEv"><code class="docutils literal notranslate"><span class="pre">setWarmStart()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine12setColdStartEv"><code class="docutils literal notranslate"><span class="pre">setColdStart()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine20setSpeciesUpperLimitENSt6stringEd"><code class="docutils literal notranslate"><span class="pre">setSpeciesUpperLimit()</span></code></a></li>
@@ -158,6 +159,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS21ChemicalEngineOptionsE"><code class="docutils literal notranslate"><span class="pre">xGEMS::ChemicalEngineOptions</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS21ChemicalEngineOptions9warmstartE"><code class="docutils literal notranslate"><span class="pre">warmstart</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS21ChemicalEngineOptions18print_zero_amountsE"><code class="docutils literal notranslate"><span class="pre">print_zero_amounts</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cpp_api_reference.html#_CPPv45xGEMS"><code class="docutils literal notranslate"><span class="pre">xGEMS</span></code></a><ul>
@@ -232,6 +234,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.numPhases"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.numPhases()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.numSpecies"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.numSpecies()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.numSpeciesInPhase"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.numSpeciesInPhase()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.options"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.options</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.pH"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.pH()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.pe"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.pe()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.phaseAmount"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.phaseAmount()</span></code></a></li>
@@ -267,7 +270,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.reequilibrate"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.setB"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.setB()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.setColdStart"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.setColdStart()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.setOptions"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.setOptions()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.setPT"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.setPT()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.setSpeciesAmount"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.setSpeciesAmount()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine.setSpeciesAmounts"><code class="docutils literal notranslate"><span class="pre">ChemicalEngine.setSpeciesAmounts()</span></code></a></li>
@@ -790,6 +792,29 @@ defined in the chemical system.</p>
 </div>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.options">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">options</span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.options" title="Link to this definition"></a></dt>
+<dd><p>Gets or sets the options used by the ChemicalEngine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ChemicalEngineOptions</p>
+</dd>
+</dl>
+<p><strong>Example (get):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">options</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warmstart:&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="o">.</span><span class="n">warmstart</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Example (set):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">options</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">warmstart</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">print_zero_amounts</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># prints phases and species with zero amounts</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">opts</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.pH">
 <span class="sig-name descname"><span class="pre">pH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.pH" title="Link to this definition"></a></dt>
@@ -1284,23 +1309,6 @@ defined in the chemical system.</p>
 <p>Cold start resets the initial guess to default values for robust convergence.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setColdStart</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.setOptions">
-<span class="sig-name descname"><span class="pre">setOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">xgems.PyxGEMS.ChemicalEngine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0:</span> <span class="pre">xGEMS::ChemicalEngineOptions</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.setOptions" title="Link to this definition"></a></dt>
-<dd><p>Sets the options for the ChemicalEngine.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>options</strong> (<em>ChemicalEngineOptions</em>) – Configuration options for the engine.</p>
-</dd>
-</dl>
-<p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">ChemicalEngineOptions</span><span class="p">()</span>
-<span class="n">options</span><span class="o">.</span><span class="n">warmstart</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">engine</span><span class="o">.</span><span class="n">setOptions</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

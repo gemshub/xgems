@@ -441,6 +441,7 @@ The formula matrix represents the stoichiometric coefficients of elements in spe
             
               opts = engine.options
               opts.warmstart = False
+              opts.print_zero_amounts = True # prints phases and species with zero amounts
               engine.options = opts
             )doc")
 
