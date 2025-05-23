@@ -42,6 +42,29 @@ void exportChemicalEngine(py::module &m)
     auto setSpeciesLowerLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double)>(&ChemicalEngine::setSpeciesLowerLimit);
     auto setSpeciesLowerLimit2 = static_cast<void (ChemicalEngine::*)(Index, double)>(&ChemicalEngine::setSpeciesLowerLimit);
 
+    // Bind ChemicalEngineOptions
+    py::class_<ChemicalEngineOptions>(m, "ChemicalEngineOptions",
+        R"doc(
+Configuration options for the ChemicalEngine.
+
+Attributes:
+    warmstart (bool): Use smart start for faster convergence.
+    print_zero_amounts (bool): Whether to print zero-amount species/phases.
+)doc")
+        .def(py::init<>())
+        .def_readwrite("warmstart", &ChemicalEngineOptions::warmstart,
+            R"doc(
+Whether to use smart start for faster convergence (may be less accurate).
+
+:type: bool
+)doc")
+        .def_readwrite("print_zero_amounts", &ChemicalEngineOptions::print_zero_amounts,
+            R"doc(
+Whether to include zero-amount species/phases in the printed output.
+
+:type: bool
+)doc");
+
     m.def("update_loggers", &update_loggers,
           R"doc(
   Updates logger settings for the ChemicalEngine.
@@ -397,21 +420,29 @@ The formula matrix represents the stoichiometric coefficients of elements in spe
   print(formula_matrix)
 )doc",
              py::return_value_policy::reference_internal)
-
-        .def("setOptions", &ChemicalEngine::setOptions,
-             R"doc(
-Sets the options for the ChemicalEngine.
-
-:param ChemicalEngineOptions options: Configuration options for the engine.
-
-**Example:**
-
-.. code-block:: python
-
-  options = ChemicalEngineOptions()
-  options.warmstart = True
-  engine.setOptions(options)
-)doc")
+             .def_property("options",
+                &ChemicalEngine::options,
+                &ChemicalEngine::setOptions,
+                R"doc(
+            Gets or sets the options used by the ChemicalEngine.
+            
+            :type: ChemicalEngineOptions
+            
+            **Example (get):**
+            
+            .. code-block:: python
+            
+              opts = engine.options
+              print("Warmstart:", opts.warmstart)
+            
+            **Example (set):**
+            
+            .. code-block:: python
+            
+              opts = engine.options
+              opts.warmstart = False
+              engine.options = opts
+            )doc")
 
         .def("setWarmStart", &ChemicalEngine::setWarmStart,
              R"doc(
