@@ -306,7 +306,7 @@ Returns the index of a species by its name.
 
 .. code-block:: python
 
-  index = engine.indexSpecies("H2O")
+  index = engine.indexSpecies("H2O@")
   print(index)
 )doc")
 
@@ -320,7 +320,7 @@ Returns all indices of species matching the specified name.
 
 .. code-block:: python
 
-  indices = engine.indexSpeciesAll("H2O")
+  indices = engine.indexSpeciesAll("H2O@")
   print(indices)
 )doc")
 
@@ -334,7 +334,7 @@ Returns the index of a phase by its name.
 
 .. code-block:: python
 
-  index = engine.indexPhase("aqueous")
+  index = engine.indexPhase("aq_gen")
   print(index)
 )doc")
 
@@ -348,7 +348,7 @@ Returns all indices of phases matching the specified name.
 
 .. code-block:: python
 
-  indices = engine.indexPhaseAll("aqueous")
+  indices = engine.indexPhaseAll("aq_gen")
   print(indices)
 )doc")
 
@@ -482,7 +482,7 @@ Sets the upper limit for a species by its name.
 
 .. code-block:: python
 
-  engine.setSpeciesUpperLimit("H2O", 10.0)
+  engine.setSpeciesUpperLimit("H2O@", 10.0)
 )doc")
 
         .def("setSpeciesUpperLimit", setSpeciesUpperLimit2, py::arg("index"), py::arg("limit"),
@@ -510,7 +510,7 @@ Sets the lower limit for a species by its name.
 
 .. code-block:: python
 
-  engine.setSpeciesLowerLimit("H2O", 0.1)
+  engine.setSpeciesLowerLimit("SiO2", 0.1)
 )doc")
 
         .def("setSpeciesLowerLimit", setSpeciesLowerLimit2, py::arg("index"), py::arg("limit"),
@@ -538,7 +538,7 @@ Sets the amount of a species by its name.
 
 .. code-block:: python
 
-  engine.setSpeciesAmount("H2O", 1.0)
+  engine.setSpeciesAmount("SiO2", 1.0)
 )doc")
 
         .def("setSpeciesAmount", setSpeciesAmount2, py::arg("index"), py::arg("amount"),
@@ -844,7 +844,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             
             .. code-block:: python
             
-                amount = engine.speciesAmount("H2O")
+                amount = engine.speciesAmount("H2O@")
                 print(amount)
             )doc")
 
@@ -1009,31 +1009,35 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
         .def("standardMolarGibbsEnergy", &ChemicalEngine::standardMolarGibbsEnergy,
              R"doc(
-                Returns the standard molar Gibbs energy of all species (J/mol).
+                Returns the standard molar Gibbs energy of a specific species by its index (J/mol).
+                
+                :param int index: Index of the species.
                 
                 **Example:**
                 
                 .. code-block:: python
                 
-                    gibbs_energy = engine.standardMolarGibbsEnergy()
+                    gibbs_energy = engine.standardMolarGibbsEnergy(0)
                     print(gibbs_energy)
                 )doc")
 
         .def("standardMolarEnthalpy", &ChemicalEngine::standardMolarEnthalpy,
              R"doc(
-                Returns the standard molar enthalpy of all species (J/mol).
+                Returns the standard molar enthalpy of a specific species by its index (J/mol).
+                
+                :param int index: Index of the species.
                 
                 **Example:**
                 
                 .. code-block:: python
                 
-                    enthalpy = engine.standardMolarEnthalpy()
+                    enthalpy = engine.standardMolarEnthalpy(0)
                     print(enthalpy)
                 )doc")
 
         .def("standardMolarVolume", &ChemicalEngine::standardMolarVolume,
              R"doc(
-                Returns the standard molar volume of all species (m³/mol).
+                Returns the standard molar volume of a species. (m³/mol).
                 
                 **Example:**
                 
@@ -1045,13 +1049,15 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
         .def("standardMolarEntropy", &ChemicalEngine::standardMolarEntropy,
              R"doc(
-                Returns the standard molar entropy of all species (J/K/mol).
+                Returns the standard molar entropy of a specific species by its index (J/K/mol).
+                
+                :param int index: Index of the species.
                 
                 **Example:**
                 
                 .. code-block:: python
                 
-                    entropy = engine.standardMolarEntropy()
+                    entropy = engine.standardMolarEntropy(1)
                     print(entropy)
                 )doc")
 
@@ -1071,49 +1077,55 @@ Sets the standard molar Gibbs energy for a species (J/mol).
         //   .def("standardMolarHeatCapacityConstV", &ChemicalEngine::standardMolarHeatCapacityConstV)
         .def("phaseMolarGibbsEnergy", &ChemicalEngine::phaseMolarGibbsEnergy,
              R"doc(
-        Returns the molar Gibbs energy of all phases in the system (J/mol).
+        Returns the molar Gibbs energy of a specific phase by its index (J/mol).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            molar_gibbs_energy = engine.phaseMolarGibbsEnergy()
+            molar_gibbs_energy = engine.phaseMolarGibbsEnergy(0)
             print(molar_gibbs_energy)
         )doc")
 
         .def("phaseMolarEnthalpy", &ChemicalEngine::phaseMolarEnthalpy,
              R"doc(
-        Returns the molar enthalpy of all phases in the system (J/mol).
+        Returns the molar enthalpy of a specific phase by its index (J/mol).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            molar_enthalpy = engine.phaseMolarEnthalpy()
+            molar_enthalpy = engine.phaseMolarEnthalpy(0)
             print(molar_enthalpy)
         )doc")
 
         .def("phaseMolarVolume", &ChemicalEngine::phaseMolarVolume,
              R"doc(
-        Returns the molar volume of all phases in the system (m³/mol).
+        Returns the molar volume of a specific phase by its index (m³/mol).
         
         **Example:**
         
         .. code-block:: python
         
-            molar_volume = engine.phaseMolarVolume()
+            molar_volume = engine.phaseMolarVolume(0)
             print(molar_volume)
         )doc")
 
         .def("phaseMolarEntropy", &ChemicalEngine::phaseMolarEntropy,
              R"doc(
-        Returns the molar entropy of all phases in the system (J/K/mol).
+        Returns the molar entropy of a specific phase by its index (J/K/mol).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            molar_entropy = engine.phaseMolarEntropy()
+            molar_entropy = engine.phaseMolarEntropy(0)
             print(molar_entropy)
         )doc")
 
@@ -1134,49 +1146,57 @@ Sets the standard molar Gibbs energy for a species (J/mol).
         //    .def("phaseMolarHeatCapacityConstV", &ChemicalEngine::phaseMolarHeatCapacitiesConstV)
         .def("phaseSpecificGibbsEnergy", &ChemicalEngine::phaseSpecificGibbsEnergy,
              R"doc(
-        Returns the specific Gibbs energy of all phases in the system (J/kg).
+        Returns the specific Gibbs energy of a specific phase by its index (J/kg).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            specific_gibbs_energy = engine.phaseSpecificGibbsEnergy()
+            specific_gibbs_energy = engine.phaseSpecificGibbsEnergy(0)
             print(specific_gibbs_energy)
         )doc")
 
         .def("phaseSpecificEnthalpy", &ChemicalEngine::phaseSpecificEnthalpy,
              R"doc(
-        Returns the specific enthalpy of all phases in the system (J/kg).
+        Returns the specific enthalpy of a specific phase by its index (J/kg).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            specific_enthalpy = engine.phaseSpecificEnthalpy()
+            specific_enthalpy = engine.phaseSpecificEnthalpy(0)
             print(specific_enthalpy)
         )doc")
 
         .def("phaseSpecificVolume", &ChemicalEngine::phaseSpecificVolume,
              R"doc(
-        Returns the specific volume of all phases in the system (m³/kg).
+        Returns the specific volume of a specific phase by its index (m³/kg).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            specific_volume = engine.phaseSpecificVolume()
+            specific_volume = engine.phaseSpecificVolume(0)
             print(specific_volume)
         )doc")
 
         .def("phaseSpecificEntropy", &ChemicalEngine::phaseSpecificEntropy,
              R"doc(
-        Returns the specific entropy of all phases in the system (J/K/kg).
+        Returns the specific entropy of a specific phase by its index (J/K/kg).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            specific_entropy = engine.phaseSpecificEntropy()
+            specific_entropy = engine.phaseSpecificEntropy(0)
             print(specific_entropy)
         )doc")
 
@@ -1184,13 +1204,15 @@ Sets the standard molar Gibbs energy for a species (J/mol).
         //    .def("phaseSpecificHelmholtzEnergy", &ChemicalEngine::phaseSpecificHelmholtzEnergy)
         .def("phaseSpecificHeatCapacityConstP", &ChemicalEngine::phaseSpecificHeatCapacityConstP,
              R"doc(
-        Returns the specific heat capacity at constant pressure for all phases in the system (J/K/kg).
+        Returns the specific heat capacity at constant pressure of a specific phase by its index (J/K/kg).
+        
+        :param int index: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
-            specific_heat_capacity = engine.phaseSpecificHeatCapacityConstP()
+            specific_heat_capacity = engine.phaseSpecificHeatCapacityConstP(0)
             print(specific_heat_capacity)
         )doc")
 

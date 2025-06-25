@@ -335,7 +335,7 @@
 <h1>Python Interface Reference<a class="headerlink" href="#python-interface-reference" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xgems.PyxGEMS.</span></span><span class="sig-name descname"><span class="pre">ChemicalEngine</span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xgems.PyxGEMS.</span></span><span class="sig-name descname"><span class="pre">ChemicalEngine</span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.Eh">
@@ -568,7 +568,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexPhase</span><span class="p">(</span><span class="s2">&quot;aqueous&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexPhase</span><span class="p">(</span><span class="s2">&quot;aq_gen&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -584,7 +584,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexPhaseAll</span><span class="p">(</span><span class="s2">&quot;aqueous&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexPhaseAll</span><span class="p">(</span><span class="s2">&quot;aq_gen&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -616,7 +616,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexSpecies</span><span class="p">(</span><span class="s2">&quot;H2O&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexSpecies</span><span class="p">(</span><span class="s2">&quot;H2O@&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -632,7 +632,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexSpeciesAll</span><span class="p">(</span><span class="s2">&quot;H2O&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">indexSpeciesAll</span><span class="p">(</span><span class="s2">&quot;H2O@&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -794,7 +794,7 @@ defined in the chemical system.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.options">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">options</span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.options" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">options</span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.options" title="Link to this definition"></a></dt>
 <dd><p>Gets or sets the options used by the ChemicalEngine.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -1002,9 +1002,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseMolarEnthalpy">
 <span class="sig-name descname"><span class="pre">phaseMolarEnthalpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseMolarEnthalpy" title="Link to this definition"></a></dt>
-<dd><p>Returns the molar enthalpy of all phases in the system (J/mol).</p>
+<dd><p>Returns the molar enthalpy of a specific phase by its index (J/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_enthalpy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarEnthalpy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_enthalpy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarEnthalpy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">molar_enthalpy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1013,9 +1018,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseMolarEntropy">
 <span class="sig-name descname"><span class="pre">phaseMolarEntropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseMolarEntropy" title="Link to this definition"></a></dt>
-<dd><p>Returns the molar entropy of all phases in the system (J/K/mol).</p>
+<dd><p>Returns the molar entropy of a specific phase by its index (J/K/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_entropy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarEntropy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_entropy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarEntropy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">molar_entropy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1024,9 +1034,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseMolarGibbsEnergy">
 <span class="sig-name descname"><span class="pre">phaseMolarGibbsEnergy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseMolarGibbsEnergy" title="Link to this definition"></a></dt>
-<dd><p>Returns the molar Gibbs energy of all phases in the system (J/mol).</p>
+<dd><p>Returns the molar Gibbs energy of a specific phase by its index (J/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_gibbs_energy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarGibbsEnergy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_gibbs_energy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarGibbsEnergy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">molar_gibbs_energy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1046,9 +1061,9 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseMolarVolume">
 <span class="sig-name descname"><span class="pre">phaseMolarVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseMolarVolume" title="Link to this definition"></a></dt>
-<dd><p>Returns the molar volume of all phases in the system (m³/mol).</p>
+<dd><p>Returns the molar volume of a specific phase by its index (m³/mol).</p>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarVolume</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarVolume</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">molar_volume</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1100,9 +1115,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseSpecificEnthalpy">
 <span class="sig-name descname"><span class="pre">phaseSpecificEnthalpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseSpecificEnthalpy" title="Link to this definition"></a></dt>
-<dd><p>Returns the specific enthalpy of all phases in the system (J/kg).</p>
+<dd><p>Returns the specific enthalpy of a specific phase by its index (J/kg).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_enthalpy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificEnthalpy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_enthalpy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificEnthalpy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">specific_enthalpy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1111,9 +1131,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseSpecificEntropy">
 <span class="sig-name descname"><span class="pre">phaseSpecificEntropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseSpecificEntropy" title="Link to this definition"></a></dt>
-<dd><p>Returns the specific entropy of all phases in the system (J/K/kg).</p>
+<dd><p>Returns the specific entropy of a specific phase by its index (J/K/kg).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_entropy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificEntropy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_entropy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificEntropy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">specific_entropy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1122,9 +1147,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseSpecificGibbsEnergy">
 <span class="sig-name descname"><span class="pre">phaseSpecificGibbsEnergy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseSpecificGibbsEnergy" title="Link to this definition"></a></dt>
-<dd><p>Returns the specific Gibbs energy of all phases in the system (J/kg).</p>
+<dd><p>Returns the specific Gibbs energy of a specific phase by its index (J/kg).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_gibbs_energy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificGibbsEnergy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_gibbs_energy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificGibbsEnergy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">specific_gibbs_energy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1133,9 +1163,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseSpecificHeatCapacityConstP">
 <span class="sig-name descname"><span class="pre">phaseSpecificHeatCapacityConstP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseSpecificHeatCapacityConstP" title="Link to this definition"></a></dt>
-<dd><p>Returns the specific heat capacity at constant pressure for all phases in the system (J/K/kg).</p>
+<dd><p>Returns the specific heat capacity at constant pressure of a specific phase by its index (J/K/kg).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_heat_capacity</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificHeatCapacityConstP</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_heat_capacity</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificHeatCapacityConstP</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">specific_heat_capacity</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1144,9 +1179,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseSpecificVolume">
 <span class="sig-name descname"><span class="pre">phaseSpecificVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseSpecificVolume" title="Link to this definition"></a></dt>
-<dd><p>Returns the specific volume of all phases in the system (m³/kg).</p>
+<dd><p>Returns the specific volume of a specific phase by its index (m³/kg).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificVolume</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">specific_volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseSpecificVolume</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">specific_volume</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1348,7 +1388,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setSpeciesAmount</span><span class="p">(</span><span class="s2">&quot;H2O&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setSpeciesAmount</span><span class="p">(</span><span class="s2">&quot;SiO2&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -1401,7 +1441,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setSpeciesLowerLimit</span><span class="p">(</span><span class="s2">&quot;H2O&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setSpeciesLowerLimit</span><span class="p">(</span><span class="s2">&quot;SiO2&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -1454,7 +1494,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setSpeciesUpperLimit</span><span class="p">(</span><span class="s2">&quot;H2O&quot;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span><span class="o">.</span><span class="n">setSpeciesUpperLimit</span><span class="p">(</span><span class="s2">&quot;H2O@&quot;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -1548,7 +1588,7 @@ defined in the chemical system.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">amount</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">speciesAmount</span><span class="p">(</span><span class="s2">&quot;H2O&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">amount</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">speciesAmount</span><span class="p">(</span><span class="s2">&quot;H2O@&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1647,9 +1687,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.standardMolarEnthalpy">
 <span class="sig-name descname"><span class="pre">standardMolarEnthalpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.standardMolarEnthalpy" title="Link to this definition"></a></dt>
-<dd><p>Returns the standard molar enthalpy of all species (J/mol).</p>
+<dd><p>Returns the standard molar enthalpy of a specific species by its index (J/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the species.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">enthalpy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarEnthalpy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">enthalpy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarEnthalpy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">enthalpy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1658,9 +1703,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.standardMolarEntropy">
 <span class="sig-name descname"><span class="pre">standardMolarEntropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.standardMolarEntropy" title="Link to this definition"></a></dt>
-<dd><p>Returns the standard molar entropy of all species (J/K/mol).</p>
+<dd><p>Returns the standard molar entropy of a specific species by its index (J/K/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the species.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">entropy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarEntropy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">entropy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarEntropy</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1669,9 +1719,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.standardMolarGibbsEnergy">
 <span class="sig-name descname"><span class="pre">standardMolarGibbsEnergy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.standardMolarGibbsEnergy" title="Link to this definition"></a></dt>
-<dd><p>Returns the standard molar Gibbs energy of all species (J/mol).</p>
+<dd><p>Returns the standard molar Gibbs energy of a specific species by its index (J/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the species.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gibbs_energy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarGibbsEnergy</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gibbs_energy</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarGibbsEnergy</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">gibbs_energy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1691,7 +1746,7 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.standardMolarVolume">
 <span class="sig-name descname"><span class="pre">standardMolarVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.standardMolarVolume" title="Link to this definition"></a></dt>
-<dd><p>Returns the standard molar volume of all species (m³/mol).</p>
+<dd><p>Returns the standard molar volume of a species. (m³/mol).</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarVolume</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span>

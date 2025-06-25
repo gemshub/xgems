@@ -363,9 +363,9 @@ namespace xGEMS
      * @return (Index) Index of the species (or total species if not found).
      *
      * @code
-     * // Example: Get the index of water ("H2O").
-     * Index idx = engine.indexSpecies("H2O");
-     * std::cout << "Index of H2O: " << idx << std::endl;
+     * // Example: Get the index of water ("H2O@").
+     * Index idx = engine.indexSpecies("H2O@");
+     * std::cout << "Index of H2O@: " << idx << std::endl;
      * @endcode
      */
     auto indexSpecies(std::string species) const -> Index;
@@ -377,8 +377,8 @@ namespace xGEMS
      * @return (VectorXi) Vector of indices.
      *
      * @code
-     * // Example: Retrieve all indices where the species "H2O" appears.
-     * VectorXi allIndices = engine.indexSpeciesAll("H2O");
+     * // Example: Retrieve all indices where the species "H2O@" appears.
+     * VectorXi allIndices = engine.indexSpeciesAll("H2O@");
      * @endcode
      */
     auto indexSpeciesAll(std::string species) const -> VectorXi;
