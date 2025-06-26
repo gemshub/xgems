@@ -131,6 +131,8 @@ pip install sphinx-autodoc-typehints
 pip install sphinxcontrib-autodoc-doxygen
 ```
 
+(first build and install xgems, then update documentation)
+
 Generate xml and html
 ```bash
 doxygen Doxyfile

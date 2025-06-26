@@ -1037,13 +1037,15 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
         .def("standardMolarVolume", &ChemicalEngine::standardMolarVolume,
              R"doc(
-                Returns the standard molar volume of a species. (m³/mol).
+                Returns the standard molar volume of a species by its index. (m³/mol).
+
+                :param int index: Index of the species.
                 
                 **Example:**
                 
                 .. code-block:: python
                 
-                    volume = engine.standardMolarVolume()
+                    volume = engine.standardMolarVolume(0)
                     print(volume)
                 )doc")
 
@@ -1107,6 +1109,8 @@ Sets the standard molar Gibbs energy for a species (J/mol).
              R"doc(
         Returns the molar volume of a specific phase by its index (m³/mol).
         
+        :param int index: Index of the phase.
+        
         **Example:**
         
         .. code-block:: python
@@ -1133,13 +1137,15 @@ Sets the standard molar Gibbs energy for a species (J/mol).
         //    .def("phaseMolarHelmholtzEnergy", &ChemicalEngine::phaseMolarHelmholtzEnergy)
         .def("phaseMolarHeatCapacityConstP", &ChemicalEngine::phaseMolarHeatCapacityConstP,
              R"doc(
-        Returns the molar heat capacity at constant pressure for all phases in the system (J/K/mol).
+        Returns the molar heat capacity at constant pressure of a specific species by its index (J/K/mol).
+        
+        :param int index: Index of the species.
         
         **Example:**
         
         .. code-block:: python
         
-            molar_heat_capacity = engine.phaseMolarHeatCapacityConstP()
+            molar_heat_capacity = engine.phaseMolarHeatCapacityConstP(0)
             print(molar_heat_capacity)
         )doc")
 

@@ -1050,9 +1050,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseMolarHeatCapacityConstP">
 <span class="sig-name descname"><span class="pre">phaseMolarHeatCapacityConstP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseMolarHeatCapacityConstP" title="Link to this definition"></a></dt>
-<dd><p>Returns the molar heat capacity at constant pressure for all phases in the system (J/K/mol).</p>
+<dd><p>Returns the molar heat capacity at constant pressure of a specific species by its index (J/K/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the species.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_heat_capacity</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarHeatCapacityConstP</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_heat_capacity</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarHeatCapacityConstP</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">molar_heat_capacity</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1062,6 +1067,11 @@ defined in the chemical system.</p>
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.phaseMolarVolume">
 <span class="sig-name descname"><span class="pre">phaseMolarVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.phaseMolarVolume" title="Link to this definition"></a></dt>
 <dd><p>Returns the molar volume of a specific phase by its index (m³/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the phase.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molar_volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">phaseMolarVolume</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">molar_volume</span><span class="p">)</span>
@@ -1746,9 +1756,14 @@ defined in the chemical system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.standardMolarVolume">
 <span class="sig-name descname"><span class="pre">standardMolarVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.standardMolarVolume" title="Link to this definition"></a></dt>
-<dd><p>Returns the standard molar volume of a species. (m³/mol).</p>
+<dd><p>Returns the standard molar volume of a species by its index. (m³/mol).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the species.</p>
+</dd>
+</dl>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarVolume</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">standardMolarVolume</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span>
 </pre></div>
 </div>
