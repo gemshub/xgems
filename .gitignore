@@ -4,6 +4,7 @@ build/
 .cproject
 .directory
 .idea
+.cache
 .pydevproject
 *.pyc
 ~lock.*
@@ -17,4 +18,5 @@ demos/demo.pro.user*
 .vscode/
 CMakeLists.txt.user
 environment.yml
+*log*
 

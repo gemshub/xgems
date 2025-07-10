@@ -1,0 +1,6 @@
+sphinx
+sphinx-rtd-theme
+breathe
+exhale
+sphinx-autodoc-typehints
+sphinxcontrib-autodoc-doxygen

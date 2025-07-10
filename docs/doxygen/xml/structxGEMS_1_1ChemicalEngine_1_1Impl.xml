@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structxGEMS_1_1ChemicalEngine_1_1Impl" kind="struct" language="C++" prot="public">
+    <compoundname>xGEMS::ChemicalEngine::Impl</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a8a3a5be680c9b57de67d3ffa33e51253" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; TNode &gt;</type>
+        <definition>std::unique_ptr&lt;TNode&gt; xGEMS::ChemicalEngine::Impl::node</definition>
+        <argsstring></argsstring>
+        <name>node</name>
+        <briefdescription>
+<para>The TNode instance from <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="45" column="21" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a1b0e61899360d32bcebf28ba5d466d24" prot="public" static="no" mutable="no">
+        <type><ref refid="structxGEMS_1_1ChemicalEngineOptions" kindref="compound">ChemicalEngineOptions</ref></type>
+        <definition>ChemicalEngineOptions xGEMS::ChemicalEngine::Impl::options</definition>
+        <argsstring></argsstring>
+        <name>options</name>
+        <briefdescription>
+<para>The options for <ref refid="classxGEMS_1_1ChemicalEngine" kindref="compound">ChemicalEngine</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="48" column="27" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a867c21ddd6120ae412e592db26071912" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::elemMolMasses</definition>
+        <argsstring></argsstring>
+        <name>elemMolMasses</name>
+        <briefdescription>
+<para>Molar masses of elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="51" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1ab26b532454a939287c721f604f5647e6" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::molMasses</definition>
+        <argsstring></argsstring>
+        <name>molMasses</name>
+        <briefdescription>
+<para>Molar masses of species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="54" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a9857e4e82e7e82d03eaea00a9b1fbcc2" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1a75b82282df7ef9a8f1d9c08d33b27acc" kindref="member">Matrix</ref></type>
+        <definition>Matrix xGEMS::ChemicalEngine::Impl::formula_matrix</definition>
+        <argsstring></argsstring>
+        <name>formula_matrix</name>
+        <briefdescription>
+<para>The formula matrix of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="57" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1acb7378b1e2fda0d6e2f67debbbbc1a2e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double xGEMS::ChemicalEngine::Impl::elapsed_time</definition>
+        <argsstring></argsstring>
+        <name>elapsed_time</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>The elapsed time of the equilibrate method (in units of s) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="60" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a078018841d76ab744f12c7118050158d" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::molFractions</definition>
+        <argsstring></argsstring>
+        <name>molFractions</name>
+        <briefdescription>
+<para>Mole fractions of species in their respective phases. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="63" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1af18f9ad4ce0523fb1834070ab9aa84f3" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::molalities</definition>
+        <argsstring></argsstring>
+        <name>molalities</name>
+        <briefdescription>
+<para>Mole fractions of species in their respective phases. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="66" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1ac2f4945af40d360e829ad894dd34a60e" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::ln_activity_coefficients</definition>
+        <argsstring></argsstring>
+        <name>ln_activity_coefficients</name>
+        <briefdescription>
+<para>Activity coefficients of the species (in natural log scale) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="69" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1acbac3988ae87c136a2ca2b5332dc227c" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::ln_activities</definition>
+        <argsstring></argsstring>
+        <name>ln_activities</name>
+        <briefdescription>
+<para>Activities of the species (in natural log scale) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="72" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a5a744e6f1917f0c950a391f387b4cccb" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::ln_concentrations</definition>
+        <argsstring></argsstring>
+        <name>ln_concentrations</name>
+        <briefdescription>
+<para>Concentrations of the species (in natural log scale) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="75" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a0d234491e38821cd17343c6418d0842b" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::chemPotentials</definition>
+        <argsstring></argsstring>
+        <name>chemPotentials</name>
+        <briefdescription>
+<para>Chemical potentials of the species (in J/mol) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="78" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1ac987201a7840526236d85a5290d92b7f" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phMolarHeatCapacitiesConstP</definition>
+        <argsstring></argsstring>
+        <name>phMolarHeatCapacitiesConstP</name>
+        <briefdescription>
+<para>Standard thermodynamic properties of species at T,P of the node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>molar properties of the phases . </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="92" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a653d6774cf968573ebd7bb4ec4f34774" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phDensities</definition>
+        <argsstring></argsstring>
+        <name>phDensities</name>
+        <briefdescription>
+<para>Densities of the phases (in units of kg/m3). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="95" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a36875f9b20e71171f66bf9966586e51b" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phVolumes</definition>
+        <argsstring></argsstring>
+        <name>phVolumes</name>
+        <briefdescription>
+<para>Volumes of the phases (in units of m3). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="98" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a6987aee44b224434bf8ce85b1b9a9499" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phEnthalpies</definition>
+        <argsstring></argsstring>
+        <name>phEnthalpies</name>
+        <briefdescription>
+<para>Enthalpies of the phases (in units of J). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="101" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1ac8b821676d176c547e726f18212a4562" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phEntropies</definition>
+        <argsstring></argsstring>
+        <name>phEntropies</name>
+        <briefdescription>
+<para>Entropies of the phases (in units of J/K). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="104" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a14d3e991afae4d1c2066f046353a6fb4" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phHeatCapacitiesConstP</definition>
+        <argsstring></argsstring>
+        <name>phHeatCapacitiesConstP</name>
+        <briefdescription>
+<para>Entropies of the phases (in units of J/K). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="107" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a67fbd9da3d8810ad39ee184bb2f24d1b" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phAmounts</definition>
+        <argsstring></argsstring>
+        <name>phAmounts</name>
+        <briefdescription>
+<para>Mole amounts of the phases (in units of mol). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="110" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1ae7f7a9f7c777b3f3bad21925fb3e41d4" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phMasses</definition>
+        <argsstring></argsstring>
+        <name>phMasses</name>
+        <briefdescription>
+<para>Masses of the phases (in units of kg). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="113" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1aed1c0818a3669ef2dfb990cca57e6298" prot="public" static="no" mutable="no">
+        <type><ref refid="namespacexGEMS_1aba119675278404afcba5e52c247014b4" kindref="member">Vector</ref></type>
+        <definition>Vector xGEMS::ChemicalEngine::Impl::phSatIndices</definition>
+        <argsstring></argsstring>
+        <name>phSatIndices</name>
+        <briefdescription>
+<para>Saturation (stability) indexes of phases (in log10 scale). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="116" column="12" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a3fe5a2db285daeeb6c8d12a1af10584a" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string xGEMS::ChemicalEngine::Impl::dbr_json</definition>
+        <argsstring></argsstring>
+        <name>dbr_json</name>
+        <briefdescription>
+<para>Json string with I/O node (DBR) object in JSON format. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="119" column="17" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a1e8d7cdda8b7234896e5a726d765b4f0" prot="public" static="no" mutable="no">
+        <type>GEMS3KGenerator::IOModes</type>
+        <definition>GEMS3KGenerator::IOModes xGEMS::ChemicalEngine::Impl::io_mode</definition>
+        <argsstring></argsstring>
+        <name>io_mode</name>
+        <initializer>= GEMS3KGenerator::f_key_value</initializer>
+        <briefdescription>
+<para>Write IPM, DCH and DBR files (in binary, txt or json mode) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="122" column="30" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structxGEMS_1_1ChemicalEngine_1_1Impl_1a3b7cd357752b090ee65a6a13c738ac8e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>xGEMS::ChemicalEngine::Impl::Impl</definition>
+        <argsstring>()</argsstring>
+        <name>Impl</name>
+        <briefdescription>
+<para>Construct a default <ref refid="structxGEMS_1_1ChemicalEngine_1_1Impl" kindref="compound">Impl</ref> instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="xGEMS/ChemicalEngine.cpp" line="126" column="5" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="126" bodyend="127"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>xGEMS::ChemicalEngine::Impl</label>
+        <link refid="structxGEMS_1_1ChemicalEngine_1_1Impl"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>options</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>xGEMS::ChemicalEngineOptions</label>
+        <link refid="structxGEMS_1_1ChemicalEngineOptions"/>
+      </node>
+    </collaborationgraph>
+    <location file="xGEMS/ChemicalEngine.cpp" line="42" column="1" bodyfile="xGEMS/ChemicalEngine.cpp" bodystart="43" bodyend="128"/>
+    <listofallmembers>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a0d234491e38821cd17343c6418d0842b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>chemPotentials</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a3fe5a2db285daeeb6c8d12a1af10584a" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>dbr_json</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1acb7378b1e2fda0d6e2f67debbbbc1a2e" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>elapsed_time</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a867c21ddd6120ae412e592db26071912" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>elemMolMasses</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a9857e4e82e7e82d03eaea00a9b1fbcc2" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>formula_matrix</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a3b7cd357752b090ee65a6a13c738ac8e" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>Impl</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a1e8d7cdda8b7234896e5a726d765b4f0" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>io_mode</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1acbac3988ae87c136a2ca2b5332dc227c" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>ln_activities</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1ac2f4945af40d360e829ad894dd34a60e" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>ln_activity_coefficients</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a5a744e6f1917f0c950a391f387b4cccb" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>ln_concentrations</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1af18f9ad4ce0523fb1834070ab9aa84f3" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>molalities</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a078018841d76ab744f12c7118050158d" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>molFractions</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1ab26b532454a939287c721f604f5647e6" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>molMasses</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a8a3a5be680c9b57de67d3ffa33e51253" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>node</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a1b0e61899360d32bcebf28ba5d466d24" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>options</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a67fbd9da3d8810ad39ee184bb2f24d1b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phAmounts</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a653d6774cf968573ebd7bb4ec4f34774" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phDensities</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a6987aee44b224434bf8ce85b1b9a9499" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phEnthalpies</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1ac8b821676d176c547e726f18212a4562" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phEntropies</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a14d3e991afae4d1c2066f046353a6fb4" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phHeatCapacitiesConstP</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1ae7f7a9f7c777b3f3bad21925fb3e41d4" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phMasses</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1ac987201a7840526236d85a5290d92b7f" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phMolarHeatCapacitiesConstP</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1aed1c0818a3669ef2dfb990cca57e6298" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phSatIndices</name></member>
+      <member refid="structxGEMS_1_1ChemicalEngine_1_1Impl_1a36875f9b20e71171f66bf9966586e51b" prot="public" virt="non-virtual"><scope>xGEMS::ChemicalEngine::Impl</scope><name>phVolumes</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

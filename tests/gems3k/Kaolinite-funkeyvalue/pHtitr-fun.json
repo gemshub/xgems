@@ -1,0 +1,4197 @@
+{
+    "datasources": [
+        "gems.web.psi.ch"
+    ],
+    "date": "13/05/2025 16:43",
+    "elements": [
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    26.98154067993164
+                ]
+            },
+            "class_": {
+                "0": "ELEMENT"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    28.299999237060547
+                ]
+            },
+            "symbol": "Al"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    35.452999114990234
+                ]
+            },
+            "class_": {
+                "0": "ELEMENT"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    111.54049682617188
+                ]
+            },
+            "symbol": "Cl"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    1.007949948310852
+                ]
+            },
+            "class_": {
+                "0": "ELEMENT"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    65.33999633789062
+                ]
+            },
+            "symbol": "H"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    22.98979949951172
+                ]
+            },
+            "class_": {
+                "0": "ELEMENT"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    51.29999923706055
+                ]
+            },
+            "symbol": "Na"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    14.006699562072754
+                ]
+            },
+            "class_": {
+                "2": "LIGAND"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    95.80449676513672
+                ]
+            },
+            "symbol": "Nit"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    15.99940013885498
+                ]
+            },
+            "class_": {
+                "0": "ELEMENT"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    102.57599639892578
+                ]
+            },
+            "symbol": "O"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    28.085500717163086
+                ]
+            },
+            "class_": {
+                "0": "ELEMENT"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    18.809999465942383
+                ]
+            },
+            "symbol": "Si"
+        },
+        {
+            "atomic_mass": {
+                "name": "M0i",
+                "values": [
+                    0
+                ]
+            },
+            "class_": {
+                "4": "CHARGE"
+            },
+            "datasources": [
+                "GEMS3gui"
+            ],
+            "entropy": {
+                "name": "S0i",
+                "values": [
+                    -65.33999633789062
+                ]
+            },
+            "symbol": "Zz"
+        }
+    ],
+    "reactions": [
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerP": 0,
+                        "lowerT": 273.15,
+                        "upperP": 100000000,
+                        "upperT": 423.15
+                    },
+                    "logk_ft_coeffs": {
+                        "values": [
+                            0,
+                            0,
+                            1073.3399658203125,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "logk_fpt_function"
+                    }
+                },
+                {
+                    "method": {
+                        "7": "logk_3_term_extrap"
+                    }
+                },
+                {
+                    "method": {
+                        "13": "dr_volume_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "datasources ": [
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "drsm_enthalpy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -20548.95131136193
+                ]
+            },
+            "drsm_entropy": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "drsm_gibbs_energy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -20548.95131136193
+                ]
+            },
+            "drsm_heat_capacity_p": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "drsm_volume": {
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "logKr": {
+                "errors": [
+                    0
+                ],
+                "values": [
+                    3.6
+                ]
+            },
+            "reactants": [
+                {
+                    "coefficient": -1,
+                    "symbol": "Al(OH)4-"
+                },
+                {
+                    "coefficient": -1,
+                    "symbol": "SiO2@"
+                },
+                {
+                    "coefficient": 1,
+                    "symbol": "AlSiO4-"
+                }
+            ],
+            "symbol": "AlSiO4-"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerP": 0,
+                        "lowerT": 273.15,
+                        "upperP": 100000000,
+                        "upperT": 423.15
+                    },
+                    "logk_ft_coeffs": {
+                        "values": [
+                            0,
+                            0,
+                            2206.31005859375,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "logk_fpt_function"
+                    }
+                },
+                {
+                    "method": {
+                        "7": "logk_3_term_extrap"
+                    }
+                },
+                {
+                    "method": {
+                        "13": "dr_volume_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "datasources ": [
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "drsm_enthalpy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -42239.51102891063
+                ]
+            },
+            "drsm_entropy": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "drsm_gibbs_energy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -42239.51102891063
+                ]
+            },
+            "drsm_heat_capacity_p": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "drsm_volume": {
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "logKr": {
+                "errors": [
+                    0
+                ],
+                "values": [
+                    7.4
+                ]
+            },
+            "reactants": [
+                {
+                    "coefficient": -1,
+                    "symbol": "Al+3"
+                },
+                {
+                    "coefficient": -1,
+                    "symbol": "HSiO3-"
+                },
+                {
+                    "coefficient": 1,
+                    "symbol": "HAlSiO3+2"
+                }
+            ],
+            "symbol": "HAlSiO3+2"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerP": 0,
+                        "lowerT": 273.15,
+                        "upperP": 100000000,
+                        "upperT": 423.15
+                    },
+                    "logk_ft_coeffs": {
+                        "values": [
+                            -10.000643730163574,
+                            0,
+                            -3917.499267578125,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "logk_fpt_function"
+                    }
+                },
+                {
+                    "method": {
+                        "7": "logk_3_term_extrap"
+                    }
+                },
+                {
+                    "method": {
+                        "13": "dr_volume_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "datasources ": [
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "drsm_enthalpy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    75000
+                ]
+            },
+            "drsm_entropy": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -191.4609832763672
+                ]
+            },
+            "drsm_gibbs_energy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    132084.09259580972
+                ]
+            },
+            "drsm_heat_capacity_p": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "drsm_volume": {
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "logKr": {
+                "errors": [
+                    0
+                ],
+                "values": [
+                    -23.14
+                ]
+            },
+            "reactants": [
+                {
+                    "coefficient": -1,
+                    "symbol": "SiO2@"
+                },
+                {
+                    "coefficient": 2,
+                    "symbol": "H+"
+                },
+                {
+                    "coefficient": -1,
+                    "symbol": "H2O@"
+                },
+                {
+                    "coefficient": 1,
+                    "symbol": "SiO3-2"
+                }
+            ],
+            "symbol": "SiO3-2"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerP": 0,
+                        "lowerT": 273.15,
+                        "upperP": 100000000,
+                        "upperT": 423.15
+                    },
+                    "logk_ft_coeffs": {
+                        "values": [
+                            0.1572563797235489,
+                            0,
+                            762.2930908203125,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "logk_fpt_function"
+                    }
+                },
+                {
+                    "method": {
+                        "7": "logk_3_term_extrap"
+                    }
+                },
+                {
+                    "method": {
+                        "13": "dr_volume_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "datasources ": [
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "drsm_enthalpy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -14594
+                ]
+            },
+            "drsm_entropy": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    3.010652542114258
+                ]
+            },
+            "drsm_gibbs_energy": {
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -15491.62607195452
+                ]
+            },
+            "drsm_heat_capacity_p": {
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "drsm_volume": {
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "logKr": {
+                "errors": [
+                    0.076
+                ],
+                "values": [
+                    2.714
+                ]
+            },
+            "reactants": [
+                {
+                    "coefficient": -1,
+                    "symbol": "SiO2@"
+                },
+                {
+                    "coefficient": 1,
+                    "symbol": "SiO2(am)"
+                }
+            ],
+            "symbol": "SiO2(am)"
+        }
+    ],
+    "substances": [
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.20468999445438385,
+                            -278.1300048828125,
+                            6.837600231170654,
+                            -26639,
+                            29.792299270629883,
+                            -3457,
+                            172470,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "Al(OH)+2",
+            "formula_charge": 2,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    43.9888916015625
+                ]
+            },
+            "name": "Al(OH)+2 hydroxocomplex",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -767272.3317403793
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.699999988079071
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -184.93299865722656
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -692595
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    55.97101593017578
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    -0.2727511525154114
+                ]
+            },
+            "symbol": "Al(OH)+2"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.2170500010251999,
+                            -248.11000061035156,
+                            6.724100112915039,
+                            -26763,
+                            -2.598299980163574,
+                            -91455,
+                            95700,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "AlO+",
+            "formula_charge": 1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    42.98094177246094
+                ]
+            },
+            "name": "Al(OH)2+ hydroxocomplex (nonconv. AlO+ stoich.)",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -713640.9680822373
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.699999988079071
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -112.96800231933594
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -660420
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -125.10720825195312
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0.030733641237020493
+                ]
+            },
+            "symbol": "Al(OH)2+"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.3533799946308136,
+                            84.8499984741211,
+                            5.4131999015808105,
+                            -28140,
+                            -23.412900924682617,
+                            -132195,
+                            -3000,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "HAlO2@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    59.9882926940918
+                ]
+            },
+            "name": "Al(OH3)@ hydroxocomplex (nonconv. HAlO2 stoich.)",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -947124.533310604
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.699999988079071
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    20.920000076293945
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -864277
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -209.21218872070312
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    1.3009445667266846
+                ]
+            },
+            "symbol": "Al(OH)3@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.37220999598503113,
+                            399.5400085449219,
+                            -1.5879000425338745,
+                            -29441,
+                            15.239100456237793,
+                            -54585,
+                            174180,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "AlO2-",
+            "formula_charge": -1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    58.98033905029297
+                ]
+            },
+            "name": "Al(OH)4- hydroxocomplex (nonconv. AlO2- stoich.)",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -925570.4955810547
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.699999988079071
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -30.208499908447266
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -827479
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -49.04192352294922
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0.9467352628707886
+                ]
+            },
+            "symbol": "Al(OH)4-"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            -0.338019996881485,
+                            -1700.7099609375,
+                            14.518500328063965,
+                            -20758,
+                            10.699999809265137,
+                            -80600,
+                            275300,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                ""
+            ],
+            "formula": "Al+3",
+            "formula_charge": 3,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    26.98154067993164
+                ]
+            },
+            "name": "Al+3 ion",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -530629.9510850906
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.699999988079071
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -325.09698486328125
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -483708
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -128.69635009765625
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    -4.524287223815918
+                ]
+            },
+            "symbol": "Al+3"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.22337999939918518,
+                            -232.8699951171875,
+                            6.668300151824951,
+                            -26826,
+                            4.014599800109863,
+                            -36863,
+                            -3000,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "NaOH@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    39.99715042114258
+                ]
+            },
+            "name": "Na(OH)@    hydroxocomplex",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -470135.39063640597
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    1
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    44.768798828125
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -418123.96
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -13.401419639587402
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0.35092559456825256
+                ]
+            },
+            "symbol": "Na(OH)@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.18389999866485596,
+                            -228.5,
+                            3.25600004196167,
+                            -27260,
+                            18.18000030517578,
+                            -29810,
+                            33060,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:"
+            ],
+            "formula": "Na+",
+            "formula_charge": 1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    22.98979949951172
+                ]
+            },
+            "name": "Na+ ion",
+            "sm_enthalpy": {
+                "errors": [
+                    100
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -240280.45081806183
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.15000000596046448
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    58.408599853515625
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    100
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -261881
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    38.118228912353516
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    -0.12079634517431259
+                ]
+            },
+            "symbol": "Na+"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.2973499894142151,
+                            -51.810001373291016,
+                            5.946700096130371,
+                            -27575,
+                            8.148896217346191,
+                            -73123,
+                            155110,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Sverjensky_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "HSiO3-",
+            "formula_charge": -1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    77.0916519165039
+                ]
+            },
+            "name": "HSiO3-  ion SiO(OH)3-",
+            "sm_enthalpy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1144680.253113327
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    1
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    20.920000076293945
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1014598.01
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -87.199951171875
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0.45258674025535583
+                ]
+            },
+            "symbol": "HSiO3-"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.1899999976158142,
+                            170,
+                            20,
+                            -27000,
+                            29.100000381469727,
+                            -512000,
+                            12910,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:"
+            ],
+            "formula": "SiO2@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    60.08430099487305
+                ]
+            },
+            "name": "SiO2@  (nonconv. = H4SiO4)",
+            "sm_enthalpy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -877730.8962489128
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    1
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    75.31199645996094
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -833410.9
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -318.48419189453125
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    1.606325387954712
+                ]
+            },
+            "symbol": "SiO2@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.8141099810600281,
+                            1556.5400390625,
+                            -7.807700157165527,
+                            -34224,
+                            16.450000762939453,
+                            -65700,
+                            96990,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:"
+            ],
+            "formula": "Cl|7|O4-",
+            "formula_charge": -1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    99.45059967041016
+                ]
+            },
+            "name": "ClO4-  perchlorate ion (not in original NAGRA/PSI TDB)",
+            "sm_enthalpy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -129327
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    1
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    182.00399780273438
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -8535.36
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -24.003158569335938
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    4.390420436859131
+                ]
+            },
+            "symbol": "ClO4-"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.4031999111175537,
+                            480.09991455078125,
+                            5.563000202178955,
+                            -28470,
+                            -4.400000095367432,
+                            -57140,
+                            145600,
+                            1.809999942779541
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:"
+            ],
+            "formula": "Cl-",
+            "formula_charge": -1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    35.452999114990234
+                ]
+            },
+            "name": "Cl-   ion",
+            "sm_enthalpy": {
+                "errors": [
+                    600
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -167111.06723136903
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.4000000059604645
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    56.73503875732422
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    400
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -131289.7
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -122.49036407470703
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    1.7340893745422363
+                ]
+            },
+            "symbol": "Cl-"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.6204599738121033,
+                            736.8499755859375,
+                            2.8538999557495117,
+                            -30836,
+                            35.791099548339844,
+                            83725.9765625,
+                            -34680,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "Nit2@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    28.013399124145508
+                ]
+            },
+            "name": "N2@  dissolved gas (disconnected from N pool)",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -10367.856988677975
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    2
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    95.8135986328125
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    18193.54
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    234.1553192138672
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    3.340691328048706
+                ]
+            },
+            "symbol": "Nit2@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.5142698884010315,
+                            477.5799865722656,
+                            3.8729000091552734,
+                            -29764,
+                            27.625099182128906,
+                            50930,
+                            -20900,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "H|0|2@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    2.015899896621704
+                ]
+            },
+            "name": "H2@  dissolved gas",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -4018.117159767149
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    2
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    57.739200592041016
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    17729.18
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    166.85211181640625
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    2.5264358520507812
+                ]
+            },
+            "symbol": "H2@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.5788900256156921,
+                            635.3599243164062,
+                            3.2527999877929688,
+                            -30417,
+                            35.35300064086914,
+                            83725.9765625,
+                            -39430,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "O|0|2@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    31.99880027770996
+                ]
+            },
+            "name": "O2@  dissolved gas",
+            "sm_enthalpy": {
+                "errors": [
+                    2000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -12236.506517028805
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    2
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    108.95140075683594
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    16445.7
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    234.1328887939453
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    3.050088882446289
+                ]
+            },
+            "symbol": "O2@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0.12526999413967133,
+                            7.380000114440918,
+                            1.8423000574111938,
+                            -27821,
+                            4.150000095367432,
+                            -103460,
+                            172460,
+                            1.399999976158142
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "OH-",
+            "formula_charge": -1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    17.00735092163086
+                ]
+            },
+            "name": "OH-  hydroxyl ion",
+            "sm_enthalpy": {
+                "errors": [
+                    40
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -230009.16958241462
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.20000000298023224
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -10.711039543151855
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    72
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -157270.4
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -136.3380889892578
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    -0.4707843065261841
+                ]
+            },
+            "symbol": "OH-"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "eos_hkf_coeffs": {
+                        "names": [
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "c1",
+                            "c2",
+                            "wref"
+                        ],
+                        "units": [
+                            "cal/(mol*bar)",
+                            "cal/mol",
+                            "(cal*K)/(mol*bar)",
+                            "(cal*K)/mol",
+                            "cal/(mol*K)",
+                            "(cal*K)/mol",
+                            "cal/mol"
+                        ],
+                        "values": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "2": "solute_hkf88_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "datasources": [
+                "Shock_ea:1997:pap:",
+                "Kulik:1998:rep:"
+            ],
+            "formula": "H+",
+            "formula_charge": 1,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    1.0079400539398193
+                ]
+            },
+            "name": "H+  proton",
+            "sm_enthalpy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "symbol": "H+"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "method": {
+                        "26": "water_diel_jnort91_gems"
+                    }
+                },
+                {
+                    "m_lambda_trans_props": {
+                        "values": [
+                            1.1754943508222875e-38,
+                            1.1754943508222875e-38
+                        ]
+                    },
+                    "method": {
+                        "29": "water_eos_hgk84_lvs83_gems"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "3": "SC_AQSOLVENT"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:"
+            ],
+            "formula": "H2O@",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    18.015300750732422
+                ]
+            },
+            "name": "Water HGK",
+            "sm_enthalpy": {
+                "errors": [
+                    200
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -285881
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.10000000149011612
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    69.9229965209961
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    100
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -237183
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    75.36052703857422
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    1.8068397045135498
+                ]
+            },
+            "symbol": "H2O@"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerT": 273.15,
+                        "range": true,
+                        "upperT": 1273.15
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            27.279699325561523,
+                            0.003263999940827489,
+                            50208,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "method": {
+                        "40": "mv_pvnrt"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "0": "AS_GAS"
+            },
+            "class_": {
+                "1": "SC_GASFLUID"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "H|0|2",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    2.0158801078796387
+                ]
+            },
+            "name": "Hydrogen gas",
+            "sm_enthalpy": {
+                "errors": [
+                    418.4
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.41839998960494995
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    130.68299865722656
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    418.4
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    28.817672729492188
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    2478.942138671875
+                ]
+            },
+            "symbol": "H2"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerT": 273.15,
+                        "range": true,
+                        "upperT": 1273.15
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            28.57670021057129,
+                            0.003766000038012862,
+                            -50208,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "method": {
+                        "40": "mv_pvnrt"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "0": "AS_GAS"
+            },
+            "class_": {
+                "1": "SC_GASFLUID"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "Nit|0|2",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    28.013399124145508
+                ]
+            },
+            "name": "Atmospheric nitrogen gas (decoupled N2 and N2,aq)",
+            "sm_enthalpy": {
+                "errors": [
+                    418.4
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.41839998960494995
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    191.61000061035156
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    418.4
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    29.134721755981445
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    2478.942138671875
+                ]
+            },
+            "symbol": "N2-atm"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerT": 273.15,
+                        "range": true,
+                        "upperT": 1273.15
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            29.957399368286133,
+                            0.004184000194072723,
+                            -167360,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "method": {
+                        "40": "mv_pvnrt"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "0": "AS_GAS"
+            },
+            "class_": {
+                "1": "SC_GASFLUID"
+            },
+            "datasources": [
+                "SUPCRT:1992:prog:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "O|0|2",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    31.99880027770996
+                ]
+            },
+            "name": "Oxygen gas",
+            "sm_enthalpy": {
+                "errors": [
+                    418.4
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.41839998960494995
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    205.13699340820312
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    418.4
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    0
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    29.322154998779297
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    2478.942138671875
+                ]
+            },
+            "symbol": "O2"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerT": 273.15,
+                        "range": true,
+                        "upperT": 600.0000061035156
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            54.6973991394043,
+                            0.17027199268341064,
+                            -0.00012199999764561653,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "method": {
+                        "34": "mv_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "3": "AS_CRYSTAL"
+            },
+            "class_": {
+                "0": "SC_COMPONENT"
+            },
+            "datasources": [
+                "Pokrovskii&Helgeson:1995:pap:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "Al(OH)3",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    78.00359344482422
+                ]
+            },
+            "name": "Gibbsite (crystalline)",
+            "sm_enthalpy": {
+                "errors": [
+                    1200
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1289207.6764688492
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.20000000298023224
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    68.45020294189453
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1220
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1150986
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    105.46399688720703
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    3.1956000328063965
+                ]
+            },
+            "symbol": "gibbsite"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerT": 273.15,
+                        "range": true,
+                        "upperT": 800.15
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            1430.300048828125,
+                            -0.7885000109672546,
+                            8334000,
+                            -18520,
+                            0.0003034000110346824,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "method": {
+                        "34": "mv_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "3": "AS_CRYSTAL"
+            },
+            "class_": {
+                "0": "SC_COMPONENT"
+            },
+            "datasources": [
+                "Robie&Hemingway:1995:ref:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "Al2Si2O5(OH)4",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    258.1604919433594
+                ]
+            },
+            "name": "Kaolinite",
+            "sm_enthalpy": {
+                "errors": [
+                    1500
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -4099227.7236159896
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.5
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    200.39999389648438
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1500
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -3777713.51
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    243.3668670654297
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    9.934000015258789
+                ]
+            },
+            "symbol": "kaolinite"
+        },
+        {
+            "Pst": 100000,
+            "TPMethods": [
+                {
+                    "limitsTP": {
+                        "lowerT": 273.15,
+                        "range": true,
+                        "upperT": 843.9999755859375
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            81.1449966430664,
+                            0.018279999494552612,
+                            -181000,
+                            -698.5,
+                            5.4060001275502145e-06,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "m_phase_trans_props": {
+                        "names": [
+                            "Temperature",
+                            "dS",
+                            "dH",
+                            "dV",
+                            "dT/dP"
+                        ],
+                        "units": [
+                            "K",
+                            "J/(mol*K)",
+                            "J/mol",
+                            "J/bar",
+                            "K/bar"
+                        ],
+                        "values": [
+                            570.8499755859375,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "limitsTP": {
+                        "lowerT": 843.9999755859375,
+                        "range": true,
+                        "upperT": 1699.9999755859376
+                    },
+                    "m_heat_capacity_ft_coeffs": {
+                        "names": [
+                            "a0",
+                            "a1",
+                            "a2",
+                            "a3",
+                            "a4",
+                            "a5",
+                            "a6",
+                            "a7",
+                            "a8",
+                            "a9",
+                            "a10"
+                        ],
+                        "units": [
+                            "J/(mol*K)",
+                            "J/(mol*K^2)",
+                            "(J*K)/mol",
+                            "J/(mol*K^0.5)",
+                            "J/(mol*K^3)",
+                            "J/(mol*K^4)",
+                            "J/(mol*K^5)",
+                            "(J*K^2)/mol",
+                            "J/mol",
+                            "J/(mol*K^1.5)",
+                            "J/(mol*K)"
+                        ],
+                        "values": [
+                            57.959999084472656,
+                            0.009329999797046185,
+                            1835000,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "method": {
+                        "0": "cp_ft_equation"
+                    }
+                },
+                {
+                    "method": {
+                        "34": "mv_constant"
+                    }
+                }
+            ],
+            "Tst": 298.15,
+            "aggregate_state": {
+                "3": "AS_CRYSTAL"
+            },
+            "class_": {
+                "0": "SC_COMPONENT"
+            },
+            "datasources": [
+                "Robie&Hemingway:1995:ref:",
+                "AUG20_GEMS:2001:dat:"
+            ],
+            "formula": "SiO2",
+            "formula_charge": 0,
+            "m_compressibility": {
+                "units": [
+                    "1e-05/K"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "m_expansivity": {
+                "units": [
+                    "kbar"
+                ],
+                "values": [
+                    1.1754943508222875e-38
+                ]
+            },
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    60.08430099487305
+                ]
+            },
+            "name": "Quartz alpha/beta",
+            "sm_enthalpy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -909194.2629934502
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0.10000000149011612
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    41.5
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    1000
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -854793.22
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    44.58675003051758
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    2.2690000534057617
+                ]
+            },
+            "symbol": "quartz"
+        },
+        {
+            "Pst": 100000,
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "formula": "AlSiO4-",
+            "formula_charge": -1,
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    119.06464385986328
+                ]
+            },
+            "name": "_rdc_AlSiO4- complex Al(OH)6SiO-",
+            "reaction": "AlSiO4-",
+            "sm_enthalpy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1823850
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    45.10349655151367
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1681439
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -367.526123046875
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    2.553060531616211
+                ]
+            },
+            "symbol": "AlSiO4-"
+        },
+        {
+            "Pst": 100000,
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "formula": "HAlSiO3+2",
+            "formula_charge": 2,
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    104.07318878173828
+                ]
+            },
+            "name": "_rdc_HAlSiO3+2 complex AlSiO(OH)3+2",
+            "reaction": "HAlSiO3+2",
+            "sm_enthalpy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1717550
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -304.1769714355469
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1540546
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -215.89630126953125
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    -4.071700572967529
+                ]
+            },
+            "symbol": "HAlSiO3+2"
+        },
+        {
+            "Pst": 100000,
+            "Tst": 298.15,
+            "aggregate_state": {
+                "4": "AS_AQUEOUS"
+            },
+            "class_": {
+                "2": "SC_AQSOLUTE"
+            },
+            "formula": "SiO3-2",
+            "formula_charge": -2,
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    76.08370208740234
+                ]
+            },
+            "name": "_rdc_SiO3-2 complex SiO2(OH)2-2",
+            "reaction": "SiO3-2",
+            "sm_enthalpy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -1088611.896248913
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -46.225990295410156
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -938509.8074041902
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -243.1236572265625
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    3.4131650924682617
+                ]
+            },
+            "symbol": "SiO3-2"
+        },
+        {
+            "Pst": 100000,
+            "Tst": 298.15,
+            "aggregate_state": {
+                "3": "AS_CRYSTAL"
+            },
+            "class_": {
+                "0": "SC_COMPONENT"
+            },
+            "formula": "SiO2",
+            "formula_charge": 0,
+            "mass_per_mole": {
+                "units": [
+                    "g/mol"
+                ],
+                "values": [
+                    60.08430099487305
+                ]
+            },
+            "name": "_rdc_SiO2(am)",
+            "reaction": "SiO2(am)",
+            "sm_enthalpy": {
+                "errors": [
+                    500
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -892324.8962489128
+                ]
+            },
+            "sm_entropy_abs": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    78.32264709472656
+                ]
+            },
+            "sm_gibbs_energy": {
+                "errors": [
+                    500
+                ],
+                "units": [
+                    "J/mol"
+                ],
+                "values": [
+                    -848902.5260719545
+                ]
+            },
+            "sm_heat_capacity_p": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/(mol*K)"
+                ],
+                "values": [
+                    -318.48419189453125
+                ]
+            },
+            "sm_volume": {
+                "errors": [
+                    0
+                ],
+                "units": [
+                    "J/bar"
+                ],
+                "values": [
+                    1.606325387954712
+                ]
+            },
+            "symbol": "SiO2(am)"
+        }
+    ],
+    "thermodataset": [
+        "GEMS3gui"
+    ]
+}
+

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_f087b5b50ae4e11c2d7165aff8e18a19" kind="dir">
+    <compoundname>xGEMS</compoundname>
+    <innerfile refid="ChemicalEngine_8cpp">ChemicalEngine.cpp</innerfile>
+    <innerfile refid="ChemicalEngine_8hpp">ChemicalEngine.hpp</innerfile>
+    <innerfile refid="Eigen_8hpp">Eigen.hpp</innerfile>
+    <innerfile refid="Index_8hpp">Index.hpp</innerfile>
+    <innerfile refid="Interface_8hpp">Interface.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="xGEMS/"/>
+  </compounddef>
+</doxygen>

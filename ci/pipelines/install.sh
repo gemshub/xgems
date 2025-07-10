@@ -25,6 +25,7 @@ cmake \
     -DCMAKE_INSTALL_LIBDIR=lib \
     ..
 make install
+ctest --test-dir tests
 if [ $? -eq 0 ]
 then
     echo "The make step ran OK"
