@@ -1369,7 +1369,7 @@ namespace xGEMS
         return out;
     }
 
-    std::string ChemicalEngine::aqueousPhaseName() const
+    auto ChemicalEngine::aqueousPhaseName() const -> std::string
     {
         for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
             if( pimpl->node->pCSD()->ccPH[ii] == 'a' ) {
@@ -1379,7 +1379,7 @@ namespace xGEMS
         return {};
     }
 
-    std::string ChemicalEngine::gasPhaseName() const
+    auto ChemicalEngine::gasPhaseName() const -> std::string
     {
         for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
             if( pimpl->node->pCSD()->ccPH[ii] == 'g' ||
@@ -1390,4 +1390,5 @@ namespace xGEMS
         }
         return {};
     }
+
 } // namespace xGEMS

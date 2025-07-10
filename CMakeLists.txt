@@ -24,7 +24,7 @@ include(CondaAware)
 # Set the version of the project
 set(XGEMS_VERSION_MAJOR "1")
 set(XGEMS_VERSION_MINOR "1")
-set(XGEMS_VERSION_MICRO "0")
+set(XGEMS_VERSION_MICRO "2")
 set(XGEMS_VERSION "${XGEMS_VERSION_MAJOR}.${XGEMS_VERSION_MINOR}.${XGEMS_VERSION_MICRO}")
 
 # Set the output directories of the built libraries and binaries

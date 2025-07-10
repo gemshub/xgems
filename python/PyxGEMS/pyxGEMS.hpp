@@ -1559,9 +1559,29 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             print(eh_value)
         )doc")
 
-        .def("aqueousPhaseName", &ChemicalEngine::aqueousPhaseName)
+        .def("aqueousPhaseName", &ChemicalEngine::aqueousPhaseName,
+              R"doc(
+        Returns the aqueous phase name. If empty, the aqueous phase is not in system.
 
-        .def("gasPhaseName", &ChemicalEngine::gasPhaseName)
+        **Example:**
+
+        .. code-block:: python
+
+            name = engine.aqueousPhaseName()
+            print(name)
+        )doc")
+
+        .def("gasPhaseName", &ChemicalEngine::gasPhaseName,
+             R"doc(
+        Returns the gaseous phase name. If empty, the gaseous phase is not in system.
+
+        **Example:**
+
+        .. code-block:: python
+
+            name = engine.gasPhaseName()
+            print(name)
+        )doc")
 
 
         .def("__repr__", [](const ChemicalEngine &self)

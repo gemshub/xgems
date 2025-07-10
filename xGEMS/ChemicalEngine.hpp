@@ -1502,12 +1502,26 @@ namespace xGEMS
      */
     auto systemHeatCapacityConstP() const -> double;
 
-    /// The name of aqueous phase
-    /// returns null string if no aq phase in system.
+    /**
+     * @brief Returns the aqueous phase name.
+     *
+     * @return (string) aqueous phase name. If empty, the aqueous phase is not in system.
+     *
+     * @code
+     * auto aqueous_name = engine.aqueousPhaseName();
+     * @endcode
+    */
     auto aqueousPhaseName() const -> std::string;
 
-    /// The name of gas phase
-    /// returns null string if no gas phase in system.
+    /**
+     * @brief Returns the gaseous phase name.
+     *
+     * @return (string) gaseous phase name. If empty, the gaseous phase is not in system.
+     *
+     * @code
+     * auto gaseous_name = engine.gasPhaseName();
+     * @endcode
+    */
     auto gasPhaseName() const -> std::string;
 
   private:
