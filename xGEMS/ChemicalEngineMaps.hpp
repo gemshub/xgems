@@ -31,7 +31,7 @@
 namespace xGEMS {
 
 /**
- * ValuesMap is a sorted associative dictionary that contains component-value pairs.
+ * ValuesMap is a sorted associative dictionary that contains name-value pairs.
  */
 using ValuesMap = std::map<std::string, double>;
 /**
@@ -57,11 +57,10 @@ public:
      * @brief Constructs a ChemicalEngineMaps instance by loading a GEM-Selektor project file.
      *
      * @param input_file The file path for the chemical system definition (e.g., "my-system-dat.lst").
-     * @param reset_calc (bool) If true, clear the amounts of all elements.
-     * @param cold_start (bool) If true, configures the engine to use a cold start.
+     * @param reset_calc (bool) If true, clear the amounts of all elements, default false.
+     * @param cold_start (bool) If true, configures the engine to use a cold start, default true.
      *
      * @code
-     * // Example: Directly initialize the engine from a project file.
      * xGEMS::ChemicalEngineMaps engine("my-system-dat.lst");
      * @endcode
      */
@@ -75,9 +74,15 @@ public:
      * @return (std::string) Return result string of the equilibrium solver.
      *
      * @code
-     *
+     * engine.T = 298.15;
+     * engine.P = 100000.0;
+     * xGEMS::ValuesMap  bulk_composition = { {"C", 1e-08}, {"Ca", 1e-08}, {"Cl", 0.002},
+     *                                    {"H", 111.016746657646}, {"Mg", 0.001}, {"O", 55.5083933588231},
+     *                                    {"Sn", 130.841288437146}, {"Zz", 0.0} };
+     * engine.set_bulk_composition(bulk_composition);
      * std::string retcode = engine.equilibrate();
      * @endcode
+     *
      * - No GEM re-calculation needed
      * - Need GEM calculation with LPP (automatic) initial approximation (AIA)
      * - OK after GEM calculation with LPP AIA
@@ -97,7 +102,6 @@ public:
      * Uses a simplex LP initial guess (slower but may yield more accurate results).
      *
      * @code
-     * // Example: Force a cold start.
      * engine.cold_start();
      * @endcode
      */
@@ -112,7 +116,6 @@ public:
      * Uses previous equilibrium as initial guess (faster convergence).
      *
      * @code
-     * // Example: Set smart initial approximation.
      * engine.warm_start();
      * @endcode
      */
@@ -124,7 +127,7 @@ public:
     /**
      * @brief Clear the amounts of elements (set the default amount for all components).
      *
-     * @param cvalue (double) The default amount of element in mole.
+     * @param cvalue (double) The default amount of element in mole, default 1e-15.
      *
      * @code
      * engine.clear(1e-15);
@@ -139,13 +142,11 @@ public:
      * @param value (double) Standard molar Gibbs energy in J/mol.
      *
      * @code
-     * // Example: Set the standard molar Gibbs energy of H2O.
      * engine.set_species_G0("H2O", -237140); // Value in J/mol.
      * @endcode
      */
     auto set_species_G0(std::string symbol, double value) -> void;
 
-    /// set input bulk elemental composition (vector b) in moles
     /**
      * @brief Sets the amounts of elements (vector b).
      *
@@ -198,9 +199,8 @@ public:
      * @return (Index) Total number of elements.
      *
      * @code
-     * // Example: Get the number of elements.
-     * Index nElements = engine.nelements();
-     * std::cout << "Elements: " << nElements << std::endl;
+     * Index count = engine.nelements();
+     * std::cout << "Elements: " << count << std::endl;
      * @endcode
      */
     auto nelements() -> int
@@ -214,9 +214,8 @@ public:
      * @return (Index) Total number of phases.
      *
      * @code
-     * // Example: Print the number of phases.
-     * Index phases = engine.nphases();
-     * std::cout << "Phases: " << phases << std::endl;
+     * Index count = engine.nphases();
+     * std::cout << "Phases: " << count << std::endl;
      * @endcode
      */
     auto nphases() -> int
@@ -230,9 +229,8 @@ public:
      * @return (Index) Total number of chemical species.
      *
      * @code
-     * // Example: Display the number of species.
-     * Index speciesCount = engine.nspecies();
-     * std::cout << "Species: " << speciesCount << std::endl;
+     * Index count = engine.nspecies();
+     * std::cout << "Species: " << count << std::endl;
      * @endcode
      */
     auto nspecies() -> int
@@ -246,9 +244,8 @@ public:
      * @return (std::vector<std::string>) Element names.
      *
      * @code
-     * // Example: Get the name of the first element.
-     * auto elements = engine.element_names();
-     * std::cout << "Element 0: " << elements[0] << std::endl;
+     * auto names = engine.element_names();
+     * std::cout << "Element 0: " << names[0] << std::endl;
      * @endcode
      */
     auto element_names() -> std::vector<std::string>
@@ -262,9 +259,8 @@ public:
      * @return (std::vector<std::string>) Species names.
      *
      * @code
-     * // Example: Retrieve the name of species 0.
-     * auto spName = engine.species_names();
-     * std::cout << "Species 0: " << spName[0] << std::endl;
+     * auto names = engine.species_names();
+     * std::cout << "Species 0: " << names[0] << std::endl;
      * @endcode
      */
     auto species_names() -> std::vector<std::string>
@@ -278,9 +274,8 @@ public:
      * @return (std::vector<std::string>) Phase names.
      *
      * @code
-     * // Example: Retrieve the name of phase 0.
-     * auto phase = engine.phase_names();
-     * std::cout << "Phase 0: " << phase[0] << std::endl;
+     * auto names = engine.phase_names();
+     * std::cout << "Phase 0: " << names[0] << std::endl;
      * @endcode
      */
     auto phase_names() -> std::vector<std::string>
@@ -322,8 +317,8 @@ public:
      * @return (ValuesMap) Dictionary of molar masses (kg/mol) for each element.
      *
      * @code
-     * auto molarMasses = engine.element_molar_masses();
-     * std::cout << "molar mass O : " << molarMasses["O"] << std::endl;
+     * auto values = engine.element_molar_masses();
+     * std::cout << "Molar mass of 'O': " << values["O"] << std::endl;
      * @endcode
      */
     auto element_molar_masses() -> ValuesMap
@@ -352,7 +347,7 @@ public:
      *
      * @code
      * auto charge = engine.species_charges();
-     * std::cout << "Charge: " << charge["OH-"] << std::endl;
+     * std::cout << "Charge of 'OH-': " << charge["OH-"] << std::endl;
      * @endcode
      */
     auto species_charges() -> ValuesMap
@@ -366,7 +361,8 @@ public:
      * @return (ValuesMap) Dictionary of species molar masses (kg/mol).
      *
      * @code
-    * auto spMolarMasses = engine.species_molar_mass();
+    *  auto values = engine.species_molar_mass();
+    *  std::cout << "Molar mass of 'H2O@': " << values["H2O@"] << std::endl;
      * @endcode
      */
     auto species_molar_mass() -> ValuesMap
@@ -380,7 +376,8 @@ public:
      * @return (ValuesMap) Dictionary of species standard molar volumes in m³/mol.
      *
      * @code
-     * auto stdVolume = engine.species_molar_volumes();
+     * auto values = engine.species_molar_volumes();
+     * std::cout << "Molar volume of 'H2O@': " << values["H2O@"] << std::endl;
      * @endcode
      */
     auto species_molar_volumes() -> ValuesMap
@@ -394,7 +391,7 @@ public:
      * @return (ValuesMap) Dictionary of elements amounts in mol.
      *
      * @code
-     * auto eAmounts = engine.bulk_composition();
+     * auto amounts = engine.bulk_composition();
      * @endcode
      */
     auto bulk_composition() ->ValuesMap;
@@ -438,7 +435,7 @@ public:
      * @return (double) Volume in m³.
      *
      * @code
-     * double sysVol = engine.system_volume();
+     * double volume = engine.system_volume();
      * @endcode
      */
     auto system_volume() -> double;
@@ -449,7 +446,7 @@ public:
      * @return (double) System mass in kg.
      *
      * @code
-     * double sysMass = engine.system_mass();
+     * double mass = engine.system_mass();
      * @endcode
      */
     auto system_mass() -> double;
@@ -460,7 +457,8 @@ public:
      * @return (ValuesMap) Dictionary of phases molar volumes in m³/mol.
      *
      * @code
-     * auto volumes = engine.phases_molar_volume(0);
+     * auto volumes = engine.phases_molar_volume();
+     * std::cout << "Molar volume of 'aq_gen': " << volumes["aq_gen"] << std::endl;
      * @endcode
      */
     auto phases_molar_volume() -> ValuesMap;
@@ -472,6 +470,7 @@ public:
      *
      * @code
      * auto sat_indices = engine.phase_sat_indices();
+     * std::cout << "Saturation indice of 'aq_gen': " << sat_indices["aq_gen"] << std::endl;
      * @endcode
      */
     auto phase_sat_indices() -> ValuesMap;
@@ -483,6 +482,7 @@ public:
      *
      * @code
      * auto molarity = engine.aq_elements_molarity();
+     * std::cout << "Molarity of 'O': " << molarity["O"] << std::endl;
      * @endcode
      */
     auto aq_elements_molarity() -> ValuesMap;
@@ -494,6 +494,7 @@ public:
      *
      * @code
      * auto molality = engine.aq_elements_molality();
+     * std::cout << "Molality of 'O': " << molality["O"] << std::endl;
      * @endcode
      */
     auto aq_elements_molality() -> ValuesMap;
@@ -505,6 +506,7 @@ public:
      *
      * @code
      * auto molarity = engine.aq_species_molarity();
+     * std::cout << "Molarity of 'H2O@': " << molarity["H2O@"] << std::endl;
      * @endcode
      */
     auto aq_species_molarity() -> ValuesMap;
@@ -516,6 +518,7 @@ public:
      *
      * @code
      * auto molality = engine.aq_species_molality();
+     * std::cout << "Molality of 'Mg(CO3)@': " << molality["Mg(CO3)@"] << std::endl;
      * @endcode
      */
     auto aq_species_molality() -> ValuesMap;
@@ -527,6 +530,7 @@ public:
     *
     * @code
     * auto amount = engine.aq_elements_moles();
+    * std::cout << "Amount of 'O' in the aqueous phase: " << amount["O"] << std::endl;
     * @endcode
     */
     auto aq_elements_moles() -> ValuesMap;
@@ -538,6 +542,7 @@ public:
     *
     * @code
     * auto amount = engine.solids_elements_moles();
+    * std::cout << "Amount of 'Sn' in the solids phases: " << amount["Sn"] << std::endl;
     * @endcode
     */
     auto solids_elements_moles() -> ValuesMap;
@@ -549,7 +554,7 @@ public:
     *
     * @code
     * auto phase_el_moles = engine.phases_elements_moles();
-    * std::cout << phase_el_moles["aq_gen"]["O"] << std::endl;
+    * std::cout << "Amount of 'O' in 'aq_gen' phase: " << phase_el_moles["aq_gen"]["O"] << std::endl;
     * @endcode
     */
     auto phases_elements_moles() -> PhaseValuesMap;
@@ -561,6 +566,7 @@ public:
      *
      * @code
      * auto amounts = engine.phases_moles();
+     * std::cout << "Amount of 'aq_gen' phase: " << amounts["aq_gen"] << std::endl;
      * @endcode
      */
     auto phases_moles() -> ValuesMap;
@@ -572,6 +578,7 @@ public:
      *
      * @code
      * auto amounts = engine.species_moles();
+     * std::cout << "Amount of 'H2O@': " << amounts2["H2O@"] << std::endl;
      * @endcode
      */
     auto species_moles() -> ValuesMap;
@@ -583,6 +590,7 @@ public:
      *
      * @code
      * auto lnActivities = engine.species_ln_activities();
+     * std::cout << "ln Activity of 'H2O@': " << lnActivities["H2O@"] << std::endl;
      * @endcode
      */
     auto species_ln_activities() -> ValuesMap;
@@ -594,6 +602,7 @@ public:
      *
      * @code
      * auto lnActCoeff = engine.species_ln_activity_coefficients();
+     * std::cout << "ln Activity coeff of 'H2O@': " << lnActCoeff["H2O@"] << std::endl;
      * @endcode
      */
     auto species_ln_activity_coefficients() -> ValuesMap;
@@ -605,6 +614,7 @@ public:
      *
      * @code
      * auto upperLimits = engine.species_upper_bounds();
+     * std::cout << "Upper bounds of 'Mg(HCO3)+': " << upperLimits["Mg(HCO3)+"] << std::endl;
      * @endcode
      */
     auto species_upper_bounds() -> ValuesMap;
@@ -616,6 +626,7 @@ public:
      *
      * @code
      * auto lowerLimits = engine.species_lower_bounds();
+     * std::cout << "Lower bounds of 'Mg(HCO3)+': " << lowerLimits["Mg(HCO3)+"] << std::endl;
      * @endcode
      */
     auto species_lower_bounds() -> ValuesMap;
@@ -627,7 +638,8 @@ public:
      * @return (ValuesMap) Dictionary of phase species amounts in mol.
      *
      * @code
-     * auto amounts = engine.phase_species_moles();
+     * auto amounts = engine.phase_species_moles("aq_gen");
+     * std::cout << "Amount of 'H2O@' in 'aq_gen' phase:" << amounts["H2O@"] << std::endl;
      * @endcode
      */
     auto phase_species_moles(std::string phase_symbol) -> ValuesMap;
@@ -639,6 +651,7 @@ public:
      *
      * @code
      * auto amounts = engine.solids_mass_frac();
+     * std::cout << "Mass fraction of 'Tin' phase: " << amounts["Tin"] << std::endl;
      * @endcode
      */
     auto solids_mass_frac() -> ValuesMap;
@@ -650,6 +663,7 @@ public:
      *
      * @code
      * auto volumes = engine.solids_volume_frac();
+     * std::cout << "Volume fraction of 'Tin' phase: " << volumes["Tin"] << std::endl;
      * @endcode
      */
     auto solids_volume_frac() -> ValuesMap;
@@ -673,6 +687,7 @@ public:
      *
      * @code
      * auto volumes = engine.phases_volume();
+     * std::cout << "Volume of 'Tin' phase: " << volumes["Tin"] << std::endl;
      * @endcode
      */
     auto phases_volume() -> ValuesMap;
@@ -684,6 +699,7 @@ public:
      *
      * @code
      * auto masses = engine.phases_mass();
+     * std::cout << "Mass of 'Tin' phase: " << masses["Tin"] << std::endl;
      * @endcode
      */
     auto phases_mass() -> ValuesMap;
@@ -695,6 +711,7 @@ public:
      *
      * @code
      * auto volumes = engine.phases_volume_frac();
+     * std::cout << "Volume fraction of 'aq_gen' phase: " << volumes["aq_gen"] << std::endl;
      * @endcode
      */
     auto phases_volume_frac() -> ValuesMap;
@@ -703,7 +720,7 @@ public:
     /**
      * @brief Add multiple species amounts in the system useful for adding aqueous solution composition.
      *
-     * @param input_dict (ValuesMap) Dictionary of species amount.
+     * @param input_dict (ValuesMap) Dictionary of species amount in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
      *
      * @code
@@ -716,7 +733,7 @@ public:
      * @brief Add species amount in the system useful for adding aqueous solution composition.
      *
      * @param species (std::string) Species symbol.
-     * @param val (double) Species amount.
+     * @param val (double) Species amount in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
      *
      * @code
@@ -729,7 +746,7 @@ public:
      * @brief Add element amount in the system.
      *
      * @param element_name (std::string) Element symbol.
-     * @param val (double) Element amount.
+     * @param val (double) Element amount in units.
      * @param units (std::string) Units of amount ("moles", "kg"), default "moles".
      *
      * @code
@@ -741,7 +758,7 @@ public:
     /**
      * @brief Add multiple elements amount in the system useful for adding aqueous solution composition.
      *
-     * @param input_dict (ValuesMap) Dictionary of elements amount.
+     * @param input_dict (ValuesMap) Dictionary of elements amount in units.
      * @param units (std::string) Units of amount ("moles", "kg"), default "moles".
      *
      * @code
@@ -754,7 +771,7 @@ public:
      * @brief Add multiple elements using user defined formula.
      *
      * @param formula (ValuesMap) User defined formula.
-     * @param val (double) Component amount.
+     * @param val (double) Component amount in units.
      * @param units (std::string) Units of amount ("moles", "kg"), default "moles".
      *
      * @code
@@ -951,6 +968,7 @@ public:
      *
      * @code
      * auto amounts = engine.phase_species_moles();
+     * std::cout << "Amount of 'CaOH+' in 'aq_gen' phase: " << amounts["aq_gen"]["CaOH+"] << std::endl;
      * @endcode
      */
     auto phase_species_moles() -> PhaseValuesMap;
@@ -962,6 +980,7 @@ public:
      *
      * @code
      * auto lnActivities = engine.phase_species_ln_activities();
+     * std::cout << "ln activities of 'CaOH+' in 'aq_gen' phase: " << lnActivities["aq_gen"]["CaOH+"] << std::endl;
      * @endcode
      */
     auto phase_species_ln_activities() -> PhaseValuesMap;
@@ -973,6 +992,7 @@ public:
      *
      * @code
      * auto lnActCoeff = engine.phase_species_ln_activity_coefficients();
+     * std::cout << "ln activities coeff of 'CaOH+' in 'aq_gen' phase: " << lnActCoeff["aq_gen"]["CaOH+"] << std::endl;
      * @endcode
      */
     auto phase_species_ln_activity_coefficients() -> PhaseValuesMap;
@@ -984,6 +1004,7 @@ public:
      *
      * @code
      * auto upperLimits = engine.phase_species_upper_bounds();
+     * std::cout << "Upper limits of 'CaOH+' in 'aq_gen' phase: " << upperLimits["aq_gen"]["CaOH+"] << std::endl;
      * @endcode
      */
     auto phase_species_upper_bounds() -> PhaseValuesMap;
@@ -995,6 +1016,7 @@ public:
      *
      * @code
      * auto lowerLimits = engine.phase_species_lower_bounds();
+     * std::cout << "Lower limits of 'CaOH+' in 'aq_gen' phase: " << lowerLimits["aq_gen"]["CaOH+"] << std::endl;
      * @endcode
      */
     auto phase_species_lower_bounds() -> PhaseValuesMap;

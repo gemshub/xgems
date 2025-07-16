@@ -11,4 +11,4 @@ include_directories(/usr/local/include/eigen3)
 pybind11_add_module(PyxGEMS ${SOURCE_FILES} NO_EXTRAS) # NO_EXTRAS used to decrease linking time, but causes larger module file size
 
 # Link PyxGEMS against xGEMS and GEMS3K library
-target_link_libraries(PyxGEMS PUBLIC XGEMS_STATIC)
+target_link_libraries(PyxGEMS PUBLIC xGEMS-static)

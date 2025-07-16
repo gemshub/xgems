@@ -35,7 +35,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Define which components of Reaktoro to build
 option(XGEMS_BUILD_ALL    "Build everything." OFF)
 option(XGEMS_BUILD_PYTHON "Build the python bindings." ON)
-option(XGEMS_BUILD_DEMOS  "Build demos." OFF)
+option(XGEMS_BUILD_DEMOS  "Build demos." ON)
 option(XGEMS_BUILD_DOCS   "Build documentation." OFF)
 option(XGEMS_BUILD_TESTS  "Build tests." ON)
 option(XGEMS_USE_THERMOFUN "Use ThermoFun" ON)

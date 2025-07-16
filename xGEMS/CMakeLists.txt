@@ -15,18 +15,16 @@ add_library(XGEMS_OBJECT OBJECT ${HPP_FILES} ${CPP_FILES})
 
 # Check if a shared library must be built
 if(XGEMS_BUILD_SHARED_LIBS)
-    add_library(XGEMS_SHARED SHARED $<TARGET_OBJECTS:XGEMS_OBJECT>)
-    target_link_libraries(XGEMS_SHARED PUBLIC GEMS3K::GEMS3K)
-    set_target_properties(XGEMS_SHARED PROPERTIES OUTPUT_NAME xGEMS)
-    install(TARGETS XGEMS_SHARED DESTINATION "lib" COMPONENT libraries)
+    add_library(xGEMS SHARED $<TARGET_OBJECTS:XGEMS_OBJECT>)
+    target_link_libraries(xGEMS PUBLIC GEMS3K::GEMS3K)
+    install(TARGETS xGEMS DESTINATION "lib" COMPONENT libraries)
 endif()
 
 # Check if a static library must be built
 if(XGEMS_BUILD_STATIC_LIBS)
-    add_library(XGEMS_STATIC STATIC $<TARGET_OBJECTS:XGEMS_OBJECT>)
-    target_link_libraries(XGEMS_STATIC PUBLIC GEMS3K::GEMS3K-static)
-    set_target_properties(XGEMS_STATIC PROPERTIES OUTPUT_NAME xGEMS)
-    install(TARGETS XGEMS_STATIC DESTINATION "lib" COMPONENT libraries)
+    add_library(xGEMS-static STATIC $<TARGET_OBJECTS:XGEMS_OBJECT>)
+    target_link_libraries(xGEMS-static PUBLIC GEMS3K::GEMS3K-static)
+    install(TARGETS xGEMS-static DESTINATION "lib" COMPONENT libraries)
 endif()
 
 
