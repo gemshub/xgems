@@ -127,13 +127,13 @@ public:
     /**
      * @brief Clear the amounts of elements (set the default amount for all components).
      *
-     * @param cvalue (double) The default amount of element in mole, default 1e-15.
+     * @param min_amount (double) The default amount of element in mole, default 1e-15.
      *
      * @code
      * engine.clear(1e-15);
      * @endcode
      */
-    auto clear(double cvalue=1e-15) -> void;
+    auto clear(double min_amount=1e-15) -> void;
 
     /**
      * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
@@ -151,6 +151,7 @@ public:
      * @brief Sets the amounts of elements (vector b).
      *
      * @param b_input (ValuesMap) Dictionary of elements amounts in mol.
+     * @param min_amount (double) min amount of element in mol, default 1e-15.
      *
      * @code
      * xGEMS::ValuesMap  bulk_composition = { {"C", 1e-08}, {"Ca", 1e-08}, {"Cl", 0.002},
@@ -159,17 +160,19 @@ public:
      * engine.set_bulk_composition(bulk_composition);
      * @endcode
      */
-    auto set_bulk_composition(ValuesMap b_input) -> void;
+    auto set_bulk_composition(ValuesMap b_input, double min_amount=1e-15) -> void;
 
     /**
      * @brief Removes bulk elemental aqueous solution composition from vector b.
      * Be careful as this will also remove water i.e H+ and OH-.
      *
+     * @param min_amount (double) min amount of element in mol, default 1e-12.
+     *
      * @code
      * engine.reset_aq_composition();
      * @endcode
      */
-    auto reset_aq_composition() -> void;
+    auto reset_aq_composition(double min_amount=1e-12) -> void;
 
     /**
      * @brief Sets and gets the temperature without computing equilibrium.
@@ -318,7 +321,7 @@ public:
      *
      * @code
      * auto values = engine.element_molar_masses();
-     * std::cout << "Molar mass of 'O': " << values["O"] << std::endl;
+     * std::cout << "Molar mass of 'Fe': " << values["Fe"] << std::endl;
      * @endcode
      */
     auto element_molar_masses() -> ValuesMap
@@ -538,6 +541,8 @@ public:
     /**
     * @brief Returns the mole amounts of elements in all solids together.
     *
+    * @param min_amount_phase (double) min amount of phase in mol, default 1e-12.
+    * @param min_amount_element (double) min amount of element in mol, default 1e-14.
     * @return (ValuesMap) Dictionary containing mole amounts of elements in all solids together.
     *
     * @code
@@ -545,7 +550,7 @@ public:
     * std::cout << "Amount of 'Sn' in the solids phases: " << amount["Sn"] << std::endl;
     * @endcode
     */
-    auto solids_elements_moles() -> ValuesMap;
+    auto solids_elements_moles(double min_amount_phase=1e-12, double min_amount_element=1e-14) -> ValuesMap;
 
     /**
     * @brief Returns a dictionary (table) containing amounts of elements in phases in moles.
@@ -554,7 +559,7 @@ public:
     *
     * @code
     * auto phase_el_moles = engine.phases_elements_moles();
-    * std::cout << "Amount of 'O' in 'aq_gen' phase: " << phase_el_moles["aq_gen"]["O"] << std::endl;
+    * std::cout << "Amount of 'Ca' in 'aq_gen' phase: " << phase_el_moles["aq_gen"]["Ca"] << std::endl;
     * @endcode
     */
     auto phases_elements_moles() -> PhaseValuesMap;
@@ -650,8 +655,8 @@ public:
      * @return (ValuesMap) Dictionary of solids phases mass fraction.
      *
      * @code
-     * auto amounts = engine.solids_mass_frac();
-     * std::cout << "Mass fraction of 'Tin' phase: " << amounts["Tin"] << std::endl;
+     * auto mas_frac = engine.solids_mass_frac();
+     * std::cout << "Mass fraction of 'Tin' phase: " << mas_frac["Tin"] << std::endl;
      * @endcode
      */
     auto solids_mass_frac() -> ValuesMap;
@@ -662,8 +667,8 @@ public:
      * @return (ValuesMap) Dictionary of solids phases volume fraction.
      *
      * @code
-     * auto volumes = engine.solids_volume_frac();
-     * std::cout << "Volume fraction of 'Tin' phase: " << volumes["Tin"] << std::endl;
+     * auto vol_frac = engine.solids_volume_frac();
+     * std::cout << "Volume fraction of 'Tin' phase: " << vol_frac["Tin"] << std::endl;
      * @endcode
      */
     auto solids_volume_frac() -> ValuesMap;
@@ -787,13 +792,14 @@ public:
      * @param formula (ValuesMap) User defined formula.
      * @param val (double) Amount of the formula [object] in units, default 1.
      * @param units (std::string) Units of amount ("moles", "kg"), default "moles".
+     * @param min_amount (double) min amount of element in mol, default 1e-15.
      * @return (VectorConstRef) Vector of element amounts in mol.
      *
      * @code
      * auto vect = engine.get_b_from_formula( {{"H",2},{"O",1}}, 0.1, "kg");
      * @endcode
      */
-    auto get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles") -> Vector;
+    auto get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles", double min_amount=1e-15) -> Vector;
 
     /**
      * @brief Sets an lower bound for multiple species.
@@ -877,45 +883,53 @@ public:
      * @brief Supresses a phase in GEM calculation.
      *
      * @param phase_name (std::string) Phase name.
+     * @param min_amount (double) Lower amount of specie in mol, default 0.
+     * @param max_amount (double) Upper amount of specie in mol, default 1e-15.
      *
      * @code
      * engine.supress_phase("gas_gen");
      * @endcode
      */
-    auto supress_phase(const std::string &phase_name) -> void;
+    auto supress_phase(const std::string &phase_name, double min_amount=0, double max_amount=1e-15) -> void;
 
     /**
      * @brief Supresses multiple phases in calculation as given in phase names list.
      *
      * @param phase_name_list (std::vector<std::string>) Phases name list.
+     * @param min_amount (double) Lower amount of specie in mol, default 0.
+     * @param max_amount (double) Upper amount of specie in mol, default 1e-15.
      *
      * @code
      * engine.supress_multiple_phases({"Dolomite-dis", "Tin"});
      * @endcode
      */
-    auto supress_multiple_phases(const std::vector<std::string> &phase_name_list) -> void;
+    auto supress_multiple_phases(const std::vector<std::string> &phase_name_list, double min_amount=0, double max_amount=1e-15) -> void;
 
     /**
      * @brief Supresses a specie in calculation.
      *
      * @param species_name (std::string) Species name.
+     * @param min_amount (double) Lower amount of specie in mol, default 0.
+     * @param max_amount (double) Upper amount of specie in mol, default 1e-15.
      *
      * @code
      * engine.supress_species("Ca(CO3)@");
      * @endcode
      */
-    auto supress_species(const std::string &species_name) -> void;
+    auto supress_species(const std::string &species_name, double min_amount=0, double max_amount=1e-15) -> void;
 
     /**
      * @brief Supresses multiple species in in GEM calculation as given in species name list.
      *
      * @param species_list (std::vector<std::string>) Species name list.
+     * @param min_amount (double) Lower amount of specie in mol, default 0.
+     * @param max_amount (double) Upper amount of specie in mol, default 1e-15.
      *
      * @code
      * engine.supress_multiple_species({"ClO4-", "Cl-"});
      * @endcode
      */
-    auto supress_multiple_species(const std::vector<std::string> &species_list) -> void;
+    auto supress_multiple_species(const std::vector<std::string> &species_list, double min_amount=0, double max_amount=1e-15) -> void;
 
     /**
      * @brief Activate supressed phase in GEM calculation.
@@ -1048,7 +1062,7 @@ protected:
 
     auto to_phase_species_map( Vector values ) -> PhaseValuesMap;
 
-    auto clear_vector(Vector& bb, double cvalue) -> void;
+    auto clear_vector(Vector& bb, double min_amount) -> void;
 };
 
 }

@@ -71,23 +71,23 @@ auto ChemicalEngineMaps::equilibrate() -> std::string
     return _status_encoder[outcode];
 }
 
-auto ChemicalEngineMaps::clear_vector(Vector& bb, double cvalue) -> void
+auto ChemicalEngineMaps::clear_vector(Vector& bb, double min_amount) -> void
 {
-    if( cvalue > 0 ) {
+    if( min_amount > 0 ) {
         for(Index i = 0; i < nelements(); ++i) {
             if( m_element_names[i] == "Zz") {
                 bb[i] = 0.0;
             }
             else {
-                bb[i] = cvalue;
+                bb[i] = min_amount;
             }
         }
     }
 }
 
-auto ChemicalEngineMaps::clear(double cvalue) -> void
+auto ChemicalEngineMaps::clear(double min_amount) -> void
 {
-    clear_vector(b_amounts, cvalue);
+    clear_vector(b_amounts, min_amount);
 }
 
 
@@ -176,14 +176,14 @@ auto ChemicalEngineMaps::aq_elements_moles() -> ValuesMap
 }
 
 // set input bulk elemental composition (vector b) in moles
-auto ChemicalEngineMaps::set_bulk_composition(ValuesMap b_input) -> void
+auto ChemicalEngineMaps::set_bulk_composition(ValuesMap b_input, double min_amount) -> void
 {
     for(Index i = 0; i < nelements(); ++i) {
         if( b_input.find(m_element_names[i]) != b_input.end() ) {
             b_amounts[i] = b_input[m_element_names[i]];
         }
-        else if(b_amounts[i] < 1e-15) {
-            b_amounts[i] = 1e-15;
+        else if(b_amounts[i] < min_amount) {
+            b_amounts[i] = min_amount;
         }
         else if(m_element_names[i] == "Zz") {
             b_amounts[i] = 0.0;
@@ -195,47 +195,47 @@ auto ChemicalEngineMaps::set_bulk_composition(ValuesMap b_input) -> void
 //  Removes bulk elemental aqueous solution composition from vector b
 //  be careful as this will also remove water i.e H+ and OH-
 //  Not quite clear what this access method really does (DK)
-auto ChemicalEngineMaps::reset_aq_composition() -> void
+auto ChemicalEngineMaps::reset_aq_composition(double min_amount) -> void
 {
     auto peamt = gem.phaseAmounts();
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
-        if( peamt[aq_index] > 1e-12 ) {
+        if( peamt[aq_index] > min_amount ) {
             auto b_aqup = gem.elementAmountsInPhase(aq_index);
             b_amounts -= b_aqup;
         }
     }
     for(Index i = 0; i < nelements(); ++i) {
-        if(b_amounts[i] < 1e-12) {
-            b_amounts[i] = 1e-12;
+        if(b_amounts[i] < min_amount) {
+            b_amounts[i] = min_amount;
         }
     }
 }
 
 
 // return a dictionary containing mole amounts of elements in all solids together
-auto ChemicalEngineMaps::solids_elements_moles() -> ValuesMap
+auto ChemicalEngineMaps::solids_elements_moles(double min_amount_phase, double min_amount_element) -> ValuesMap
 {
     Vector  b_solid = gem.elementAmounts();
     auto peamt = gem.phaseAmounts();
     auto aqupx = gem.indexPhase(m_aq_phase_symbol);
     if(aqupx < nphases() ) {
 
-        if( peamt[aqupx] > 1e-12) {
+        if( peamt[aqupx] > min_amount_phase) {
             auto b_aqup = gem.elementAmountsInPhase(aqupx);
             b_solid -= b_aqup;
         }
     }
     auto gaspx = gem.indexPhase(m_gas_phase_symbol);
     if( gaspx < nphases() ) {
-        if( peamt[gaspx] > 1e-12 ) {
+        if(peamt[gaspx] > min_amount_phase) {
             auto b_gasp = gem.elementAmountsInPhase(gaspx);
             b_solid -= b_gasp;
         }
     }
     ValuesMap out;
     for(Index i = 0; i < nelements(); ++i) {
-        out[m_element_names[i]] = ( b_solid[i] < 1e-14 ? 0.0 : b_solid[i]);
+        out[m_element_names[i]] = (b_solid[i] < min_amount_element ? 0.0 : b_solid[i]);
     }
     return out;
 }
@@ -469,10 +469,10 @@ auto ChemicalEngineMaps::add_amt_from_formula(const ValuesMap& formula, double v
 
 // returns a bulk vector b from user-defined formula (as dict. {"H":2,"O":1} )
 // and amount of the formula [object] in units of 'moles' or 'kg'
-auto ChemicalEngineMaps::get_b_from_formula(const ValuesMap& formula, double val, const std::string& units) -> Vector
+auto ChemicalEngineMaps::get_b_from_formula(const ValuesMap& formula, double val, const std::string& units, double min_amount) -> Vector
 {
     Vector bx(b_amounts.size()); //   bx = [v for v in self.b]
-    clear_vector(bx, 1e-15);
+    clear_vector(bx, min_amount);
 
     if( units  == "kg" ) {
         double molarmass =0.0;
@@ -554,31 +554,31 @@ auto ChemicalEngineMaps::set_species_upper_bound(Index ispecies, double val, con
 
 
 // supresses a phase in GEM calculation
-auto ChemicalEngineMaps::supress_phase(const std::string& phase_name) -> void
+auto ChemicalEngineMaps::supress_phase(const std::string& phase_name, double min_amount, double max_amount) -> void
 {
-    supress_multiple_species(m_species_in_phase[phase_name]);
+    supress_multiple_species(m_species_in_phase[phase_name], min_amount, max_amount);
 }
 
 // supresses multiple phase in calculation as given in phase names list
-auto ChemicalEngineMaps::supress_multiple_phases(const std::vector<std::string>& phase_name_list) -> void
+auto ChemicalEngineMaps::supress_multiple_phases(const std::vector<std::string>& phase_name_list, double min_amount, double max_amount) -> void
 {
     for( const auto& phase: phase_name_list) {
-        supress_phase(phase);
+        supress_phase(phase, min_amount, max_amount);
     }
 }
 
 // supresses species in calculation
-auto ChemicalEngineMaps::supress_species(const std::string& species_name) -> void
+auto ChemicalEngineMaps::supress_species(const std::string& species_name, double min_amount, double max_amount) -> void
 {
-    set_species_lower_bound(species_name, 0);
-    set_species_upper_bound(species_name, 1e-15);
+    set_species_lower_bound(species_name, min_amount);
+    set_species_upper_bound(species_name, max_amount);
 }
 
 // supresses multiple species in GEM calculation as given in species name list
-auto ChemicalEngineMaps::supress_multiple_species(const std::vector<std::string>& species_list) -> void
+auto ChemicalEngineMaps::supress_multiple_species(const std::vector<std::string>& species_list, double min_amount, double max_amount) -> void
 {
     for( const auto& species: species_list) {
-        supress_species(species);
+        supress_species(species, min_amount, max_amount);
     }
 }
 

@@ -94,7 +94,7 @@ int main(int argc, char **argv)
     std::cout << "Amount of 'Sn' in the solids phases: " << amount2["Sn"] << std::endl;
 
     auto phase_el_moles = engine.phases_elements_moles();
-    std::cout << "Amount of 'O' in 'aq_gen' phase: " << phase_el_moles["aq_gen"]["O"] << std::endl;
+    std::cout << "Amount of 'Ca' in 'aq_gen' phase: " << phase_el_moles["aq_gen"]["Ca"] << std::endl;
 
     auto amounts = engine.phases_moles();
     std::cout << "Amount of 'aq_gen' phase: " << amounts["aq_gen"] << std::endl;
@@ -111,11 +111,11 @@ int main(int argc, char **argv)
     auto amounts3 = engine.phase_species_moles("aq_gen");
     std::cout << "Amount of 'H2O@' in 'aq_gen' phase: " << amounts3["H2O@"] << std::endl;
 
-    auto amounts4 = engine.solids_mass_frac();
-    std::cout << "Mass fraction of 'Tin' phase: " << amounts4["Tin"] << std::endl;
+    auto mas_frac = engine.solids_mass_frac();
+    std::cout << "Mass fraction of 'Tin' phase: " << mas_frac["Tin"] << std::endl;
 
-    auto volumes3 = engine.solids_volume_frac();
-    std::cout << "Volume fraction of 'Tin' phase: " << volumes3["Tin"] << std::endl;
+    auto vol_frac = engine.solids_volume_frac();
+    std::cout << "Volume fraction of 'Tin' phase: " << vol_frac["Tin"] << std::endl;
 
     std::cout << "Aq volume fraction: " << engine.aq_volume_frac() << std::endl;
 

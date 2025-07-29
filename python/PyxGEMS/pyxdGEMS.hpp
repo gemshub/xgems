@@ -107,7 +107,7 @@ void exportChemicalEngineMaps(py::module& m)
             .def("add_element_amt", &ChemicalEngineMaps::add_element_amt, py::arg("element_name"), py::arg("val"), py::arg("units")="moles")
             .def("add_multiple_elements_amt", &ChemicalEngineMaps::add_multiple_elements_amt, py::arg("input_dict"), py::arg("units")="moles")
             .def("add_amt_from_formula", &ChemicalEngineMaps::add_amt_from_formula, py::arg("formula"), py::arg("val"), py::arg("units")="moles")
-            .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula, py::arg("formula"), py::arg("val")=1, py::arg("units")="moles")
+            .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula, py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=1e-15)
 
             .def("set_multiple_species_lower_bound", &ChemicalEngineMaps::set_multiple_species_lower_bound, py::arg("input_dict"), py::arg("units")="moles")
             .def("set_multiple_species_upper_bound", &ChemicalEngineMaps::set_multiple_species_upper_bound, py::arg("input_dict"), py::arg("units")="moles")
