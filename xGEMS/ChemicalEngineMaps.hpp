@@ -127,7 +127,7 @@ public:
     /**
      * @brief Clear the amounts of elements (set the default amount for all components).
      *
-     * @param min_amount (double) The default amount of element in mole, default 1e-15.
+     * @param min_amount (double) The minimum amount of element in mole, default 1e-15.
      *
      * @code
      * engine.clear(1e-15);
@@ -194,7 +194,6 @@ public:
      * @endcode
      */
     double P; // Pa
-    Vector b_amounts; // moles
 
     /**
      * @brief Returns the number of elements in the system.
@@ -1037,6 +1036,7 @@ public:
 
 protected:
 
+    Vector b_amounts; // moles
     std::string input_file;
     ChemicalEngine gem;
 

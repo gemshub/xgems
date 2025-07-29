@@ -67,7 +67,7 @@ for name in phase_names:
 
 print("\nphase_species_moles ('aq_gen')", engine.phase_species_moles('aq_gen'))
 
-print("\nsolids_elements_moles", engine.solids_elements_moles)
+print("\nsolids_elements_moles", engine.solids_elements_moles())
 print("solids_volume_frac", engine.solids_volume_frac)
 print("solids_mass_frac", engine.solids_mass_frac)
 
