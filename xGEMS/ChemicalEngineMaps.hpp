@@ -672,7 +672,6 @@ public:
      */
     auto solids_volume_frac() -> ValuesMap;
 
-    /// Volume fraction of aqueous phase in the system
     /**
      * @brief Returns the volume fraction of aqueous phase in the system.
      *
