@@ -14,7 +14,7 @@ phase_names = engine.phase_names
 #print engine properties
 print("T", engine.T)
 print("P", engine.P)
-print("b", engine.b)
+print("b", engine.vector_b)
 print("aq_phase_symbol", engine.aq_phase_symbol)
 print("gas_phase_symbol", engine.gas_phase_symbol)
 print("pH", engine.pH)

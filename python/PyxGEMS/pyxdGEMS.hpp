@@ -79,7 +79,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("element_names", &ChemicalEngineMaps::element_names,
                                R"doc(
-    Read-only property: the names of all elements in the system.
+  Read-only property: the names of all elements in the system.
+
+  :return list[str]: List of elements in the system.
 
   **Example:**
 
@@ -89,7 +91,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("species_names", &ChemicalEngineMaps::species_names,
                                R"doc(
-    Read-only property: the names of all species in the system.
+  Read-only property: the names of all species in the system.
+
+  :return list[str]: List of species in the system.
 
   **Example:**
 
@@ -99,7 +103,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("phase_names", &ChemicalEngineMaps::phase_names,
                                R"doc(
-    Read-only property: the names of all phases in the system.
+  Read-only property: the names of all phases in the system.
+
+  :return list[str]: List of phases in the system.
 
   **Example:**
 
@@ -109,7 +115,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("aq_phase_symbol", &ChemicalEngineMaps::aq_phase_symbol,
                                R"doc(
-    Read-only property: the aqueous phase name. If empty, the aqueous phase is not in system.
+  Read-only property: the aqueous phase name.
+
+  :return str: Aqueous phase name. If empty, the aqueous phase is not in system.
 
   **Example:**
 
@@ -119,7 +127,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("gas_phase_symbol", &ChemicalEngineMaps::gas_phase_symbol,
                                R"doc(
-    Read-only property: the gaseous phase name. If empty, the gaseous phase is not in system.
+  Read-only property: the gaseous phase name. If empty, the gaseous phase is not in system.
+
+  :return str: Gaseous phase name. If empty, the aqueous phase is not in system.
 
   **Example:**
 
@@ -129,7 +139,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("element_molar_masses", &ChemicalEngineMaps::element_molar_masses,
                                R"doc(
-    Read-only property: the dictionary of molar masses (kg/mol) for each element.
+  Read-only property: the dictionary of molar masses (kg/mol) for each element.
+
+  :return dict[str:float]: Molar masses (kg/mol) for each element.
 
   **Example:**
 
@@ -139,7 +151,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("species_in_phase", &ChemicalEngineMaps::species_in_phase,
                                R"doc(
-    Read-only property: the dictionary of the names of all species for each phase in the system.
+  Read-only property: the dictionary of the names of all species for each phase in the system.
+
+  :return dict[str:list[str]]: List of all species for each phase in the system.
 
   **Example:**
 
@@ -151,7 +165,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("species_charges", &ChemicalEngineMaps::species_charges,
                                R"doc(
-    Read-only property: the dictionary of the electrical charge of a species.
+  Read-only property: the dictionary of the electrical charge of a species.
+
+  :return dict[str:float]: The electrical charge of a species.
 
   **Example:**
 
@@ -163,7 +179,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("species_molar_mass", &ChemicalEngineMaps::species_molar_mass,
                                R"doc(
-    Read-only property: the dictionary of the species molar masses (kg/mol).
+  Read-only property: the dictionary of the species molar masses (kg/mol).
+
+  :return dict[str:float]: The species molar masses (kg/mol).
 
   **Example:**
 
@@ -175,7 +193,9 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
   )doc")
             .def_property_readonly("species_molar_volumes", &ChemicalEngineMaps::species_molar_volumes,
                                R"doc(
-    Read-only property: the dictionary of the species standard molar volumes in m³/mol.
+  Read-only property: the dictionary of the species standard molar volumes in m³/mol.
+
+  :return dict[str:float]: The species standard molar volumes in m³/mol.
 
   **Example:**
 
@@ -188,8 +208,10 @@ Gems interface in calculator format for easy  using dictionaries.)doc");
 
         .def("equilibrate", &ChemicalEngineMaps::equilibrate,
              R"doc(
-    Computes the equilibrium stateof the current system.
-    Uses current temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.
+  Computes the equilibrium stateof the current system.
+  Uses current temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.
+
+  :return str: The string indicating the status.
 
   **Example:**
 
@@ -242,7 +264,9 @@ Warm start uses the previous solution as an initial guess for faster convergence
 )doc")
             .def_property_readonly("nelements", &ChemicalEngineMaps::nelements,
                                R"doc(
-    Read-only property: the number of elements in the system.
+  Read-only property: the number of elements in the system.
+
+  :return int: Number of elements in the system.
 
   **Example:**
 
@@ -252,7 +276,9 @@ Warm start uses the previous solution as an initial guess for faster convergence
   )doc")
             .def_property_readonly("nphases", &ChemicalEngineMaps::nphases,
                                R"doc(
-    Read-only property: the number of phases in the system.
+  Read-only property: the number of phases in the system.
+
+  :return int: Number of phases in the system.
 
   **Example:**
 
@@ -262,7 +288,9 @@ Warm start uses the previous solution as an initial guess for faster convergence
   )doc")
             .def_property_readonly("nspecies", &ChemicalEngineMaps::nspecies,
                                R"doc(
-    Read-only property: the number of species in the system.
+  Read-only property: the number of species in the system.
+
+  :return int: Number of species in the system.
 
   **Example:**
 
@@ -298,7 +326,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 )doc")
             .def_property_readonly("bulk_composition", &ChemicalEngineMaps::bulk_composition,
                                R"doc(
-    Read-only property: the dictionary of the amounts of the elements in mol.
+  Read-only property: the dictionary of the amounts of the elements in mol.
+
+  :return dict[str:float]: The amounts of the elements in mol.
 
   **Example:**
 
@@ -308,7 +338,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("pH", &ChemicalEngineMaps::pH,
                                R"doc(
-    Read-only property: the pH of the aqueous phase (in the activity scale (-log10 molal)).
+  Read-only property: the pH of the aqueous phase (in the activity scale (-log10 molal)).
+
+  :return float: pH of the aqueous phase.
 
   **Example:**
 
@@ -318,7 +350,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("pE", &ChemicalEngineMaps::pE,
                                R"doc(
-    Read-only property: the pe of the aqueous phase (in the activity scale (-log10 molal)).
+  Read-only property: the pe of the aqueous phase (in the activity scale (-log10 molal)).
+
+  :return float: pe of the aqueous phase.
 
   **Example:**
 
@@ -328,7 +362,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("ionic_strength", &ChemicalEngineMaps::ionic_strength,
                                R"doc(
-    Read-only property: the ionic strength of the aqueous phase in molal.
+  Read-only property: the ionic strength of the aqueous phase in molal.
+
+  :return float: Ionic strength of the aqueous phase.
 
   **Example:**
 
@@ -338,7 +374,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("system_volume", &ChemicalEngineMaps::system_volume,
                                R"doc(
-    Read-only property: the total volume of the system in m³.
+  Read-only property: the total volume of the system in m³.
+
+  :return float: Total volume of the system in m³.
 
   **Example:**
 
@@ -348,7 +386,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("system_mass", &ChemicalEngineMaps::system_mass,
                                R"doc(
-    Read-only property: the total mass of the system in kg.
+  Read-only property: the total mass of the system in kg.
+
+  :return float: Total mass of the system in kg.
 
   **Example:**
 
@@ -358,7 +398,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("phases_molar_volume", &ChemicalEngineMaps::phases_molar_volume,
                                R"doc(
-    Read-only property: the dictionary of the phases molar volumes in m³/mol.
+  Read-only property: the dictionary of the phases molar volumes in m³/mol.
+
+  :return dict[str:float]: The phases molar volumes in m³/mol.
 
   **Example:**
 
@@ -368,7 +410,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("phase_sat_indices", &ChemicalEngineMaps::phase_sat_indices,
                                R"doc(
-    Read-only property: the dictionary of the saturation indices of all phases (log₁₀ units).
+  Read-only property: the dictionary of the saturation indices of all phases (log₁₀ units).
+
+  :return dict[str:float]: The saturation indices of all phases.
 
   **Example:**
 
@@ -379,7 +423,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
             .def_property_readonly("aq_elements_molarity", &ChemicalEngineMaps::aq_elements_molarity,
                                R"doc(
-    Read-only property: the dictionary for aq elements the aq solution composition in mol/L aq solution.
+  Read-only property: the dictionary for aq elements the aq solution composition in mol/L aq solution.
+
+  :return dict[str:float]: The aq solution composition in mol/L.
 
   **Example:**
 
@@ -389,7 +435,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("aq_elements_molality", &ChemicalEngineMaps::aq_elements_molality,
                                R"doc(
-    Read-only property: the dictionary for aq elements the aq solution elemental composition in mol/kgH2O.
+  Read-only property: the dictionary for aq elements the aq solution elemental composition in mol/kgH2O.
+
+  :return dict[str:float]: The aq solution elemental composition in mol/kgH2O.
 
   **Example:**
 
@@ -399,7 +447,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("aq_species_molarity", &ChemicalEngineMaps::aq_species_molarity,
                                R"doc(
-    Read-only property: the dictionary for aq species the aq solution composition in mol/L of aqueous species.
+  Read-only property: the dictionary for aq species the aq solution composition in mol/L of aqueous species.
+
+  :return dict[str:float]: The aq solution composition in mol/L of aqueous species.
 
   **Example:**
 
@@ -409,7 +459,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("aq_species_molality", &ChemicalEngineMaps::aq_species_molality,
                                R"doc(
-    Read-only property: the dictionary for the aq solution composition in mol/kg H2O of aqueous species (speciation).
+  Read-only property: the dictionary for the aq solution composition in mol/kg H2O of aqueous species (speciation).
+
+  :return dict[str:float]: The aq solution composition in mol/kg H2O of aqueous species.
 
   **Example:**
 
@@ -419,7 +471,9 @@ Sets the standard molar Gibbs energy for a species (J/mol).
   )doc")
             .def_property_readonly("aq_elements_moles", &ChemicalEngineMaps::aq_elements_moles,
                                R"doc(
-    Read-only property: the dictionary of the amounts of each element in the aqueous phase (in mol).
+  Read-only property: the dictionary of the amounts of each element in the aqueous phase (in mol).
+
+  :return dict[str:float]: The amounts of each element in the aqueous phase (in mol).
 
   **Example:**
 
@@ -431,8 +485,8 @@ Sets the standard molar Gibbs energy for a species (J/mol).
              R"doc(
 Sets the amounts of elements (vector b).
 
-:param dict b_input: dictionary of elements amounts in mol.
-:param float min_amount: min amount of element in mol, default 1e-15
+:param dict b_input: Dictionary of elements amounts in mol.
+:param float min_amount: Min amount of element in mol, default 1e-15
 
 **Example:**
 
@@ -447,7 +501,7 @@ Sets the amounts of elements (vector b).
 Removes bulk elemental aqueous solution composition from vector b.
 Be careful as this will also remove water i.e H+ and OH-.
 
-:param float min_amount: min amount of element in mol, default 1e-15
+:param float min_amount: Min amount of element in mol, default 1e-15.
 
 **Example:**
 
@@ -457,10 +511,11 @@ Be careful as this will also remove water i.e H+ and OH-.
 )doc")
             .def("solids_elements_moles", &ChemicalEngineMaps::solids_elements_moles, py::arg("min_amount_phase")=1e-12, py::arg("min_amount_element")=1e-14,
                                R"doc(
-    Returns the dictionary of the mole amounts of elements in all solids together.
+  Returns the dictionary of the mole amounts of elements in all solids together.
 
-  :param float min_amount_phase: min amount of phase in mol, default 1e-12.
-  :param float min_amount_element: min amount of element in mol, default 1e-14.
+  :param float min_amount_phase: Min amount of phase in mol, default 1e-12.
+  :param float min_amount_element: Min amount of element in mol, default 1e-14.
+  :return dict[str:float]: The mole amounts of elements.
 
   **Example:**
 
@@ -470,7 +525,9 @@ Be careful as this will also remove water i.e H+ and OH-.
   )doc")
             .def_property_readonly("phases_elements_moles", &ChemicalEngineMaps::phases_elements_moles,
                                R"doc(
-    Read-only property: the dictionary of dictionaries containing mole amounts of elements for each phase (in mol).
+  Read-only property: the dictionary of dictionaries containing mole amounts of elements for each phase (in mol).
+
+  :return dict[str:dict[str:float]]: The mole amounts of elements for each phase (in mol).
 
   **Example:**
 
@@ -482,6 +539,8 @@ Be careful as this will also remove water i.e H+ and OH-.
             .def("phase_species_moles", py::overload_cast<>(&ChemicalEngineMaps::phase_species_moles),
              R"doc(
 Get the dictionary of dictionaries containing species amounts in mol for each phase.
+
+:return dict[str:dict[str:float]]: The species amounts in mol for each phase.
 
 **Example:**
 
@@ -496,6 +555,7 @@ Get the dictionary of dictionaries containing species amounts in mol for each ph
 Get the dictionary of phase species amounts in mol.
 
 :param str name: Phases name.
+:return dict[str:float]: The species amounts in mol.
 
 **Example:**
 
@@ -505,7 +565,9 @@ Get the dictionary of phase species amounts in mol.
 )doc")
             .def_property_readonly("phases_moles", &ChemicalEngineMaps::phases_moles,
                                R"doc(
-    Read-only property: the dictionary of the molar amounts of all phases in mol.
+  Read-only property: the dictionary of the molar amounts of all phases in mol.
+
+  :return dict[str:float]: The molar amounts of all phases in mol.
 
   **Example:**
 
@@ -515,7 +577,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("species_moles", &ChemicalEngineMaps::species_moles,
                                R"doc(
-    Read-only property: the dictionary of the amounts of all species in mol.
+  Read-only property: the dictionary of the amounts of all species in mol.
+
+  :return dict[str:float]: The amounts of all species in mol.
 
   **Example:**
 
@@ -525,7 +589,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("species_ln_activities", &ChemicalEngineMaps::species_ln_activities,
                                R"doc(
-    Read-only property: the dictionary of the ln activities of all species.
+  Read-only property: the dictionary of the ln activities of all species.
+
+  :return dict[str:float]: The ln activities of all species.
 
   **Example:**
 
@@ -535,7 +601,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("species_ln_activity_coefficients", &ChemicalEngineMaps::species_ln_activity_coefficients,
                                R"doc(
-    Read-only property: the dictionary of the ln activity coefficients of all species (mole fraction scale).
+  Read-only property: the dictionary of the ln activity coefficients of all species (mole fraction scale).
+
+  :return dict[str:float]: The ln activity coefficients of all species.
 
   **Example:**
 
@@ -545,7 +613,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("species_upper_bounds", &ChemicalEngineMaps::species_upper_bounds,
                                R"doc(
-    Read-only property: the dictionary of the species upper limits in mol.
+  Read-only property: the dictionary of the species upper limits in mol.
+
+  :return dict[str:float]: The species upper limits in mol.
 
   **Example:**
 
@@ -557,7 +627,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("species_lower_bounds", &ChemicalEngineMaps::species_lower_bounds,
                                R"doc(
-    Read-only property: the dictionary of the species lower limits in mol.
+  Read-only property: the dictionary of the species lower limits in mol.
+
+  :return dict[str:float]: The species lower limits in mol.
 
   **Example:**
 
@@ -569,7 +641,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phase_species_ln_activities", &ChemicalEngineMaps::phase_species_ln_activities,
                                R"doc(
-    Read-only property: the dictionary of dictionaries containing species ln Activities for each phase.
+  Read-only property: the dictionary of dictionaries containing species ln Activities for each phase.
+
+  :return dict[str:dict[str:float]]: The species ln Activities for each phase.
 
   **Example:**
 
@@ -579,7 +653,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phase_species_ln_activity_coefficients", &ChemicalEngineMaps::phase_species_ln_activity_coefficients,
                                R"doc(
-    Read-only property: the dictionary of dictionaries containing species ln Activity coefficients for each phase.
+  Read-only property: the dictionary of dictionaries containing species ln Activity coefficients for each phase.
+
+  :return dict[str:dict[str:float]]: The species ln Activity coefficients for each phase.
 
   **Example:**
 
@@ -592,7 +668,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phase_species_upper_bounds", &ChemicalEngineMaps::phase_species_upper_bounds,
                                R"doc(
-    Read-only property: the dictionary of dictionaries containing species upper limits in mol for each phase.
+  Read-only property: the dictionary of dictionaries containing species upper limits in mol for each phase.
+
+  :return dict[str:dict[str:float]]: The species upper limits in mol for each phase.
 
   **Example:**
 
@@ -603,7 +681,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phase_species_lower_bounds", &ChemicalEngineMaps::phase_species_lower_bounds,
                                R"doc(
-    Read-only property: the dictionary of dictionaries containing species lower limits in mol for each phase.
+  Read-only property: the dictionary of dictionaries containing species lower limits in mol for each phase.
+
+  :return dict[str:dict[str:float]]: The species lower limits in mol for each phase.
 
   **Example:**
 
@@ -614,7 +694,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("solids_mass_frac", &ChemicalEngineMaps::solids_mass_frac,
                                R"doc(
-    Read-only property: the dictionary of the mass(phase)/mass(system) ratios for [solid] phases.
+  Read-only property: the dictionary of the mass(phase)/mass(system) ratios for [solid] phases.
+
+  :return dict[str:float]: The mass(phase)/mass(system) ratios for [solid] phases.
 
   **Example:**
 
@@ -625,7 +707,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("solids_volume_frac", &ChemicalEngineMaps::solids_volume_frac,
                                R"doc(
-    Read-only property: the dictionary of the volume(phase)/volume(total) ratio for solid phases.
+  Read-only property: the dictionary of the volume(phase)/volume(total) ratio for solid phases.
+
+  :return dict[str:float]: The volume(phase)/volume(total) ratio for solid phases.
 
   **Example:**
 
@@ -636,7 +720,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("aq_volume_frac", &ChemicalEngineMaps::aq_volume_frac,
                                R"doc(
-    Read-only property: the volume fraction of aqueous phase in the system.
+  Read-only property: the volume fraction of aqueous phase in the system.
+
+  :return float: The volume fraction of aqueous phase.
 
   **Example:**
 
@@ -646,7 +732,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phases_volume", &ChemicalEngineMaps::phases_volume,
                                R"doc(
-    Read-only property: the dictionary of phases volumes in m³.
+  Read-only property: the dictionary of phases volumes in m³.
+
+  :return dict[str:float]: The phases volumes in m³.
 
   **Example:**
 
@@ -656,7 +744,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phases_mass", &ChemicalEngineMaps::phases_mass,
                                R"doc(
-    Read-only property: the dictionary of phases masses in kg.
+  Read-only property: the dictionary of phases masses in kg.
+
+  :return dict[str:float]: The phases masses in kg.
 
   **Example:**
 
@@ -666,7 +756,9 @@ Get the dictionary of phase species amounts in mol.
   )doc")
             .def_property_readonly("phases_volume_frac", &ChemicalEngineMaps::phases_volume_frac,
                                R"doc(
-    Read-only property: the dictionary of phases and their volume fractions.
+  Read-only property: the dictionary of phases and their volume fractions.
+
+  :return dict[str:float]: The phases volume fractions.
 
   **Example:**
 
@@ -752,6 +844,8 @@ and amount of the formula [object] in units of 'moles' or 'kg'.
 :param float val: Amount of the formula [object] in units, default 1.
 :param str units: Units of amount ("moles", "kg"), default "moles".
 :param float min_amount: min amount of element in mol, default 1e-15.
+:return list[float]: Vector of element amounts in mol.
+
 
 **Example:**
 
