@@ -1,6 +1,6 @@
 // xGEMS is a C++ and Python library for thermodynamic modeling by Gibbs energy minimization
 //
-// Copyright (C) 2018 Allan Leal, Dmitrii Kulik
+// Copyright (C) 2018-2025 Allan Leal, Dmtrii Kulik, G.D. Miron, S.Dmytriieva
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

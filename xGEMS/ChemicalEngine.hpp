@@ -13,12 +13,12 @@
  * - Energies: Joules (J) or Joules per mole (J/mol) as appropriate.
  *
  * Example applications of these functions can be found in the demos at:
- * https://bitbucket.org/gems4/xgems/src/master/demos/
+ * /demos/
  *
  * @note The examples below are indicative; please ensure that your vectors
  *       and matrices (such as VectorConstRef) are properly defined (e.g., using Eigen).
  *
- * @author Allan Leal, Dmitrii Kulik, G.D. Miron
+ * @author Allan Leal, Dmtrii Kulik, G.D. Miron
  * @date 2025
  *
  * license GNU General Public License v3 or later

@@ -13,10 +13,10 @@
  * - Energies: Joules (J) or Joules per mole (J/mol) as appropriate.
  *
  * Example applications of these functions can be found in the demos at:
- * https://bitbucket.org/gems4/xgems/src/master/demos/
+ * /demos/
  *
  *
- * @author R.A.Patel, Dmitrii Kulik, G.D. Miron, S.Dmytriieva
+ * @author R.A.Patel, Dmtrii Kulik, G.D. Miron, S.Dmytriieva
  * @date 2025
  *
  * license GNU General Public License v3 or later
@@ -138,7 +138,7 @@ public:
     /**
      * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
      *
-     * @param name (std::string) Species name.
+     * @param symbol (std::string) Species symbol.
      * @param value (double) Standard molar Gibbs energy in J/mol.
      *
      * @code
@@ -840,7 +840,7 @@ public:
      * @brief Sets an upper bound for a species identified by name.
      *
      * @param name (std::string) Species name.
-     * @param amount (double) Upper limit in units.
+     * @param val (double) Upper limit in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
      *
      * @code
