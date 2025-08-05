@@ -1,6 +1,6 @@
 // xGEMS is a C++ and Python library for thermodynamic modeling by Gibbs energy minimization
 //
-// Copyright (C) 2018 Allan Leal, Dmitrii Kulik
+// Copyright (C) 2018-2025 Allan Leal, Dmtrii Kulik, G.D. Miron, S.Dmytriieva
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -1367,6 +1367,28 @@ namespace xGEMS
 
         out.flags(flags); // restore flags
         return out;
+    }
+
+    auto ChemicalEngine::aqueousPhaseName() const -> std::string
+    {
+        for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
+            if( pimpl->node->pCSD()->ccPH[ii] == 'a' ) {
+                return phaseName(ii);
+            }
+        }
+        return {};
+    }
+
+    auto ChemicalEngine::gasPhaseName() const -> std::string
+    {
+        for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
+            if( pimpl->node->pCSD()->ccPH[ii] == 'g' ||
+                pimpl->node->pCSD()->ccPH[ii] == 'p' ||
+                pimpl->node->pCSD()->ccPH[ii] == 'f') {
+                return  phaseName(ii);
+            }
+        }
+        return {};
     }
 
 } // namespace xGEMS

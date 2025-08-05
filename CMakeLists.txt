@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 3.16)
 # Set the name of the project
 project(xGEMS VERSION 1.1.2 LANGUAGES CXX)
 
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,8 +23,8 @@ include(CondaAware)
 
 # Set the version of the project
 set(XGEMS_VERSION_MAJOR "1")
-set(XGEMS_VERSION_MINOR "0")
-set(XGEMS_VERSION_MICRO "9")
+set(XGEMS_VERSION_MINOR "1")
+set(XGEMS_VERSION_MICRO "2")
 set(XGEMS_VERSION "${XGEMS_VERSION_MAJOR}.${XGEMS_VERSION_MINOR}.${XGEMS_VERSION_MICRO}")
 
 # Set the output directories of the built libraries and binaries
@@ -36,7 +35,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Define which components of Reaktoro to build
 option(XGEMS_BUILD_ALL    "Build everything." OFF)
 option(XGEMS_BUILD_PYTHON "Build the python bindings." ON)
-option(XGEMS_BUILD_DEMOS  "Build demos." OFF)
+option(XGEMS_BUILD_DEMOS  "Build demos." ON)
 option(XGEMS_BUILD_DOCS   "Build documentation." OFF)
 option(XGEMS_BUILD_TESTS  "Build tests." ON)
 option(XGEMS_USE_THERMOFUN "Use ThermoFun" ON)
