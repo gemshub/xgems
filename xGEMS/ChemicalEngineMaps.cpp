@@ -423,7 +423,8 @@ auto ChemicalEngineMaps::phases_mass() -> ValuesMap
 // returns a dict. with phases and their volume fractions in the system
 auto ChemicalEngineMaps::phases_volume_frac() -> ValuesMap
 {
-    auto vfrac = gem.phaseVolumes()/system_volume();
+    Eigen::VectorXd volumes = gem.phaseVolumes(); 
+    auto vfrac = volumes/system_volume();
     return to_map( m_phase_names, vfrac );
 }
 

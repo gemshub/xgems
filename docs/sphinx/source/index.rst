@@ -7,15 +7,20 @@ Welcome to xGEMS ChemicalEngine!
       <p>A powerful tool for Gibbs-energy minimization and equilibrium computations.</p>
    </div>
 
-Contents:
----------
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
    :caption: Interface Documentation
 
-   cpp_api_reference
+   python_dicts_api_reference
+
+.. toctree::
+   :maxdepth: 2
+
    python_api_reference
+   cpp_api_reference
 
 .. .. toctree::
 ..   :maxdepth: 1

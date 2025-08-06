@@ -248,7 +248,7 @@ Cold start resets the initial guess to default values for robust convergence.
 
 .. code-block:: python
 
-  engine.cold_start()
+    engine.cold_start()
 )doc")
             .def("warm_start", &ChemicalEngineMaps::warm_start,
              R"doc(
@@ -260,7 +260,7 @@ Warm start uses the previous solution as an initial guess for faster convergence
 
 .. code-block:: python
 
-  engine.warm_start()
+    engine.warm_start()
 )doc")
             .def_property_readonly("nelements", &ChemicalEngineMaps::nelements,
                                R"doc(
@@ -492,9 +492,9 @@ Sets the amounts of elements (vector b).
 
 .. code-block:: python
 
-  bulk_composition = {'C': 1e-08, 'Ca': 1e-08, 'Cl': 0.002, 'H': 111.016746657646,
+    bulk_composition = {'C': 1e-08, 'Ca': 1e-08, 'Cl': 0.002, 'H': 111.016746657646,
                     'Mg': 0.001, 'O': 55.5083933588231, 'Sn': 130.841288437146, 'Zz': 0.0}
-  engine.set_bulk_composition(bulk_composition)
+    engine.set_bulk_composition(bulk_composition)
 )doc")
             .def("reset_aq_composition", &ChemicalEngineMaps::reset_aq_composition, py::arg("min_amount")=1e-15,
              R"doc(
@@ -507,7 +507,7 @@ Be careful as this will also remove water i.e H+ and OH-.
 
 .. code-block:: python
 
-  engine.reset_aq_composition()
+    engine.reset_aq_composition()
 )doc")
             .def("solids_elements_moles", &ChemicalEngineMaps::solids_elements_moles, py::arg("min_amount_phase")=1e-12, py::arg("min_amount_element")=1e-14,
                                R"doc(
@@ -561,7 +561,7 @@ Get the dictionary of phase species amounts in mol.
 
 .. code-block:: python
 
-  print("phase_species_moles ('aq_gen')", engine.phase_species_moles('aq_gen'))
+    print("phase_species_moles ('aq_gen')", engine.phase_species_moles('aq_gen'))
 )doc")
             .def_property_readonly("phases_moles", &ChemicalEngineMaps::phases_moles,
                                R"doc(
@@ -621,9 +621,9 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   out = engine.species_upper_bounds
-   for name in species_names:
-       print(name, out[name])
+      out = engine.species_upper_bounds
+      for name in species_names:
+      print(name, out[name])
   )doc")
             .def_property_readonly("species_lower_bounds", &ChemicalEngineMaps::species_lower_bounds,
                                R"doc(
@@ -635,9 +635,9 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   out = engine.species_lower_bounds
-   for name in species_names:
-       print(name, out[name])
+      out = engine.species_lower_bounds
+      for name in species_names:
+      print(name, out[name])
   )doc")
             .def_property_readonly("phase_species_ln_activities", &ChemicalEngineMaps::phase_species_ln_activities,
                                R"doc(
@@ -676,7 +676,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   print("phase_species_upper_bounds\n", engine.phase_species_upper_bounds)
+      print("phase_species_upper_bounds\n", engine.phase_species_upper_bounds)
 
   )doc")
             .def_property_readonly("phase_species_lower_bounds", &ChemicalEngineMaps::phase_species_lower_bounds,
@@ -689,7 +689,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   print("phase_species_lower_bounds\n", engine.phase_species_lower_bounds)
+      print("phase_species_lower_bounds\n", engine.phase_species_lower_bounds)
 
   )doc")
             .def_property_readonly("solids_mass_frac", &ChemicalEngineMaps::solids_mass_frac,
@@ -702,7 +702,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   print("solids_mass_frac", engine.solids_mass_frac)
+      print("solids_mass_frac", engine.solids_mass_frac)
 
   )doc")
             .def_property_readonly("solids_volume_frac", &ChemicalEngineMaps::solids_volume_frac,
@@ -715,7 +715,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   print("solids_volume_frac", engine.solids_volume_frac)
+      print("solids_volume_frac", engine.solids_volume_frac)
 
   )doc")
             .def_property_readonly("aq_volume_frac", &ChemicalEngineMaps::aq_volume_frac,
@@ -728,7 +728,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-   print("aq_volume_frac", engine.aq_volume_frac)
+      print("aq_volume_frac", engine.aq_volume_frac)
   )doc")
             .def_property_readonly("phases_volume", &ChemicalEngineMaps::phases_volume,
                                R"doc(
@@ -740,7 +740,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-  print("phases_volume", engine.phases_volume)
+      print("phases_volume", engine.phases_volume)
   )doc")
             .def_property_readonly("phases_mass", &ChemicalEngineMaps::phases_mass,
                                R"doc(
@@ -752,7 +752,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-  print("phases_mass", engine.phases_mass)
+      print("phases_mass", engine.phases_mass)
   )doc")
             .def_property_readonly("phases_volume_frac", &ChemicalEngineMaps::phases_volume_frac,
                                R"doc(
@@ -764,7 +764,7 @@ Get the dictionary of phase species amounts in mol.
 
   .. code-block:: python
 
-  print("phases_volume_frac", engine.phases_volume_frac)
+      print("phases_volume_frac", engine.phases_volume_frac)
   )doc")
 
             .def("add_multiple_species_amt", &ChemicalEngineMaps::add_multiple_species_amt, py::arg("input_dict"), py::arg("units")="moles",
@@ -778,7 +778,7 @@ Add multiple species amounts in the system useful for adding aqueous solution co
 
 .. code-block:: python
 
-  engine.add_multiple_species_amt( { 'HCl@':0.01, 'H2@':2 }, "moles")
+    engine.add_multiple_species_amt( { 'HCl@':0.01, 'H2@':2 }, "moles")
 )doc")
             .def("add_species_amt", &ChemicalEngineMaps::add_species_amt, py::arg("species"), py::arg("val"), py::arg("units")="moles",
              R"doc(
@@ -792,7 +792,7 @@ Add species amount in the system useful for adding aqueous solution composition.
 
 .. code-block:: python
 
-  engine.add_species_amt( 'H2O@', 0.01, "kg")
+    engine.add_species_amt( 'H2O@', 0.01, "kg")
 )doc")
             .def("add_element_amt", &ChemicalEngineMaps::add_element_amt, py::arg("element_name"), py::arg("val"), py::arg("units")="moles",
              R"doc(
@@ -806,7 +806,7 @@ Add element amount in the system.
 
 .. code-block:: python
 
-  engine.add_element_amt( 'Al', 0.3, "moles")
+    engine.add_element_amt( 'Al', 0.3, "moles")
 )doc")
             .def("add_multiple_elements_amt", &ChemicalEngineMaps::add_multiple_elements_amt, py::arg("input_dict"), py::arg("units")="moles",
              R"doc(
@@ -819,7 +819,7 @@ Add multiple elements amount in the system useful for adding aqueous solution co
 
 .. code-block:: python
 
-  engine.add_multiple_elements_amt( { 'Na':1.013077, 'Si':1.013077 }, "moles")
+    engine.add_multiple_elements_amt( { 'Na':1.013077, 'Si':1.013077 }, "moles")
 )doc")
             .def("add_amt_from_formula", &ChemicalEngineMaps::add_amt_from_formula, py::arg("formula"), py::arg("val"), py::arg("units")="moles",
              R"doc(
@@ -833,7 +833,7 @@ Add multiple elements using user defined formula.
 
 .. code-block:: python
 
-  engine.add_amt_from_formula( { 'K':2, 'O':1 }, 4.108*1e-3, "kg")
+    engine.add_amt_from_formula( { 'K':2, 'O':1 }, 4.108*1e-3, "kg")
 )doc")
             .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula, py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=1e-15,
              R"doc(
@@ -851,8 +851,8 @@ and amount of the formula [object] in units of 'moles' or 'kg'.
 
 .. code-block:: python
 
-b_from_formula = engine.get_b_from_formula( {"H":2,"O":1}, 1, "kg")
-print("b_from_formula", b_from_formula)
+    b_from_formula = engine.get_b_from_formula( {"H":2,"O":1}, 1, "kg")
+    print("b_from_formula", b_from_formula)
 )doc")
 
             .def("set_multiple_species_lower_bound", &ChemicalEngineMaps::set_multiple_species_lower_bound, py::arg("input_dict"), py::arg("units")="moles",
@@ -866,7 +866,7 @@ Sets an lower bound for multiple species.
 
 .. code-block:: python
 
-  engine.set_multiple_species_lower_bound( {'Mg(CO3)@':30, 'Mg(HCO3)+':40, 'Mg+2':50})
+    engine.set_multiple_species_lower_bound( {'Mg(CO3)@':30, 'Mg(HCO3)+':40, 'Mg+2':50})
 )doc")
             .def("set_multiple_species_upper_bound", &ChemicalEngineMaps::set_multiple_species_upper_bound, py::arg("input_dict"), py::arg("units")="moles",
              R"doc(
@@ -879,7 +879,7 @@ Sets an upper bounds for multiple species.
 
 .. code-block:: python
 
-  engine.set_multiple_species_upper_bound( {'Mg(CO3)@':300, 'Mg(HCO3)+':400, 'Mg+2':500})
+    engine.set_multiple_species_upper_bound( {'Mg(CO3)@':300, 'Mg(HCO3)+':400, 'Mg+2':500})
 )doc")
             .def("set_species_lower_bound", py::overload_cast<const std::string&, double, const std::string&>
                  (&ChemicalEngineMaps::set_species_lower_bound), py::arg("species"), py::arg("val"), py::arg("units")="moles",
@@ -894,7 +894,7 @@ Sets a lower bound for a species identified by name.
 
 .. code-block:: python
 
-  engine.set_species_lower_bound( 'Ca(HCO3)+', 200, "moles")
+    engine.set_species_lower_bound( 'Ca(HCO3)+', 200, "moles")
 )doc")
             .def("set_species_lower_bound", py::overload_cast<Index, double, const std::string&>
                  (&ChemicalEngineMaps::set_species_lower_bound), py::arg("ispecies"), py::arg("val"), py::arg("units")="moles",
@@ -909,7 +909,7 @@ Sets a lower bound (minimum amount allowed to form) for a species identified by 
 
 .. code-block:: python
 
-  engine.set_species_lower_bound( 8, 400, "moles")
+    engine.set_species_lower_bound( 8, 400, "moles")
 )doc")
             .def("set_species_upper_bound", py::overload_cast<const std::string&, double, const std::string&>
                  (&ChemicalEngineMaps::set_species_upper_bound), py::arg("species"), py::arg("val"), py::arg("units")="moles",
@@ -924,7 +924,7 @@ Sets an upper bound for a species identified by name.
 
 .. code-block:: python
 
-  engine.set_species_upper_bound( 'CaOH+', 500, "kg")
+    engine.set_species_upper_bound( 'CaOH+', 500, "kg")
 )doc")
             .def("set_species_upper_bound", py::overload_cast<Index, double, const std::string&>
                  (&ChemicalEngineMaps::set_species_upper_bound), py::arg("ispecies"), py::arg("val"), py::arg("units")="moles",
@@ -939,7 +939,7 @@ Sets an upper bound (maximum amount allowed to form) for a species identified by
 
 .. code-block:: python
 
-  engine.set_species_lower_bound( 8, 400, "moles")
+    engine.set_species_lower_bound( 8, 400, "moles")
 )doc")
 
             .def("supress_phase", &ChemicalEngineMaps::supress_phase, py::arg("phase_name"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
@@ -954,7 +954,7 @@ Supresses a phase in GEM calculation.
 
 .. code-block:: python
 
-  engine.supress_phase('gas_gen')
+    engine.supress_phase('gas_gen')
 )doc")
             .def("supress_multiple_phases", &ChemicalEngineMaps::supress_multiple_phases, py::arg("phase_name_list"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
              R"doc(
@@ -968,7 +968,7 @@ Supresses multiple phases in calculation as given in phase names list.
 
 .. code-block:: python
 
-  engine.supress_multiple_phases(['Dolomite-dis', 'Tin'])
+    engine.supress_multiple_phases(['Dolomite-dis', 'Tin'])
 )doc")
             .def("supress_species", &ChemicalEngineMaps::supress_species, py::arg("species_name"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
              R"doc(
@@ -982,7 +982,7 @@ Supresses a specie in calculation.
 
 .. code-block:: python
 
-  engine.supress_species('Ca(CO3)@')
+    engine.supress_species('Ca(CO3)@')
 )doc")
             .def("supress_multiple_species", &ChemicalEngineMaps::supress_multiple_species, py::arg("species_list"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
              R"doc(
@@ -996,7 +996,7 @@ Supresses multiple species in in GEM calculation as given in species name list.
 
 .. code-block:: python
 
-  engine.supress_multiple_species(['ClO4-', 'Cl-'])
+    engine.supress_multiple_species(['ClO4-', 'Cl-'])
 )doc")
             .def("activate_phase", &ChemicalEngineMaps::activate_phase,
              R"doc(
@@ -1008,7 +1008,7 @@ Activate supressed phase in GEM calculation.
 
 .. code-block:: python
 
-  engine.activate_phase('gas_gen')
+    engine.activate_phase('gas_gen')
 )doc")
             .def("activate_multiple_phases", &ChemicalEngineMaps::activate_multiple_phases,
              R"doc(
@@ -1020,7 +1020,7 @@ Activate multiple supressed phases given in list.
 
 .. code-block:: python
 
-  engine.activate_multiple_phases(['Dolomite-dis', 'Tin'])
+    engine.activate_multiple_phases(['Dolomite-dis', 'Tin'])
 )doc")
             .def("activate_species", &ChemicalEngineMaps::activate_species,
              R"doc(
@@ -1032,7 +1032,7 @@ Activate a supressed species in phase.
 
 .. code-block:: python
 
-  engine.activate_species('Ca(CO3)@')
+    engine.activate_species('Ca(CO3)@')
 )doc")
             .def("activate_multiple_species", &ChemicalEngineMaps::activate_multiple_species,
              R"doc(
@@ -1044,7 +1044,7 @@ Activate multiple supressed species given in the list.
 
 .. code-block:: python
 
-  engine.supress_multiple_species(['ClO4-', 'Cl-'])
+    engine.supress_multiple_species(['ClO4-', 'Cl-'])
 )doc")
             ;
 
