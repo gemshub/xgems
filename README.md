@@ -5,7 +5,7 @@ Linux, OSX, Windows
 
 [![Build Status](https://dev.azure.com/mirondanro/bitbuket/_apis/build/status/gems4.xgems?branchName=master)](https://dev.azure.com/mirondanro/bitbuket/_build/latest?definitionId=9&branchName=master)
 
-This is a numerical solver of chemical equilibria for thermodynamic modelling, extended (relative to GEMS3K code) with new [C++ and Python APIs] (https://gemshub.github.io/site/start/gemstandalone/documentation/#cpython-chemicalengine-interface), and supposed to replace GEMS3K in next-generation software.  
+This is a numerical solver of chemical equilibria for thermodynamic modelling, extended (relative to GEMS3K code) with new [C++ and Python APIs](https://gemshub.github.io/site/start/gemstandalone/documentation/#cpython-chemicalengine-interface), and supposed to replace GEMS3K in next-generation software.  
 
 ### Documentation
 
