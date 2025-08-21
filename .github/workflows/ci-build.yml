@@ -69,6 +69,10 @@ jobs:
           cmake --build build --target install --config Release || goto :eof
           python -c "import xgems" || goto :eof
 
+      - name: Run tests that read gems3k files and run calculations to pass
+        run: |
+          ls
+
       - name: Check conda
         run: |
           conda config --show
