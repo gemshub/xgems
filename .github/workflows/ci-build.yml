@@ -59,6 +59,7 @@ jobs:
           ninja
           ninja install
           python -c "import xgems"
+          ctest --test-dir tests
 
       - name: Building, Testing & Installing xgems (Windows)
         if: matrix.os == 'windows-latest'
@@ -68,12 +69,14 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="%CONDA_PREFIX%\Library" -A x64 -S . -B build  || goto :eof
           cmake --build build --target install --config Release || goto :eof
           python -c "import xgems" || goto :eof
+          ctest --test-dir tests || goto :eof
 
-      - name: Run tests that read gems3k files and run calculations to pass
-        run: |
-          cd tests
-          ls
-          python -m unittest -v test_systems.py
+      #- name: Run tests that read gems3k files and run calculations to pass
+      #  run: |
+      #    conda activate xgems
+      #    cd tests
+      #    ls
+      #    python -m unittest -v test_systems.py
 
       - name: Check conda
         run: |
