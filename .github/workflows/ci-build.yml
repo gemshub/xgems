@@ -75,10 +75,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda activate xgems
-          conda info --envs
-          ls
           cd tests
-          ls
           python -m unittest -v test_systems.py
 
       - name: Check conda
