@@ -71,8 +71,9 @@ jobs:
 
       - name: Run tests that read gems3k files and run calculations to pass
         run: |
+          cd tests
           ls
-          ctest --test-dir tests
+          python -m unittest -v test_systems.py
 
       - name: Check conda
         run: |
