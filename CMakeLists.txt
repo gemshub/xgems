@@ -103,6 +103,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
         /D_CRT_SECURE_NO_WARNINGS=1
         /MP4
         /EHsc
+        /utf-8
         /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
         /DNOMINMAX
     )
