@@ -1,0 +1,32 @@
+[build-system]
+requires = [
+    "setuptools >= 61.2",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xgems"
+version= "${PROJECT_VERSION}"
+requires-python = ">= 3.8"
+authors = [
+  {name = "G.D. Miron", email = "dan.miron@psi.ch"},
+  {name = "D. Kulik", email = "dkulik@congineer.com"},
+  {name = "S. Dmytriieva", email = "sv.dmytr@gmail.com"}
+]
+maintainers = [
+  {name = "G.D. Miron", email = "dan.miron@psi.ch"}
+]
+description = "The next-generation of C++ and Python API for GEMS."
+license = "GPL-3.0-or-later"
+keywords = ["equilibrium computations", "thermodynamic analysis", "Gibbs energy minimization", "chemical system"]
+
+[project.urls]
+Homepage = "https://gemshub.github.io/site/"
+Repository = "https://github.com/gemshub/xgems.git"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+xgems = ["PyxGEMS*"]

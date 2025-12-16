@@ -1,4 +1,7 @@
-# Collect the source files of PyxGEMS
+message(STATUS "Building python library ")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/__init__.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+
+# Collect the source files of PyChemicalData
 file(GLOB_RECURSE HEADER_FILES *.hpp)
 file(GLOB_RECURSE SOURCE_FILES *.cpp)
 

@@ -2,20 +2,21 @@ name: xgems
 
 channels:
   - conda-forge
-  - defaults
 
 dependencies:
-  - pip
   - gxx_linux-64 # [linux]
   - cmake>=3.16
   - ninja
   - git
   - ccache  # [unix]
-  - pybind11
-  - python>=3.12
+  - python>=3.10
+  - pip
+  - setuptools
+  - wheel
   - pytest
+  - pybind11
   - nlohmann_json
   - numpy
   - eigen>=3.4.0
-  - gems3k=>4.4.3
+  - gems3k=>4.4.4
  
