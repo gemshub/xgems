@@ -576,6 +576,8 @@ Sets the standard molar Gibbs energy for a species (J/mol).
                    
                    :param float temperature: Temperature in Kelvin (K).
                    :param float pressure: Pressure in Pascals (Pa).
+
+                    :return bool: True if PT was set correctly, False if out of range.
                    
                    **Example:**
                    

@@ -670,12 +670,12 @@ namespace xGEMS
      *
      * @param P Pressure in Pascals (Pa).
      * @param T Temperature in Kelvin (K).
-     * @return (bool) False if PT was set correctly, true if out of range.
+     * @return (bool) true if PT was set correctly, false if out of range.
      *
      * @code
      * // Example: Set PT to 101325 Pa and 298.15 K.
-     * bool error = engine.setPT(101325, 298.15);
-     * std::cout << (error ? "PT error" : "PT set correctly") << std::endl;
+     * bool no_error = engine.setPT(101325, 298.15);
+     * std::cout << (no_error ? "PT set correctly" : "PT error") << std::endl;
      * @endcode
      */
     auto setPT(double P, double T) const -> bool;

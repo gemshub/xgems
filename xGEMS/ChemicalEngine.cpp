@@ -529,11 +529,11 @@ namespace xGEMS
     {
         // Check if P, T are feasible
         if (pimpl->node->check_TP(T, P) == false)
-            return true;
+            return false;
         // Set temperature and pressure
         pimpl->node->Set_TK(T);
         pimpl->node->Set_P(P);
-        return false;
+        return true;
     }
 
     auto ChemicalEngine::setB(VectorConstRef b) -> void
