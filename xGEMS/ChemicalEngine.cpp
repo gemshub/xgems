@@ -313,18 +313,12 @@ namespace xGEMS
 
     auto ChemicalEngine::elementName(Index ielement) const -> std::string
     {
-        std::string name = pimpl->node->pCSD()->ICNL[ielement];
-        if (name.length() > MaxICnameLength)
-            name.resize(MaxICnameLength);
-        return name;
+        return pimpl->node->pCSD()->ICNL[ielement];
     }
 
     auto ChemicalEngine::speciesName(Index ispecies) const -> std::string
     {
-        std::string name = pimpl->node->pCSD()->DCNL[ispecies];
-        if (name.length() > MaxDCnameLength)
-            name.resize(MaxDCnameLength);
-        return name;
+        return pimpl->node->pCSD()->DCNL[ispecies];
     }
 
     auto ChemicalEngine::speciesCharge(Index ispecies) const -> double
@@ -336,10 +330,7 @@ namespace xGEMS
 
     auto ChemicalEngine::phaseName(Index iphase) const -> std::string
     {
-        std::string name = pimpl->node->pCSD()->PHNL[iphase];
-        if (name.length() > MaxPHnameLength)
-            name.resize(MaxPHnameLength);
-        return name;
+        return pimpl->node->pCSD()->PHNL[iphase];
     }
 
     // These methods may be ambiguous, as in GEMS3K, species with the same name
