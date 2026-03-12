@@ -337,16 +337,16 @@ namespace xGEMS
     //   may occur in more than one condensed phase!
     // An overload including phase name or index is needed!
     //
-    auto ChemicalEngine::setSpeciesUpperLimit(std::string name, double amount) -> void
+    auto ChemicalEngine::setSpeciesUpperLimit(std::string name, double amount, std::optional<std::string> phase) -> void
     {
-        auto ispecies = indexSpecies(name);
+        auto ispecies = indexSpecies(name, phase);
         double bound = (amount < 0.0 ? 1e6 : amount);
         pimpl->node->pCNode()->dul[ispecies] = bound;
     }
 
-    auto ChemicalEngine::setSpeciesLowerLimit(std::string name, double amount) -> void
+    auto ChemicalEngine::setSpeciesLowerLimit(std::string name, double amount, std::optional<std::string> phase) -> void
     {
-        auto ispecies = indexSpecies(name);
+        auto ispecies = indexSpecies(name, phase);
         double bound = (amount < 0.0 ? 0.0 : amount);
         pimpl->node->pCNode()->dll[ispecies] = bound;
     }
@@ -379,9 +379,9 @@ namespace xGEMS
             pimpl->node->Set_dll(jj, n[jj]);
     }
 
-    auto ChemicalEngine::setStandardMolarGibbsEnergy(std::string name, double value) -> void
+    auto ChemicalEngine::setStandardMolarGibbsEnergy(std::string name, double value, std::optional<std::string> phase) -> void
     {
-        auto ispecies = indexSpecies(name);
+        auto ispecies = indexSpecies(name, phase);
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
         auto idc = pimpl->node->DC_xDB_to_xCH(ispecies);
@@ -390,20 +390,28 @@ namespace xGEMS
 
     auto ChemicalEngine::indexElement(std::string element) const -> Index
     {
-        const Index size = numElements();
-        for (Index i = 0; i < size; ++i)
-            if (elementName(i) == element)
-                return i;
-        return size; // in case that element name was not found
+        auto ielement = pimpl->node->IC_name_to_xCH(element);
+        return (ielement>=0 ? ielement : numElements()); // in case that element name was not found
     }
 
-    auto ChemicalEngine::indexSpecies(std::string species) const -> Index
+    auto ChemicalEngine::indexSpecies(std::string species, std::optional<std::string> phase) const -> Index
     {
-        const Index size = numSpecies();
-        for (Index i = 0; i < size; ++i)
-            if (speciesName(i) == species)
-                return i;
-        return size; // in case that species name was not found
+        int ispecies = -1;
+        if(phase.has_value()) {
+            auto species_map = pimpl->node->DC_name_to_xCH_map(species);
+            if(species_map.find(phase.value()) != species_map.end()) {
+                return  species_map[phase.value()];
+            }
+        }
+        else {
+            ispecies =  pimpl->node->DC_name_to_xCH(species);
+        }
+        return (ispecies>=0 ? ispecies : numSpecies()); // in case that element name was not found
+    }
+
+    std::map<std::string, long> ChemicalEngine::indexSpeciesMap(std::string species) const
+    {
+        return pimpl->node->DC_name_to_xCH_map(species);
     }
 
     auto ChemicalEngine::indexSpeciesAll(std::string species) const -> VectorXi
@@ -429,11 +437,8 @@ namespace xGEMS
     // Index of phase searched by name
     auto ChemicalEngine::indexPhase(std::string phase) const -> Index
     {
-        const Index size = numPhases();
-        for (Index i = 0; i < size; ++i)
-            if (phaseName(i) == phase)
-                return i;
-        return size; // in case that phase name was not found
+        auto iphase = pimpl->node->Ph_name_to_xCH(phase);
+        return (iphase>=0 ? iphase : numPhases()); // in case that element name was not found
     }
 
     auto ChemicalEngine::indexPhaseAll(std::string phase) const -> VectorXi
@@ -603,11 +608,11 @@ namespace xGEMS
     // Caution: this may be ambiguous as in GEMS3K, species with the same name
     //   may occur in more than one condensed phase!
     // An overload including phase name is needed!
-    auto ChemicalEngine::setSpeciesAmount(std::string name, double amount) -> void
+    auto ChemicalEngine::setSpeciesAmount(std::string name, double amount, std::optional<std::string> phase) -> void
     {
 
         MatrixConstRef W = formulaMatrix();
-        auto ispecies = indexSpecies(name);
+        auto ispecies = indexSpecies(name, phase);
         // Updates the species amount
         pimpl->node->pCNode()->xDC[ispecies] = amount;
         // Correction of the bIC vector
@@ -694,9 +699,9 @@ namespace xGEMS
         return pimpl->node->pCNode()->xDC[ispecies];
     }
 
-    auto ChemicalEngine::speciesAmount(std::string name) const -> double
+    auto ChemicalEngine::speciesAmount(std::string name, std::optional<std::string> phase) const -> double
     {
-        return pimpl->node->pCNode()->xDC[indexSpecies(name)];
+        return pimpl->node->pCNode()->xDC[indexSpecies(name, phase)];
     }
 
     auto ChemicalEngine::speciesAmounts() const -> VectorConstRef
