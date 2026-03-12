@@ -31,15 +31,15 @@ void exportChemicalEngine(py::module &m)
     auto reequilibrate2 = static_cast<int (ChemicalEngine::*)(bool)>(&ChemicalEngine::reequilibrate);    
 
     auto speciesAmount1 = static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::speciesAmount);
-    auto speciesAmount2 = static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::speciesAmount);
+    auto speciesAmount2 = static_cast<double (ChemicalEngine::*)(std::string, std::optional<std::string>) const>(&ChemicalEngine::speciesAmount);
 
-    auto setSpeciesAmount1 = static_cast<void (ChemicalEngine::*)(std::string, double)>(&ChemicalEngine::setSpeciesAmount);
+    auto setSpeciesAmount1 = static_cast<void (ChemicalEngine::*)(std::string, double, std::optional<std::string>)>(&ChemicalEngine::setSpeciesAmount);
     auto setSpeciesAmount2 = static_cast<void (ChemicalEngine::*)(Index, double)>(&ChemicalEngine::setSpeciesAmount);
 
-    auto setSpeciesUpperLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double)>(&ChemicalEngine::setSpeciesUpperLimit);
+    auto setSpeciesUpperLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double, std::optional<std::string>)>(&ChemicalEngine::setSpeciesUpperLimit);
     auto setSpeciesUpperLimit2 = static_cast<void (ChemicalEngine::*)(Index, double)>(&ChemicalEngine::setSpeciesUpperLimit);
 
-    auto setSpeciesLowerLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double)>(&ChemicalEngine::setSpeciesLowerLimit);
+    auto setSpeciesLowerLimit1 = static_cast<void (ChemicalEngine::*)(std::string, double, std::optional<std::string>)>(&ChemicalEngine::setSpeciesLowerLimit);
     auto setSpeciesLowerLimit2 = static_cast<void (ChemicalEngine::*)(Index, double)>(&ChemicalEngine::setSpeciesLowerLimit);
 
     // Bind ChemicalEngineOptions
@@ -296,11 +296,12 @@ Whether to include zero-amount species/phases in the printed output.
       index = engine.indexElement("O")
       print(index)
   )doc")
-        .def("indexSpecies", &ChemicalEngine::indexSpecies, py::arg("name"),
+        .def("indexSpecies", &ChemicalEngine::indexSpecies, py::arg("name"), py::arg("phase") = py::none(),
              R"doc(
 Returns the index of a species by its name.
 
 :param str name: Name of the species.
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -323,7 +324,19 @@ Returns all indices of species matching the specified name.
   indices = engine.indexSpeciesAll("H2O@")
   print(indices)
 )doc")
+        .def("indexSpeciesMap", &ChemicalEngine::indexSpeciesMap, py::arg("name"),
+             R"doc(
+Returns dictionary of all phase name and corresponding species index.
 
+:param str name: Name of the species.
+
+**Example:**
+
+.. code-block:: python
+
+  dict = engine.indexSpeciesMap("Anorthite")
+  print(dict)
+)doc")
         .def("indexPhase", &ChemicalEngine::indexPhase, py::arg("name"),
              R"doc(
 Returns the index of a phase by its name.
@@ -471,12 +484,13 @@ Cold start resets the initial guess to default values for robust convergence.
   engine.setColdStart()
 )doc")
 
-        .def("setSpeciesUpperLimit", setSpeciesUpperLimit1, py::arg("name"), py::arg("limit"),
+        .def("setSpeciesUpperLimit", setSpeciesUpperLimit1, py::arg("name"), py::arg("limit"), py::arg("phase") = py::none(),
              R"doc(
 Sets the upper limit for a species by its name.
 
 :param str name: Name of the species.
 :param float limit: Upper limit for the species amount.
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -499,12 +513,13 @@ Sets the upper limit for a species by its index.
   engine.setSpeciesUpperLimit(0, 10.0)
 )doc")
 
-        .def("setSpeciesLowerLimit", setSpeciesLowerLimit1, py::arg("name"), py::arg("limit"),
+        .def("setSpeciesLowerLimit", setSpeciesLowerLimit1, py::arg("name"), py::arg("limit"), py::arg("phase") = py::none(),
              R"doc(
 Sets the lower limit for a species by its name.
 
 :param str name: Name of the species.
 :param float limit: Lower limit for the species amount.
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -527,12 +542,13 @@ Sets the lower limit for a species by its index.
   engine.setSpeciesLowerLimit(0, 0.1)
 )doc")
 
-        .def("setSpeciesAmount", setSpeciesAmount1, py::arg("name"), py::arg("amount"),
+        .def("setSpeciesAmount", setSpeciesAmount1, py::arg("name"), py::arg("amount"), py::arg("phase") = py::none(),
              R"doc(
 Sets the amount of a species by its name.
 
 :param str name: Name of the species.
 :param float amount: Amount of the species in moles.
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -561,6 +577,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
 :param int index: Index of the species.
 :param float value: Standard molar Gibbs energy value (J/mol).
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -568,7 +585,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
   engine.setStandardMolarGibbsEnergy(0, -237.13)
 )doc",
-             py::arg("index"), py::arg("value"))
+             py::arg("name"), py::arg("value"), py::arg("phase") = py::none())
 
     .def("setPT", &ChemicalEngine::setPT,
              R"doc(
@@ -841,6 +858,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             Returns the amount of a species by its name (mol).
             
             :param str name: Name of the species.
+            :param str phase: Name of the phase the species was included in. If None get the first index.
             
             **Example:**
             
@@ -848,7 +866,7 @@ Sets the standard molar Gibbs energy for a species (J/mol).
             
                 amount = engine.speciesAmount("H2O@")
                 print(amount)
-            )doc")
+            )doc", py::arg("name"), py::arg("phase") = py::none())
 
         .def("setSpeciesAmounts", &ChemicalEngine::setSpeciesAmounts,
              R"doc(

@@ -362,7 +362,7 @@ namespace xGEMS
      * @brief Returns the index of a species by name.
      *
      * @param species (std::string) Name of the species.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      * @return (Index) Index of the species (or total species if not found).
      *
      * @code
@@ -507,7 +507,7 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param amount (double) New amount in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the amount of "CaSO4@" to 0.01 mol.
@@ -592,7 +592,7 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param amount (double) Upper limit in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the upper limit for "SiO2" to 0.1 mol.
@@ -608,7 +608,7 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param amount (double) Lower limit in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the lower limit for "SiO2" to 0.05 mol.
@@ -652,7 +652,7 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param value (double) Standard molar Gibbs energy in J/mol.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the standard molar Gibbs energy of H2O.
@@ -939,7 +939,7 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @return (double) Amount in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Get the amount of "OH-".

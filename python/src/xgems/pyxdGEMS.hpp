@@ -1,7 +1,7 @@
 // ChemicalFun is a C++ and Python library for of C++ and Python API
 // for Chemical Formula Parser and Reactions Generator.
 //
-// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
+// Copyright (C) 2018-2026 G.D.Miron, D.Kulik, S.Dmytriieva
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,7 +41,8 @@ void exportChemicalEngineMaps(py::module& m)
 Class for equilibrium computations and thermodynamic analysis using dictionaries.
 Gems interface in calculator format for easy  using dictionaries.)doc");
 
-    gems.def(py::init<std::string, bool, bool>(), py::arg("input_file"), py::arg("reset_calc")=false, py::arg("cold_start")=true,
+    gems.def(py::init<std::string, bool, bool>(),
+             py::arg("input_file"), py::arg("reset_calc")=false, py::arg("cold_start")=true,
              R"doc(
   Constructs a ChemicalEngineDicts instance by loading a GEM-Selektor project file.
 
@@ -312,11 +313,13 @@ Clear the amounts of elements (set the default amount for all components).
 )doc")
 
             .def("set_species_G0", &ChemicalEngineMaps::set_species_G0,
+              py::arg("name"), py::arg("value"), py::arg("phase") = py::none(),
              R"doc(
 Sets the standard molar Gibbs energy for a species (J/mol).
 
 :param str name: Species name.
 :param float value: Standard molar Gibbs energy value (J/mol).
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -481,7 +484,8 @@ Sets the standard molar Gibbs energy for a species (J/mol).
 
       print("aq_elements_moles", engine.aq_elements_moles)
   )doc")
-            .def("set_bulk_composition", &ChemicalEngineMaps::set_bulk_composition, py::arg("b_input"), py::arg("min_amount")=1e-15,
+            .def("set_bulk_composition", &ChemicalEngineMaps::set_bulk_composition,
+             py::arg("b_input"), py::arg("min_amount")=1e-15,
              R"doc(
 Sets the amounts of elements (vector b).
 
@@ -509,7 +513,8 @@ Be careful as this will also remove water i.e H+ and OH-.
 
     engine.reset_aq_composition()
 )doc")
-            .def("solids_elements_moles", &ChemicalEngineMaps::solids_elements_moles, py::arg("min_amount_phase")=1e-12, py::arg("min_amount_element")=1e-14,
+            .def("solids_elements_moles", &ChemicalEngineMaps::solids_elements_moles,
+             py::arg("min_amount_phase")=1e-12, py::arg("min_amount_element")=1e-14,
                                R"doc(
   Returns the dictionary of the mole amounts of elements in all solids together.
 
@@ -767,7 +772,8 @@ Get the dictionary of phase species amounts in mol.
       print("phases_volume_frac", engine.phases_volume_frac)
   )doc")
 
-            .def("add_multiple_species_amt", &ChemicalEngineMaps::add_multiple_species_amt, py::arg("input_dict"), py::arg("units")="moles",
+            .def("add_multiple_species_amt", &ChemicalEngineMaps::add_multiple_species_amt,
+             py::arg("input_dict"), py::arg("units")="moles",
              R"doc(
 Add multiple species amounts in the system useful for adding aqueous solution composition.
 
@@ -780,13 +786,15 @@ Add multiple species amounts in the system useful for adding aqueous solution co
 
     engine.add_multiple_species_amt( { 'HCl@':0.01, 'H2@':2 }, "moles")
 )doc")
-            .def("add_species_amt", &ChemicalEngineMaps::add_species_amt, py::arg("species"), py::arg("val"), py::arg("units")="moles",
+            .def("add_species_amt", &ChemicalEngineMaps::add_species_amt,
+             py::arg("species"), py::arg("val"), py::arg("units")="moles", py::arg("phase") = py::none(),
              R"doc(
 Add species amount in the system useful for adding aqueous solution composition.
 
 :param str species: Species symbol.
 :param float val: Species amount in units.
-:param str units: Units of amount ("moles", "kg", "m3"), default "moles".
+:param str units: Units of amount ("moles", "kg", "m3"), default "moles"."
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -794,7 +802,8 @@ Add species amount in the system useful for adding aqueous solution composition.
 
     engine.add_species_amt( 'H2O@', 0.01, "kg")
 )doc")
-            .def("add_element_amt", &ChemicalEngineMaps::add_element_amt, py::arg("element_name"), py::arg("val"), py::arg("units")="moles",
+            .def("add_element_amt", &ChemicalEngineMaps::add_element_amt,
+             py::arg("element_name"), py::arg("val"), py::arg("units")="moles",
              R"doc(
 Add element amount in the system.
 
@@ -808,7 +817,8 @@ Add element amount in the system.
 
     engine.add_element_amt( 'Al', 0.3, "moles")
 )doc")
-            .def("add_multiple_elements_amt", &ChemicalEngineMaps::add_multiple_elements_amt, py::arg("input_dict"), py::arg("units")="moles",
+            .def("add_multiple_elements_amt", &ChemicalEngineMaps::add_multiple_elements_amt,
+             py::arg("input_dict"), py::arg("units")="moles",
              R"doc(
 Add multiple elements amount in the system useful for adding aqueous solution composition
 
@@ -821,7 +831,8 @@ Add multiple elements amount in the system useful for adding aqueous solution co
 
     engine.add_multiple_elements_amt( { 'Na':1.013077, 'Si':1.013077 }, "moles")
 )doc")
-            .def("add_amt_from_formula", &ChemicalEngineMaps::add_amt_from_formula, py::arg("formula"), py::arg("val"), py::arg("units")="moles",
+            .def("add_amt_from_formula", &ChemicalEngineMaps::add_amt_from_formula,
+             py::arg("formula"), py::arg("val"), py::arg("units")="moles",
              R"doc(
 Add multiple elements using user defined formula.
 
@@ -835,7 +846,8 @@ Add multiple elements using user defined formula.
 
     engine.add_amt_from_formula( { 'K':2, 'O':1 }, 4.108*1e-3, "kg")
 )doc")
-            .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula, py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=1e-15,
+            .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula,
+             py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=1e-15,
              R"doc(
 Returns a bulk vector b from user-defined formula (as dict. {"H":2,"O":1} )
 and amount of the formula [object] in units of 'moles' or 'kg'.
@@ -855,7 +867,8 @@ and amount of the formula [object] in units of 'moles' or 'kg'.
     print("b_from_formula", b_from_formula)
 )doc")
 
-            .def("set_multiple_species_lower_bound", &ChemicalEngineMaps::set_multiple_species_lower_bound, py::arg("input_dict"), py::arg("units")="moles",
+            .def("set_multiple_species_lower_bound", &ChemicalEngineMaps::set_multiple_species_lower_bound,
+             py::arg("input_dict"), py::arg("units")="moles",
              R"doc(
 Sets an lower bound for multiple species.
 
@@ -868,7 +881,8 @@ Sets an lower bound for multiple species.
 
     engine.set_multiple_species_lower_bound( {'Mg(CO3)@':30, 'Mg(HCO3)+':40, 'Mg+2':50})
 )doc")
-            .def("set_multiple_species_upper_bound", &ChemicalEngineMaps::set_multiple_species_upper_bound, py::arg("input_dict"), py::arg("units")="moles",
+            .def("set_multiple_species_upper_bound", &ChemicalEngineMaps::set_multiple_species_upper_bound,
+             py::arg("input_dict"), py::arg("units")="moles",
              R"doc(
 Sets an upper bounds for multiple species.
 
@@ -881,14 +895,16 @@ Sets an upper bounds for multiple species.
 
     engine.set_multiple_species_upper_bound( {'Mg(CO3)@':300, 'Mg(HCO3)+':400, 'Mg+2':500})
 )doc")
-            .def("set_species_lower_bound", py::overload_cast<const std::string&, double, const std::string&>
-                 (&ChemicalEngineMaps::set_species_lower_bound), py::arg("species"), py::arg("val"), py::arg("units")="moles",
+        .def("set_species_lower_bound", py::overload_cast<const std::string&, double, const std::string&, std::optional<std::string> >
+                 (&ChemicalEngineMaps::set_species_lower_bound),
+             py::arg("species"), py::arg("val"), py::arg("units")="moles", py::arg("phase") = py::none(),
              R"doc(
 Sets a lower bound for a species identified by name.
 
 :param str species: Species name.
 :param float val: Lower limit in units.
-:param str units: Units of amount ("moles", "kg", "m3"), default "moles".
+:param str units: Units of amount ("moles", "kg", "m3"), default "moles"."
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -897,7 +913,8 @@ Sets a lower bound for a species identified by name.
     engine.set_species_lower_bound( 'Ca(HCO3)+', 200, "moles")
 )doc")
             .def("set_species_lower_bound", py::overload_cast<Index, double, const std::string&>
-                 (&ChemicalEngineMaps::set_species_lower_bound), py::arg("ispecies"), py::arg("val"), py::arg("units")="moles",
+                 (&ChemicalEngineMaps::set_species_lower_bound),
+             py::arg("ispecies"), py::arg("val"), py::arg("units")="moles",
              R"doc(
 Sets a lower bound (minimum amount allowed to form) for a species identified by its index (phase depended case).
 
@@ -911,14 +928,16 @@ Sets a lower bound (minimum amount allowed to form) for a species identified by 
 
     engine.set_species_lower_bound( 8, 400, "moles")
 )doc")
-            .def("set_species_upper_bound", py::overload_cast<const std::string&, double, const std::string&>
-                 (&ChemicalEngineMaps::set_species_upper_bound), py::arg("species"), py::arg("val"), py::arg("units")="moles",
+        .def("set_species_upper_bound", py::overload_cast<const std::string&, double, const std::string&, std::optional<std::string>>
+                 (&ChemicalEngineMaps::set_species_upper_bound),
+             py::arg("species"), py::arg("val"), py::arg("units")="moles", py::arg("phase") = py::none(),
              R"doc(
 Sets an upper bound for a species identified by name.
 
 :param str species: Species name.
 :param float val: Upper limit in units.
 :param str units: Units of amount ("moles", "kg", "m3"), default "moles".
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -927,7 +946,8 @@ Sets an upper bound for a species identified by name.
     engine.set_species_upper_bound( 'CaOH+', 500, "kg")
 )doc")
             .def("set_species_upper_bound", py::overload_cast<Index, double, const std::string&>
-                 (&ChemicalEngineMaps::set_species_upper_bound), py::arg("ispecies"), py::arg("val"), py::arg("units")="moles",
+                 (&ChemicalEngineMaps::set_species_upper_bound),
+             py::arg("ispecies"), py::arg("val"), py::arg("units")="moles",
              R"doc(
 Sets an upper bound (maximum amount allowed to form) for a species identified by its index (phase depended case).
 
@@ -942,7 +962,8 @@ Sets an upper bound (maximum amount allowed to form) for a species identified by
     engine.set_species_lower_bound( 8, 400, "moles")
 )doc")
 
-            .def("suppress_phase", &ChemicalEngineMaps::suppress_phase, py::arg("phase_name"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
+            .def("suppress_phase", &ChemicalEngineMaps::suppress_phase,
+             py::arg("phase_name"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
              R"doc(
 Suppresses a phase in GEM calculation.
 
@@ -956,7 +977,8 @@ Suppresses a phase in GEM calculation.
 
     engine.suppress_phase('gas_gen')
 )doc")
-            .def("suppress_multiple_phases", &ChemicalEngineMaps::suppress_multiple_phases, py::arg("phase_name_list"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
+            .def("suppress_multiple_phases", &ChemicalEngineMaps::suppress_multiple_phases,
+             py::arg("phase_name_list"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
              R"doc(
 Suppresses multiple phases in calculation as given in phase names list.
 
@@ -970,13 +992,15 @@ Suppresses multiple phases in calculation as given in phase names list.
 
     engine.suppress_multiple_phases(['Dolomite-dis', 'Tin'])
 )doc")
-            .def("suppress_species", &ChemicalEngineMaps::suppress_species, py::arg("species_name"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
+            .def("suppress_species", &ChemicalEngineMaps::suppress_species, py::arg("species_name"),
+             py::arg("min_amount")=0, py::arg("max_amount")=1e-15, py::arg("phase") = py::none(),
              R"doc(
 Suppresses a specie in calculation.
 
 :param str species_name: Species name.
 :param float min_amount: Lower amount of specie in mol, default 0.
 :param float max_amount: Upper amount of specie in mol, default 1e-15.
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 
@@ -984,7 +1008,8 @@ Suppresses a specie in calculation.
 
     engine.suppress_species('Ca(CO3)@')
 )doc")
-            .def("suppress_multiple_species", &ChemicalEngineMaps::suppress_multiple_species, py::arg("species_list"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
+            .def("suppress_multiple_species", &ChemicalEngineMaps::suppress_multiple_species,
+             py::arg("species_list"), py::arg("min_amount")=0, py::arg("max_amount")=1e-15,
              R"doc(
 Suppresses multiple species in in GEM calculation as given in species name list.
 
@@ -1023,10 +1048,12 @@ Activate multiple suppressed phases given in list.
     engine.activate_multiple_phases(['Dolomite-dis', 'Tin'])
 )doc")
             .def("activate_species", &ChemicalEngineMaps::activate_species,
+             py::arg("species_name"), py::arg("phase") = py::none(),
              R"doc(
 Activate a suppressed species in phase.
 
 :param str species_name: Species name.
+:param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
 

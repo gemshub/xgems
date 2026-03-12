@@ -140,7 +140,7 @@ public:
      *
      * @param symbol (std::string) Species symbol.
      * @param value (double) Standard molar Gibbs energy in J/mol.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.set_species_G0("H2O", -237140); // Value in J/mol.
@@ -739,7 +739,7 @@ public:
      * @param species (std::string) Species symbol.
      * @param val (double) Species amount in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.add_species_amt("H2O@", 0.01, "kg");
@@ -831,7 +831,7 @@ public:
      * @param name (std::string) Species name.
      * @param val (double) Lower limit in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.set_species_lower_bound( "Ca(HCO3)+", 200, "moles");
@@ -846,7 +846,7 @@ public:
      * @param name (std::string) Species name.
      * @param val (double) Upper limit in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.set_species_upper_bound("CaOH+", 500, "kg");
@@ -915,7 +915,7 @@ public:
      * @param species_name (std::string) Species name.
      * @param min_amount (double) Lower amount of specie in mol, default 0.
      * @param max_amount (double) Upper amount of specie in mol, default 1e-15.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.suppress_species("Ca(CO3)@");
@@ -974,7 +974,7 @@ public:
      * @brief Activate a suppressed species in phase.
      *
      * @param species_name (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.activate_species("Ca(CO3)@");
