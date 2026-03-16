@@ -442,7 +442,7 @@ namespace xGEMS
      * @brief Returns the index of the first species in a specified phase.
      *
      * @param iphase (Index) Index of the phase.
-     * @return (Index) Index of the first species in that phase.
+     * @return (Index) Index of the first species in that phase or numSpecies if illegal iphase.
      *
      * @code
      * // Example: Get the first species index in phase 0.

@@ -575,7 +575,7 @@ Sets the amount of a species by its index.
              R"doc(
 Sets the standard molar Gibbs energy for a species (J/mol).
 
-:param int index: Index of the species.
+:param str name: Name of the species.
 :param float value: Standard molar Gibbs energy value (J/mol).
 :param str phase: Name of the phase the species was included in. If None get the first index.
 

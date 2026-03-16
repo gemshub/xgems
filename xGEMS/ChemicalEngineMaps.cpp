@@ -442,25 +442,29 @@ auto ChemicalEngineMaps::add_multiple_species_amt(const ValuesMap& input_dict, c
 auto ChemicalEngineMaps::add_species_amt(const std::string& species, double val, const std::string& units, std::optional<std::string> phase) -> void
 {
     auto species_idx =gem.indexSpecies(species, phase);
-    if( units == "kg") {
-        val/=m_species_molar_mass[species];
+    if(species_idx<nspecies()) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[species];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[species];
+        }
+        MatrixConstRef W = gem.formulaMatrix();
+        MatrixConstRef Wp = W(all, species_idx);
+        b_amounts += Wp*val;
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[species];
-    }
-    MatrixConstRef W = gem.formulaMatrix();
-    MatrixConstRef Wp = W(all, species_idx);
-    b_amounts += Wp*val;
 }
 
 // add element amount in the system units = moles, kg
 auto ChemicalEngineMaps::add_element_amt(const std::string& element_name, double val, const std::string& units) -> void
 {
-    if( units  == "kg" ) {
-        val /= m_element_molar_masses[element_name];
-    }
     auto el_index = gem.indexElement(element_name);
-    b_amounts[el_index] += val;
+    if(el_index<nelements()) {
+        if( units  == "kg" ) {
+            val /= m_element_molar_masses[element_name];
+        }
+        b_amounts[el_index] += val;
+    }
 }
 
 //  add elements amount in the system useful for adding aqueous solution composition
