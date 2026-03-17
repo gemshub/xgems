@@ -19,20 +19,92 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-using namespace std;
 
 // xGEMS includes
 #include "xGEMS/ChemicalEngineMaps.hpp"
+#include <xGEMS/ChemicalEngine.hpp>
 
-void print_map(const std::string title, const xGEMS::ValuesMap& data)
+template <class T>
+void print_map(const std::string title, const std::map<std::string, T>& data)
 {
     std::cout << "\n" << title << std::endl;
     for(const auto& sp: data) {
         std::cout<< sp.first << ":" << sp.second << std::endl;
     }
 }
+static void demo_dict();
+static void demo_warnings_map();
+static void demo_warnings();
+
 
 int main(int argc, char **argv)
+{
+    //demo_dict();
+    //demo_warnings_map();
+    demo_warnings();
+    return 0;
+}
+
+void demo_warnings_map()
+{
+
+    auto engine = xGEMS::ChemicalEngineMaps("resources/solvus2/series1-dat.lst");
+    std::cout << engine.equilibrate() << std::endl;
+
+    print_map("engine.species_molar_mass()", engine.species_molar_mass());
+
+    print_map("engine.element_molar_masses()", engine.element_molar_masses());
+
+    print_map("engine.phases_moles()", engine.phases_moles());
+
+}
+
+void demo_warnings()
+{
+
+    xGEMS::ChemicalEngine engine("resources/solvus2/series1-dat.lst");
+
+    auto T = engine.temperature();
+    auto P = engine.pressure();
+    auto b = engine.elementAmounts();
+    engine.equilibrate(T, P, b);
+
+    // Test setPT
+    bool no_error = engine.setPT(101325, 298.15);
+    std::cout << (no_error ? "PT set correctly" : "PT error") << std::endl;
+    no_error = engine.setPT(50000000, 673.15);
+    std::cout << (no_error ? "PT set correctly" : "PT error") << std::endl;
+
+    //Test long names
+    auto ispecies1 = engine.indexSpecies("Anorthite_long_substance_name");
+    auto ispecies2 = engine.indexSpecies("Anorthite_long_substance_name", "Plagioclase");
+    auto ispecies3 = engine.indexSpecies("Anorthite");
+    std::cout << ispecies1 << " " << ispecies2 << " " <<ispecies3 << std::endl;
+    std::cout << engine.speciesName(ispecies1) << " " << engine.speciesName(ispecies2) << " " <<engine.speciesName(ispecies3) << std::endl;
+
+    auto iphase1= engine.indexPhase("Kaolinite_long_phase_name");
+    std::cout << iphase1 << " " << engine.phaseName(iphase1) << std::endl;
+    auto iphase2= engine.indexPhase("Kaolinite");
+    std::cout << iphase2 << " " << engine.phaseName(iphase2) << std::endl;
+
+    //indexSpecies dependen on phase optional
+    std::cout << engine.speciesAmount(ispecies1) << " " << engine.speciesAmount(ispecies2) << std::endl;
+    engine.setSpeciesAmount("Anorthite_long_substance_name", 10);
+    engine.setSpeciesAmount("Anorthite_long_substance_name", 20, "Plagioclase");
+    std::cout << engine.speciesAmount(ispecies1) << " " << engine.speciesAmount(ispecies2) << std::endl;
+
+    print_map("Albite indexes", engine.indexSpeciesMap("Albite"));
+    print_map("Quartz indexes", engine.indexSpeciesMap("Quartz"));
+
+    // warning messages required
+    std::cout << engine.phaseSpecificVolume(2) << std::endl;
+    std::cout << engine.phaseSpecificVolume(30) << std::endl;
+    std::cout << engine.phaseSpecificVolume(-1) << std::endl;
+
+}
+
+
+void demo_dict()
 {
     auto engine = xGEMS::ChemicalEngineMaps("resources/CalciteBC/CalciteBC-dat.lst");
 
