@@ -30,6 +30,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <optional>
+#include <map>
 
 // xGEMS includes (assumed to define Index and Eigen-based vector/matrix types)
 #include <xGEMS/Index.hpp>
@@ -360,6 +362,7 @@ namespace xGEMS
      * @brief Returns the index of a species by name.
      *
      * @param species (std::string) Name of the species.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      * @return (Index) Index of the species (or total species if not found).
      *
      * @code
@@ -368,7 +371,20 @@ namespace xGEMS
      * std::cout << "Index of H2O@: " << idx << std::endl;
      * @endcode
      */
-    auto indexSpecies(std::string species) const -> Index;
+    auto indexSpecies(std::string species, std::optional<std::string> phase = std::nullopt) const -> Index;
+
+    /**
+     * @brief Returns all species indexes and the corresponding phase names matching the specified name.
+     *
+     * @param species (std::string) Name of the species.
+     * @return (Map) Dictionary of phases and corresponding species index.
+     *
+     * @code
+     * // Example: Retrieve all phase and indices where the species "Anorthite" appears.
+     * std::map<std::string, long int> allIndices = engine.indexSpeciesAll("Anorthite");
+     * @endcode
+     */
+    auto indexSpeciesMap(std::string species) const -> std::map<std::string, long int>;
 
     /**
      * @brief Returns all indices of species matching the specified name.
@@ -426,7 +442,7 @@ namespace xGEMS
      * @brief Returns the index of the first species in a specified phase.
      *
      * @param iphase (Index) Index of the phase.
-     * @return (Index) Index of the first species in that phase.
+     * @return (Index) Index of the first species in that phase or numSpecies if illegal iphase.
      *
      * @code
      * // Example: Get the first species index in phase 0.
@@ -491,13 +507,14 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param amount (double) New amount in mol.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the amount of "CaSO4@" to 0.01 mol.
      * engine.setSpeciesAmount("CaSO4@", 0.01);
      * @endcode
      */
-    auto setSpeciesAmount(std::string name, double amount) -> void;
+    auto setSpeciesAmount(std::string name, double amount, std::optional<std::string> phase = std::nullopt) -> void;
 
     /**
      * @brief Sets the amount for a species identified by its index.
@@ -575,13 +592,14 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param amount (double) Upper limit in mol.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the upper limit for "SiO2" to 0.1 mol.
      * engine.setSpeciesUpperLimit("SiO2", 0.1);
      * @endcode
      */
-    auto setSpeciesUpperLimit(std::string name, double amount) -> void;
+    auto setSpeciesUpperLimit(std::string name, double amount, std::optional<std::string> phase = std::nullopt) -> void;
 
     /**
      * @brief Sets a lower bound for a species identified by name.
@@ -590,13 +608,14 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param amount (double) Lower limit in mol.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the lower limit for "SiO2" to 0.05 mol.
      * engine.setSpeciesLowerLimit("SiO2", 0.05);
      * @endcode
      */
-    auto setSpeciesLowerLimit(std::string name, double amount) -> void;
+    auto setSpeciesLowerLimit(std::string name, double amount, std::optional<std::string> phase = std::nullopt) -> void;
 
     /**
      * @brief Sets an upper bound (maximum amount allowed to form) for a species identified by its index.
@@ -633,13 +652,14 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @param value (double) Standard molar Gibbs energy in J/mol.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the standard molar Gibbs energy of H2O.
      * engine.setStandardMolarGibbsEnergy("H2O", -237140); // Value in J/mol.
      * @endcode
      */
-    auto setStandardMolarGibbsEnergy(std::string name, double value) -> void;
+    auto setStandardMolarGibbsEnergy(std::string name, double value, std::optional<std::string> phase = std::nullopt) -> void;
 
     /**
      * @brief Sets upper limits for all species.
@@ -919,13 +939,14 @@ namespace xGEMS
      *
      * @param name (std::string) Species name.
      * @return (double) Amount in mol.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Get the amount of "OH-".
      * double waterAmt = engine.speciesAmount("OH-");
      * @endcode
      */
-    auto speciesAmount(std::string name) const -> double;
+    auto speciesAmount(std::string name, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the upper limits for all species.

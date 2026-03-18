@@ -19,21 +19,21 @@ DEFINES += USE_THERMOFUN
 DEFINES += USE_THERMO_LOG
 #DEFINES += OVERFLOW_EXCEPT  #compile with nan inf exceptions
 
-#GEMS3K_CPP = ../../standalone/GEMS3K
-#GEMS3K_H   = $$GEMS3K_CPP
-#DEPENDPATH += $$GEMS3K_H
-#INCLUDEPATH += $$GEMS3K_H
+GEMS3K_CPP = ../../GEMS3K/GEMS3K
+GEMS3K_H   = $$GEMS3K_CPP
+DEPENDPATH += $$GEMS3K_H
+INCLUDEPATH += $$GEMS3K_H
 #GEM2MT_CPP = ../../standalone/nodearray-gem
 #GEM2MT_H   = $$GEM2MT_CPP
 #DEPENDPATH += $$GEM2MT_H
 #INCLUDEPATH += $$GEM2MT_H
 
-#include($$GEMS3K_CPP/gems3k.pri)
+include($$GEMS3K_CPP/gems3k.pri)
 #include($$GEM2MT_CPP/gem2mt.pri)
 
 OBJECTS_DIR = obj
 
-LIBS += -lGEMS3K
+#LIBS += -lGEMS3K
 contains(DEFINES, USE_THERMOFUN) {
     LIBS += -lThermoFun -lChemicalFun
 } ## end USE_THERMOFUN
