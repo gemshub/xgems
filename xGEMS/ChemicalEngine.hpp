@@ -276,6 +276,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the number of species in a given phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Index of the phase.
      * @return (Index) Number of species in that phase.
@@ -289,7 +290,37 @@ namespace xGEMS
     auto numSpeciesInPhase(Index iphase) const -> Index;
 
     /**
+     * @brief Returns the number of species in a phase identified by name.
+     *
+     * @param phase (std::string) Phases name.
+     * @return (Index) Number of species in that phase.
+     *
+     * @code
+     * // Example: For phase with index 0.
+     * Index sppInPhase = engine.numSpeciesInPhase("aq_gen");
+     * std::cout << "Species in phase aq_gen: " << sppInPhase << std::endl;
+     * @endcode
+     */
+    auto numSpeciesInPhase(std::string phase) const -> Index;
+
+    /**
+     * @brief Returns the number of species in a given phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Index of the phase.
+     * @return (Index) Number of species in that phase.
+     *
+     * @code
+     * // Example: For phase with index 0.
+     * Index sppInPhase = engine.numSpeciesInPhase_i(0);
+     * std::cout << "Species in phase 0: " << sppInPhase << std::endl;
+     * @endcode
+     */
+    auto numSpeciesInPhase_i(Index iphase) const -> Index;
+
+    /**
      * @brief Returns the name of an element.
+     * Access specified element with bounds checking.
      *
      * @param ielement (Index) Index of the element.
      * @return (std::string) Element name.
@@ -303,7 +334,23 @@ namespace xGEMS
     auto elementName(Index ielement) const -> std::string;
 
     /**
+     * @brief Returns the name of an element.
+     * Access specified element without bounds checking.
+     *
+     * @param ielement (Index) Index of the element.
+     * @return (std::string) Element name.
+     *
+     * @code
+     * // Example: Get the name of the first element.
+     * std::string element = engine.elementName_i(0);
+     * std::cout << "Element 0: " << element << std::endl;
+     * @endcode
+     */
+    auto elementName_i(Index ielement) const -> std::string;
+
+    /**
      * @brief Returns the name of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Index of the species.
      * @return (std::string) Species name.
@@ -317,7 +364,23 @@ namespace xGEMS
     auto speciesName(Index ispecies) const -> std::string;
 
     /**
+     * @brief Returns the name of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Index of the species.
+     * @return (std::string) Species name.
+     *
+     * @code
+     * // Example: Retrieve the name of species 0.
+     * std::string spName = engine.speciesName_i(0);
+     * std::cout << "Species 0: " << spName << std::endl;
+     * @endcode
+     */
+    auto speciesName_i(Index ispecies) const -> std::string;
+
+    /**
      * @brief Returns the electrical charge of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Index of the species.
      * @return (double) Charge of the species.
@@ -331,7 +394,38 @@ namespace xGEMS
     auto speciesCharge(Index ispecies) const -> double;
 
     /**
+     * @brief Returns the electrical charge of a species identified by name.
+     *
+     * @param species (std::string) Species name.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @return (double) Charge of the species.
+     *
+     * @code
+     * // Example: Get the charge of species with index 0.
+     * double charge = engine.speciesCharge("SiO2");
+     * std::cout << "Charge: " << charge << std::endl;
+     * @endcode
+     */
+    auto speciesCharge(std::string species, std::optional<std::string> phase) const -> double;
+
+    /**
+     * @brief Returns the electrical charge of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Index of the species.
+     * @return (double) Charge of the species.
+     *
+     * @code
+     * // Example: Get the charge of species with index 0.
+     * double charge = engine.speciesCharge_i(0);
+     * std::cout << "Charge: " << charge << std::endl;
+     * @endcode
+     */
+    auto speciesCharge_i(Index ispecies) const -> double;
+
+    /**
      * @brief Returns the name of the phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Index of the phase.
      * @return (std::string) Phase name.
@@ -343,6 +437,21 @@ namespace xGEMS
      * @endcode
      */
     auto phaseName(Index iphase) const -> std::string;
+
+    /**
+     * @brief Returns the name of the phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Index of the phase.
+     * @return (std::string) Phase name.
+     *
+     * @code
+     * // Example: Retrieve the name of phase 0.
+     * std::string phase = engine.phaseName_i(0);
+     * std::cout << "Phase 0: " << phase << std::endl;
+     * @endcode
+     */
+    auto phaseName_i(Index iphase) const -> std::string;
 
     /**
      * @brief Returns the index of an element by name.
@@ -440,6 +549,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the index of the first species in a specified phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Index of the phase.
      * @return (Index) Index of the first species in that phase or numSpecies if illegal iphase.
@@ -450,6 +560,33 @@ namespace xGEMS
      * @endcode
      */
     auto indexFirstSpeciesInPhase(Index iphase) const -> Index;
+
+    /**
+     * @brief Returns the index of the first species in a specified by name phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (Index) Index of the first species in that phase or numSpecies if illegal iphase.
+     *
+     * @code
+     * // Example: Get the first species index in phase aq_gen.
+     * Index firstSpec = engine.indexFirstSpeciesInPhase("aq_gen");
+     * @endcode
+     */
+    auto indexFirstSpeciesInPhase(std::string phase) const -> Index;
+
+    /**
+     * @brief Returns the index of the first species in a specified phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Index of the phase.
+     * @return (Index) Index of the first species in that phase or numSpecies if illegal iphase.
+     *
+     * @code
+     * // Example: Get the first species index in phase 0.
+     * Index firstSpec = engine.indexFirstSpeciesInPhase_i(0);
+     * @endcode
+     */
+    auto indexFirstSpeciesInPhase_i(Index iphase) const -> Index;
 
     /**
      * @brief Returns molar masses of elements.
@@ -518,6 +655,7 @@ namespace xGEMS
 
     /**
      * @brief Sets the amount for a species identified by its index.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Index of the species.
      * @param amount (double) New amount in mol.
@@ -528,6 +666,20 @@ namespace xGEMS
      * @endcode
      */
     auto setSpeciesAmount(Index ispecies, double amount) -> void;
+
+    /**
+     * @brief Sets the amount for a species identified by its index.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Index of the species.
+     * @param amount (double) New amount in mol.
+     *
+     * @code
+     * // Example: Set species at index 0 to 0.01 mol.
+     * engine.setSpeciesAmount_i(0, 0.01);
+     * @endcode
+     */
+    auto setSpeciesAmount_i(Index ispecies, double amount) -> void;
 
     /**
      * @brief Sets the options for the ChemicalEngine.
@@ -619,6 +771,7 @@ namespace xGEMS
 
     /**
      * @brief Sets an upper bound (maximum amount allowed to form) for a species identified by its index.
+     * Access specified element with bounds checking.
      *
      * If amount < 0, resets to default 1e6.
      *
@@ -634,6 +787,7 @@ namespace xGEMS
 
     /**
      * @brief Sets a lower bound (minimum amount allowed to form) for a species identified by its index.
+     * Access specified element with bounds checking.
      *
      * If amount < 0, resets to default 0.
      *
@@ -648,6 +802,38 @@ namespace xGEMS
     auto setSpeciesLowerLimit(Index ispecies, double amount) -> void;
 
     /**
+     * @brief Sets an upper bound (maximum amount allowed to form) for a species identified by its index.
+     * Access specified element without bounds checking.
+     *
+     * If amount < 0, resets to default 1e6.
+     *
+     * @param ispecies (Index) Species index.
+     * @param amount (double) Upper limit in mol.
+     *
+     * @code
+     * // Example: Set upper limit for species index 0.
+     * engine.setSpeciesUpperLimit_i(0, 0.1);
+     * @endcode
+     */
+    auto setSpeciesUpperLimit_i(Index ispecies, double amount) -> void;
+
+    /**
+     * @brief Sets a lower bound (minimum amount allowed to form) for a species identified by its index.
+     * Access specified element without bounds checking.
+     *
+     * If amount < 0, resets to default 0.
+     *
+     * @param ispecies (Index) Species index.
+     * @param amount (double) Lower limit in mol.
+     *
+     * @code
+     * // Example: Set lower limit for species index 0.
+     * engine.setSpeciesLowerLimit_i(0, 0.05);
+     * @endcode
+     */
+    auto setSpeciesLowerLimit_i(Index ispecies, double amount) -> void;
+
+    /**
      * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
      *
      * @param name (std::string) Species name.
@@ -660,6 +846,34 @@ namespace xGEMS
      * @endcode
      */
     auto setStandardMolarGibbsEnergy(std::string name, double value, std::optional<std::string> phase = std::nullopt) -> void;
+
+    /**
+     * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
+     * Access specified element with bounds checking.
+     *
+     * @param ispecies (Index) Index of the species.
+     * @param value (double) Standard molar Gibbs energy in J/mol.
+     *
+     * @code
+     * // Example: Set the standard molar Gibbs energy of H2O.
+     * engine.setStandardMolarGibbsEnergy(0, -237.13); // Value in J/mol.
+     * @endcode
+     */
+    auto setStandardMolarGibbsEnergy(Index ispecies, double value) -> void;
+
+    /**
+     * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Index of the species.
+     * @param value (double) Standard molar Gibbs energy in J/mol.
+     *
+     * @code
+     * // Example: Set the standard molar Gibbs energy of H2O.
+     * engine.setStandardMolarGibbsEnergy_i(0, -237.13); // Value in J/mol.
+     * @endcode
+     */
+    auto setStandardMolarGibbsEnergy_i(Index ispecies, double value) -> void;
 
     /**
      * @brief Sets upper limits for all species.
@@ -875,6 +1089,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the amounts of elements in a specified phase.
+     * Access specified element with bounds checking.
      *
      * The order of the elements in the vector is based on the index of elements in the chemical system.
      *
@@ -889,6 +1104,41 @@ namespace xGEMS
      * @endcode
      */
     auto elementAmountsInPhase(Index iphase) const -> Vector;
+
+    /**
+     * @brief Returns the amounts of elements in a specified phase.
+     *
+     * The order of the elements in the vector is based on the index of elements in the chemical system.
+     *
+     * @param phase Name of the phase.
+     * @return A vector containing the amounts of each element in the phase (in mol).
+     *
+     * **Example usage:**
+     * @code
+     * // Retrieve the element amounts in phase aq_gen.
+     * Eigen::VectorXd elementAmounts = engine.elementAmountsInPhase("aq_gen");
+     * std::cout << "Element amounts in phase aq_gen: " << elementAmounts.transpose() << std::endl;
+     * @endcode
+     */
+    auto elementAmountsInPhase(std::string phase) const -> Vector;
+
+    /**
+     * @brief Returns the amounts of elements in a specified phase.
+     * Access specified element without bounds checking.
+     *
+     * The order of the elements in the vector is based on the index of elements in the chemical system.
+     *
+     * @param iphase Index of the phase.
+     * @return A vector containing the amounts of each element in the phase (in mol).
+     *
+     * **Example usage:**
+     * @code
+     * // Retrieve the element amounts in phase index 0.
+     * Eigen::VectorXd elementAmounts = engine.elementAmountsInPhase_i(0);
+     * std::cout << "Element amounts in phase 0: " << elementAmounts.transpose() << std::endl;
+     * @endcode
+     */
+    auto elementAmountsInPhase_i(Index iphase) const -> Vector;
 
     /**
      * @brief Returns the amounts of elements in a specified group of species.
@@ -923,6 +1173,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the amount of a species by index.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Index of the species.
      * @return (double) Amount in mol.
@@ -947,6 +1198,20 @@ namespace xGEMS
      * @endcode
      */
     auto speciesAmount(std::string name, std::optional<std::string> phase = std::nullopt) const -> double;
+
+    /**
+     * @brief Returns the amount of a species by index.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Index of the species.
+     * @return (double) Amount in mol.
+     *
+     * @code
+     * // Example: Get the species amount at index 0.
+     * double amount = engine.speciesAmount_i(0);
+     * @endcode
+     */
+    auto speciesAmount_i(Index ispecies) const -> double;
 
     /**
      * @brief Returns the upper limits for all species.
@@ -1048,6 +1313,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the standard molar Gibbs energy of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Species index.
      * @return (double) Standard molar Gibbs energy in J/mol.
@@ -1060,7 +1326,36 @@ namespace xGEMS
     auto standardMolarGibbsEnergy(Index ispecies) const -> double;
 
     /**
+     * @brief Returns the standard molar Gibbs energy of a species.
+     *
+     * @param species (std::string) Species name.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @return (double) Standard molar Gibbs energy in J/mol.
+     *
+     * @code
+     * // Example: For species 0.
+     * double stdGibbs = engine.standardMolarGibbsEnergy("SiO2");
+     * @endcode
+     */
+    auto standardMolarGibbsEnergy(std::string species, std::optional<std::string> phase) const -> double;
+
+    /**
+     * @brief Returns the standard molar Gibbs energy of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Species index.
+     * @return (double) Standard molar Gibbs energy in J/mol.
+     *
+     * @code
+     * // Example: For species 0.
+     * double stdGibbs = engine.standardMolarGibbsEnergy_i(0);
+     * @endcode
+     */
+    auto standardMolarGibbsEnergy_i(Index ispecies) const -> double;
+
+    /**
      * @brief Returns the standard molar enthalpy of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Species index.
      * @return (double) Standard molar enthalpy in J/mol.
@@ -1072,7 +1367,34 @@ namespace xGEMS
     auto standardMolarEnthalpy(Index ispecies) const -> double;
 
     /**
+     * @brief Returns the standard molar enthalpy of a species.
+     *
+     * @param species (std::string) Species name.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @return (double) Standard molar enthalpy in J/mol.
+     *
+     * @code
+     * double stdEnthalpy = engine.standardMolarEnthalpy("SiO2");
+     * @endcode
+     */
+    auto standardMolarEnthalpy(std::string species, std::optional<std::string> phase) const -> double;
+
+    /**
+     * @brief Returns the standard molar enthalpy of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Species index.
+     * @return (double) Standard molar enthalpy in J/mol.
+     *
+     * @code
+     * double stdEnthalpy = engine.standardMolarEnthalpy_i(0);
+     * @endcode
+     */
+    auto standardMolarEnthalpy_i(Index ispecies) const -> double;
+
+    /**
      * @brief Returns the standard molar volume of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Species index.
      * @return (double) Standard molar volume in m³/mol.
@@ -1084,7 +1406,34 @@ namespace xGEMS
     auto standardMolarVolume(Index ispecies) const -> double;
 
     /**
+     * @brief Returns the standard molar volume of a species.
+     *
+     * @param species (std::string) Species name.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @return (double) Standard molar volume in m³/mol.
+     *
+     * @code
+     * double stdVolume = engine.standardMolarVolume("SiO2");
+     * @endcode
+     */
+    auto standardMolarVolume(std::string species, std::optional<std::string> phase) const -> double;
+
+    /**
+     * @brief Returns the standard molar volume of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Species index.
+     * @return (double) Standard molar volume in m³/mol.
+     *
+     * @code
+     * double stdVolume = engine.standardMolarVolume_i(0);
+     * @endcode
+     */
+    auto standardMolarVolume_i(Index ispecies) const -> double;
+
+    /**
      * @brief Returns the standard molar entropy of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Species index.
      * @return (double) Standard molar entropy in J/(mol·K).
@@ -1096,7 +1445,34 @@ namespace xGEMS
     auto standardMolarEntropy(Index ispecies) const -> double;
 
     /**
+     * @brief Returns the standard molar entropy of a species.
+     *
+     * @param species (std::string) Species name.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @return (double) Standard molar entropy in J/(mol·K).
+     *
+     * @code
+     * double stdEntropy = engine.standardMolarEntropy("SiO2");
+     * @endcode
+     */
+    auto standardMolarEntropy(std::string species, std::optional<std::string> phase) const -> double;
+
+    /**
+     * @brief Returns the standard molar entropy of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Species index.
+     * @return (double) Standard molar entropy in J/(mol·K).
+     *
+     * @code
+     * double stdEntropy = engine.standardMolarEntropy_i(0);
+     * @endcode
+     */
+    auto standardMolarEntropy_i(Index ispecies) const -> double;
+
+    /**
      * @brief Returns the standard molar isobaric heat capacity of a species.
+     * Access specified element with bounds checking.
      *
      * @param ispecies (Index) Species index.
      * @return (double) Heat capacity in J/(mol·K).
@@ -1108,7 +1484,34 @@ namespace xGEMS
     auto standardMolarHeatCapacityConstP(Index ispecies) const -> double;
 
     /**
+     * @brief Returns the standard molar isobaric heat capacity of a species.
+     *
+     * @param species (std::string) Species name.
+     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @return (double) Heat capacity in J/(mol·K).
+     *
+     * @code
+     * double heatCap = engine.standardMolarHeatCapacityConstP("SiO2");
+     * @endcode
+     */
+    auto standardMolarHeatCapacityConstP(std::string species, std::optional<std::string> phase) const -> double;
+
+    /**
+     * @brief Returns the standard molar isobaric heat capacity of a species.
+     * Access specified element without bounds checking.
+     *
+     * @param ispecies (Index) Species index.
+     * @return (double) Heat capacity in J/(mol·K).
+     *
+     * @code
+     * double heatCap = engine.standardMolarHeatCapacityConstP_i(0);
+     * @endcode
+     */
+    auto standardMolarHeatCapacityConstP_i(Index ispecies) const -> double;
+
+    /**
      * @brief Returns the molar Gibbs energy of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Molar Gibbs energy in J/mol.
@@ -1120,7 +1523,33 @@ namespace xGEMS
     auto phaseMolarGibbsEnergy(Index iphase) const -> double;
 
     /**
+     * @brief Returns the molar Gibbs energy of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Molar Gibbs energy in J/mol.
+     *
+     * @code
+     * double phaseGibbs = engine.phaseMolarGibbsEnergy("aq_gen");
+     * @endcode
+     */
+    auto phaseMolarGibbsEnergy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the molar Gibbs energy of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Molar Gibbs energy in J/mol.
+     *
+     * @code
+     * double phaseGibbs = engine.phaseMolarGibbsEnergy_i(0);
+     * @endcode
+     */
+    auto phaseMolarGibbsEnergy_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the molar enthalpy of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Molar enthalpy in J/mol.
@@ -1132,7 +1561,33 @@ namespace xGEMS
     auto phaseMolarEnthalpy(Index iphase) const -> double;
 
     /**
+     * @brief Returns the molar enthalpy of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Molar enthalpy in J/mol.
+     *
+     * @code
+     * double phaseEnthalpy = engine.phaseMolarEnthalpy("aq_gen");
+     * @endcode
+     */
+    auto phaseMolarEnthalpy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the molar enthalpy of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Molar enthalpy in J/mol.
+     *
+     * @code
+     * double phaseEnthalpy = engine.phaseMolarEnthalpy_i(0);
+     * @endcode
+     */
+    auto phaseMolarEnthalpy_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the molar volume of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Molar volume in m³/mol.
@@ -1144,7 +1599,33 @@ namespace xGEMS
     auto phaseMolarVolume(Index iphase) const -> double;
 
     /**
+     * @brief Returns the molar volume of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Molar volume in m³/mol.
+     *
+     * @code
+     * double phaseVol = engine.phaseMolarVolume("aq_gen");
+     * @endcode
+     */
+    auto phaseMolarVolume(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the molar volume of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Molar volume in m³/mol.
+     *
+     * @code
+     * double phaseVol = engine.phaseMolarVolume_i(0);
+     * @endcode
+     */
+    auto phaseMolarVolume_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the molar entropy of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Molar entropy in J/(mol·K).
@@ -1156,7 +1637,33 @@ namespace xGEMS
     auto phaseMolarEntropy(Index iphase) const -> double;
 
     /**
+     * @brief Returns the molar entropy of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Molar entropy in J/(mol·K).
+     *
+     * @code
+     * double phaseEnt = engine.phaseMolarEntropy("aq_gen");
+     * @endcode
+     */
+    auto phaseMolarEntropy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the molar entropy of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Molar entropy in J/(mol·K).
+     *
+     * @code
+     * double phaseEnt = engine.phaseMolarEntropy_i(0);
+     * @endcode
+     */
+    auto phaseMolarEntropy_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the molar isobaric heat capacity of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Heat capacity in J/(mol·K).
@@ -1168,7 +1675,34 @@ namespace xGEMS
     auto phaseMolarHeatCapacityConstP(Index iphase) const -> double;
 
     /**
+     * @brief Returns the molar isobaric heat capacity of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Heat capacity in J/(mol·K).
+     *
+     * @code
+     * double phaseCp = engine.phaseMolarHeatCapacityConstP("aq_gen");
+     * @endcode
+     */
+    auto phaseMolarHeatCapacityConstP(std::string phase) const -> double;
+
+
+    /**
+     * @brief Returns the molar isobaric heat capacity of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Heat capacity in J/(mol·K).
+     *
+     * @code
+     * double phaseCp = engine.phaseMolarHeatCapacityConstP_i(0);
+     * @endcode
+     */
+    auto phaseMolarHeatCapacityConstP_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the specific Gibbs energy of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Specific Gibbs energy in J/kg.
@@ -1178,6 +1712,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseSpecificGibbsEnergy(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the specific Gibbs energy of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Specific Gibbs energy in J/kg.
+     *
+     * @code
+     * double specGibbs = engine.phaseSpecificGibbsEnergy("aq_gen");
+     * @endcode
+     */
+    auto phaseSpecificGibbsEnergy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the specific Gibbs energy of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Specific Gibbs energy in J/kg.
+     *
+     * @code
+     * double specGibbs = engine.phaseSpecificGibbsEnergy_i(0);
+     * @endcode
+     */
+    auto phaseSpecificGibbsEnergy_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the specific enthalpy of a phase.
