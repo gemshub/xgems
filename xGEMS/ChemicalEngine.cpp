@@ -1278,31 +1278,82 @@ namespace xGEMS
         return 0.0;
     }
 
-    auto ChemicalEngine::phaseSpecificEnthalpy(Index iphase) const -> double
+    auto ChemicalEngine::phaseSpecificEnthalpy_i(Index iphase) const -> double
     {
         double phSpecEnthalpy = 0.0;
-        if(pimpl->node->check_Phase_xCH(iphase) && pimpl->node->Ph_Mass(iphase) > 1e-15) {
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
             phSpecEnthalpy = pimpl->node->Ph_Enthalpy(iphase) / pimpl->node->Ph_Mass(iphase);
         }
         return phSpecEnthalpy;
     }
 
-    auto ChemicalEngine::phaseSpecificVolume(Index iphase) const -> double
+    auto ChemicalEngine::phaseSpecificEnthalpy(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEnthalpy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificVolume_i(Index iphase) const -> double
     {
         double phSpecVolume = 0.0;
-        if(pimpl->node->check_Phase_xCH(iphase) && pimpl->node->Ph_Mass(iphase) > 1e-15) {
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
             phSpecVolume = pimpl->node->Ph_Volume(iphase) / pimpl->node->Ph_Mass(iphase);
         }
         return phSpecVolume;
     }
 
-    auto ChemicalEngine::phaseSpecificEntropy(Index iphase) const -> double
+    auto ChemicalEngine::phaseSpecificVolume(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificVolume(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEntropy_i(Index iphase) const -> double
     {
         double phSpecEntropy = 0.0;
-        if(pimpl->node->check_Phase_xCH(iphase) && pimpl->node->Ph_Mass(iphase) > 1e-15) {
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
             phSpecEntropy = pimpl->node->Ph_Entropy(iphase) / pimpl->node->Ph_Mass(iphase);
         }
         return phSpecEntropy;
+    }
+
+    auto ChemicalEngine::phaseSpecificEntropy(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificEntropy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEntropy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificEntropy_i(iphase);
+        }
+        return 0.0;
     }
 
     // TBD
@@ -1317,13 +1368,30 @@ namespace xGEMS
     //     return 0.0;
     // }
 
-    auto ChemicalEngine::phaseSpecificHeatCapacityConstP(Index iphase) const -> double
+    auto ChemicalEngine::phaseSpecificHeatCapacityConstP_i(Index iphase) const -> double
     {
         double phSpecCp = 0.0;
-        if(pimpl->node->check_Phase_xCH(iphase) && pimpl->node->Ph_Mass(iphase) > 1e-15) {
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
             phSpecCp = pimpl->node->Ph_HeatCapacityCp(iphase) / pimpl->node->Ph_Mass(iphase);
         }
         return phSpecCp;
+    }
+
+    auto ChemicalEngine::phaseSpecificHeatCapacityConstP(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificHeatCapacityConstP(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
     }
 
     // auto ChemicalEngine::phaseSpecificHeatCapacityConstV(Index iphase) const -> double
@@ -1385,60 +1453,161 @@ namespace xGEMS
         return pimpl->phHeatCapacitiesConstP;
     }
 
-    auto ChemicalEngine::phaseDensity(Index iphase) const -> double
+    auto ChemicalEngine::phaseDensity_i(Index iphase) const -> double
     {
-        if(pimpl->node->check_Phase_xCH(iphase) && pimpl->node->Ph_Volume(iphase) > 1e-15) {
+        if(pimpl->node->Ph_Volume(iphase) > 1e-15) {
             return pimpl->node->Ph_Mass(iphase) / pimpl->node->Ph_Volume(iphase);
         }
         return 0.0;
     }
 
+    auto ChemicalEngine::phaseDensity(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseDensity_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseDensity(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseDensity_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMass_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_Mass(iphase);
+    }
+
     auto ChemicalEngine::phaseMass(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_Mass(iphase);
+            return phaseMass_i(iphase);
         }
-        return 0.;
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMass(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMass_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseAmount_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_Moles(iphase);
     }
 
     auto ChemicalEngine::phaseAmount(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_Moles(iphase);
+            return phaseAmount_i(iphase);
         }
-        return 0.;
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseAmount(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseAmount_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseVolume_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_Volume(iphase);
     }
 
     auto ChemicalEngine::phaseVolume(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_Volume(iphase);
+            return phaseVolume_i(iphase);
         }
-        return 0.;
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseVolume(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEnthalpy_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_Enthalpy(iphase);
     }
 
     auto ChemicalEngine::phaseEnthalpy(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_Enthalpy(iphase);
+            return phaseEnthalpy_i(iphase);
         }
-        return 0.;
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEnthalpy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEntropy_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_Entropy(iphase);
     }
 
     auto ChemicalEngine::phaseEntropy(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_Entropy(iphase);
+            return phaseEntropy_i(iphase);
         }
-        return 0.;
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEntropy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseEntropy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseHeatCapacityConstP_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_HeatCapacityCp(iphase);
     }
 
     auto ChemicalEngine::phaseHeatCapacityConstP(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_HeatCapacityCp(iphase);
+            return phaseHeatCapacityConstP_i(iphase);
         }
-        return 0.;
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseHeatCapacityConstP(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
     }
 
     auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
@@ -1448,13 +1617,28 @@ namespace xGEMS
         return pimpl->phSatIndices;
     }
 
+    auto ChemicalEngine::phaseSatIndex_i(Index iphase) const -> double
+    {
+        return pimpl->node->Ph_SatInd(iphase);
+    }
+
     auto ChemicalEngine::phaseSatIndex(Index iphase) const -> double
     {
         if(pimpl->node->check_Phase_xCH(iphase)) {
-            return pimpl->node->Ph_SatInd(iphase);
+            return phaseSatIndex_i(iphase);
         }
-        return 0.;
+        return 0.0;
     }
+
+    auto ChemicalEngine::phaseSatIndex(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSatIndex_i(iphase);
+        }
+        return 0.0;
+    }
+
 
     auto ChemicalEngine::systemVolume() const -> double
     {

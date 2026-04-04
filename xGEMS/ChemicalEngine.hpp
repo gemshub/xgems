@@ -1740,6 +1740,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the specific enthalpy of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Specific enthalpy in J/kg.
@@ -1751,7 +1752,33 @@ namespace xGEMS
     auto phaseSpecificEnthalpy(Index iphase) const -> double;
 
     /**
+     * @brief Returns the specific enthalpy of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Specific enthalpy in J/kg.
+     *
+     * @code
+     * double specEnthalpy = engine.phaseSpecificEnthalpy("aq_gen");
+     * @endcode
+     */
+    auto phaseSpecificEnthalpy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the specific enthalpy of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Specific enthalpy in J/kg.
+     *
+     * @code
+     * double specEnthalpy = engine.phaseSpecificEnthalpy_i(0);
+     * @endcode
+     */
+    auto phaseSpecificEnthalpy_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the specific volume of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Specific volume in m³/kg.
@@ -1763,7 +1790,33 @@ namespace xGEMS
     auto phaseSpecificVolume(Index iphase) const -> double;
 
     /**
+     * @brief Returns the specific volume of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Specific volume in m³/kg.
+     *
+     * @code
+     * double specVolume = engine.phaseSpecificVolume("aq_gen");
+     * @endcode
+     */
+    auto phaseSpecificVolume(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the specific volume of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Specific volume in m³/kg.
+     *
+     * @code
+     * double specVolume = engine.phaseSpecificVolume_i(0);
+     * @endcode
+     */
+    auto phaseSpecificVolume_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the specific entropy of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Specific entropy in J/(kg·K).
@@ -1775,7 +1828,33 @@ namespace xGEMS
     auto phaseSpecificEntropy(Index iphase) const -> double;
 
     /**
+     * @brief Returns the specific entropy of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Specific entropy in J/(kg·K).
+     *
+     * @code
+     * double specEntropy = engine.phaseSpecificEntropy("aq_gen");
+     * @endcode
+     */
+    auto phaseSpecificEntropy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the specific entropy of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Specific entropy in J/(kg·K).
+     *
+     * @code
+     * double specEntropy = engine.phaseSpecificEntropy_i(0);
+     * @endcode
+     */
+    auto phaseSpecificEntropy_i(Index iphase) const -> double;
+
+    /**
      * @brief Returns the specific isobaric heat capacity of a phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Heat capacity in J/(kg·K).
@@ -1785,6 +1864,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseSpecificHeatCapacityConstP(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the specific isobaric heat capacity of a phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Heat capacity in J/(kg·K).
+     *
+     * @code
+     * double specCp = engine.phaseSpecificHeatCapacityConstP("aq_gen");
+     * @endcode
+     */
+    auto phaseSpecificHeatCapacityConstP(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the specific isobaric heat capacity of a phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Heat capacity in J/(kg·K).
+     *
+     * @code
+     * double specCp = engine.phaseSpecificHeatCapacityConstP_i(0);
+     * @endcode
+     */
+    auto phaseSpecificHeatCapacityConstP_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the densities of all phases.
@@ -1799,6 +1903,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the density of a specified phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Density in kg/m³.
@@ -1808,6 +1913,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseDensity(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the density of a specified phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Density in kg/m³.
+     *
+     * @code
+     * double density = engine.phaseDensity("aq_gen");
+     * @endcode
+     */
+    auto phaseDensity(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the density of a specified phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Density in kg/m³.
+     *
+     * @code
+     * double density = engine.phaseDensity_i(0);
+     * @endcode
+     */
+    auto phaseDensity_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the masses of all phases.
@@ -1822,6 +1952,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the mass of a specified phase.
+     *  Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Mass in kg.
@@ -1831,6 +1962,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseMass(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the mass of a specified phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Mass in kg.
+     *
+     * @code
+     * double mass = engine.phaseMass("aq_gen");
+     * @endcode
+     */
+    auto phaseMass(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the mass of a specified phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Mass in kg.
+     *
+     * @code
+     * double mass = engine.phaseMass_i(0);
+     * @endcode
+     */
+    auto phaseMass_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the molar amounts of all phases.
@@ -1845,6 +2001,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the molar amount of a specific phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Amount in mol.
@@ -1854,6 +2011,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseAmount(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the molar amount of a specific phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Amount in mol.
+     *
+     * @code
+     * double amt = engine.phaseAmount("aq_gen");
+     * @endcode
+     */
+    auto phaseAmount(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the molar amount of a specific phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Amount in mol.
+     *
+     * @code
+     * double amt = engine.phaseAmount_i(0);
+     * @endcode
+     */
+    auto phaseAmount_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the volumes of all phases.
@@ -1868,6 +2050,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the volume of a specific phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Volume in m³.
@@ -1877,6 +2060,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseVolume(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the volume of a specific phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Volume in m³.
+     *
+     * @code
+     * double vol = engine.phaseVolume("aq_gen");
+     * @endcode
+     */
+    auto phaseVolume(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the volume of a specific phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Volume in m³.
+     *
+     * @code
+     * double vol = engine.phaseVolume_i(0);
+     * @endcode
+     */
+    auto phaseVolume_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the enthalpies of all phases.
@@ -1891,6 +2099,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the enthalpy of a specific phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Enthalpy in J.
@@ -1900,6 +2109,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseEnthalpy(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the enthalpy of a specific phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Enthalpy in J.
+     *
+     * @code
+     * double enth0 = engine.phaseEnthalpy("aq_gen");
+     * @endcode
+     */
+    auto phaseEnthalpy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the enthalpy of a specific phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Enthalpy in J.
+     *
+     * @code
+     * double enth0 = engine.phaseEnthalpy_i(0);
+     * @endcode
+     */
+    auto phaseEnthalpy_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the entropies of all phases.
@@ -1914,6 +2148,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the entropy of a specified phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Entropy in J/(K).
@@ -1923,6 +2158,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseEntropy(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the entropy of a specified phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Entropy in J/(K).
+     *
+     * @code
+     * double ent0 = engine.phaseEntropy("aq_gen");
+     * @endcode
+     */
+    auto phaseEntropy(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the entropy of a specified phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Entropy in J/(K).
+     *
+     * @code
+     * double ent0 = engine.phaseEntropy_i(0);
+     * @endcode
+     */
+    auto phaseEntropy_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the heat capacities (Cp) of all phases.
@@ -1937,6 +2197,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the heat capacity of a specified phase.
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Heat capacity in J/K.
@@ -1946,6 +2207,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseHeatCapacityConstP(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the heat capacity of a specified phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Heat capacity in J/K.
+     *
+     * @code
+     * double cp0 = engine.phaseHeatCapacityConstP("aq_gen");
+     * @endcode
+     */
+    auto phaseHeatCapacityConstP(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the heat capacity of a specified phase.
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Heat capacity in J/K.
+     *
+     * @code
+     * double cp0 = engine.phaseHeatCapacityConstP_i(0);
+     * @endcode
+     */
+    auto phaseHeatCapacityConstP_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the saturation indices of all phases (log₁₀ units).
@@ -1960,6 +2246,7 @@ namespace xGEMS
 
     /**
      * @brief Returns the saturation index of a specific phase (log₁₀ units).
+     * Access specified element with bounds checking.
      *
      * @param iphase (Index) Phase index.
      * @return (double) Saturation index.
@@ -1969,6 +2256,31 @@ namespace xGEMS
      * @endcode
      */
     auto phaseSatIndex(Index iphase) const -> double;
+
+    /**
+     * @brief Returns the saturation index of a specific phase (log₁₀ units).
+     *
+     * @param phase (std::string) Phase name.
+     * @return (double) Saturation index.
+     *
+     * @code
+     * double sat0 = engine.phaseSatIndex("aq_gen");
+     * @endcode
+     */
+    auto phaseSatIndex(std::string phase) const -> double;
+
+    /**
+     * @brief Returns the saturation index of a specific phase (log₁₀ units).
+     * Access specified element without bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @return (double) Saturation index.
+     *
+     * @code
+     * double sat0 = engine.phaseSatIndex_i(0);
+     * @endcode
+     */
+    auto phaseSatIndex_i(Index iphase) const -> double;
 
     /**
      * @brief Returns the total mass of the system.

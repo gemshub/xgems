@@ -1776,11 +1776,13 @@ Access specified element with bounds checking.
             print(specific_gibbs_energy)
         )doc")
 
-        .def("phaseSpecificEnthalpy", &ChemicalEngine::phaseSpecificEnthalpy,
+        .def("phaseSpecificEnthalpy", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseSpecificEnthalpy),
+             py::arg("iphase"),
              R"doc(
         Returns the specific enthalpy of a specific phase by its index (J/kg).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
@@ -1789,26 +1791,87 @@ Access specified element with bounds checking.
             specific_enthalpy = engine.phaseSpecificEnthalpy(0)
             print(specific_enthalpy)
         )doc")
+        .def("phaseSpecificEnthalpy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseSpecificEnthalpy),
+             py::arg("phase"),
+             R"doc(
+        Returns the specific enthalpy of a specific phase (J/kg).
 
-        .def("phaseSpecificVolume", &ChemicalEngine::phaseSpecificVolume,
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_enthalpy = engine.phaseSpecificEnthalpy("aq_gen")
+            print(specific_enthalpy)
+        )doc")
+        .def("phaseSpecificEnthalpy_i", &ChemicalEngine::phaseSpecificEnthalpy_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the specific enthalpy of a specific phase by its index (J/kg).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_enthalpy = engine.phaseSpecificEnthalpy_i(0)
+            print(specific_enthalpy)
+        )doc")
+
+        .def("phaseSpecificVolume", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseSpecificVolume),
+             py::arg("iphase"),
              R"doc(
         Returns the specific volume of a specific phase by its index (m³/kg).
-        
-        :param int index: Index of the phase.
-        
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
+
         **Example:**
-        
+
         .. code-block:: python
-        
+
             specific_volume = engine.phaseSpecificVolume(0)
             print(specific_volume)
         )doc")
+        .def("phaseSpecificVolume", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseSpecificVolume),
+             py::arg("phase"),
+             R"doc(
+        Returns the specific volume of a specific phase (m³/kg).
 
-        .def("phaseSpecificEntropy", &ChemicalEngine::phaseSpecificEntropy,
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_volume = engine.phaseSpecificVolume("aq_gen")
+            print(specific_volume)
+        )doc")
+        .def("phaseSpecificVolume_i", &ChemicalEngine::phaseSpecificVolume_i,
+             R"doc(
+        Returns the specific volume of a specific phase by its index (m³/kg).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_volume = engine.phaseSpecificVolume_i(0)
+            print(specific_volume)
+        )doc")
+
+        .def("phaseSpecificEntropy", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseSpecificEntropy),
+             py::arg("iphase"),
              R"doc(
         Returns the specific entropy of a specific phase by its index (J/K/kg).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
@@ -1817,20 +1880,80 @@ Access specified element with bounds checking.
             specific_entropy = engine.phaseSpecificEntropy(0)
             print(specific_entropy)
         )doc")
+        .def("phaseSpecificEntropy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseSpecificEntropy),
+             py::arg("phase"),
+             R"doc(
+        Returns the specific entropy of a specific phase (J/K/kg).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_entropy = engine.phaseSpecificEntropy("aq_gen")
+            print(specific_entropy)
+        )doc")
+        .def("phaseSpecificEntropy_i", &ChemicalEngine::phaseSpecificEntropy_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the specific entropy of a specific phase by its index (J/K/kg).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_entropy = engine.phaseSpecificEntropy_i(0)
+            print(specific_entropy)
+        )doc")
 
         //    .def("phaseSpecificInternalEnergy", &ChemicalEngine::phaseSpecificInternalEnergy)
         //    .def("phaseSpecificHelmholtzEnergy", &ChemicalEngine::phaseSpecificHelmholtzEnergy)
-        .def("phaseSpecificHeatCapacityConstP", &ChemicalEngine::phaseSpecificHeatCapacityConstP,
+        .def("phaseSpecificHeatCapacityConstP", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseSpecificHeatCapacityConstP),
+             py::arg("iphase"),
              R"doc(
         Returns the specific heat capacity at constant pressure of a specific phase by its index (J/K/kg).
-        
-        :param int index: Index of the phase.
-        
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
+
         **Example:**
-        
+
         .. code-block:: python
-        
+
             specific_heat_capacity = engine.phaseSpecificHeatCapacityConstP(0)
+            print(specific_heat_capacity)
+        )doc")
+        .def("phaseSpecificHeatCapacityConstP", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseSpecificHeatCapacityConstP),
+             py::arg("phase"),
+             R"doc(
+        Returns the specific heat capacity at constant pressure of a specific phase (J/K/kg).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_heat_capacity = engine.phaseSpecificHeatCapacityConstP("aq_gen")
+            print(specific_heat_capacity)
+        )doc")
+        .def("phaseSpecificHeatCapacityConstP_i", &ChemicalEngine::phaseSpecificHeatCapacityConstP_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the specific heat capacity at constant pressure of a specific phase by its index (J/K/kg).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            specific_heat_capacity = engine.phaseSpecificHeatCapacityConstP_i(0)
             print(specific_heat_capacity)
         )doc")
 
@@ -1848,17 +1971,47 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseDensity", &ChemicalEngine::phaseDensity, py::arg("index"),
+        .def("phaseDensity", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseDensity),
+             py::arg("iphase"),
              R"doc(
         Returns the density of a specific phase by its index (kg/m³).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
             density = engine.phaseDensity(0)
+            print(density)
+        )doc")
+        .def("phaseDensity", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseDensity),
+             py::arg("phase"),
+             R"doc(
+        Returns the density of a specific phase by its index (kg/m³).
+
+        :param str phase: Name of the phase.
+        **Example:**
+
+        .. code-block:: python
+
+            density = engine.phaseDensity("aq_gen")
+            print(density)
+        )doc")
+        .def("phaseDensity_i", &ChemicalEngine::phaseDensity_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the density of a specific phase by its index (kg/m³).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            density = engine.phaseDensity_i(0)
             print(density)
         )doc")
 
@@ -1875,17 +2028,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseMass", &ChemicalEngine::phaseMass, py::arg("index"),
+        .def("phaseMass", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseMass),
+             py::arg("iphase"),
              R"doc(
         Returns the mass of a specific phase by its index (kg).
-        
-        :param int index: Index of the phase.
-        
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
+
         **Example:**
-        
+
         .. code-block:: python
-        
+
             mass = engine.phaseMass(0)
+            print(mass)
+        )doc")
+        .def("phaseMass", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseMass),
+             py::arg("phase"),
+             R"doc(
+        Returns the mass of a specific phase (kg).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            mass = engine.phaseMass("aq_gen")
+            print(mass)
+        )doc")
+        .def("phaseMass_i", &ChemicalEngine::phaseMass_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the mass of a specific phase by its index (kg).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            mass = engine.phaseMass_i(0)
             print(mass)
         )doc")
 
@@ -1902,17 +2086,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseAmount", &ChemicalEngine::phaseAmount, py::arg("index"),
+        .def("phaseAmount", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseAmount),
+             py::arg("iphase"),
              R"doc(
         Returns the amount of a specific phase by its index (mol).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
             amount = engine.phaseAmount(0)
+            print(amount)
+        )doc")
+        .def("phaseAmount", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseAmount),
+             py::arg("phase"),
+             R"doc(
+        Returns the amount of a specific phase (mol).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            amount = engine.phaseAmount("aq_gen")
+            print(amount)
+        )doc")
+        .def("phaseAmount_i", &ChemicalEngine::phaseAmount_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the amount of a specific phase by its index (mol).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            amount = engine.phaseAmount_i(0)
             print(amount)
         )doc")
 
@@ -1929,17 +2144,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseVolume", &ChemicalEngine::phaseVolume, py::arg("index"),
+        .def("phaseVolume", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseVolume),
+             py::arg("iphase"),
              R"doc(
         Returns the volume of a specific phase by its index (m³).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
             volume = engine.phaseVolume(0)
+            print(volume)
+        )doc")
+        .def("phaseVolume", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseVolume),
+             py::arg("phase"),
+             R"doc(
+        Returns the volume of a specific phase (m³).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            volume = engine.phaseVolume("aq_gen")
+            print(volume)
+        )doc")
+        .def("phaseVolume_i", &ChemicalEngine::phaseVolume_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the iphase of a specific phase by its index (m³).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            volume = engine.phaseVolume_i(0)
             print(volume)
         )doc")
 
@@ -1956,17 +2202,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseEnthalpy", &ChemicalEngine::phaseEnthalpy, py::arg("index"),
+        .def("phaseEnthalpy", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseEnthalpy),
+             py::arg("iphase"),
              R"doc(
         Returns the enthalpy of a specific phase by its index (J).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
             enthalpy = engine.phaseEnthalpy(0)
+            print(enthalpy)
+        )doc")
+        .def("phaseEnthalpy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseEnthalpy),
+             py::arg("phase"),
+             R"doc(
+        Returns the enthalpy of a specific phase (J).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            enthalpy = engine.phaseEnthalpy("aq_gen")
+            print(enthalpy)
+        )doc")
+        .def("phaseEnthalpy_i", &ChemicalEngine::phaseEnthalpy_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the enthalpy of a specific phase by its index (J).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            enthalpy = engine.phaseEnthalpy_i(0)
             print(enthalpy)
         )doc")
 
@@ -1983,17 +2260,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseEntropy", &ChemicalEngine::phaseEntropy, py::arg("index"),
+        .def("phaseEntropy", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseEntropy),
+             py::arg("iphase"),
              R"doc(
         Returns the entropy of a specific phase by its index (J/K).
-        
-        :param int index: Index of the phase.
-        
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
+
         **Example:**
-        
+
         .. code-block:: python
-        
+
             entropy = engine.phaseEntropy(0)
+            print(entropy)
+        )doc")
+        .def("phaseEntropy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseEntropy),
+             py::arg("phase"),
+             R"doc(
+        Returns the entropy of a specific phase (J/K).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            entropy = engine.phaseEntropy("aq_gen")
+            print(entropy)
+        )doc")
+        .def("phaseEntropy_i", &ChemicalEngine::phaseEntropy_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the entropy of a specific phase by its index (J/K).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            entropy = engine.phaseEntropy_i(0)
             print(entropy)
         )doc")
 
@@ -2010,17 +2318,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseHeatCapacityConstP", &ChemicalEngine::phaseHeatCapacityConstP, py::arg("index"),
+        .def("phaseHeatCapacityConstP", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseHeatCapacityConstP),
+             py::arg("iphase"),
              R"doc(
         Returns the isobaric heat capacity of a specific phase by its index (J/K).
-        
-        :param int index: Index of the phase.
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
         
         **Example:**
         
         .. code-block:: python
         
             heat_capacity = engine.phaseHeatCapacityConstP(0)
+            print(heat_capacity)
+        )doc")
+        .def("phaseHeatCapacityConstP", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseHeatCapacityConstP),
+             py::arg("phase"),
+             R"doc(
+        Returns the isobaric heat capacity of a specific phase (J/K).
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            heat_capacity = engine.phaseHeatCapacityConstP("aq_gen")
+            print(heat_capacity)
+        )doc")
+        .def("phaseHeatCapacityConstP_i", &ChemicalEngine::phaseHeatCapacityConstP_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the isobaric heat capacity of a specific phase by its index (J/K).
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            heat_capacity = engine.phaseHeatCapacityConstP_i(0)
             print(heat_capacity)
         )doc")
 
@@ -2037,17 +2376,48 @@ Access specified element with bounds checking.
         )doc",
              py::return_value_policy::reference_internal)
 
-        .def("phaseSatIndex", &ChemicalEngine::phaseSatIndex, py::arg("index"),
+        .def("phaseSatIndex", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::phaseSatIndex),
+             py::arg("iphase"),
              R"doc(
         Returns the saturation index of a specific phase by its index.
-        
-        :param int index: Index of the phase.
-        
+        Access specified element with bounds checking.
+
+        :param int iphase: Index of the phase.
+
         **Example:**
-        
+
         .. code-block:: python
-        
+
             sat_index = engine.phaseSatIndex(0)
+            print(sat_index)
+        )doc")
+        .def("phaseSatIndex", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseSatIndex),
+             py::arg("phase"),
+             R"doc(
+        Returns the saturation index of a specific phase.
+
+        :param str phase: Name of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            sat_index = engine.phaseSatIndex("aq_gen")
+            print(sat_index)
+        )doc")
+        .def("phaseSatIndex_i", &ChemicalEngine::phaseSatIndex_i,
+             py::arg("iphase"),
+             R"doc(
+        Returns the saturation index of a specific phase by its index.
+        Access specified element without bounds checking.
+
+        :param int iphase: Index of the phase.
+
+        **Example:**
+
+        .. code-block:: python
+
+            sat_index = engine.phaseSatIndex_i(0)
             print(sat_index)
         )doc")
 

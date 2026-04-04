@@ -132,7 +132,7 @@ auto ChemicalEngineMaps::aq_elements_molarity() -> ValuesMap
     if(aq_index < nphases() ) {
         auto moles_elements = gem.elementAmountsInPhase_i(aq_index);
         for(Index i = 0; i < nelements(); ++i) {
-            out[gem.elementName_i(i)] = moles_elements[i] / (gem.phaseVolume(aq_index)*1000);// volume from m3 to L
+            out[gem.elementName_i(i)] = moles_elements[i] / (gem.phaseVolume_i(aq_index)*1000);// volume from m3 to L
         }
     }
     return out;
@@ -165,7 +165,7 @@ auto ChemicalEngineMaps::aq_species_molarity() -> ValuesMap
     if(aq_index < nphases() ) {
         auto moles_species = gem.speciesAmounts();
         for(Index i = 0; i < nspecies(); ++i) {
-            out[gem.speciesName_i(i)] =  moles_species[i] / (gem.phaseVolume(aq_index)*1000); // volume from m3 to L
+            out[gem.speciesName_i(i)] =  moles_species[i] / (gem.phaseVolume_i(aq_index)*1000); // volume from m3 to L
         }
     }
     return out;
