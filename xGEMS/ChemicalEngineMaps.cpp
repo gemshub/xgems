@@ -537,50 +537,58 @@ auto ChemicalEngineMaps::set_multiple_species_upper_bound(const ValuesMap& input
 auto ChemicalEngineMaps::set_species_lower_bound(const std::string& species, double val, const std::string& units, std::optional<std::string> phase) -> void
 {
     auto species_idx =gem.indexSpecies(species, phase);
-    if( units == "kg") {
-        val/=m_species_molar_mass[species];
+    if(species_idx<nspecies()) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[species];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[species];
+        }
+        gem.setSpeciesLowerLimit_i(species_idx,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[species];
-    }
-    gem.setSpeciesLowerLimit(species_idx,val);
 }
 
 //  constrain species amount to a specified upper bound, units= moles,kg,m3
 auto ChemicalEngineMaps::set_species_upper_bound(const std::string& species, double val, const std::string& units, std::optional<std::string> phase) -> void
 {
     auto species_idx =gem.indexSpecies(species, phase);
-    if( units == "kg") {
-        val/=m_species_molar_mass[species];
+    if(species_idx<nspecies()) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[species];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[species];
+        }
+        gem.setSpeciesUpperLimit_i(species_idx,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[species];
-    }
-    gem.setSpeciesUpperLimit(species_idx,val);
 }
 
 //  constrain species amount to a specified lower bound, units= moles,kg,m3
 auto ChemicalEngineMaps::set_species_lower_bound(Index ispecies, double val, const std::string& units) -> void
 {
-    if( units == "kg") {
-        val/=m_species_molar_mass[m_species_names[ispecies]];
+    if(ispecies<nspecies() && ispecies>=0) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[m_species_names[ispecies]];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[m_species_names[ispecies]];
+        }
+        gem.setSpeciesLowerLimit_i(ispecies,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[m_species_names[ispecies]];
-    }
-    gem.setSpeciesLowerLimit(ispecies,val);
 }
 
 //  constrain species amount to a specified upper bound, units= moles,kg,m3
 auto ChemicalEngineMaps::set_species_upper_bound(Index ispecies, double val, const std::string& units) -> void
 {
-    if( units == "kg") {
-        val/=m_species_molar_mass[m_species_names[ispecies]];
+    if(ispecies<nspecies() && ispecies>=0) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[m_species_names[ispecies]];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[m_species_names[ispecies]];
+        }
+        gem.setSpeciesUpperLimit_i(ispecies,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[m_species_names[ispecies]];
-    }
-    gem.setSpeciesUpperLimit(ispecies,val);
 }
 
 
