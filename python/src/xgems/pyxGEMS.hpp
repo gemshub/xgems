@@ -210,6 +210,7 @@ Whether to include zero-amount species/phases in the printed output.
              py::arg("iphase"),
              R"doc(
   Returns the number of species in a given phase.
+  Access specified element with bounds checking.
   
   :param int iphase: Index of the phase.
   
@@ -274,7 +275,7 @@ Whether to include zero-amount species/phases in the printed output.
 
   .. code-block:: python
 
-      element_name = engine.elementName(0)
+      element_name = engine.elementName_i(0)
       print(element_name)
   )doc")
         .def("speciesName", &ChemicalEngine::speciesName, py::arg("index"),
@@ -302,7 +303,7 @@ Whether to include zero-amount species/phases in the printed output.
 
   .. code-block:: python
 
-      species_name = engine.speciesName(0)
+      species_name = engine.speciesName_i(0)
       print(species_name)
   )doc")
         .def("speciesCharge", static_cast<double (ChemicalEngine::*)(Index) const>(&ChemicalEngine::speciesCharge), py::arg("index"),
@@ -373,7 +374,7 @@ Whether to include zero-amount species/phases in the printed output.
 
   .. code-block:: python
 
-      phase_name = engine.phaseName(0)
+      phase_name = engine.phaseName_i(0)
       print(phase_name)
   )doc")
         .def("indexElement", &ChemicalEngine::indexElement, py::arg("name"),
@@ -1110,7 +1111,7 @@ Access specified element with bounds checking.
 
             .. code-block:: python
 
-                amount = engine.speciesAmount(0)
+                amount = engine.speciesAmount_i(0)
                 print(amount)
             )doc")
 
@@ -1315,7 +1316,7 @@ Access specified element with bounds checking.
 
                 .. code-block:: python
 
-                    gibbs_energy = engine.standardMolarGibbsEnergy(0)
+                    gibbs_energy = engine.standardMolarGibbsEnergy_i(0)
                     print(gibbs_energy)
                 )doc")
 
@@ -1453,7 +1454,7 @@ Access specified element with bounds checking.
 
                 .. code-block:: python
 
-                    entropy = engine.standardMolarEntropy(1)
+                    entropy = engine.standardMolarEntropy_i(1)
                     print(entropy)
                 )doc")
 
@@ -1568,9 +1569,10 @@ Access specified element with bounds checking.
         .def("phaseMolarEnthalpy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseMolarEnthalpy),
              py::arg("phase"),
              R"doc(
-        Returns the molar enthalpy of a specific phase by its index (J/mol).
+        Returns the molar enthalpy of a specific phase (J/mol).
 
         :param str phase: Name of the phase.
+
         **Example:**
 
         .. code-block:: python
@@ -1612,7 +1614,7 @@ Access specified element with bounds checking.
         .def("phaseMolarVolume", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseMolarVolume),
              py::arg("phase"),
              R"doc(
-        Returns the molar volume of a specific phase by its index (m³/mol).
+        Returns the molar volume of a specific phase (m³/mol).
 
         :param str phase: Name of the phase.
 
@@ -1657,7 +1659,7 @@ Access specified element with bounds checking.
         .def("phaseMolarEntropy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseMolarEntropy),
              py::arg("phase"),
              R"doc(
-        Returns the molar entropy of a specific phase by its index (J/K/mol).
+        Returns the molar entropy of a specific phase (J/K/mol).
 
         :param str phase: Name of the phase.
 
@@ -1704,7 +1706,7 @@ Access specified element with bounds checking.
         .def("phaseMolarHeatCapacityConstP", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseMolarHeatCapacityConstP),
              py::arg("phase"),
              R"doc(
-        Returns the molar heat capacity at constant pressure of a specific species by its index (J/K/mol).
+        Returns the molar heat capacity at constant pressure of a specific species (J/K/mol).
 
         :param str phase: Name of the phase.
 
@@ -1750,7 +1752,7 @@ Access specified element with bounds checking.
         .def("phaseSpecificGibbsEnergy", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseSpecificGibbsEnergy),
              py::arg("phase"),
              R"doc(
-        Returns the specific Gibbs energy of a specific phase by its index (J/kg).
+        Returns the specific Gibbs energy of a specific phase (J/kg).
 
         :param str phase: Name of the phase.
 
@@ -1989,7 +1991,7 @@ Access specified element with bounds checking.
         .def("phaseDensity", static_cast<double (ChemicalEngine::*)(std::string) const>(&ChemicalEngine::phaseDensity),
              py::arg("phase"),
              R"doc(
-        Returns the density of a specific phase by its index (kg/m³).
+        Returns the density of a specific phase (kg/m³).
 
         :param str phase: Name of the phase.
         **Example:**

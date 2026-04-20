@@ -793,7 +793,7 @@ Add species amount in the system useful for adding aqueous solution composition.
 
 :param str species: Species symbol.
 :param float val: Species amount in units.
-:param str units: Units of amount ("moles", "kg", "m3"), default "moles"."
+:param str units: Units of amount ("moles", "kg", "m3"), default "moles".
 :param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
@@ -903,7 +903,7 @@ Sets a lower bound for a species identified by name.
 
 :param str species: Species name.
 :param float val: Lower limit in units.
-:param str units: Units of amount ("moles", "kg", "m3"), default "moles"."
+:param str units: Units of amount ("moles", "kg", "m3"), default "moles".
 :param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**

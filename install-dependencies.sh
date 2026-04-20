@@ -57,7 +57,7 @@ if [ "$USING_THERMOFUN_MODE" == "NO_THERMOFUN" ];
 # nlohmann/json
 test -f /usr/local/include/nlohmann/json.hpp || {
 
-        # Building yaml-cpp library
+        # Building json library
         mkdir -p ~/code && \
         cd ~/code && \
         git clone https://github.com/nlohmann/json.git && \
