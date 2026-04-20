@@ -31,7 +31,7 @@ engine.equilibrate(T, P, b)
 
 # SetPT test
 print("setPT(101325, 298.15)",  engine.setPT(101325, 298.15) )
-print("setPT(101325, 673.15)",  engine.setPT(50000000, 673.15) )
+print("setPT(50000000, 673.15)",  engine.setPT(50000000, 673.15) )
 
 # long names
 ispecies1 = engine.indexSpecies("Anorthite_long_substance_name")
