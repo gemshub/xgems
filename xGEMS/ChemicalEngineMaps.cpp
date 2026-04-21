@@ -146,9 +146,9 @@ auto ChemicalEngineMaps::aq_elements_molality() -> ValuesMap
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
         auto H2Oindex = gem.numSpeciesInPhase_i(aq_index)-1;
-        auto H2Oamount = gem.speciesAmounts()[H2Oindex];
+        auto H2Oamount = gem.speciesAmount(H2Oindex);
         auto H2Ommass = gem.speciesMolarMasses()[H2Oindex];
-        auto H2Omass = H2Oamount*H2Ommass/1000; // in kg
+        auto H2Omass = H2Oamount*H2Ommass; // in kg
         auto moles_elements = gem.elementAmountsInPhase_i(aq_index);
         for(Index i = 0; i < nelements(); ++i) {
             out[gem.elementName_i(i)] = moles_elements[i] / H2Omass;

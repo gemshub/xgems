@@ -369,7 +369,7 @@ namespace xGEMS
         return 0;
     }
 
-    auto ChemicalEngine::speciesCharge(std::string species, std::optional<std::string> phase = std::nullopt) const -> double
+    auto ChemicalEngine::speciesCharge(std::string species, std::optional<std::string> phase) const -> double
     {
         auto ispecies = indexSpecies(species, phase);
         if(ispecies<numSpecies()) {
@@ -583,7 +583,7 @@ namespace xGEMS
         if(iphase<numPhases()) {
             return indexFirstSpeciesInPhase_i(iphase);
         }
-        return 0;
+        return numSpecies();
     }
 
     auto ChemicalEngine::elementMolarMasses() const -> VectorConstRef
@@ -957,7 +957,7 @@ namespace xGEMS
         return 0.;
     }
 
-    auto ChemicalEngine::standardMolarGibbsEnergy(std::string species, std::optional<std::string> phase = std::nullopt) const -> double
+    auto ChemicalEngine::standardMolarGibbsEnergy(std::string species, std::optional<std::string> phase) const -> double
     {
         auto ispecies = indexSpecies(species, phase);
         if(ispecies<numSpecies()) {
@@ -984,7 +984,7 @@ namespace xGEMS
         return 0.;
     }
 
-    auto ChemicalEngine::standardMolarEnthalpy(std::string species, std::optional<std::string> phase = std::nullopt) const -> double
+    auto ChemicalEngine::standardMolarEnthalpy(std::string species, std::optional<std::string> phase) const -> double
     {
         auto ispecies = indexSpecies(species, phase);
         if(ispecies<numSpecies()) {
@@ -1011,7 +1011,7 @@ namespace xGEMS
         return 0.;
     }
 
-    auto ChemicalEngine::standardMolarVolume(std::string species, std::optional<std::string> phase = std::nullopt) const -> double
+    auto ChemicalEngine::standardMolarVolume(std::string species, std::optional<std::string> phase) const -> double
     {
         auto ispecies = indexSpecies(species, phase);
         if(ispecies<numSpecies()) {
@@ -1038,7 +1038,7 @@ namespace xGEMS
         return 0.;
     }
 
-    auto ChemicalEngine::standardMolarEntropy(std::string species, std::optional<std::string> phase = std::nullopt) const -> double
+    auto ChemicalEngine::standardMolarEntropy(std::string species, std::optional<std::string> phase) const -> double
     {
         auto ispecies = indexSpecies(species, phase);
         if(ispecies<numSpecies()) {
@@ -1085,7 +1085,7 @@ namespace xGEMS
         return 0.;
     }
 
-    auto ChemicalEngine::standardMolarHeatCapacityConstP(std::string species, std::optional<std::string> phase = std::nullopt) const -> double
+    auto ChemicalEngine::standardMolarHeatCapacityConstP(std::string species, std::optional<std::string> phase) const -> double
     {
         auto ispecies = indexSpecies(species, phase);
         if(ispecies<numSpecies()) {

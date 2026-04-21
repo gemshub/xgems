@@ -406,7 +406,7 @@ namespace xGEMS
      * std::cout << "Charge: " << charge << std::endl;
      * @endcode
      */
-    auto speciesCharge(std::string species, std::optional<std::string> phase) const -> double;
+    auto speciesCharge(std::string species, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the electrical charge of a species.
@@ -1337,7 +1337,7 @@ namespace xGEMS
      * double stdGibbs = engine.standardMolarGibbsEnergy("SiO2");
      * @endcode
      */
-    auto standardMolarGibbsEnergy(std::string species, std::optional<std::string> phase) const -> double;
+    auto standardMolarGibbsEnergy(std::string species, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the standard molar Gibbs energy of a species.
@@ -1377,7 +1377,7 @@ namespace xGEMS
      * double stdEnthalpy = engine.standardMolarEnthalpy("SiO2");
      * @endcode
      */
-    auto standardMolarEnthalpy(std::string species, std::optional<std::string> phase) const -> double;
+    auto standardMolarEnthalpy(std::string species, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the standard molar enthalpy of a species.
@@ -1416,7 +1416,7 @@ namespace xGEMS
      * double stdVolume = engine.standardMolarVolume("SiO2");
      * @endcode
      */
-    auto standardMolarVolume(std::string species, std::optional<std::string> phase) const -> double;
+    auto standardMolarVolume(std::string species, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the standard molar volume of a species.
@@ -1455,7 +1455,7 @@ namespace xGEMS
      * double stdEntropy = engine.standardMolarEntropy("SiO2");
      * @endcode
      */
-    auto standardMolarEntropy(std::string species, std::optional<std::string> phase) const -> double;
+    auto standardMolarEntropy(std::string species, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the standard molar entropy of a species.
@@ -1494,7 +1494,7 @@ namespace xGEMS
      * double heatCap = engine.standardMolarHeatCapacityConstP("SiO2");
      * @endcode
      */
-    auto standardMolarHeatCapacityConstP(std::string species, std::optional<std::string> phase) const -> double;
+    auto standardMolarHeatCapacityConstP(std::string species, std::optional<std::string> phase = std::nullopt) const -> double;
 
     /**
      * @brief Returns the standard molar isobaric heat capacity of a species.
