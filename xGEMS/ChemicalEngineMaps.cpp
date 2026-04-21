@@ -145,7 +145,8 @@ auto ChemicalEngineMaps::aq_elements_molality() -> ValuesMap
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
-        auto H2Oindex = gem.numSpeciesInPhase_i(aq_index)-1;
+        auto H2Oindex = gem.indexFirstSpeciesInPhase_i(aq_index)
+                        + gem.numSpeciesInPhase_i(aq_index) - 1;
         auto H2Oamount = gem.speciesAmount(H2Oindex);
         auto H2Ommass = gem.speciesMolarMasses()[H2Oindex];
         auto H2Omass = H2Oamount*H2Ommass; // in kg
