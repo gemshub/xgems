@@ -2,10 +2,10 @@
 cmake_minimum_required(VERSION 3.16...4.2)
 
 # Set the name of the project
-project(xGEMS VERSION 2.0.2 LANGUAGES CXX)
+project(xGEMS VERSION 2.1.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MACOSX_RPATH ON)
 
@@ -23,8 +23,8 @@ include(CondaAware)
 
 # Set the version of the project
 set(XGEMS_VERSION_MAJOR "2")
-set(XGEMS_VERSION_MINOR "0")
-set(XGEMS_VERSION_MICRO "2")
+set(XGEMS_VERSION_MINOR "1")
+set(XGEMS_VERSION_MICRO "0")
 set(XGEMS_VERSION "${XGEMS_VERSION_MAJOR}.${XGEMS_VERSION_MINOR}.${XGEMS_VERSION_MICRO}")
 
 # Set the output directories of the built libraries and binaries
