@@ -56,26 +56,28 @@ ChemicalEngineMaps::ChemicalEngineMaps(const std::string &inputfile, bool reset_
 
     auto elemolarmass = gem.elementMolarMasses();
     for(Index i = 0; i < nelements(); ++i) {
-        m_element_names.push_back(gem.elementName(i));
-        m_element_molar_masses[gem.elementName(i)] = elemolarmass[i];
+        m_element_names.push_back(gem.elementName_i(i));
+        m_element_molar_masses[gem.elementName_i(i)] = elemolarmass[i];
     }
 
     auto molar_mass = gem.speciesMolarMasses();
     for(Index i = 0; i < nspecies(); ++i) {
-        auto specname = gem.speciesName(i);
+        auto specname = gem.speciesName_i(i);
         m_species_names.push_back(specname);
-        m_species_charges[specname] = gem.speciesCharge(i);
+        m_species_charges[specname] = gem.speciesCharge_i(i);
         m_species_molar_mass[specname] = molar_mass[i];
-        m_species_molar_volumes[specname] = gem.standardMolarVolume(i);
+        m_species_molar_volumes[specname] = gem.standardMolarVolume_i(i);
     }
 
     for(Index i = 0; i < nphases(); ++i) {
-        m_phase_names.push_back(gem.phaseName(i));
+        m_phase_names.push_back(gem.phaseName_i(i));
     }
     for(Index i = 0; i < nphases(); ++i) {
-        if( gem.numSpeciesInPhase(i) > 0) {
-            m_species_in_phase[m_phase_names[i]] = std::vector( m_species_names.begin()+gem.indexFirstSpeciesInPhase(i),
-                                                                m_species_names.begin()+gem.indexFirstSpeciesInPhase(i)+gem.numSpeciesInPhase(i));
+        auto number = gem.numSpeciesInPhase_i(i);
+        if( number > 0) {
+            auto first = gem.indexFirstSpeciesInPhase_i(i);
+            m_species_in_phase[m_phase_names[i]] = std::vector( m_species_names.begin()+first,
+                                                                m_species_names.begin()+first+number);
         }
     }
 
@@ -111,9 +113,9 @@ auto ChemicalEngineMaps::clear(double min_amount) -> void
 }
 
 
-auto ChemicalEngineMaps::set_species_G0(std::string symbol, double value) -> void
+auto ChemicalEngineMaps::set_species_G0(std::string symbol, double value, std::optional<std::string> phase) -> void
 {
-    gem.setStandardMolarGibbsEnergy(symbol, value);
+    gem.setStandardMolarGibbsEnergy(symbol, value, phase);
 }
 
 // return input bulk elemental composition (vector b) in moles
@@ -128,9 +130,9 @@ auto ChemicalEngineMaps::aq_elements_molarity() -> ValuesMap
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
-        auto moles_elements = gem.elementAmountsInPhase(aq_index);
+        auto moles_elements = gem.elementAmountsInPhase_i(aq_index);
         for(Index i = 0; i < nelements(); ++i) {
-            out[gem.elementName(i)] = moles_elements[i] / (gem.phaseVolume(aq_index)*1000);// volume from m3 to L
+            out[gem.elementName_i(i)] = moles_elements[i] / (gem.phaseVolume_i(aq_index)*1000);// volume from m3 to L
         }
     }
     return out;
@@ -143,13 +145,14 @@ auto ChemicalEngineMaps::aq_elements_molality() -> ValuesMap
     ValuesMap out;
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
-        auto H2Oindex = gem.numSpeciesInPhase(aq_index)-1;
-        auto H2Oamount = gem.speciesAmounts()[H2Oindex];
+        auto H2Oindex = gem.indexFirstSpeciesInPhase_i(aq_index)
+                        + gem.numSpeciesInPhase_i(aq_index) - 1;
+        auto H2Oamount = gem.speciesAmount(H2Oindex);
         auto H2Ommass = gem.speciesMolarMasses()[H2Oindex];
-        auto H2Omass = H2Oamount*H2Ommass/1000; // in kg
-        auto moles_elements = gem.elementAmountsInPhase(aq_index);
+        auto H2Omass = H2Oamount*H2Ommass; // in kg
+        auto moles_elements = gem.elementAmountsInPhase_i(aq_index);
         for(Index i = 0; i < nelements(); ++i) {
-            out[gem.elementName(i)] = moles_elements[i] / H2Omass;
+            out[gem.elementName_i(i)] = moles_elements[i] / H2Omass;
         }
     }
     return out;
@@ -163,7 +166,7 @@ auto ChemicalEngineMaps::aq_species_molarity() -> ValuesMap
     if(aq_index < nphases() ) {
         auto moles_species = gem.speciesAmounts();
         for(Index i = 0; i < nspecies(); ++i) {
-            out[gem.speciesName(i)] =  moles_species[i] / (gem.phaseVolume(aq_index)*1000); // volume from m3 to L
+            out[gem.speciesName_i(i)] =  moles_species[i] / (gem.phaseVolume_i(aq_index)*1000); // volume from m3 to L
         }
     }
     return out;
@@ -176,9 +179,10 @@ auto ChemicalEngineMaps::aq_species_molality() -> ValuesMap
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
         auto molalities =  gem.speciesMolalities();
-        for(Index i = gem.indexFirstSpeciesInPhase(aq_index);
-            i < gem.indexFirstSpeciesInPhase(aq_index)+gem.numSpeciesInPhase(aq_index)-1; ++i) {
-            out[gem.speciesName(i)] =  molalities[i];
+        auto first = gem.indexFirstSpeciesInPhase_i(aq_index);
+        auto last = first+gem.numSpeciesInPhase_i(aq_index)-1;
+        for(Index i = first; i < last; ++i) {
+            out[gem.speciesName_i(i)] =  molalities[i];
         }
     }
     return out;
@@ -190,7 +194,7 @@ auto ChemicalEngineMaps::aq_elements_moles() -> ValuesMap
 {
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
-        return to_map( m_element_names,  gem.elementAmountsInPhase(aq_index) );
+        return to_map( m_element_names,  gem.elementAmountsInPhase_i(aq_index) );
     }
     return {};
 }
@@ -221,7 +225,7 @@ auto ChemicalEngineMaps::reset_aq_composition(double min_amount) -> void
     auto aq_index = gem.indexPhase(m_aq_phase_symbol);
     if(aq_index < nphases() ) {
         if( peamt[aq_index] > min_amount ) {
-            auto b_aqup = gem.elementAmountsInPhase(aq_index);
+            auto b_aqup = gem.elementAmountsInPhase_i(aq_index);
             b_amounts -= b_aqup;
         }
     }
@@ -242,14 +246,14 @@ auto ChemicalEngineMaps::solids_elements_moles(double min_amount_phase, double m
     if(aqupx < nphases() ) {
 
         if( peamt[aqupx] > min_amount_phase) {
-            auto b_aqup = gem.elementAmountsInPhase(aqupx);
+            auto b_aqup = gem.elementAmountsInPhase_i(aqupx);
             b_solid -= b_aqup;
         }
     }
     auto gaspx = gem.indexPhase(m_gas_phase_symbol);
     if( gaspx < nphases() ) {
         if(peamt[gaspx] > min_amount_phase) {
-            auto b_gasp = gem.elementAmountsInPhase(gaspx);
+            auto b_gasp = gem.elementAmountsInPhase_i(gaspx);
             b_solid -= b_gasp;
         }
     }
@@ -266,7 +270,7 @@ auto ChemicalEngineMaps::phases_elements_moles() -> PhaseValuesMap
 {
     PhaseValuesMap out;
     for(Index k = 0; k < nphases(); ++k) {
-        auto peamt = gem.elementAmountsInPhase(k);
+        auto peamt = gem.elementAmountsInPhase_i(k);
         ValuesMap dictelems;
         for(Index i = 0; i < nelements(); ++i) {
             dictelems[m_element_names[i]] = peamt[i];
@@ -359,7 +363,7 @@ auto ChemicalEngineMaps::to_phase_species_map(Vector values)  -> PhaseValuesMap
     Index jk = 0, j = 0;
     for(Index k = 0; k < nphases(); ++k) {
         ValuesMap out;
-        for( jk = 0; jk < gem.numSpeciesInPhase(k); ++j, ++jk) {
+        for( jk = 0; jk < gem.numSpeciesInPhase_i(k); ++j, ++jk) {
             out[m_species_names[j]]=values[j];
         }
         phase_out[m_phase_names[k]] = out;
@@ -374,9 +378,10 @@ auto ChemicalEngineMaps::phase_species_moles(std::string phase_symbol) -> Values
     auto index = gem.indexPhase(phase_symbol);
     if( index < nphases() ) {
         auto amounts =  gem.speciesAmounts();
-        for(Index i = gem.indexFirstSpeciesInPhase(index);
-            i < gem.indexFirstSpeciesInPhase(index)+gem.numSpeciesInPhase(index); ++i) {
-            out[m_species_names[i]] =  amounts[i];
+        auto first = gem.indexFirstSpeciesInPhase_i(index);
+        auto last = first+gem.numSpeciesInPhase_i(index);
+        for(Index i = first; i < last; ++i) {
+                out[m_species_names[i]] =  amounts[i];
         }
     }
     return out;
@@ -439,28 +444,32 @@ auto ChemicalEngineMaps::add_multiple_species_amt(const ValuesMap& input_dict, c
 
 // add species amount in the system useful for adding aqueous solution composition
 // units= moles, kg, m3
-auto ChemicalEngineMaps::add_species_amt(const std::string& species, double val, const std::string& units) -> void
+auto ChemicalEngineMaps::add_species_amt(const std::string& species, double val, const std::string& units, std::optional<std::string> phase) -> void
 {
-    auto species_idx =gem.indexSpecies(species);
-    if( units == "kg") {
-        val/=m_species_molar_mass[species];
+    auto species_idx =gem.indexSpecies(species, phase);
+    if(species_idx<nspecies()) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[species];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[species];
+        }
+        MatrixConstRef W = gem.formulaMatrix();
+        MatrixConstRef Wp = W(all, species_idx);
+        b_amounts += Wp*val;
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[species];
-    }
-    MatrixConstRef W = gem.formulaMatrix();
-    MatrixConstRef Wp = W(all, species_idx);
-    b_amounts += Wp*val;
 }
 
 // add element amount in the system units = moles, kg
 auto ChemicalEngineMaps::add_element_amt(const std::string& element_name, double val, const std::string& units) -> void
 {
-    if( units  == "kg" ) {
-        val /= m_element_molar_masses[element_name];
-    }
     auto el_index = gem.indexElement(element_name);
-    b_amounts[el_index] += val;
+    if(el_index<nelements()) {
+        if( units  == "kg" ) {
+            val /= m_element_molar_masses[element_name];
+        }
+        b_amounts[el_index] += val;
+    }
 }
 
 //  add elements amount in the system useful for adding aqueous solution composition
@@ -526,51 +535,61 @@ auto ChemicalEngineMaps::set_multiple_species_upper_bound(const ValuesMap& input
 }
 
 //  constrain species amount to a specified lower bound, units= moles,kg,m3
-auto ChemicalEngineMaps::set_species_lower_bound(const std::string& species, double val, const std::string& units) -> void
+auto ChemicalEngineMaps::set_species_lower_bound(const std::string& species, double val, const std::string& units, std::optional<std::string> phase) -> void
 {
-    if( units == "kg") {
-        val/=m_species_molar_mass[species];
+    auto species_idx =gem.indexSpecies(species, phase);
+    if(species_idx<nspecies()) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[species];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[species];
+        }
+        gem.setSpeciesLowerLimit_i(species_idx,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[species];
-    }
-    gem.setSpeciesLowerLimit(species,val);
 }
 
 //  constrain species amount to a specified upper bound, units= moles,kg,m3
-auto ChemicalEngineMaps::set_species_upper_bound(const std::string& species, double val, const std::string& units) -> void
+auto ChemicalEngineMaps::set_species_upper_bound(const std::string& species, double val, const std::string& units, std::optional<std::string> phase) -> void
 {
-    if( units == "kg") {
-        val/=m_species_molar_mass[species];
+    auto species_idx =gem.indexSpecies(species, phase);
+    if(species_idx<nspecies()) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[species];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[species];
+        }
+        gem.setSpeciesUpperLimit_i(species_idx,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[species];
-    }
-    gem.setSpeciesUpperLimit(species,val);
 }
 
 //  constrain species amount to a specified lower bound, units= moles,kg,m3
 auto ChemicalEngineMaps::set_species_lower_bound(Index ispecies, double val, const std::string& units) -> void
 {
-    if( units == "kg") {
-        val/=m_species_molar_mass[m_species_names[ispecies]];
+    if(ispecies<nspecies() && ispecies>=0) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[m_species_names[ispecies]];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[m_species_names[ispecies]];
+        }
+        gem.setSpeciesLowerLimit_i(ispecies,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[m_species_names[ispecies]];
-    }
-    gem.setSpeciesLowerLimit(ispecies,val);
 }
 
 //  constrain species amount to a specified upper bound, units= moles,kg,m3
 auto ChemicalEngineMaps::set_species_upper_bound(Index ispecies, double val, const std::string& units) -> void
 {
-    if( units == "kg") {
-        val/=m_species_molar_mass[m_species_names[ispecies]];
+    if(ispecies<nspecies() && ispecies>=0) {
+        if( units == "kg") {
+            val/=m_species_molar_mass[m_species_names[ispecies]];
+        }
+        if( units == "m3") {
+            val/=m_species_molar_volumes[m_species_names[ispecies]];
+        }
+        gem.setSpeciesUpperLimit_i(ispecies,val);
     }
-    if( units == "m3") {
-        val/=m_species_molar_volumes[m_species_names[ispecies]];
-    }
-    gem.setSpeciesUpperLimit(ispecies,val);
 }
 
 
@@ -589,10 +608,11 @@ auto ChemicalEngineMaps::suppress_multiple_phases(const std::vector<std::string>
 }
 
 // suppresses species in calculation
-auto ChemicalEngineMaps::suppress_species(const std::string& species_name, double min_amount, double max_amount) -> void
+auto ChemicalEngineMaps::suppress_species(const std::string& species_name, double min_amount, double max_amount, std::optional<std::string> phase) -> void
 {
-    set_species_lower_bound(species_name, min_amount);
-    set_species_upper_bound(species_name, max_amount);
+    auto species_idx =gem.indexSpecies(species_name, phase);
+    set_species_lower_bound(species_idx, min_amount);
+    set_species_upper_bound(species_idx, max_amount);
 }
 
 // suppresses multiple species in GEM calculation as given in species name list
@@ -626,10 +646,11 @@ auto ChemicalEngineMaps::activate_multiple_species(const std::vector<std::string
 }
 
 // activate a suppressed species in phase
-auto ChemicalEngineMaps::activate_species(const std::string& species_name) -> void
+auto ChemicalEngineMaps::activate_species(const std::string& species_name, std::optional<std::string> phase) -> void
 {
-    set_species_lower_bound(species_name, 0);
-    set_species_upper_bound(species_name, 1e6);
+    auto species_idx =gem.indexSpecies(species_name, phase);
+    set_species_lower_bound(species_idx, 0);
+    set_species_upper_bound(species_idx, 1e6);
 }
 
 
@@ -668,7 +689,7 @@ auto ChemicalEngineMaps::phases_molar_volume() -> ValuesMap
 {
     ValuesMap phase_mvol;
     for(Index i = 0; i < nphases(); ++i) {
-        phase_mvol[m_phase_names[i]] = gem.phaseMolarVolume(i);
+        phase_mvol[m_phase_names[i]] = gem.phaseMolarVolume_i(i);
     }
     return phase_mvol;
 }

@@ -306,77 +306,141 @@ namespace xGEMS
         return pimpl->node->pCSD()->nPH;
     }
 
-    auto ChemicalEngine::numSpeciesInPhase(Index iphase) const -> Index
+    auto ChemicalEngine::numSpeciesInPhase_i(Index iphase) const -> Index
     {
         return pimpl->node->pCSD()->nDCinPH[iphase];
     }
 
+    auto ChemicalEngine::numSpeciesInPhase(Index iphase) const -> Index
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return pimpl->node->pCSD()->nDCinPH[iphase];
+        }
+        return 0;
+    }
+
+    auto ChemicalEngine::numSpeciesInPhase(std::string phase) const -> Index
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return pimpl->node->pCSD()->nDCinPH[iphase];
+        }
+        return 0;
+    }
+
+    auto ChemicalEngine::elementName_i(Index ielement) const -> std::string
+    {
+        return pimpl->node->pCSD()->ICNL[ielement];
+    }
+
     auto ChemicalEngine::elementName(Index ielement) const -> std::string
     {
-        std::string name = pimpl->node->pCSD()->ICNL[ielement];
-        if (name.length() > MaxICnameLength)
-            name.resize(MaxICnameLength);
-        return name;
+        if(pimpl->node->check_IC_xCH(ielement)) {
+            return pimpl->node->pCSD()->ICNL[ielement];
+        }
+        return {};
+    }
+
+    auto ChemicalEngine::speciesName_i(Index ispecies) const -> std::string
+    {
+        return pimpl->node->pCSD()->DCNL[ispecies];
     }
 
     auto ChemicalEngine::speciesName(Index ispecies) const -> std::string
     {
-        std::string name = pimpl->node->pCSD()->DCNL[ispecies];
-        if (name.length() > MaxDCnameLength)
-            name.resize(MaxDCnameLength);
-        return name;
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return pimpl->node->pCSD()->DCNL[ispecies];
+        }
+        return {};
     }
 
-    auto ChemicalEngine::speciesCharge(Index ispecies) const -> double
+    auto ChemicalEngine::speciesCharge_i(Index ispecies) const -> double
     {
         MatrixConstRef W = formulaMatrix();
         auto chargeRow = numElements();
         return W(chargeRow - 1, ispecies);
     }
 
+    auto ChemicalEngine::speciesCharge(Index ispecies) const -> double
+    {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return speciesCharge_i(ispecies);
+        }
+        return 0;
+    }
+
+    auto ChemicalEngine::speciesCharge(std::string species, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(species, phase);
+        if(ispecies<numSpecies()) {
+            return speciesCharge_i(ispecies);
+        }
+        return 0;
+    }
+
+    auto ChemicalEngine::phaseName_i(Index iphase) const -> std::string
+    {
+        return pimpl->node->pCSD()->PHNL[iphase];
+    }
+
     auto ChemicalEngine::phaseName(Index iphase) const -> std::string
     {
-        std::string name = pimpl->node->pCSD()->PHNL[iphase];
-        if (name.length() > MaxPHnameLength)
-            name.resize(MaxPHnameLength);
-        return name;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return pimpl->node->pCSD()->PHNL[iphase];
+        }
+        return {};
+    }
+
+    auto ChemicalEngine::setSpeciesUpperLimit_i(Index ispecies, double amount) -> void
+    {
+        double bound = (amount < 0.0 ? 1e6 : amount);
+        pimpl->node->pCNode()->dul[ispecies] = bound;
+    }
+
+    auto ChemicalEngine::setSpeciesLowerLimit_i(Index ispecies, double amount) -> void
+    {
+        double bound = (amount < 0.0 ? 0.0 : amount);
+        pimpl->node->pCNode()->dll[ispecies] = bound;
     }
 
     // These methods may be ambiguous, as in GEMS3K, species with the same name
     //   may occur in more than one condensed phase!
     // An overload including phase name or index is needed!
     //
-    auto ChemicalEngine::setSpeciesUpperLimit(std::string name, double amount) -> void
+    auto ChemicalEngine::setSpeciesUpperLimit(std::string name, double amount, std::optional<std::string> phase) -> void
     {
-        auto ispecies = indexSpecies(name);
-        double bound = (amount < 0.0 ? 1e6 : amount);
-        pimpl->node->pCNode()->dul[ispecies] = bound;
+        auto ispecies = indexSpecies(name, phase);
+        if(ispecies<numSpecies()) {
+            setSpeciesUpperLimit_i(ispecies, amount);
+        }
     }
 
-    auto ChemicalEngine::setSpeciesLowerLimit(std::string name, double amount) -> void
+    auto ChemicalEngine::setSpeciesLowerLimit(std::string name, double amount, std::optional<std::string> phase) -> void
     {
-        auto ispecies = indexSpecies(name);
-        double bound = (amount < 0.0 ? 0.0 : amount);
-        pimpl->node->pCNode()->dll[ispecies] = bound;
+        auto ispecies = indexSpecies(name, phase);
+        if(ispecies<numSpecies()) {
+            setSpeciesLowerLimit_i(ispecies, amount);
+        }
     }
 
     // Overload!
     auto ChemicalEngine::setSpeciesUpperLimit(Index ispecies, double amount) -> void
     {
-        double bound = (amount < 0.0 ? 1e6 : amount);
-        pimpl->node->pCNode()->dul[ispecies] = bound;
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            setSpeciesUpperLimit_i(ispecies, amount);
+        }
     }
 
     // Overload!
     auto ChemicalEngine::setSpeciesLowerLimit(Index ispecies, double amount) -> void
     {
-        double bound = (amount < 0.0 ? 0.0 : amount);
-        pimpl->node->pCNode()->dll[ispecies] = bound;
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            setSpeciesLowerLimit_i(ispecies, amount);
+        }
     }
 
     auto ChemicalEngine::setSpeciesUpperLimits(VectorConstRef n) -> void
     {
-
         // Updates all the specied upper limits
         for (Index jj = 0; jj < numSpecies(); jj++)
             pimpl->node->Set_dul(jj, n[jj]);
@@ -388,31 +452,53 @@ namespace xGEMS
             pimpl->node->Set_dll(jj, n[jj]);
     }
 
-    auto ChemicalEngine::setStandardMolarGibbsEnergy(std::string name, double value) -> void
+    auto ChemicalEngine::setStandardMolarGibbsEnergy_i(Index ispecies, double value) -> void
     {
-        auto ispecies = indexSpecies(name);
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
         auto idc = pimpl->node->DC_xDB_to_xCH(ispecies);
         pimpl->node->Set_DC_G0(idc, P, TK, value);
     }
 
-    auto ChemicalEngine::indexElement(std::string element) const -> Index
+    auto ChemicalEngine::setStandardMolarGibbsEnergy(Index ispecies, double value) -> void
     {
-        const Index size = numElements();
-        for (Index i = 0; i < size; ++i)
-            if (elementName(i) == element)
-                return i;
-        return size; // in case that element name was not found
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            setStandardMolarGibbsEnergy_i(ispecies, value);
+        }
     }
 
-    auto ChemicalEngine::indexSpecies(std::string species) const -> Index
+    auto ChemicalEngine::setStandardMolarGibbsEnergy(std::string name, double value, std::optional<std::string> phase) -> void
     {
-        const Index size = numSpecies();
-        for (Index i = 0; i < size; ++i)
-            if (speciesName(i) == species)
-                return i;
-        return size; // in case that species name was not found
+        auto ispecies = indexSpecies(name, phase);
+        if(ispecies<numSpecies()) {
+            setStandardMolarGibbsEnergy_i(ispecies, value);
+        }
+    }
+
+    auto ChemicalEngine::indexElement(std::string element) const -> Index
+    {
+        auto ielement = pimpl->node->IC_name_to_xCH(element);
+        return (ielement>=0 ? ielement : numElements()); // in case that element name was not found
+    }
+
+    auto ChemicalEngine::indexSpecies(std::string species, std::optional<std::string> phase) const -> Index
+    {
+        int ispecies = -1;
+        if(phase.has_value()) {
+            auto species_map = pimpl->node->DC_name_to_xCH_map(species);
+            if(species_map.find(phase.value()) != species_map.end()) {
+                return  species_map[phase.value()];
+            }
+        }
+        else {
+            ispecies =  pimpl->node->DC_name_to_xCH(species);
+        }
+        return (ispecies>=0 ? ispecies : numSpecies()); // in case that element name was not found
+    }
+
+    std::map<std::string, long> ChemicalEngine::indexSpeciesMap(std::string species) const
+    {
+        return pimpl->node->DC_name_to_xCH_map(species);
     }
 
     auto ChemicalEngine::indexSpeciesAll(std::string species) const -> VectorXi
@@ -421,7 +507,7 @@ namespace xGEMS
         occur.resize(0);
         const Index size = numSpecies();
         for (Index i = 0; i < size; ++i)
-            if (speciesName(i) == species)
+            if (speciesName_i(i) == species)
                 occur.push_back(i);
         Index n_species_found = occur.size();
         VectorXi result;
@@ -438,11 +524,8 @@ namespace xGEMS
     // Index of phase searched by name
     auto ChemicalEngine::indexPhase(std::string phase) const -> Index
     {
-        const Index size = numPhases();
-        for (Index i = 0; i < size; ++i)
-            if (phaseName(i) == phase)
-                return i;
-        return size; // in case that phase name was not found
+        auto iphase = pimpl->node->Ph_name_to_xCH(phase);
+        return (iphase>=0 ? iphase : numPhases()); // in case that element name was not found
     }
 
     auto ChemicalEngine::indexPhaseAll(std::string phase) const -> VectorXi
@@ -451,7 +534,7 @@ namespace xGEMS
         occur.resize(0);
         const Index size = numPhases();
         for (Index i = 0; i < size; ++i)
-            if (phaseName(i) == phase)
+            if (phaseName_i(i) == phase)
                 occur.push_back(i);
         Index n_phases_found = occur.size();
         VectorXi result;
@@ -471,19 +554,36 @@ namespace xGEMS
         Index counter = 0;
         for (Index i = 0; i < size; ++i)
         {
-            counter += numSpeciesInPhase(i);
+            counter += numSpeciesInPhase_i(i);
             if (counter > ispecies)
                 return i;
         }
         return size; // in case that species name was not found
     }
 
-    auto ChemicalEngine::indexFirstSpeciesInPhase(Index iphase) const -> Index
+    auto ChemicalEngine::indexFirstSpeciesInPhase_i(Index iphase) const -> Index
     {
         Index counter = 0;
         for (Index i = 0; i < iphase; ++i)
-            counter += numSpeciesInPhase(i);
+            counter += numSpeciesInPhase_i(i);
         return counter;
+    }
+
+    auto ChemicalEngine::indexFirstSpeciesInPhase(Index iphase) const -> Index
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return indexFirstSpeciesInPhase_i(iphase);
+        }
+        return numSpecies();
+    }
+
+    auto ChemicalEngine::indexFirstSpeciesInPhase(std::string phase) const -> Index
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return indexFirstSpeciesInPhase_i(iphase);
+        }
+        return numSpecies();
     }
 
     auto ChemicalEngine::elementMolarMasses() const -> VectorConstRef
@@ -529,11 +629,11 @@ namespace xGEMS
     {
         // Check if P, T are feasible
         if (pimpl->node->check_TP(T, P) == false)
-            return true;
+            return false;
         // Set temperature and pressure
         pimpl->node->Set_TK(T);
         pimpl->node->Set_P(P);
-        return false;
+        return true;
     }
 
     auto ChemicalEngine::setB(VectorConstRef b) -> void
@@ -612,26 +712,23 @@ namespace xGEMS
     // Caution: this may be ambiguous as in GEMS3K, species with the same name
     //   may occur in more than one condensed phase!
     // An overload including phase name is needed!
-    auto ChemicalEngine::setSpeciesAmount(std::string name, double amount) -> void
+    auto ChemicalEngine::setSpeciesAmount(std::string name, double amount, std::optional<std::string> phase) -> void
     {
-
-        MatrixConstRef W = formulaMatrix();
-        auto ispecies = indexSpecies(name);
-        // Updates the species amount
-        pimpl->node->pCNode()->xDC[ispecies] = amount;
-        // Correction of the bIC vector
-        long int ii;
-        long int jj;
-        for (ii = 0; ii < numElements(); ii++)
-            pimpl->node->pCNode()->bIC[ii] = 0.0;
-        for (jj = 0; jj < numSpecies(); jj++)
-            for (ii = 0; ii < numElements(); ii++)
-                pimpl->node->pCNode()->bIC[ii] += speciesAmounts()[jj] * W(ii, jj);
+        auto ispecies = indexSpecies(name, phase);
+        if(ispecies<numSpecies()) {
+            setSpeciesAmount_i(ispecies, amount);
+        }
     }
 
     auto ChemicalEngine::setSpeciesAmount(Index ispecies, double amount) -> void
     {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            setSpeciesAmount_i(ispecies, amount);
+        }
+    }
 
+    auto ChemicalEngine::setSpeciesAmount_i(Index ispecies, double amount) -> void
+    {
         MatrixConstRef W = formulaMatrix();
         // Updates the species amount
         pimpl->node->pCNode()->xDC[ispecies] = amount;
@@ -644,6 +741,7 @@ namespace xGEMS
             for (ii = 0; ii < numElements(); ii++)
                 pimpl->node->pCNode()->bIC[ii] += speciesAmounts()[jj] * W(ii, jj);
     }
+
 
     auto ChemicalEngine::converged() const -> bool
     {
@@ -676,16 +774,33 @@ namespace xGEMS
         return Vector::Map(pimpl->node->pCNode()->bIC, numElements());
     }
 
-    auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> Vector
+    auto ChemicalEngine::elementAmountsInPhase_i(Index iphase) const -> Vector
     {
         MatrixConstRef W = formulaMatrix();
         VectorConstRef n = speciesAmounts();
-        const Index first = indexFirstSpeciesInPhase(iphase);
-        const Index size = numSpeciesInPhase(iphase);
+        const Index first = indexFirstSpeciesInPhase_i(iphase);
+        const Index size = numSpeciesInPhase_i(iphase);
         MatrixConstRef Wp = W.middleCols(first, size);
         VectorConstRef np = n.segment(first, size);
         Vector res = Wp * np;
         return res;
+    }
+
+    auto ChemicalEngine::elementAmountsInPhase(Index iphase) const -> Vector
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return elementAmountsInPhase_i(iphase);
+        }
+        return {};
+    }
+
+    auto ChemicalEngine::elementAmountsInPhase(std::string phase) const -> Vector
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return elementAmountsInPhase_i(iphase);
+        }
+        return {};
     }
 
     auto ChemicalEngine::elementAmountsInSpecies(VectorXiConstRef ispecies) const -> Vector
@@ -698,14 +813,26 @@ namespace xGEMS
         return res;
     }
 
-    auto ChemicalEngine::speciesAmount(Index ispecies) const -> double
+    auto ChemicalEngine::speciesAmount_i(Index ispecies) const -> double
     {
         return pimpl->node->pCNode()->xDC[ispecies];
     }
 
-    auto ChemicalEngine::speciesAmount(std::string name) const -> double
+    auto ChemicalEngine::speciesAmount(Index ispecies) const -> double
     {
-        return pimpl->node->pCNode()->xDC[indexSpecies(name)];
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return pimpl->node->pCNode()->xDC[ispecies];
+        }
+        return 0.;
+    }
+
+    auto ChemicalEngine::speciesAmount(std::string name, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(name, phase);
+        if(ispecies<numSpecies()) {
+            return pimpl->node->pCNode()->xDC[ispecies];
+        }
+        return 0.;
     }
 
     auto ChemicalEngine::speciesAmounts() const -> VectorConstRef
@@ -728,10 +855,10 @@ namespace xGEMS
     {
         for (Index i = 0; i < numSpecies(); ++i)
             pimpl->molalities[i] = pimpl->node->Get_cDC(i);
-        if (numSpecies() > numSpeciesInPhase(0))
+        if (numSpecies() > numSpeciesInPhase_i(0))
         {
             Vector amountSp = Vector::Map(pimpl->node->pCNode()->xDC, numSpecies());
-            Index H2Oindex = numSpeciesInPhase(0) - 1;
+            Index H2Oindex = numSpeciesInPhase_i(0) - 1;
             double H2Omass = pimpl->node->Get_nDC(H2Oindex) * pimpl->node->DCmm(H2Oindex); // in kg
             if (H2Omass != 0.0)
                 for (Index i = H2Oindex + 1; i < numSpecies(); ++i)
@@ -746,7 +873,7 @@ namespace xGEMS
         Index counter = 0;
         for (Index k = 0; k < numPhases(); ++k)
         {
-            Index numSpInPh = numSpeciesInPhase(k);
+            Index numSpInPh = numSpeciesInPhase_i(k);
             double amountPh = phaseAmounts()(k);
             if (numSpInPh == 1)
             {
@@ -796,7 +923,7 @@ namespace xGEMS
             pimpl->chemPotentials[i] = pimpl->node->Get_muDC(i, false);
         return pimpl->chemPotentials;
 
-        return Vector{};
+        //return Vector{};
     }
 
     // Implemented on Oct 1, 2020
@@ -813,7 +940,7 @@ namespace xGEMS
     // }
 
     // Uses curent node TK and P
-    auto ChemicalEngine::standardMolarGibbsEnergy(Index ispecies) const -> double
+    auto ChemicalEngine::standardMolarGibbsEnergy_i(Index ispecies) const -> double
     {
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
@@ -822,8 +949,25 @@ namespace xGEMS
         return stMolarG;
     }
 
+    auto ChemicalEngine::standardMolarGibbsEnergy(Index ispecies) const -> double
+    {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return standardMolarGibbsEnergy_i(ispecies);
+        }
+        return 0.;
+    }
+
+    auto ChemicalEngine::standardMolarGibbsEnergy(std::string species, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(species, phase);
+        if(ispecies<numSpecies()) {
+            return standardMolarGibbsEnergy_i(ispecies);
+        }
+        return 0.;
+    }
+
     // Implemented on Oct 1, 2020
-    auto ChemicalEngine::standardMolarEnthalpy(Index ispecies) const -> double
+    auto ChemicalEngine::standardMolarEnthalpy_i(Index ispecies) const -> double
     {
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
@@ -832,8 +976,25 @@ namespace xGEMS
         return stMolarH;
     }
 
+    auto ChemicalEngine::standardMolarEnthalpy(Index ispecies) const -> double
+    {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return standardMolarEnthalpy_i(ispecies);
+        }
+        return 0.;
+    }
+
+    auto ChemicalEngine::standardMolarEnthalpy(std::string species, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(species, phase);
+        if(ispecies<numSpecies()) {
+            return standardMolarEnthalpy_i(ispecies);
+        }
+        return 0.;
+    }
+
     // Implemented on Oct 1, 2020
-    auto ChemicalEngine::standardMolarVolume(Index ispecies) const -> double
+    auto ChemicalEngine::standardMolarVolume_i(Index ispecies) const -> double
     {
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
@@ -842,14 +1003,48 @@ namespace xGEMS
         return stMolarV;
     }
 
+    auto ChemicalEngine::standardMolarVolume(Index ispecies) const -> double
+    {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return standardMolarVolume_i(ispecies);
+        }
+        return 0.;
+    }
+
+    auto ChemicalEngine::standardMolarVolume(std::string species, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(species, phase);
+        if(ispecies<numSpecies()) {
+            return standardMolarVolume_i(ispecies);
+        }
+        return 0.;
+    }
+
     // Implemented on Oct 1, 2020
-    auto ChemicalEngine::standardMolarEntropy(Index ispecies) const -> double
+    auto ChemicalEngine::standardMolarEntropy_i(Index ispecies) const -> double
     {
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
         auto idc = pimpl->node->DC_xDB_to_xCH(ispecies);
         auto stMolarS = pimpl->node->DC_S0(idc, P, TK);
         return stMolarS;
+    }
+
+    auto ChemicalEngine::standardMolarEntropy(Index ispecies) const -> double
+    {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return standardMolarEntropy_i(ispecies);
+        }
+        return 0.;
+    }
+
+    auto ChemicalEngine::standardMolarEntropy(std::string species, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(species, phase);
+        if(ispecies<numSpecies()) {
+            return standardMolarEntropy_i(ispecies);
+        }
+        return 0.;
     }
 
     // TBD
@@ -873,13 +1068,30 @@ namespace xGEMS
     // }
 
     // Implemented on Oct 1, 2020
-    auto ChemicalEngine::standardMolarHeatCapacityConstP(Index ispecies) const -> double
+    auto ChemicalEngine::standardMolarHeatCapacityConstP_i(Index ispecies) const -> double
     {
         double TK = pimpl->node->cTK();
         double P = pimpl->node->cP();
         auto idc = pimpl->node->DC_xDB_to_xCH(ispecies);
         auto stMolarCp = pimpl->node->DC_Cp0(idc, P, TK);
         return stMolarCp;
+    }
+
+    auto ChemicalEngine::standardMolarHeatCapacityConstP(Index ispecies) const -> double
+    {
+        if(pimpl->node->check_DC_xCH(ispecies)) {
+            return standardMolarHeatCapacityConstP_i(ispecies);
+        }
+        return 0.;
+    }
+
+    auto ChemicalEngine::standardMolarHeatCapacityConstP(std::string species, std::optional<std::string> phase) const -> double
+    {
+        auto ispecies = indexSpecies(species, phase);
+        if(ispecies<numSpecies()) {
+            return standardMolarHeatCapacityConstP_i(ispecies);
+        }
+        return 0.;
     }
 
     // TBD
@@ -892,36 +1104,108 @@ namespace xGEMS
     //     return stMolarCv;
     // }
 
-    auto ChemicalEngine::phaseMolarGibbsEnergy(Index iphase) const -> double
+    auto ChemicalEngine::phaseMolarGibbsEnergy_i(Index iphase) const -> double
     {
         double phMolarGibbsEnergy = 0.0;
-        if (pimpl->node->Ph_Mole(iphase) > 1e-15)
+        if(pimpl->node->Ph_Mole(iphase) > 1e-15) {
             phMolarGibbsEnergy = pimpl->node->Ph_GibbsEnergy(iphase) / pimpl->node->Ph_Mole(iphase);
+        }
         return phMolarGibbsEnergy;
+    }
+
+    auto ChemicalEngine::phaseMolarGibbsEnergy(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseMolarGibbsEnergy_i(iphase);
+        }
+        return 0;
+    }
+
+    auto ChemicalEngine::phaseMolarGibbsEnergy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMolarGibbsEnergy_i(iphase);
+        }
+        return 0;
+    }
+
+    auto ChemicalEngine::phaseMolarEnthalpy_i(Index iphase) const -> double
+    {
+        double phMolarEnthalpy = 0.0;
+        if(pimpl->node->Ph_Mole(iphase) > 1e-15) {
+            phMolarEnthalpy = pimpl->node->Ph_Enthalpy(iphase) / pimpl->node->Ph_Mole(iphase);
+        }
+        return phMolarEnthalpy;
     }
 
     auto ChemicalEngine::phaseMolarEnthalpy(Index iphase) const -> double
     {
-        double phMolarEnthalpy = 0.0;
-        if (pimpl->node->Ph_Mole(iphase) > 1e-15)
-            phMolarEnthalpy = pimpl->node->Ph_Enthalpy(iphase) / pimpl->node->Ph_Mole(iphase);
-        return phMolarEnthalpy;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseMolarEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMolarEnthalpy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMolarEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMolarVolume_i(Index iphase) const -> double
+    {
+        double phMolarVolume = 0.0;
+        if(pimpl->node->Ph_Mole(iphase) > 1e-15) {
+            phMolarVolume = pimpl->node->Ph_Volume(iphase) / pimpl->node->Ph_Mole(iphase);
+        }
+        return phMolarVolume;
     }
 
     auto ChemicalEngine::phaseMolarVolume(Index iphase) const -> double
     {
-        double phMolarVolume = 0.0;
-        if (pimpl->node->Ph_Mole(iphase) > 1e-15)
-            phMolarVolume = pimpl->node->Ph_Volume(iphase) / pimpl->node->Ph_Mole(iphase);
-        return phMolarVolume;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseMolarVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMolarVolume(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMolarVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMolarEntropy_i(Index iphase) const -> double
+    {
+        double phMolarEntropy = 0.0;
+        if(pimpl->node->Ph_Mole(iphase) > 1e-15) {
+            phMolarEntropy = pimpl->node->Ph_Entropy(iphase) / pimpl->node->Ph_Mole(iphase);
+        }
+        return phMolarEntropy;
     }
 
     auto ChemicalEngine::phaseMolarEntropy(Index iphase) const -> double
     {
-        double phMolarEntropy = 0.0;
-        if (pimpl->node->Ph_Mole(iphase) > 1e-15)
-            phMolarEntropy = pimpl->node->Ph_Entropy(iphase) / pimpl->node->Ph_Mole(iphase);
-        return phMolarEntropy;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseMolarEntropy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMolarEntropy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMolarEntropy_i(iphase);
+        }
+        return 0.0;
     }
 
     // TBD
@@ -936,12 +1220,30 @@ namespace xGEMS
     //     return 0.0;
     // }
 
-    auto ChemicalEngine::phaseMolarHeatCapacityConstP(Index iphase) const -> double
+    auto ChemicalEngine::phaseMolarHeatCapacityConstP_i(Index iphase) const -> double
     {
         double phMolarCp = 0.0;
-        if (pimpl->node->Ph_Mole(iphase) > 1e-15)
+        if(pimpl->node->Ph_Mole(iphase) > 1e-15) {
             phMolarCp = pimpl->node->Ph_HeatCapacityCp(iphase) / pimpl->node->Ph_Mole(iphase);
+        }
         return phMolarCp;
+    }
+
+    auto ChemicalEngine::phaseMolarHeatCapacityConstP(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseMolarHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMolarHeatCapacityConstP(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMolarHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
     }
 
     // TBD
@@ -950,36 +1252,108 @@ namespace xGEMS
     //     return 0.0;
     // }
 
-    auto ChemicalEngine::phaseSpecificGibbsEnergy(Index iphase) const -> double
+    auto ChemicalEngine::phaseSpecificGibbsEnergy_i(Index iphase) const -> double
     {
         double phSpecGibbsEnergy = 0.0;
-        if (pimpl->node->Ph_Mass(iphase) > 1e-15)
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
             phSpecGibbsEnergy = pimpl->node->Ph_GibbsEnergy(iphase) / pimpl->node->Ph_Mass(iphase);
+        }
         return phSpecGibbsEnergy;
+    }
+
+    auto ChemicalEngine::phaseSpecificGibbsEnergy(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificGibbsEnergy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificGibbsEnergy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificGibbsEnergy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEnthalpy_i(Index iphase) const -> double
+    {
+        double phSpecEnthalpy = 0.0;
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
+            phSpecEnthalpy = pimpl->node->Ph_Enthalpy(iphase) / pimpl->node->Ph_Mass(iphase);
+        }
+        return phSpecEnthalpy;
     }
 
     auto ChemicalEngine::phaseSpecificEnthalpy(Index iphase) const -> double
     {
-        double phSpecEnthalpy = 0.0;
-        if (pimpl->node->Ph_Mass(iphase) > 1e-15)
-            phSpecEnthalpy = pimpl->node->Ph_Enthalpy(iphase) / pimpl->node->Ph_Mass(iphase);
-        return phSpecEnthalpy;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEnthalpy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificVolume_i(Index iphase) const -> double
+    {
+        double phSpecVolume = 0.0;
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
+            phSpecVolume = pimpl->node->Ph_Volume(iphase) / pimpl->node->Ph_Mass(iphase);
+        }
+        return phSpecVolume;
     }
 
     auto ChemicalEngine::phaseSpecificVolume(Index iphase) const -> double
     {
-        double phSpecVolume = 0.0;
-        if (pimpl->node->Ph_Mass(iphase) > 1e-15)
-            phSpecVolume = pimpl->node->Ph_Volume(iphase) / pimpl->node->Ph_Mass(iphase);
-        return phSpecVolume;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificVolume(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEntropy_i(Index iphase) const -> double
+    {
+        double phSpecEntropy = 0.0;
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
+            phSpecEntropy = pimpl->node->Ph_Entropy(iphase) / pimpl->node->Ph_Mass(iphase);
+        }
+        return phSpecEntropy;
     }
 
     auto ChemicalEngine::phaseSpecificEntropy(Index iphase) const -> double
     {
-        double phSpecEntropy = 0.0;
-        if (pimpl->node->Ph_Mass(iphase) > 1e-15)
-            phSpecEntropy = pimpl->node->Ph_Entropy(iphase) / pimpl->node->Ph_Mass(iphase);
-        return phSpecEntropy;
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificEntropy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificEntropy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificEntropy_i(iphase);
+        }
+        return 0.0;
     }
 
     // TBD
@@ -994,12 +1368,30 @@ namespace xGEMS
     //     return 0.0;
     // }
 
-    auto ChemicalEngine::phaseSpecificHeatCapacityConstP(Index iphase) const -> double
+    auto ChemicalEngine::phaseSpecificHeatCapacityConstP_i(Index iphase) const -> double
     {
         double phSpecCp = 0.0;
-        if (pimpl->node->Ph_Mass(iphase) > 1e-15)
+        if(pimpl->node->Ph_Mass(iphase) > 1e-15) {
             phSpecCp = pimpl->node->Ph_HeatCapacityCp(iphase) / pimpl->node->Ph_Mass(iphase);
+        }
         return phSpecCp;
+    }
+
+    auto ChemicalEngine::phaseSpecificHeatCapacityConstP(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSpecificHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSpecificHeatCapacityConstP(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSpecificHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
     }
 
     // auto ChemicalEngine::phaseSpecificHeatCapacityConstV(Index iphase) const -> double
@@ -1061,42 +1453,161 @@ namespace xGEMS
         return pimpl->phHeatCapacitiesConstP;
     }
 
-    auto ChemicalEngine::phaseDensity(Index iphase) const -> double
+    auto ChemicalEngine::phaseDensity_i(Index iphase) const -> double
     {
-        if (pimpl->node->Ph_Volume(iphase) > 1e-15)
+        if(pimpl->node->Ph_Volume(iphase) > 1e-15) {
             return pimpl->node->Ph_Mass(iphase) / pimpl->node->Ph_Volume(iphase);
-        else
-            return 0.0;
+        }
+        return 0.0;
     }
 
-    auto ChemicalEngine::phaseMass(Index iphase) const -> double
+    auto ChemicalEngine::phaseDensity(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseDensity_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseDensity(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseDensity_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMass_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_Mass(iphase);
     }
 
-    auto ChemicalEngine::phaseAmount(Index iphase) const -> double
+    auto ChemicalEngine::phaseMass(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseMass_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseMass(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseMass_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseAmount_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_Moles(iphase);
     }
 
-    auto ChemicalEngine::phaseVolume(Index iphase) const -> double
+    auto ChemicalEngine::phaseAmount(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseAmount_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseAmount(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseAmount_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseVolume_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_Volume(iphase);
     }
 
-    auto ChemicalEngine::phaseEnthalpy(Index iphase) const -> double
+    auto ChemicalEngine::phaseVolume(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseVolume(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseVolume_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEnthalpy_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_Enthalpy(iphase);
     }
 
-    auto ChemicalEngine::phaseEntropy(Index iphase) const -> double
+    auto ChemicalEngine::phaseEnthalpy(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEnthalpy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseEnthalpy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEntropy_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_Entropy(iphase);
     }
 
-    auto ChemicalEngine::phaseHeatCapacityConstP(Index iphase) const -> double
+    auto ChemicalEngine::phaseEntropy(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseEntropy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseEntropy(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseEntropy_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseHeatCapacityConstP_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_HeatCapacityCp(iphase);
+    }
+
+    auto ChemicalEngine::phaseHeatCapacityConstP(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseHeatCapacityConstP(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseHeatCapacityConstP_i(iphase);
+        }
+        return 0.0;
     }
 
     auto ChemicalEngine::phaseSatIndices() const -> VectorConstRef
@@ -1106,10 +1617,28 @@ namespace xGEMS
         return pimpl->phSatIndices;
     }
 
-    auto ChemicalEngine::phaseSatIndex(Index iphase) const -> double
+    auto ChemicalEngine::phaseSatIndex_i(Index iphase) const -> double
     {
         return pimpl->node->Ph_SatInd(iphase);
     }
+
+    auto ChemicalEngine::phaseSatIndex(Index iphase) const -> double
+    {
+        if(pimpl->node->check_Phase_xCH(iphase)) {
+            return phaseSatIndex_i(iphase);
+        }
+        return 0.0;
+    }
+
+    auto ChemicalEngine::phaseSatIndex(std::string phase) const -> double
+    {
+        auto iphase = indexPhase(phase);
+        if(iphase<numPhases()) {
+            return phaseSatIndex_i(iphase);
+        }
+        return 0.0;
+    }
+
 
     auto ChemicalEngine::systemVolume() const -> double
     {
@@ -1241,11 +1770,11 @@ namespace xGEMS
             if (state.phaseAmounts()[i] != 0.0 && !options.print_zero_amounts)
             {
                 valid_phase_indices.push_back(i);
-                phase_names.push_back(state.phaseName(i) + "[mol]");
+                phase_names.push_back(state.phaseName_i(i) + "[mol]");
             } else if (options.print_zero_amounts)
             {
                 valid_phase_indices.push_back(i);
-                phase_names.push_back(state.phaseName(i) + "[mol]");
+                phase_names.push_back(state.phaseName_i(i) + "[mol]");
             }
         }
 
@@ -1260,7 +1789,7 @@ namespace xGEMS
                 Index phase_idx = valid_phase_indices[j];
                 row[j] = state.elementAmountsInPhase(phase_idx)[i];
             }
-            element_names.push_back(state.elementName(i));
+            element_names.push_back(state.elementName_i(i));
             element_rows.push_back(row);
         }
 
@@ -1275,12 +1804,12 @@ namespace xGEMS
             if (state.phaseAmounts()[i] != 0.0 && !options.print_zero_amounts)
             {
                 valid_phase_indices.push_back(i);
-                phase_names.push_back(state.phaseName(i));
+                phase_names.push_back(state.phaseName_i(i));
             } else if (options.print_zero_amounts)
             // Include phases with zero amount if the option is set
             {
                 valid_phase_indices.push_back(i);
-                phase_names.push_back(state.phaseName(i));
+                phase_names.push_back(state.phaseName_i(i));
             }
         }
 
@@ -1335,7 +1864,7 @@ namespace xGEMS
             row[4] = chemical_potentials[i];
             row[5] = activities[i];
 
-            species_names.push_back(state.speciesName(i));
+            species_names.push_back(state.speciesName_i(i));
             species_rows.push_back(row);
         }
 
@@ -1373,7 +1902,7 @@ namespace xGEMS
     {
         for(Index ii = 0; ii < pimpl->node->pCSD()->nPS; ++ii) {
             if( pimpl->node->pCSD()->ccPH[ii] == 'a' ) {
-                return phaseName(ii);
+                return phaseName_i(ii);
             }
         }
         return {};
@@ -1385,7 +1914,7 @@ namespace xGEMS
             if( pimpl->node->pCSD()->ccPH[ii] == 'g' ||
                 pimpl->node->pCSD()->ccPH[ii] == 'p' ||
                 pimpl->node->pCSD()->ccPH[ii] == 'f') {
-                return  phaseName(ii);
+                return  phaseName_i(ii);
             }
         }
         return {};
