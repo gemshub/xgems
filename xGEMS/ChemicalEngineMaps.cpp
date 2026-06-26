@@ -700,4 +700,9 @@ auto ChemicalEngineMaps::phase_sat_indices() -> ValuesMap
     return to_map(m_phase_names, gem.phaseSatIndices());
 }
 
+auto operator<<(std::ostream &out, const ChemicalEngineMaps &state) -> std::ostream &
+{
+    return out << state.gem;
+}
+
 }

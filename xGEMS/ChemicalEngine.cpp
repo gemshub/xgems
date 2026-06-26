@@ -1761,6 +1761,19 @@ namespace xGEMS
         auto flags = out.flags();
         out << std::setprecision(6) << std::scientific;
 
+        // Input bulk composition table
+        {
+            std::vector<std::string> element_names;
+            std::vector<Vector> element_rows;
+            VectorConstRef b = state.elementAmounts();
+            for (Index i = 0; i < state.numElements(); ++i)
+            {
+                element_names.push_back(state.elementName_i(i));
+                element_rows.push_back(Vector::Constant(1, b[i]));
+            }
+            printWrappedTable(out, "Element", {"InputAmount[mol]"}, element_names, element_rows);
+        }
+
         // Element table (wrapped)
         // Filter phases with non-zero amount
         std::vector<Index> valid_phase_indices;
@@ -1793,7 +1806,7 @@ namespace xGEMS
             element_rows.push_back(row);
         }
 
-        printWrappedTable(out, "Element", phase_names, element_names, element_rows);
+        printWrappedTable(out, "Composition", phase_names, element_names, element_rows);
 
         // Phase state properties
         // Filter phases with non-zero amount
@@ -1801,7 +1814,7 @@ namespace xGEMS
         phase_names.clear();
         for (Index i = 0; i < state.numPhases(); ++i)
         {
-            if (state.phaseAmounts()[i] != 0.0 && !options.print_zero_amounts)
+            if ((state.phaseAmounts()[i] != 0.0 || state.phaseSatIndices()[i] > 1e-5) && !options.print_zero_amounts)
             {
                 valid_phase_indices.push_back(i);
                 phase_names.push_back(state.phaseName_i(i));

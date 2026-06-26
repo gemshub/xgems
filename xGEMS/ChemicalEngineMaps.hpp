@@ -1042,6 +1042,8 @@ public:
      */
     auto phase_species_lower_bounds() -> PhaseValuesMap;
 
+    friend auto operator<<(std::ostream &out, const ChemicalEngineMaps &state) -> std::ostream &;
+
 protected:
 
     Vector b_amounts; // moles
