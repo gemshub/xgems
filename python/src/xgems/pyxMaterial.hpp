@@ -269,8 +269,8 @@ Return the recipe's element-mole contribution as a dict.
 Return the bulk-composition vector ``b`` indexed by the engine's
 element list (length ``engine.numElements()``).
 
-Elements absent from the recipe are raised to ``min_amount`` (default
-1e-15). The charge element ``Zz`` is always 0. Ready to be passed to
+Each non-``Zz`` engine element is clamped to at least ``min_amount``
+(default 1e-15). The charge element ``Zz`` is always 0. Ready to be passed to
 ``engine.equilibrate(T, P, b)``.
 
 **Example:**
@@ -285,7 +285,7 @@ Elements absent from the recipe are raised to ``min_amount`` (default
 Return the bulk-composition as a ``{element_name: moles}`` dict.
 
 Natural form for ChemicalEngineDicts users. Includes one entry per
-engine element; elements absent from the recipe are raised to
+engine element; each non-``Zz`` value is clamped to at least
 ``min_amount`` (default 1e-15). ``Zz`` is always 0.
 
 **Example:**
@@ -310,11 +310,11 @@ engine element; elements absent from the recipe are raised to
                       &Material::minAmount,
                       [](Material& self, double v) { self.setMinAmount(v); },
                       R"doc(
-Floor [mol] applied to every absent element in ``b()`` and ``b_dict()``.
+Minimum [mol] returned for each non-``Zz`` entry in ``b()`` and ``b_dict()``.
 
-The GEM solver requires strictly positive bulk amounts. Elements not
-present in the recipe are raised to this value (default 1e-15). Set to
-0.0 to disable the floor and pass exact recipe amounts to the solver.
+The GEM solver requires strictly positive bulk amounts. Any non-``Zz``
+entry below this value is raised to the floor (default 1e-15). Set to
+0.0 to disable the clamp and pass exact recipe amounts to the solver.
 
 **Example:**
 

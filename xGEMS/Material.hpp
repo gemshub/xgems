@@ -345,8 +345,8 @@ public:
      *
      * The returned vector has length ``engine.numElements()`` and is
      * ready to be passed to ``ChemicalEngine::equilibrate(T, P, b)``.
-     * Elements absent from the recipe are raised to ``min_amount``
-     * (see ``setMinAmount``). The charge element ``Zz`` is always 0.
+     * Each non-``Zz`` engine element is clamped to at least ``min_amount``
+     * (see ``setMinAmount``). ``Zz`` is always 0.
      *
      * @return (Vector) Element-mole vector matching engine indexing.
      * @throws std::runtime_error if no engine is bound, or if the
@@ -358,8 +358,8 @@ public:
      * @brief Return the bulk composition as a {element_name: mol} map.
      *
      * Natural form for ChemicalEngineMaps users. Includes one entry
-     * per engine element. Absent elements are raised to ``min_amount``;
-     * ``Zz`` is always 0.
+     * per engine element; each non-``Zz`` value is clamped to at least
+     * ``min_amount`` (default 1e-15). ``Zz`` is always 0.
      *
      * @return (ElementMap) {element_name: total moles}.
      * @throws std::runtime_error if no engine is bound.
@@ -389,12 +389,11 @@ public:
     auto size() const -> std::size_t;
 
     /**
-     * @brief Floor [mol] applied to every absent element in ``b()`` / ``bMap()``.
+     * @brief Minimum [mol] returned for each non-``Zz`` entry in ``b()`` / ``bMap()``.
      *
-     * The GEM solver requires strictly positive bulk amounts. Elements not
-     * present in the recipe are raised to this value so near-zero entries
-     * do not cause numerical issues. Default is 1e-15 mol.
-     * Set to 0 to disable the floor and pass exact zeros to the solver.
+     * The GEM solver requires strictly positive bulk amounts. Any non-``Zz``
+     * entry below this value is raised to the floor (default 1e-15 mol).
+     * Set to 0.0 to disable the clamp and pass exact recipe amounts to the solver.
      */
     auto minAmount() const -> double;
     auto setMinAmount(double amount) -> Material&;

@@ -170,6 +170,7 @@ Returns an empty dict if no gas phase is present.
 .. code-block:: python
 
     pp = engine.gas_species_partial_pressures
+    print("CO2 partial pressure:", pp["CO2"], "Pa")
     print("CO2 partial pressure:", pp.get("CO2"), "Pa")
 )doc")
             .def_property_readonly("gas_species_fugacities", &ChemicalEngineMaps::gas_species_fugacities,
@@ -185,6 +186,7 @@ Returns an empty dict if no gas phase is present.
 .. code-block:: python
 
     f = engine.gas_species_fugacities
+    print("CO2 fugacity:", f["CO2"], "Pa")
     print("CO2 fugacity:", f.get("CO2"), "Pa")
 )doc")
             .def_property_readonly("gas_species_fugacity_coefficients", &ChemicalEngineMaps::gas_species_fugacity_coefficients,
@@ -200,6 +202,7 @@ Returns an empty dict if no gas phase is present.
 .. code-block:: python
 
     phi = engine.gas_species_fugacity_coefficients
+    print("CO2 fugacity coefficient:", phi["CO2"])
     print("CO2 fugacity coefficient:", phi.get("CO2"))
 )doc")
             .def("gas_partial_pressure", &ChemicalEngineMaps::gas_partial_pressure,
