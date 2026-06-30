@@ -9,6 +9,14 @@
 import os
 import sys
 import site
+
+# xgems.PyxGEMS is a compiled pybind11 extension shipped with a PEP 561 .pyi
+# stub (for IDE/type-checker support). Sphinx >= 9's autodoc prefers that
+# stub over the real module for native extensions, but the stub has no
+# docstrings (just `...` bodies), so every member ends up undocumented.
+# This tells autodoc to import the real .so and use its actual docstrings.
+os.environ['SPHINX_AUTODOC_IGNORE_NATIVE_MODULE_TYPE_STUBS'] = '1'
+
 sys.path.insert(0, os.path.abspath('../../..'))
 sys.path.insert(0, os.path.abspath('../../../python'))
 sys.path.insert(0, site.getsitepackages()[0])
@@ -22,6 +30,10 @@ release = '1.0.9'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ["breathe", "sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
+
+autodoc_default_options = {
+    'exclude-members': 'pybind11_detail_function_record_v1_system_libstdcpp_gxx_abi_1xxx_use_cxx11_abi_1',
+}
 breathe_projects = {
     "xGEMS": "../../build/doxygen/xml/"
 }
