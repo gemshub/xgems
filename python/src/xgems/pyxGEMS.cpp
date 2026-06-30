@@ -17,10 +17,12 @@
 
 #include "pyxGEMS.hpp"
 #include "pyxdGEMS.hpp"
+#include "pyxMaterial.hpp"
 
 PYBIND11_MODULE(PyxGEMS, m)
 {
     xGEMS::update_loggers(false, "xGEMS.log", 3);
     exportChemicalEngine(m);
     exportChemicalEngineMaps(m);
+    exportMaterial(m);
 }

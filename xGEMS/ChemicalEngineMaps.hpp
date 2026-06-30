@@ -251,7 +251,7 @@ public:
      * std::cout << "Element 0: " << names[0] << std::endl;
      * @endcode
      */
-    auto element_names() -> std::vector<std::string>
+    auto element_names() const -> std::vector<std::string>
     {
         return m_element_names;
     }
@@ -324,7 +324,7 @@ public:
      * std::cout << "Molar mass of 'Fe': " << values["Fe"] << std::endl;
      * @endcode
      */
-    auto element_molar_masses() -> ValuesMap
+    auto element_molar_masses() const -> ValuesMap
     {
         return m_element_molar_masses;
     }
