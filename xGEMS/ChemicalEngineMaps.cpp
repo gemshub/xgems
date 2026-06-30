@@ -103,19 +103,26 @@ auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, ValuesMap b_dic
 
 auto ChemicalEngineMaps::reequilibrate() -> std::string
 {
+    gem.setPT(P, T);
+    gem.setB(b_amounts);
     return _status_encoder[gem.reequilibrate()];
 }
 
 auto ChemicalEngineMaps::reequilibrate(bool warmstart) -> std::string
 {
+    gem.setPT(P, T);
+    gem.setB(b_amounts);
     return _status_encoder[gem.reequilibrate(warmstart)];
 }
 
 auto ChemicalEngineMaps::setPT(double P_new, double T_new) -> bool
 {
-    P = P_new;
-    T = T_new;
-    return gem.setPT(P_new, T_new);
+    const bool ok = gem.setPT(P_new, T_new);
+    if (ok) {
+        P = P_new;
+        T = T_new;
+    }
+    return ok;
 }
 
 auto ChemicalEngineMaps::setB(ValuesMap b_input, double min_amount) -> void
@@ -127,9 +134,21 @@ auto ChemicalEngineMaps::temperature() -> double { return gem.temperature(); }
 
 auto ChemicalEngineMaps::pressure() -> double { return gem.pressure(); }
 
-auto ChemicalEngineMaps::readDbrFromFile(std::string filename) -> void { gem.readDbrFromFile(filename); }
+auto ChemicalEngineMaps::readDbrFromFile(std::string filename) -> void
+{
+    gem.readDbrFromFile(filename);
+    T = gem.temperature();
+    P = gem.pressure();
+    b_amounts = gem.elementAmounts();
+}
 
-auto ChemicalEngineMaps::readDbrFromJsonString(std::string dbr_json) -> void { gem.readDbrFromJsonString(dbr_json); }
+auto ChemicalEngineMaps::readDbrFromJsonString(std::string dbr_json) -> void
+{
+    gem.readDbrFromJsonString(dbr_json);
+    T = gem.temperature();
+    P = gem.pressure();
+    b_amounts = gem.elementAmounts();
+}
 
 auto ChemicalEngineMaps::writeDbrToFile(std::string filename) -> void { gem.writeDbrToFile(filename); }
 
@@ -840,6 +859,10 @@ auto ChemicalEngineMaps::phases_heat_capacity_const_p() -> ValuesMap
 
 auto operator<<(std::ostream &out, const ChemicalEngineMaps &state) -> std::ostream &
 {
+    // Sync staged T, P, and b_amounts into gem so the output reflects the
+    // current wrapper state, not only the last equilibrated state.
+    state.gem.setPT(state.P, state.T);
+    state.gem.setB(state.b_amounts);
     return out << state.gem;
 }
 

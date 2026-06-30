@@ -345,6 +345,8 @@ public:
      *
      * The returned vector has length ``engine.numElements()`` and is
      * ready to be passed to ``ChemicalEngine::equilibrate(T, P, b)``.
+     * Elements absent from the recipe are raised to ``min_amount``
+     * (see ``setMinAmount``). The charge element ``Zz`` is always 0.
      *
      * @return (Vector) Element-mole vector matching engine indexing.
      * @throws std::runtime_error if no engine is bound, or if the
@@ -356,7 +358,8 @@ public:
      * @brief Return the bulk composition as a {element_name: mol} map.
      *
      * Natural form for ChemicalEngineMaps users. Includes one entry
-     * per engine element (zeros for elements not in the recipe).
+     * per engine element. Absent elements are raised to ``min_amount``;
+     * ``Zz`` is always 0.
      *
      * @return (ElementMap) {element_name: total moles}.
      * @throws std::runtime_error if no engine is bound.
@@ -386,16 +389,15 @@ public:
     auto size() const -> std::size_t;
 
     /**
-     * @brief Default amount [mol] used as the initial value for every
-     *        engine element in ``b()`` and ``bMap()``.
+     * @brief Floor [mol] applied to every absent element in ``b()`` / ``bMap()``.
      *
-     * GEMS requires all entries of the bulk-composition vector to be
-     * strictly positive. Setting a small non-zero floor (default 1e-15)
-     * ensures elements absent from the recipe still satisfy this constraint
-     * without meaningfully affecting the equilibrium result.
+     * The GEM solver requires strictly positive bulk amounts. Elements not
+     * present in the recipe are raised to this value so near-zero entries
+     * do not cause numerical issues. Default is 1e-15 mol.
+     * Set to 0 to disable the floor and pass exact zeros to the solver.
      */
-    auto defaultAmount() const -> double;
-    auto setDefaultAmount(double amount) -> Material&;
+    auto minAmount() const -> double;
+    auto setMinAmount(double amount) -> Material&;
 
     /**
      * @brief Material name (used in ``toString()`` and combined labels).
@@ -431,7 +433,7 @@ private:
     std::shared_ptr<const MaterialEngineAdapter> adapter_;
     std::string           name_{"material"};
     std::vector<Constituent> constituents_;
-    double                default_amount_{1.0e-15};
+    double                min_amount_{1.0e-15};
 
     /// Compute the molar mass of a formula (kg/mol) using the engine's
     /// element-molar-mass table. Throws if no engine bound or if the

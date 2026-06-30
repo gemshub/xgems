@@ -305,9 +305,9 @@ auto Material::setName(std::string n) -> Material& {
     return *this;
 }
 auto Material::size() const -> std::size_t { return constituents_.size(); }
-auto Material::defaultAmount() const -> double { return default_amount_; }
-auto Material::setDefaultAmount(double amount) -> Material& {
-    default_amount_ = amount;
+auto Material::minAmount() const -> double { return min_amount_; }
+auto Material::setMinAmount(double amount) -> Material& {
+    min_amount_ = amount;
     return *this;
 }
 
@@ -394,7 +394,7 @@ auto Material::b() const -> Vector
             "Construct with Material(engine).");
     }
     const auto& names = adapter_->elementNames();
-    Vector bvec = Vector::Constant(static_cast<Index>(names.size()), default_amount_);
+    Vector bvec = Vector::Zero(static_cast<Index>(names.size()));
 
     for (const auto& kv : elements()) {
         const Index i = adapter_->indexOf(kv.first);
@@ -403,7 +403,13 @@ auto Material::b() const -> Vector
                 "xGEMS::Material::b(): element '" + kv.first +
                 "' from recipe is not in the engine's element list.");
         }
-        bvec[i] += kv.second;
+        bvec[i] = kv.second;
+    }
+    if (min_amount_ > 0.0) {
+        for (Index i = 0; i < static_cast<Index>(names.size()); ++i) {
+            if (names[i] != "Zz" && bvec[i] < min_amount_)
+                bvec[i] = min_amount_;
+        }
     }
     return bvec;
 }
@@ -415,7 +421,7 @@ auto Material::bMap() const -> ElementMap
             "xGEMS::Material::bMap(): no engine bound.");
     }
     ElementMap result;
-    for (const auto& nm : adapter_->elementNames()) result[nm] = default_amount_;
+    for (const auto& nm : adapter_->elementNames()) result[nm] = 0.0;
 
     for (const auto& kv : elements()) {
         auto it = result.find(kv.first);
@@ -424,7 +430,13 @@ auto Material::bMap() const -> ElementMap
                 "xGEMS::Material::bMap(): element '" + kv.first +
                 "' from recipe is not in the engine's element list.");
         }
-        it->second += kv.second;
+        it->second = kv.second;
+    }
+    if (min_amount_ > 0.0) {
+        for (auto& [nm, val] : result) {
+            if (nm != "Zz" && val < min_amount_)
+                val = min_amount_;
+        }
     }
     return result;
 }
@@ -510,7 +522,7 @@ auto Material::operator+(const Material& other) const -> Material
     Material result(*this);
     if (!result.adapter_)
         result.adapter_ = other.adapter_;
-    result.name_    = "(" + name_ + " + " + other.name_ + ")";
+    result.name_          = "(" + name_ + " + " + other.name_ + ")";
     result.constituents_.insert(
         result.constituents_.end(),
         other.constituents_.begin(), other.constituents_.end());

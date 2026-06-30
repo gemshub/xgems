@@ -269,7 +269,15 @@ Return the recipe's element-mole contribution as a dict.
 Return the bulk-composition vector ``b`` indexed by the engine's
 element list (length ``engine.numElements()``).
 
-Ready to be passed to ``engine.equilibrate(T, P, b)``.
+Elements absent from the recipe are raised to ``min_amount`` (default
+1e-15). The charge element ``Zz`` is always 0. Ready to be passed to
+``engine.equilibrate(T, P, b)``.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.equilibrate(298.15, 1e5, material.b())
 )doc")
 
         .def("b_dict", &Material::bMap,
@@ -277,8 +285,14 @@ Ready to be passed to ``engine.equilibrate(T, P, b)``.
 Return the bulk-composition as a ``{element_name: moles}`` dict.
 
 Natural form for ChemicalEngineDicts users. Includes one entry per
-engine element; elements absent from the recipe receive ``default_amount``
-(1e-15 by default) rather than zero.
+engine element; elements absent from the recipe are raised to
+``min_amount`` (default 1e-15). ``Zz`` is always 0.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.equilibrate(298.15, 1e5, material.b_dict())
 )doc")
 
         .def("mass_kg", &Material::massKg,
@@ -292,16 +306,23 @@ engine element; elements absent from the recipe receive ``default_amount``
         .def_property("name", &Material::name,
                       [](Material& self, const std::string& n) { self.setName(n); },
                       "Display name of the Material.")
-        .def_property("default_amount",
-                      &Material::defaultAmount,
-                      [](Material& self, double v) { self.setDefaultAmount(v); },
+        .def_property("min_amount",
+                      &Material::minAmount,
+                      [](Material& self, double v) { self.setMinAmount(v); },
                       R"doc(
-Default amount [mol] used as the floor for every engine element in
-``b()`` and ``b_dict()``.
+Floor [mol] applied to every absent element in ``b()`` and ``b_dict()``.
 
-GEMS requires all b entries to be strictly positive. Elements absent
-from the recipe receive this value instead of zero (default 1e-15).
-Setting to 0.0 disables the floor.
+The GEM solver requires strictly positive bulk amounts. Elements not
+present in the recipe are raised to this value (default 1e-15). Set to
+0.0 to disable the floor and pass exact recipe amounts to the solver.
+
+**Example:**
+
+.. code-block:: python
+
+    material.min_amount = 1e-12   # coarser floor
+    material.min_amount = 0.0     # disable floor
+    print(material.min_amount)    # 0.0
 )doc")
         .def("__len__", &Material::size)
         .def("__repr__", &Material::toString)

@@ -875,7 +875,7 @@ Get the dictionary of dictionaries containing species amounts in mol for each ph
 .. code-block:: python
 
     out = engine.phase_species_moles()
-    for name in phase_names:
+    for name in engine.phase_names:
         print(name, out[name])
 )doc")
             .def("phase_species_moles", py::overload_cast<std::string>(&ChemicalEngineMaps::phase_species_moles),
@@ -1034,7 +1034,7 @@ Read-only property: the dictionary of the species upper limits in mol.
 .. code-block:: python
 
     out = engine.species_upper_bounds
-    for name in species_names:
+    for name in engine.species_names:
         print(name, out[name])
 )doc")
             .def_property_readonly("species_lower_bounds", &ChemicalEngineMaps::species_lower_bounds,
@@ -1048,7 +1048,7 @@ Read-only property: the dictionary of the species lower limits in mol.
 .. code-block:: python
 
     out = engine.species_lower_bounds
-    for name in species_names:
+    for name in engine.species_names:
         print(name, out[name])
 )doc")
             .def_property_readonly("phase_species_ln_activities", &ChemicalEngineMaps::phase_species_ln_activities,
@@ -1074,7 +1074,7 @@ Read-only property: the dictionary of dictionaries containing species ln activit
 .. code-block:: python
 
     out = engine.phase_species_ln_activity_coefficients
-    for name in phase_names:
+    for name in engine.phase_names:
         print(name, out[name])
 )doc")
             .def_property_readonly("phase_species_upper_bounds", &ChemicalEngineMaps::phase_species_upper_bounds,
@@ -1473,6 +1473,23 @@ Activate multiple suppressed species given in the list.
 .. code-block:: python
 
     engine.activate_multiple_species(['ClO4-', 'Cl-'])
+)doc")
+            .def("__repr__", [](const ChemicalEngineMaps &self)
+             {
+                std::stringstream ss;
+                ss << self;
+                return ss.str();
+             }, R"doc(
+Returns a string representation of the ChemicalEngineDicts instance.
+
+Reflects the current staged T, P, and bulk composition even before
+``equilibrate()`` is called.
+
+**Example:**
+
+.. code-block:: python
+
+    print(engine)
 )doc")
             ;
 

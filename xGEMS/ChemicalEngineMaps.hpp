@@ -1421,7 +1421,7 @@ protected:
 
     Vector b_amounts; // moles
     std::string input_file;
-    ChemicalEngine gem;
+    mutable ChemicalEngine gem;
 
     std::vector<std::string> m_element_names;
     std::vector<std::string> m_species_names;
