@@ -2351,6 +2351,32 @@ namespace xGEMS
     auto Eh() const -> double;
 
     /**
+     * @brief Returns the activity of water (H2O@) in the aqueous phase.
+     *
+     * @return (double) Water activity (dimensionless). Returns 1.0 if no aqueous phase.
+     *
+     * @code
+     * double aw = engine.waterActivity();
+     * @endcode
+     */
+    auto waterActivity() const -> double;
+
+    /**
+     * @brief Returns the osmotic coefficient of the aqueous phase.
+     *
+     * Computed as Φ = −ln(a_w) × n_water / n_solutes, where n_water is the
+     * moles of H2O@ and n_solutes is the sum of all other aqueous species amounts.
+     * Returns 1.0 for pure water or if no aqueous phase is present.
+     *
+     * @return (double) Osmotic coefficient (dimensionless).
+     *
+     * @code
+     * double phi = engine.osmoticCoefficient();
+     * @endcode
+     */
+    auto osmoticCoefficient() const -> double;
+
+    /**
      * @brief Returns the total Gibbs energy of the system.
      *
      * @return (double) Gibbs energy in J/mol.
@@ -2395,6 +2421,36 @@ namespace xGEMS
     auto systemHeatCapacityConstP() const -> double;
 
     /**
+     * @brief Returns the per-element mass balance residual (mol) after equilibration.
+     *
+     * Computes W·n − b, where W is the formula matrix, n is the species amounts
+     * vector, and b is the input element amounts (bulk composition). Values near
+     * zero confirm a well-converged result; large values signal solver failure or
+     * an inconsistent system.
+     *
+     * @return (Vector) Residuals in mol, same element order as elementAmounts().
+     *
+     * @code
+     * auto errors = engine.massBalanceErrors();
+     * @endcode
+     */
+    auto massBalanceErrors() const -> Vector;
+
+    /**
+     * @brief Returns the per-element relative mass balance residual after equilibration.
+     *
+     * Computes (W·n − b) / b element-wise. Elements whose input amount b ≈ 0
+     * (e.g., the charge row Zz) are returned as 0.
+     *
+     * @return (Vector) Dimensionless relative residuals, same order as elementAmounts().
+     *
+     * @code
+     * auto rel = engine.massBalanceRelativeErrors();
+     * @endcode
+     */
+    auto massBalanceRelativeErrors() const -> Vector;
+
+    /**
      * @brief Returns the aqueous phase name.
      *
      * @return (string) aqueous phase name. If empty, the aqueous phase is not in system.
@@ -2415,6 +2471,101 @@ namespace xGEMS
      * @endcode
     */
     auto gasPhaseName() const -> std::string;
+
+    // -----------------------------------------------------------------------
+    // Phase existence queries
+    // -----------------------------------------------------------------------
+
+    /**
+     * @brief Returns true if a phase has a molar amount above the threshold.
+     * Access specified element with bounds checking.
+     *
+     * @param iphase (Index) Phase index.
+     * @param threshold (double) Minimum amount in mol, default 1e-12.
+     * @return (bool) True if the phase amount exceeds the threshold.
+     *
+     * @code
+     * bool calcite_present = engine.phaseIsPresent(engine.indexPhase("Calcite"));
+     * @endcode
+     */
+    auto phaseIsPresent(Index iphase, double threshold = 1e-12) const -> bool;
+
+    /**
+     * @brief Returns true if a phase identified by name has a molar amount above the threshold.
+     *
+     * @param phase (std::string) Phase name.
+     * @param threshold (double) Minimum amount in mol, default 1e-12.
+     * @return (bool) True if the phase amount exceeds the threshold.
+     *
+     * @code
+     * bool calcite_present = engine.phaseIsPresent("Calcite");
+     * @endcode
+     */
+    auto phaseIsPresent(std::string phase, double threshold = 1e-12) const -> bool;
+
+    /**
+     * @brief Returns the names of all phases whose molar amount exceeds the threshold.
+     *
+     * @param threshold (double) Minimum amount in mol, default 1e-12.
+     * @return (std::vector<std::string>) Names of present phases.
+     *
+     * @code
+     * auto active = engine.presentPhases();
+     * @endcode
+     */
+    auto presentPhases(double threshold = 1e-12) const -> std::vector<std::string>;
+
+    // -----------------------------------------------------------------------
+    // Reaction thermodynamics
+    // -----------------------------------------------------------------------
+
+    /**
+     * @brief Returns the standard log₁₀ equilibrium constant for a reaction at current T and P.
+     *
+     * Computes log₁₀K = −ΔG°/(RT ln10) where ΔG° = Σ stoich_i · G°_i.
+     * Stoichiometric coefficients are positive for products and negative for reactants,
+     * ordered identically to the species vector (index 0 … numSpecies()-1).
+     *
+     * @param stoich (VectorConstRef) Stoichiometric coefficient vector (mol/mol).
+     * @return (double) log₁₀K (dimensionless).
+     *
+     * @code
+     * Eigen::VectorXd nu = Eigen::VectorXd::Zero(engine.numSpecies());
+     * nu[engine.indexSpecies("Ca+2")] = 1;
+     * nu[engine.indexSpecies("CO3-2")] = 1;
+     * nu[engine.indexSpecies("Calcite")] = -1;
+     * double logK = engine.logK(nu);
+     * @endcode
+     */
+    auto logK(VectorConstRef stoich) const -> double;
+
+    /**
+     * @brief Returns the standard molar Gibbs energy change of a reaction at current T and P.
+     *
+     * Computes ΔG° = Σ stoich_i · G°_i (J/mol).
+     *
+     * @param stoich (VectorConstRef) Stoichiometric coefficient vector.
+     * @return (double) ΔG° in J/mol.
+     *
+     * @code
+     * double dG0 = engine.deltaG0Reaction(nu);
+     * @endcode
+     */
+    auto deltaG0Reaction(VectorConstRef stoich) const -> double;
+
+    /**
+     * @brief Returns the standard molar enthalpy change of a reaction at current T and P.
+     *
+     * Computes ΔH° = Σ stoich_i · H°_i (J/mol).
+     *
+     * @param stoich (VectorConstRef) Stoichiometric coefficient vector.
+     * @return (double) ΔH° in J/mol.
+     *
+     * @code
+     * double dH0 = engine.deltaH0Reaction(nu);
+     * @endcode
+     */
+    auto deltaH0Reaction(VectorConstRef stoich) const -> double;
 
   private:
     struct Impl;

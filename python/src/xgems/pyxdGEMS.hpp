@@ -57,6 +57,24 @@ Constructs a ChemicalEngineDicts instance by loading a GEM-Selektor project file
 
     engine = ChemicalEngineDicts("my-system-dat.lst")
 )doc" )
+            .def(py::init<std::string, std::string, std::string, bool, bool>(),
+             py::arg("dch_json"), py::arg("ipm_json"), py::arg("dbr_json"),
+             py::arg("reset_calc")=false, py::arg("cold_start")=true,
+             R"doc(
+Constructs a ChemicalEngineDicts instance from three JSON strings.
+
+:param str dch_json: JSON string for the chemical system definition (*-dch.json content).
+:param str ipm_json: JSON string for IPM parameters (*-ipm.json content).
+:param str dbr_json: JSON string for node bulk composition (*-dbr.json content).
+:param bool reset_calc: If true, clear the amounts of all elements, default false.
+:param bool cold_start: If true, use cold start, default true.
+
+**Example:**
+
+.. code-block:: python
+
+    engine = ChemicalEngineDicts(dch_json, ipm_json, dbr_json)
+)doc" )
             .def_readwrite("T", &ChemicalEngineMaps::T,
              R"doc(
 Sets and gets the temperature without computing equilibrium.
@@ -138,6 +156,90 @@ Read-only property: the gaseous phase name.
 .. code-block:: python
 
     print("gas_phase_symbol", engine.gas_phase_symbol)
+)doc")
+            .def_property_readonly("gas_species_partial_pressures", &ChemicalEngineMaps::gas_species_partial_pressures,
+             R"doc(
+Read-only property: partial pressures of all gas species in Pa (x_i · P_total).
+
+Returns an empty dict if no gas phase is present.
+
+:return dict[str, float]: Gas species partial pressures in Pa.
+
+**Example:**
+
+.. code-block:: python
+
+    pp = engine.gas_species_partial_pressures
+    print("CO2 partial pressure:", pp.get("CO2"), "Pa")
+)doc")
+            .def_property_readonly("gas_species_fugacities", &ChemicalEngineMaps::gas_species_fugacities,
+             R"doc(
+Read-only property: fugacities of all gas species in Pa (exp(ln a_i) · P°, P° = 1 bar).
+
+Returns an empty dict if no gas phase is present.
+
+:return dict[str, float]: Gas species fugacities in Pa.
+
+**Example:**
+
+.. code-block:: python
+
+    f = engine.gas_species_fugacities
+    print("CO2 fugacity:", f.get("CO2"), "Pa")
+)doc")
+            .def_property_readonly("gas_species_fugacity_coefficients", &ChemicalEngineMaps::gas_species_fugacity_coefficients,
+             R"doc(
+Read-only property: fugacity coefficients of all gas species (dimensionless, exp(ln γ_i)).
+
+Returns an empty dict if no gas phase is present.
+
+:return dict[str, float]: Gas species fugacity coefficients.
+
+**Example:**
+
+.. code-block:: python
+
+    phi = engine.gas_species_fugacity_coefficients
+    print("CO2 fugacity coefficient:", phi.get("CO2"))
+)doc")
+            .def("gas_partial_pressure", &ChemicalEngineMaps::gas_partial_pressure,
+             R"doc(
+Partial pressure of a single gas species (Pa).
+
+:param str species: Species name in the gas phase.
+:return float: Partial pressure in Pa, or 0 if not in gas phase.
+
+**Example:**
+
+.. code-block:: python
+
+    pCO2 = engine.gas_partial_pressure("CO2")
+)doc")
+            .def("gas_fugacity", &ChemicalEngineMaps::gas_fugacity,
+             R"doc(
+Fugacity of a single gas species (Pa).
+
+:param str species: Species name in the gas phase.
+:return float: Fugacity in Pa, or 0 if not in gas phase.
+
+**Example:**
+
+.. code-block:: python
+
+    fCO2 = engine.gas_fugacity("CO2")
+)doc")
+            .def("gas_fugacity_coefficient", &ChemicalEngineMaps::gas_fugacity_coefficient,
+             R"doc(
+Fugacity coefficient of a single gas species (dimensionless).
+
+:param str species: Species name in the gas phase.
+:return float: Fugacity coefficient, or 0 if not in gas phase.
+
+**Example:**
+
+.. code-block:: python
+
+    phi_CO2 = engine.gas_fugacity_coefficient("CO2")
 )doc")
             .def_property_readonly("element_molar_masses", &ChemicalEngineMaps::element_molar_masses,
              R"doc(
@@ -578,6 +680,52 @@ Read-only property: the Eh (redox potential) of the aqueous phase in V.
 
     print("Eh", engine.Eh)
 )doc")
+            .def_property_readonly("water_activity", &ChemicalEngineMaps::water_activity,
+             R"doc(
+Read-only property: activity of water (H2O@) in the aqueous phase.
+
+Returns 1.0 if no aqueous phase is present.
+
+:return float: Water activity (dimensionless).
+
+**Example:**
+
+.. code-block:: python
+
+    print("water activity:", engine.water_activity)
+)doc")
+            .def_property_readonly("osmotic_coefficient", &ChemicalEngineMaps::osmotic_coefficient,
+             R"doc(
+Read-only property: osmotic coefficient Φ of the aqueous phase.
+
+Computed as Φ = −ln(a_w) × n_water / n_solutes.
+Returns 1.0 for pure water or if no aqueous phase is present.
+
+:return float: Osmotic coefficient (dimensionless).
+
+**Example:**
+
+.. code-block:: python
+
+    print("osmotic coefficient:", engine.osmotic_coefficient)
+)doc")
+            .def_property_readonly("hardness", &ChemicalEngineMaps::hardness,
+             R"doc(
+Read-only property: total, Ca, and Mg hardness of the aqueous phase (mg/L as CaCO₃).
+
+Uses total Ca and Mg element amounts in the aqueous phase (all species).
+Dictionary keys: "total", "Ca", "Mg".
+
+:return dict[str, float]: Hardness components in mg/L as CaCO₃.
+
+**Example:**
+
+.. code-block:: python
+
+    h = engine.hardness
+    print("Total hardness:", h["total"], "mg/L as CaCO3")
+    print("Ca hardness:", h["Ca"], "mg/L as CaCO3")
+)doc")
             .def_property_readonly("converged", &ChemicalEngineMaps::converged,
              R"doc(
 Read-only property: whether the last equilibrium computation converged.
@@ -589,6 +737,166 @@ Read-only property: whether the last equilibrium computation converged.
 .. code-block:: python
 
     print("converged", engine.converged)
+)doc")
+            .def_property_readonly("mass_balance_errors", &ChemicalEngineMaps::mass_balance_errors,
+             R"doc(
+Read-only property: per-element mass balance residual (mol) after equilibration.
+
+Computes W·n − b for each element, where W is the formula matrix, n is the
+equilibrium species amounts, and b is the input bulk composition. Values near
+zero confirm a well-converged result; large values indicate solver failure.
+
+:return dict: Dictionary mapping element names to residuals in mol.
+
+**Example:**
+
+.. code-block:: python
+
+    errors = engine.mass_balance_errors
+    print("Residual for Ca:", errors["Ca"], "mol")
+)doc")
+            .def_property_readonly("mass_balance_relative_errors", &ChemicalEngineMaps::mass_balance_relative_errors,
+             R"doc(
+Read-only property: per-element relative mass balance residual after equilibration.
+
+Computes (W·n − b) / b for each element. Elements with b ≈ 0 (e.g., charge row
+Zz) are returned as 0.
+
+:return dict: Dictionary mapping element names to dimensionless relative residuals.
+
+**Example:**
+
+.. code-block:: python
+
+    rel = engine.mass_balance_relative_errors
+    print("Relative residual for Ca:", rel["Ca"])
+)doc")
+            .def("phase_is_present", &ChemicalEngineMaps::phase_is_present,
+             py::arg("phase_name"), py::arg("threshold") = 1e-12,
+             R"doc(
+Return True if a phase has a molar amount above the threshold.
+
+:param str phase_name: Phase name.
+:param float threshold: Minimum amount in mol (default 1e-12).
+:return bool: True if the phase is present.
+
+**Example:**
+
+.. code-block:: python
+
+    if engine.phase_is_present("Calcite"):
+        print("Calcite is precipitating")
+)doc")
+            .def("present_phases", &ChemicalEngineMaps::present_phases,
+             py::arg("threshold") = 1e-12,
+             R"doc(
+Return names of all phases whose molar amount exceeds the threshold.
+
+:param float threshold: Minimum amount in mol (default 1e-12).
+:return list[str]: Names of present phases.
+
+**Example:**
+
+.. code-block:: python
+
+    for name in engine.present_phases():
+        print(name)
+)doc")
+            .def("present_minerals", &ChemicalEngineMaps::present_minerals,
+             py::arg("threshold") = 1e-12,
+             R"doc(
+Return names of all mineral (non-aqueous, non-gas) phases above the threshold.
+
+:param float threshold: Minimum amount in mol (default 1e-12).
+:return list[str]: Names of present mineral phases.
+
+**Example:**
+
+.. code-block:: python
+
+    minerals = engine.present_minerals()
+    print("Precipitated minerals:", minerals)
+)doc")
+            .def("is_aqueous_phase", &ChemicalEngineMaps::is_aqueous_phase,
+             R"doc(
+Return True if the given phase name is the aqueous phase.
+
+:param str phase: Phase name.
+:return bool: True if aqueous.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.is_aqueous_phase("aq_gen")  # True
+)doc")
+            .def("is_gas_phase", &ChemicalEngineMaps::is_gas_phase,
+             R"doc(
+Return True if the given phase name is the gas phase.
+
+:param str phase: Phase name.
+:return bool: True if gas.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.is_gas_phase("gas_gen")  # True
+)doc")
+            .def("is_mineral_phase", &ChemicalEngineMaps::is_mineral_phase,
+             R"doc(
+Return True if the given phase is a mineral (not aqueous, not gas).
+
+:param str phase: Phase name.
+:return bool: True if mineral.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.is_mineral_phase("Calcite")  # True
+)doc")
+            .def("log_K", &ChemicalEngineMaps::log_K,
+             R"doc(
+Standard log10 equilibrium constant at current T and P.
+
+The reaction is given as a dict mapping species names to stoichiometric
+coefficients (positive = product, negative = reactant).
+
+:param dict reaction: {species_name: stoich_coeff}.
+:return float: log10(K).
+
+**Example:**
+
+.. code-block:: python
+
+    logK = engine.log_K({"Ca+2": 1, "CO3-2": 1, "Calcite": -1})
+)doc")
+            .def("delta_G0_reaction", &ChemicalEngineMaps::delta_G0_reaction,
+             R"doc(
+Standard molar Gibbs energy change of a reaction at current T and P (J/mol).
+
+:param dict reaction: {species_name: stoich_coeff}.
+:return float: ΔG° in J/mol.
+
+**Example:**
+
+.. code-block:: python
+
+    dG = engine.delta_G0_reaction({"Ca+2": 1, "CO3-2": 1, "Calcite": -1})
+)doc")
+            .def("delta_H0_reaction", &ChemicalEngineMaps::delta_H0_reaction,
+             R"doc(
+Standard molar enthalpy change of a reaction at current T and P (J/mol).
+
+:param dict reaction: {species_name: stoich_coeff}.
+:return float: ΔH° in J/mol.
+
+**Example:**
+
+.. code-block:: python
+
+    dH = engine.delta_H0_reaction({"Ca+2": 1, "CO3-2": 1, "Calcite": -1})
 )doc")
             .def_property_readonly("num_iterations", &ChemicalEngineMaps::num_iterations,
              R"doc(

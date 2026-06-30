@@ -67,6 +67,27 @@ public:
     ChemicalEngineMaps(const std::string& input_file, bool reset_calc=false, bool cold_start=true);
 
     /**
+     * @brief Constructs a ChemicalEngineMaps instance from three JSON strings.
+     *
+     * Accepts the same JSON content as ChemicalEngine::initializeFromJsonStrings:
+     * - dch_json: chemical system definition (*-dch.json)
+     * - ipm_json: IPM parameters and settings (*-ipm.json)
+     * - dbr_json: node bulk composition (*-dbr.json)
+     *
+     * @param dch_json JSON string for the chemical system definition.
+     * @param ipm_json JSON string for IPM parameters.
+     * @param dbr_json JSON string for node composition.
+     * @param reset_calc (bool) If true, clear all element amounts, default false.
+     * @param cold_start (bool) If true, use cold start, default true.
+     *
+     * @code
+     * xGEMS::ChemicalEngineMaps engine(dch_json, ipm_json, dbr_json);
+     * @endcode
+     */
+    ChemicalEngineMaps(const std::string& dch_json, const std::string& ipm_json, const std::string& dbr_json,
+                       bool reset_calc=false, bool cold_start=true);
+
+    /**
      * @brief Computes the equilibrium stateof the current system.
      *
      * Uses current temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.
@@ -682,6 +703,302 @@ public:
      * @endcode
      */
     auto system_heat_capacity_const_p() -> double;
+
+    /**
+     * @brief Returns the per-element mass balance residual (mol) after equilibration.
+     *
+     * Computes W·n − b for each element, where W is the formula matrix, n is the
+     * species amounts vector, and b is the stored input bulk composition. Values
+     * near zero confirm a well-converged result; large values signal solver failure.
+     *
+     * @return (ValuesMap) Dictionary of element residuals in mol.
+     *
+     * @code
+     * auto errors = engine.mass_balance_errors();
+     * std::cout << "Residual for Ca: " << errors["Ca"] << " mol" << std::endl;
+     * @endcode
+     */
+    auto mass_balance_errors() -> ValuesMap;
+
+    /**
+     * @brief Returns the per-element relative mass balance residual after equilibration.
+     *
+     * Computes (W·n − b) / b for each element. Elements whose input amount b ≈ 0
+     * (e.g., the charge row Zz) are returned as 0.
+     *
+     * @return (ValuesMap) Dictionary of dimensionless relative residuals.
+     *
+     * @code
+     * auto rel = engine.mass_balance_relative_errors();
+     * std::cout << "Relative residual for Ca: " << rel["Ca"] << std::endl;
+     * @endcode
+     */
+    auto mass_balance_relative_errors() -> ValuesMap;
+
+    // -----------------------------------------------------------------------
+    // Aqueous solution derived properties
+    // -----------------------------------------------------------------------
+
+    /**
+     * @brief Returns the activity of water (H2O@) in the aqueous phase.
+     *
+     * @return (double) Water activity (dimensionless). Returns 1.0 if no aqueous phase.
+     *
+     * @code
+     * double aw = engine.water_activity();
+     * @endcode
+     */
+    auto water_activity() -> double;
+
+    /**
+     * @brief Returns the osmotic coefficient of the aqueous phase.
+     *
+     * Computed as Φ = −ln(a_w) × n_water / n_solutes.
+     * Returns 1.0 for pure water or if no aqueous phase is present.
+     *
+     * @return (double) Osmotic coefficient (dimensionless).
+     *
+     * @code
+     * double phi = engine.osmotic_coefficient();
+     * @endcode
+     */
+    auto osmotic_coefficient() -> double;
+
+    /**
+     * @brief Returns the total hardness and Ca/Mg hardness components (mg/L as CaCO₃).
+     *
+     * Uses total Ca and Mg amounts in the aqueous phase (all species).
+     * Returns keys: "total", "Ca", "Mg".
+     *
+     * @return (ValuesMap) Hardness dictionary in mg/L as CaCO₃.
+     *
+     * @code
+     * auto hard = engine.hardness();
+     * std::cout << "Total hardness: " << hard["total"] << " mg/L as CaCO3" << std::endl;
+     * @endcode
+     */
+    auto hardness() -> ValuesMap;
+
+    // -----------------------------------------------------------------------
+    // Gas phase properties
+    // -----------------------------------------------------------------------
+
+    /**
+     * @brief Returns partial pressures of all gas species (Pa).
+     *
+     * Computed as x_i · P_total for each species in the gas phase.
+     * Returns an empty map if no gas phase is present.
+     *
+     * @return (ValuesMap) Dictionary of gas species partial pressures in Pa.
+     *
+     * @code
+     * auto pp = engine.gas_species_partial_pressures();
+     * std::cout << "CO2 partial pressure: " << pp["CO2"] << " Pa" << std::endl;
+     * @endcode
+     */
+    auto gas_species_partial_pressures() -> ValuesMap;
+
+    /**
+     * @brief Returns fugacities of all gas species (Pa).
+     *
+     * Computed as exp(ln a_i) · P° where P° = 100000 Pa (1 bar standard state).
+     * Returns an empty map if no gas phase is present.
+     *
+     * @return (ValuesMap) Dictionary of gas species fugacities in Pa.
+     *
+     * @code
+     * auto f = engine.gas_species_fugacities();
+     * std::cout << "CO2 fugacity: " << f["CO2"] << " Pa" << std::endl;
+     * @endcode
+     */
+    auto gas_species_fugacities() -> ValuesMap;
+
+    /**
+     * @brief Returns fugacity coefficients of all gas species (dimensionless).
+     *
+     * Computed as exp(ln γ_i) where γ_i is the mole-fraction activity coefficient.
+     * Returns an empty map if no gas phase is present.
+     *
+     * @return (ValuesMap) Dictionary of gas species fugacity coefficients.
+     *
+     * @code
+     * auto phi = engine.gas_species_fugacity_coefficients();
+     * std::cout << "CO2 fugacity coeff: " << phi["CO2"] << std::endl;
+     * @endcode
+     */
+    auto gas_species_fugacity_coefficients() -> ValuesMap;
+
+    /**
+     * @brief Returns the partial pressure of a single gas species (Pa).
+     *
+     * @param species (std::string) Species name in the gas phase.
+     * @return (double) Partial pressure in Pa, or 0 if species not in gas phase.
+     *
+     * @code
+     * double pCO2 = engine.gas_partial_pressure("CO2");
+     * @endcode
+     */
+    auto gas_partial_pressure(const std::string& species) -> double;
+
+    /**
+     * @brief Returns the fugacity of a single gas species (Pa).
+     *
+     * @param species (std::string) Species name in the gas phase.
+     * @return (double) Fugacity in Pa, or 0 if species not in gas phase.
+     *
+     * @code
+     * double fCO2 = engine.gas_fugacity("CO2");
+     * @endcode
+     */
+    auto gas_fugacity(const std::string& species) -> double;
+
+    /**
+     * @brief Returns the fugacity coefficient of a single gas species (dimensionless).
+     *
+     * @param species (std::string) Species name in the gas phase.
+     * @return (double) Fugacity coefficient, or 0 if species not in gas phase.
+     *
+     * @code
+     * double phiCO2 = engine.gas_fugacity_coefficient("CO2");
+     * @endcode
+     */
+    auto gas_fugacity_coefficient(const std::string& species) -> double;
+
+    // -----------------------------------------------------------------------
+    // Reaction thermodynamics
+    // -----------------------------------------------------------------------
+
+    /**
+     * @brief Returns the standard log₁₀ equilibrium constant at current T and P.
+     *
+     * Computes log₁₀K = −ΔG°/(RT ln10) where ΔG° = Σ ν_i · G°_i.
+     * The reaction dict maps species names to stoichiometric coefficients
+     * (positive = product, negative = reactant).
+     *
+     * @param reaction (ValuesMap) Dictionary {species_name: stoich_coeff}.
+     * @return (double) log₁₀K.
+     *
+     * @code
+     * double logK = engine.log_K({{"Ca+2", 1}, {"CO3-2", 1}, {"Calcite", -1}});
+     * @endcode
+     */
+    auto log_K(const ValuesMap& reaction) -> double;
+
+    /**
+     * @brief Returns the standard molar Gibbs energy change of a reaction at current T and P (J/mol).
+     *
+     * Computes ΔG° = Σ ν_i · G°_i.
+     *
+     * @param reaction (ValuesMap) Dictionary {species_name: stoich_coeff}.
+     * @return (double) ΔG° in J/mol.
+     *
+     * @code
+     * double dG = engine.delta_G0_reaction({{"Ca+2", 1}, {"CO3-2", 1}, {"Calcite", -1}});
+     * @endcode
+     */
+    auto delta_G0_reaction(const ValuesMap& reaction) -> double;
+
+    /**
+     * @brief Returns the standard molar enthalpy change of a reaction at current T and P (J/mol).
+     *
+     * Computes ΔH° = Σ ν_i · H°_i.
+     *
+     * @param reaction (ValuesMap) Dictionary {species_name: stoich_coeff}.
+     * @return (double) ΔH° in J/mol.
+     *
+     * @code
+     * double dH = engine.delta_H0_reaction({{"Ca+2", 1}, {"CO3-2", 1}, {"Calcite", -1}});
+     * @endcode
+     */
+    auto delta_H0_reaction(const ValuesMap& reaction) -> double;
+
+    // -----------------------------------------------------------------------
+    // Phase existence and type queries
+    // -----------------------------------------------------------------------
+
+    /**
+     * @brief Returns true if a phase has a molar amount above the threshold.
+     *
+     * @param phase_name (std::string) Phase name.
+     * @param threshold (double) Minimum amount in mol, default 1e-12.
+     * @return (bool) True if the phase is present.
+     *
+     * @code
+     * if (engine.phase_is_present("Calcite"))
+     *     std::cout << "Calcite is precipitating" << std::endl;
+     * @endcode
+     */
+    auto phase_is_present(const std::string& phase_name, double threshold = 1e-12) -> bool;
+
+    /**
+     * @brief Returns names of all phases whose molar amount exceeds the threshold.
+     *
+     * @param threshold (double) Minimum amount in mol, default 1e-12.
+     * @return (std::vector<std::string>) Names of present phases.
+     *
+     * @code
+     * for (auto& name : engine.present_phases())
+     *     std::cout << name << std::endl;
+     * @endcode
+     */
+    auto present_phases(double threshold = 1e-12) -> std::vector<std::string>;
+
+    /**
+     * @brief Returns names of all mineral (non-aqueous, non-gas) phases above the threshold.
+     *
+     * @param threshold (double) Minimum amount in mol, default 1e-12.
+     * @return (std::vector<std::string>) Names of present mineral phases.
+     *
+     * @code
+     * auto minerals = engine.present_minerals();
+     * @endcode
+     */
+    auto present_minerals(double threshold = 1e-12) -> std::vector<std::string>;
+
+    /**
+     * @brief Returns true if the phase is the aqueous phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (bool) True if this is the aqueous phase.
+     *
+     * @code
+     * engine.is_aqueous_phase("aq_gen"); // true
+     * @endcode
+     */
+    auto is_aqueous_phase(const std::string& phase) -> bool
+    {
+        return !m_aq_phase_symbol.empty() && phase == m_aq_phase_symbol;
+    }
+
+    /**
+     * @brief Returns true if the phase is the gas phase.
+     *
+     * @param phase (std::string) Phase name.
+     * @return (bool) True if this is the gas phase.
+     *
+     * @code
+     * engine.is_gas_phase("gas_gen"); // true
+     * @endcode
+     */
+    auto is_gas_phase(const std::string& phase) -> bool
+    {
+        return !m_gas_phase_symbol.empty() && phase == m_gas_phase_symbol;
+    }
+
+    /**
+     * @brief Returns true if the phase is a mineral (not aqueous, not gas).
+     *
+     * @param phase (std::string) Phase name.
+     * @return (bool) True if this is a mineral phase.
+     *
+     * @code
+     * engine.is_mineral_phase("Calcite"); // true
+     * @endcode
+     */
+    auto is_mineral_phase(const std::string& phase) -> bool
+    {
+        return !is_aqueous_phase(phase) && !is_gas_phase(phase);
+    }
 
     /**
      * @brief Returns the molar volumes of the phases.
@@ -1446,6 +1763,8 @@ protected:
     auto to_phase_species_map( Vector values ) -> PhaseValuesMap;
 
     auto clear_vector(Vector& bb, double min_amount) -> void;
+
+    auto init_caches(bool reset_calc, bool cold_start) -> void;
 };
 
 }

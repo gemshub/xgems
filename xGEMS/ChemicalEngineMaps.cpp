@@ -18,6 +18,7 @@
 
 
 
+#include <cmath>
 #include <map>
 #include "ChemicalEngineMaps.hpp"
 
@@ -41,13 +42,25 @@ static std::map<int, std::string> _status_encoder = {
 ChemicalEngineMaps::ChemicalEngineMaps(const std::string &inputfile, bool reset_calc, bool coldstart):
     input_file(inputfile), gem(inputfile)
 {
+    init_caches(reset_calc, coldstart);
+}
+
+ChemicalEngineMaps::ChemicalEngineMaps(const std::string& dch_json, const std::string& ipm_json,
+                                        const std::string& dbr_json, bool reset_calc, bool cold_start):
+    input_file(""), gem()
+{
+    gem.initializeFromJsonStrings(dch_json, ipm_json, dbr_json);
+    init_caches(reset_calc, cold_start);
+}
+
+auto ChemicalEngineMaps::init_caches(bool reset_calc, bool cold_start) -> void
+{
     T = gem.temperature();
     P = gem.pressure();
     b_amounts = gem.elementAmounts();
 
-    if( coldstart ) {
-        cold_start();
-    }
+    if (cold_start)
+        this->cold_start();
 
     equilibrate();
 
@@ -55,13 +68,13 @@ ChemicalEngineMaps::ChemicalEngineMaps(const std::string &inputfile, bool reset_
     m_gas_phase_symbol = gem.gasPhaseName();
 
     auto elemolarmass = gem.elementMolarMasses();
-    for(Index i = 0; i < nelements(); ++i) {
+    for (Index i = 0; i < nelements(); ++i) {
         m_element_names.push_back(gem.elementName_i(i));
         m_element_molar_masses[gem.elementName_i(i)] = elemolarmass[i];
     }
 
     auto molar_mass = gem.speciesMolarMasses();
-    for(Index i = 0; i < nspecies(); ++i) {
+    for (Index i = 0; i < nspecies(); ++i) {
         auto specname = gem.speciesName_i(i);
         m_species_names.push_back(specname);
         m_species_charges[specname] = gem.speciesCharge_i(i);
@@ -69,22 +82,20 @@ ChemicalEngineMaps::ChemicalEngineMaps(const std::string &inputfile, bool reset_
         m_species_molar_volumes[specname] = gem.standardMolarVolume_i(i);
     }
 
-    for(Index i = 0; i < nphases(); ++i) {
+    for (Index i = 0; i < nphases(); ++i)
         m_phase_names.push_back(gem.phaseName_i(i));
-    }
-    for(Index i = 0; i < nphases(); ++i) {
+
+    for (Index i = 0; i < nphases(); ++i) {
         auto number = gem.numSpeciesInPhase_i(i);
-        if( number > 0) {
+        if (number > 0) {
             auto first = gem.indexFirstSpeciesInPhase_i(i);
-            m_species_in_phase[m_phase_names[i]] = std::vector( m_species_names.begin()+first,
-                                                                m_species_names.begin()+first+number);
+            m_species_in_phase[m_phase_names[i]] = std::vector<std::string>(
+                m_species_names.begin() + first, m_species_names.begin() + first + number);
         }
     }
 
-    //auto formulaMatrix = gem.formulaMatrix().T();
-    if( reset_calc ) {
+    if (reset_calc)
         clear();
-    }
 }
 
 auto ChemicalEngineMaps::equilibrate() -> std::string
@@ -781,6 +792,161 @@ auto ChemicalEngineMaps::system_enthalpy() -> double { return gem.systemEnthalpy
 auto ChemicalEngineMaps::system_entropy() -> double { return gem.systemEntropy(); }
 
 auto ChemicalEngineMaps::system_heat_capacity_const_p() -> double { return gem.systemHeatCapacityConstP(); }
+
+auto ChemicalEngineMaps::mass_balance_errors() -> ValuesMap
+{
+    return to_map(m_element_names, gem.massBalanceErrors());
+}
+
+auto ChemicalEngineMaps::mass_balance_relative_errors() -> ValuesMap
+{
+    return to_map(m_element_names, gem.massBalanceRelativeErrors());
+}
+
+// ---------------------------------------------------------------------------
+// Aqueous solution derived properties
+// ---------------------------------------------------------------------------
+
+auto ChemicalEngineMaps::water_activity() -> double
+{
+    return gem.waterActivity();
+}
+
+auto ChemicalEngineMaps::osmotic_coefficient() -> double
+{
+    return gem.osmoticCoefficient();
+}
+
+auto ChemicalEngineMaps::hardness() -> ValuesMap
+{
+    ValuesMap result = {{"total", 0.0}, {"Ca", 0.0}, {"Mg", 0.0}};
+    if (m_aq_phase_symbol.empty()) return result;
+    double vol_L = gem.phaseVolume(m_aq_phase_symbol) * 1000.0;
+    if (vol_L <= 0.0) return result;
+    Vector el_aq = gem.elementAmountsInPhase(m_aq_phase_symbol);
+    constexpr double M_CaCO3 = 100087.0;  // mg/mol
+    auto iCa = gem.indexElement("Ca");
+    auto iMg = gem.indexElement("Mg");
+    if (iCa < (Index)gem.numElements()) result["Ca"] = (el_aq[iCa] / vol_L) * M_CaCO3;
+    if (iMg < (Index)gem.numElements()) result["Mg"] = (el_aq[iMg] / vol_L) * M_CaCO3;
+    result["total"] = result["Ca"] + result["Mg"];
+    return result;
+}
+
+// ---------------------------------------------------------------------------
+// Gas phase properties
+// ---------------------------------------------------------------------------
+
+static constexpr double P_std = 1e5; // 1 bar in Pa (standard pressure for gas activities)
+
+auto ChemicalEngineMaps::gas_species_partial_pressures() -> ValuesMap
+{
+    if (m_gas_phase_symbol.empty()) return {};
+    auto first = gem.indexFirstSpeciesInPhase(m_gas_phase_symbol);
+    auto count = gem.numSpeciesInPhase(m_gas_phase_symbol);
+    VectorConstRef x = gem.moleFractions();
+    double P_total = gem.pressure();
+    ValuesMap result;
+    for (Index i = first; i < first + count; ++i)
+        result[m_species_names[i]] = x[i] * P_total;
+    return result;
+}
+
+auto ChemicalEngineMaps::gas_species_fugacities() -> ValuesMap
+{
+    if (m_gas_phase_symbol.empty()) return {};
+    auto first = gem.indexFirstSpeciesInPhase(m_gas_phase_symbol);
+    auto count = gem.numSpeciesInPhase(m_gas_phase_symbol);
+    VectorConstRef lnA = gem.lnActivities();
+    ValuesMap result;
+    for (Index i = first; i < first + count; ++i)
+        result[m_species_names[i]] = std::exp(lnA[i]) * P_std;
+    return result;
+}
+
+auto ChemicalEngineMaps::gas_species_fugacity_coefficients() -> ValuesMap
+{
+    if (m_gas_phase_symbol.empty()) return {};
+    auto first = gem.indexFirstSpeciesInPhase(m_gas_phase_symbol);
+    auto count = gem.numSpeciesInPhase(m_gas_phase_symbol);
+    VectorConstRef lnGam = gem.lnActivityCoefficients();
+    ValuesMap result;
+    for (Index i = first; i < first + count; ++i)
+        result[m_species_names[i]] = std::exp(lnGam[i]);
+    return result;
+}
+
+auto ChemicalEngineMaps::gas_partial_pressure(const std::string& species) -> double
+{
+    auto pp = gas_species_partial_pressures();
+    auto it = pp.find(species);
+    return (it != pp.end()) ? it->second : 0.0;
+}
+
+auto ChemicalEngineMaps::gas_fugacity(const std::string& species) -> double
+{
+    auto f = gas_species_fugacities();
+    auto it = f.find(species);
+    return (it != f.end()) ? it->second : 0.0;
+}
+
+auto ChemicalEngineMaps::gas_fugacity_coefficient(const std::string& species) -> double
+{
+    auto phi = gas_species_fugacity_coefficients();
+    auto it = phi.find(species);
+    return (it != phi.end()) ? it->second : 0.0;
+}
+
+// ---------------------------------------------------------------------------
+// Reaction thermodynamics
+// ---------------------------------------------------------------------------
+
+auto ChemicalEngineMaps::log_K(const ValuesMap& reaction) -> double
+{
+    double dG0 = delta_G0_reaction(reaction);
+    constexpr double R = 8.314472;
+    constexpr double ln10 = 2.302585093;
+    return -dG0 / (R * gem.temperature() * ln10);
+}
+
+auto ChemicalEngineMaps::delta_G0_reaction(const ValuesMap& reaction) -> double
+{
+    double dG0 = 0.0;
+    for (const auto& [name, coeff] : reaction)
+        dG0 += coeff * gem.standardMolarGibbsEnergy(name);
+    return dG0;
+}
+
+auto ChemicalEngineMaps::delta_H0_reaction(const ValuesMap& reaction) -> double
+{
+    double dH0 = 0.0;
+    for (const auto& [name, coeff] : reaction)
+        dH0 += coeff * gem.standardMolarEnthalpy(name);
+    return dH0;
+}
+
+// ---------------------------------------------------------------------------
+// Phase existence and type queries
+// ---------------------------------------------------------------------------
+
+auto ChemicalEngineMaps::phase_is_present(const std::string& phase_name, double threshold) -> bool
+{
+    return gem.phaseIsPresent(phase_name, threshold);
+}
+
+auto ChemicalEngineMaps::present_phases(double threshold) -> std::vector<std::string>
+{
+    return gem.presentPhases(threshold);
+}
+
+auto ChemicalEngineMaps::present_minerals(double threshold) -> std::vector<std::string>
+{
+    std::vector<std::string> result;
+    for (const auto& name : gem.presentPhases(threshold))
+        if (!is_aqueous_phase(name) && !is_gas_phase(name))
+            result.push_back(name);
+    return result;
+}
 
 // returns pH of the solution
 auto ChemicalEngineMaps::pH() -> double
