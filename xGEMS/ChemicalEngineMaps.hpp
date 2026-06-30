@@ -97,6 +97,147 @@ public:
     auto equilibrate() -> std::string;
 
     /**
+     * @brief Computes the equilibrium state with explicit temperature, pressure and bulk composition.
+     *
+     * Mirrors the ChemicalEngine::equilibrate(T, P, b) call but accepts a dictionary for the
+     * bulk composition instead of a vector. Sets internal T, P, and bulk composition before computing.
+     *
+     * @param T_new Temperature in Kelvin (K).
+     * @param P_new Pressure in Pascals (Pa).
+     * @param b_dict (ValuesMap) Dictionary of element amounts in mol.
+     * @param min_amount (double) Minimum amount for elements not in b_dict, default 1e-15.
+     * @return (std::string) Status string of the equilibrium solver.
+     *
+     * @code
+     * xGEMS::ValuesMap b = { {"C", 0.001}, {"H", 110.0}, {"O", 55.0}, {"Zz", 0.0} };
+     * std::string retcode = engine.equilibrate(298.15, 101325.0, b);
+     * @endcode
+     */
+    auto equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount=1e-15) -> std::string;
+
+    /**
+     * @brief Re-equilibrates the system using the current internal state (T, P, b).
+     *
+     * Calls the GEM solver without resetting T, P or bulk composition. Uses the warm/cold start
+     * setting currently configured on the engine.
+     *
+     * @return (std::string) Status string of the equilibrium solver.
+     *
+     * @code
+     * std::string retcode = engine.reequilibrate();
+     * @endcode
+     */
+    auto reequilibrate() -> std::string;
+
+    /**
+     * @brief Re-equilibrates the system with explicit warm/cold start control.
+     *
+     * @param warmstart (bool) If true, uses the previous speciation as initial guess (SIA).
+     * @return (std::string) Status string of the equilibrium solver.
+     *
+     * @code
+     * std::string retcode = engine.reequilibrate(true);
+     * @endcode
+     */
+    auto reequilibrate(bool warmstart) -> std::string;
+
+    /**
+     * @brief Sets the pressure and temperature without computing equilibrium.
+     *
+     * Mirrors ChemicalEngine::setPT. Also updates the T and P member variables.
+     *
+     * @param P Pressure in Pascals (Pa).
+     * @param T Temperature in Kelvin (K).
+     * @return (bool) true if PT was set correctly, false if out of range.
+     *
+     * @code
+     * bool ok = engine.setPT(101325.0, 298.15);
+     * @endcode
+     */
+    auto setPT(double P_new, double T_new) -> bool;
+
+    /**
+     * @brief Sets the amounts of elements (vector b) from a dictionary.
+     *
+     * Mirrors ChemicalEngine::setB but accepts a dictionary instead of a vector.
+     * Elements absent from b_dict are left unchanged (or set to min_amount if below it).
+     *
+     * @param b_input (ValuesMap) Dictionary of element amounts in mol.
+     * @param min_amount (double) Minimum amount for elements not provided, default 1e-15.
+     *
+     * @code
+     * engine.setB({ {"Ca", 0.001}, {"Cl", 0.002}, {"H", 110.0}, {"O", 55.0}, {"Zz", 0.0} });
+     * @endcode
+     */
+    auto setB(ValuesMap b_input, double min_amount=1e-15) -> void;
+
+    /**
+     * @brief Returns the current temperature of the system after the last equilibration.
+     *
+     * @return (double) Temperature in Kelvin (K).
+     *
+     * @code
+     * double T = engine.temperature();
+     * @endcode
+     */
+    auto temperature() -> double;
+
+    /**
+     * @brief Returns the current pressure of the system after the last equilibration.
+     *
+     * @return (double) Pressure in Pascals (Pa).
+     *
+     * @code
+     * double P = engine.pressure();
+     * @endcode
+     */
+    auto pressure() -> double;
+
+    /**
+     * @brief Reads a DBR file from disk, updating the system composition.
+     *
+     * @param filename Path to the DBR file (e.g., "*-dbr.json/.dat").
+     *
+     * @code
+     * engine.readDbrFromFile("system-dbr-0-0000.json");
+     * @endcode
+     */
+    auto readDbrFromFile(std::string filename) -> void;
+
+    /**
+     * @brief Reads the system DBR composition from a JSON string.
+     *
+     * @param dbr_json JSON string containing DBR composition data.
+     *
+     * @code
+     * engine.readDbrFromJsonString(dbr_json_str);
+     * @endcode
+     */
+    auto readDbrFromJsonString(std::string dbr_json) -> void;
+
+    /**
+     * @brief Writes the current DBR to a file (key-value format).
+     *
+     * @param filename Path to the output DBR file.
+     *
+     * @code
+     * engine.writeDbrToFile("system-dbr-0-0001.dat");
+     * @endcode
+     */
+    auto writeDbrToFile(std::string filename) -> void;
+
+    /**
+     * @brief Returns the current DBR as a JSON string.
+     *
+     * @return (std::string) JSON representation of the current system state.
+     *
+     * @code
+     * std::string json = engine.writeDbrToJsonString();
+     * @endcode
+     */
+    auto writeDbrToJsonString() -> const std::string;
+
+    /**
      * @brief Configures the engine to use a cold start.
      *
      * Uses a simplex LP initial guess (slower but may yield more accurate results).
@@ -455,6 +596,94 @@ public:
     auto system_mass() -> double;
 
     /**
+     * @brief Returns the Eh (redox potential) of the aqueous phase.
+     *
+     * @return (double) Eh in Volts.
+     *
+     * @code
+     * double eh = engine.Eh();
+     * @endcode
+     */
+    auto Eh() -> double;
+
+    /**
+     * @brief Checks if the last equilibrium computation converged.
+     *
+     * @return (bool) True if converged, false otherwise.
+     *
+     * @code
+     * bool ok = engine.converged();
+     * @endcode
+     */
+    auto converged() -> bool;
+
+    /**
+     * @brief Returns the number of iterations of the last equilibrium computation.
+     *
+     * @return (int) Number of iterations.
+     *
+     * @code
+     * int n = engine.num_iterations();
+     * @endcode
+     */
+    auto num_iterations() -> int;
+
+    /**
+     * @brief Returns the elapsed time of the last equilibrium computation.
+     *
+     * @return (double) Elapsed time in seconds.
+     *
+     * @code
+     * double t = engine.elapsed_time();
+     * @endcode
+     */
+    auto elapsed_time() -> double;
+
+    /**
+     * @brief Returns the total Gibbs energy of the system.
+     *
+     * @return (double) System Gibbs energy in J.
+     *
+     * @code
+     * double G = engine.system_gibbs_energy();
+     * @endcode
+     */
+    auto system_gibbs_energy() -> double;
+
+    /**
+     * @brief Returns the total enthalpy of the system.
+     *
+     * @return (double) System enthalpy in J.
+     *
+     * @code
+     * double H = engine.system_enthalpy();
+     * @endcode
+     */
+    auto system_enthalpy() -> double;
+
+    /**
+     * @brief Returns the total entropy of the system.
+     *
+     * @return (double) System entropy in J/K.
+     *
+     * @code
+     * double S = engine.system_entropy();
+     * @endcode
+     */
+    auto system_entropy() -> double;
+
+    /**
+     * @brief Returns the total isobaric heat capacity of the system.
+     *
+     * @return (double) System heat capacity in J/K.
+     *
+     * @code
+     * double Cp = engine.system_heat_capacity_const_p();
+     * @endcode
+     */
+    auto system_heat_capacity_const_p() -> double;
+
+    /**
      * @brief Returns the molar volumes of the phases.
      *
      * @return (ValuesMap) Dictionary of phases molar volumes in m³/mol.
@@ -477,6 +706,66 @@ public:
      * @endcode
      */
     auto phase_sat_indices() -> ValuesMap;
+
+    /**
+     * @brief Returns the densities of all phases (kg/m³).
+     *
+     * @return (ValuesMap) Dictionary of phase densities.
+     *
+     * @code
+     * auto dens = engine.phases_density();
+     * std::cout << "Density of 'aq_gen': " << dens["aq_gen"] << std::endl;
+     * @endcode
+     */
+    auto phases_density() -> ValuesMap;
+
+    /**
+     * @brief Returns the total enthalpies of all phases (J).
+     *
+     * @return (ValuesMap) Dictionary of phase total enthalpies.
+     *
+     * @code
+     * auto enth = engine.phases_enthalpy();
+     * std::cout << "Enthalpy of 'aq_gen': " << enth["aq_gen"] << std::endl;
+     * @endcode
+     */
+    auto phases_enthalpy() -> ValuesMap;
+
+    /**
+     * @brief Returns the total entropies of all phases (J/K).
+     *
+     * @return (ValuesMap) Dictionary of phase total entropies.
+     *
+     * @code
+     * auto entr = engine.phases_entropy();
+     * std::cout << "Entropy of 'aq_gen': " << entr["aq_gen"] << std::endl;
+     * @endcode
+     */
+    auto phases_entropy() -> ValuesMap;
+
+    /**
+     * @brief Returns the molar Gibbs energies of all phases (J/mol).
+     *
+     * @return (ValuesMap) Dictionary of phase molar Gibbs energies.
+     *
+     * @code
+     * auto gibbs = engine.phases_molar_gibbs_energy();
+     * std::cout << "Molar Gibbs energy of 'aq_gen': " << gibbs["aq_gen"] << std::endl;
+     * @endcode
+     */
+    auto phases_molar_gibbs_energy() -> ValuesMap;
+
+    /**
+     * @brief Returns the total isobaric heat capacities of all phases (J/K).
+     *
+     * @return (ValuesMap) Dictionary of phase total heat capacities.
+     *
+     * @code
+     * auto cp = engine.phases_heat_capacity_const_p();
+     * std::cout << "Heat capacity of 'aq_gen': " << cp["aq_gen"] << std::endl;
+     * @endcode
+     */
+    auto phases_heat_capacity_const_p() -> ValuesMap;
 
      /**
      * @brief Returns the aq solution composition in mol/L aq solution.
@@ -611,6 +900,90 @@ public:
      * @endcode
      */
     auto species_ln_activity_coefficients() -> ValuesMap;
+
+    /**
+     * @brief Returns the mole fractions of all species.
+     *
+     * @return (ValuesMap) Dictionary of species mole fractions.
+     *
+     * @code
+     * auto xfrac = engine.species_mole_fractions();
+     * std::cout << "Mole fraction of 'H2O@': " << xfrac["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_mole_fractions() -> ValuesMap;
+
+    /**
+     * @brief Returns the ln concentrations of all species.
+     *
+     * @return (ValuesMap) Dictionary of species ln concentrations.
+     *
+     * @code
+     * auto lnc = engine.species_ln_concentrations();
+     * std::cout << "ln concentration of 'H2O@': " << lnc["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_ln_concentrations() -> ValuesMap;
+
+    /**
+     * @brief Returns the chemical potentials of all species (J/mol).
+     *
+     * @return (ValuesMap) Dictionary of species chemical potentials.
+     *
+     * @code
+     * auto mu = engine.species_chemical_potentials();
+     * std::cout << "Chemical potential of 'H2O@': " << mu["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_chemical_potentials() -> ValuesMap;
+
+    /**
+     * @brief Returns the standard molar Gibbs energies of all species (J/mol).
+     *
+     * @return (ValuesMap) Dictionary of standard molar Gibbs energies.
+     *
+     * @code
+     * auto g0 = engine.species_gibbs_energies();
+     * std::cout << "Standard molar Gibbs energy of 'H2O@': " << g0["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_gibbs_energies() -> ValuesMap;
+
+    /**
+     * @brief Returns the standard molar enthalpies of all species (J/mol).
+     *
+     * @return (ValuesMap) Dictionary of standard molar enthalpies.
+     *
+     * @code
+     * auto h0 = engine.species_enthalpies();
+     * std::cout << "Standard molar enthalpy of 'H2O@': " << h0["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_enthalpies() -> ValuesMap;
+
+    /**
+     * @brief Returns the standard molar entropies of all species (J/mol/K).
+     *
+     * @return (ValuesMap) Dictionary of standard molar entropies.
+     *
+     * @code
+     * auto s0 = engine.species_entropies();
+     * std::cout << "Standard molar entropy of 'H2O@': " << s0["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_entropies() -> ValuesMap;
+
+    /**
+     * @brief Returns the standard molar isobaric heat capacities of all species (J/mol/K).
+     *
+     * @return (ValuesMap) Dictionary of standard molar heat capacities.
+     *
+     * @code
+     * auto cp0 = engine.species_heat_capacities_const_p();
+     * std::cout << "Standard molar heat capacity of 'H2O@': " << cp0["H2O@"] << std::endl;
+     * @endcode
+     */
+    auto species_heat_capacities_const_p() -> ValuesMap;
 
     /**
      * @brief Returns the upper limits for all species.

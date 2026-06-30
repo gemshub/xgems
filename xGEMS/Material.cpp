@@ -170,6 +170,9 @@ auto parseSimple(const std::string& s) -> ElementMap
             ++i;
         }
         else if (c == ')') {
+            if (stack.size() == 1)
+                throw std::invalid_argument(
+                    "xGEMS::Material: unmatched ')' in formula '" + s + "'.");
             ElementMap top = std::move(stack.back());
             stack.pop_back();
             ++i;
@@ -199,10 +202,13 @@ auto parseSimple(const std::string& s) -> ElementMap
             stack.back()[el] += cnt;
         }
         else {
-            // Skip whitespace, charge marks, or unrecognised punctuation
-            ++i;
+            throw std::invalid_argument(
+                "xGEMS::Material: unsupported token in formula '" + s + "'.");
         }
     }
+    if (stack.size() != 1)
+        throw std::invalid_argument(
+            "xGEMS::Material: unmatched '(' in formula '" + s + "'.");
     return stack.back();
 }
 
@@ -331,9 +337,9 @@ auto Material::buildConstituent(const ElementMap& formula,
     c.name            = nm;
     c.formula         = formula;
     c.formula_mass_kg = formulaMassKg(formula);
-    if (c.formula_mass_kg <= 0.0) {
-        // Safety: avoid divide-by-zero for hypothetical massless recipes.
-        c.formula_mass_kg = 1.0e-30;
+    if (formula.empty() || c.formula_mass_kg <= 0.0) {
+        throw std::invalid_argument(
+            "xGEMS::Material: formula must contain at least one valid element.");
     }
     c.value     = value;
     c.units     = units;
@@ -501,10 +507,10 @@ auto Material::operator()(double value, const std::string& units) const -> Mater
 
 auto Material::operator+(const Material& other) const -> Material
 {
-    Material result;
-    result.adapter_ = adapter_ ? adapter_ : other.adapter_;
+    Material result(*this);
+    if (!result.adapter_)
+        result.adapter_ = other.adapter_;
     result.name_    = "(" + name_ + " + " + other.name_ + ")";
-    result.constituents_ = constituents_;
     result.constituents_.insert(
         result.constituents_.end(),
         other.constituents_.begin(), other.constituents_.end());

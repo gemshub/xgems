@@ -208,7 +208,7 @@ Read-only property: the dictionary of the species standard molar volumes in m³/
         print(name, out[name])
 )doc")
 
-            .def("equilibrate", &ChemicalEngineMaps::equilibrate,
+            .def("equilibrate", static_cast<std::string(ChemicalEngineMaps::*)()>(&ChemicalEngineMaps::equilibrate),
              R"doc(
 Computes the equilibrium state of the current system.
 Uses current temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.
@@ -225,21 +225,186 @@ Uses current temperature (K), pressure (Pa), and element amounts (in mol) to com
                         'Mg': 0.001, 'O': 55.5083933588231, 'Sn': 130.841288437146, 'Zz': 0.0}
     engine.set_bulk_composition(bulk_composition)
     engine.equilibrate()
+)doc")
+            .def("equilibrate",
+                 static_cast<std::string(ChemicalEngineMaps::*)(double, double, ValuesMap, double)>(&ChemicalEngineMaps::equilibrate),
+                 py::arg("T"), py::arg("P"), py::arg("b_dict"), py::arg("min_amount")=1e-15,
+             R"doc(
+Computes the equilibrium state with explicit temperature, pressure, and bulk composition.
 
-**Return**
+Mirrors ``ChemicalEngine.equilibrate(T, P, b)`` but accepts a dictionary for the bulk
+composition. Sets the internal T, P, and bulk composition before computing equilibrium.
 
-The function returns the string indicating the status:
+:param float T: Temperature in Kelvin.
+:param float P: Pressure in Pascals.
+:param dict b_dict: Dictionary of element amounts in mol (elements not listed keep their current value).
+:param float min_amount: Minimum amount for unspecified elements, default 1e-15.
+:return str: The string indicating the status.
 
-- No GEM re-calculation needed
-- Need GEM calculation with LPP (automatic) initial approximation (AIA)
-- OK after GEM calculation with LPP AIA
-- Bad (not fully trustful) result after GEM calculation with LPP AIA
-- Failure (no result) in GEM calculation with LPP AIA
-- Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-- OK after GEM calculation with SIA
-- Bad (not fully trustful) result after GEM calculation with SIA
-- Failure (no result) in GEM calculation with SIA
-- Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+**Example:**
+
+.. code-block:: python
+
+    b = {'C': 0.001, 'Ca': 1e-9, 'Cl': 0.002, 'H': 110.68, 'Mg': 0.001, 'O': 55.34, 'Zz': 0.0}
+    result = engine.equilibrate(298.15, 101325.0, b)
+    print(result)
+)doc")
+            .def("reequilibrate", static_cast<std::string(ChemicalEngineMaps::*)()>(&ChemicalEngineMaps::reequilibrate),
+             R"doc(
+Re-equilibrates the system using the current internal state without changing T, P, or bulk composition.
+
+Mirrors ``ChemicalEngine.reequilibrate()``.
+
+:return str: The string indicating the status.
+
+**Example:**
+
+.. code-block:: python
+
+    result = engine.reequilibrate()
+    print(result)
+)doc")
+            .def("reequilibrate", static_cast<std::string(ChemicalEngineMaps::*)(bool)>(&ChemicalEngineMaps::reequilibrate),
+                 py::arg("warmstart"),
+             R"doc(
+Re-equilibrates the system with explicit warm/cold start control.
+
+Mirrors ``ChemicalEngine.reequilibrate(warmstart)``.
+
+:param bool warmstart: If true, uses previous speciation as initial guess (SIA).
+:return str: The string indicating the status.
+
+**Example:**
+
+.. code-block:: python
+
+    result = engine.reequilibrate(True)
+    print(result)
+)doc")
+            .def("setPT", &ChemicalEngineMaps::setPT,
+                 py::arg("P"), py::arg("T"),
+             R"doc(
+Sets the pressure and temperature without computing equilibrium.
+
+Mirrors ``ChemicalEngine.setPT(P, T)``. Also updates the T and P member variables.
+
+:param float P: Pressure in Pascals.
+:param float T: Temperature in Kelvin.
+:return bool: True if PT was set correctly, False if out of range.
+
+**Example:**
+
+.. code-block:: python
+
+    ok = engine.setPT(101325.0, 298.15)
+)doc")
+            .def("setB", &ChemicalEngineMaps::setB,
+                 py::arg("b_dict"), py::arg("min_amount")=1e-15,
+             R"doc(
+Sets the amounts of elements from a dictionary.
+
+Mirrors ``ChemicalEngine.setB(b)`` but accepts a dictionary instead of a vector.
+Elements absent from ``b_dict`` are left at their current value (or set to ``min_amount``
+if they fall below it).
+
+:param dict b_dict: Dictionary of element amounts in mol.
+:param float min_amount: Minimum amount for unspecified elements, default 1e-15.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.setB({'Ca': 0.001, 'Cl': 0.002, 'H': 110.0, 'O': 55.0, 'Zz': 0.0})
+)doc")
+            .def_property_readonly("temperature", &ChemicalEngineMaps::temperature,
+             R"doc(
+Read-only property: current temperature of the system in K after the last equilibration.
+
+Mirrors ``ChemicalEngine.temperature()``. Use the writable ``T`` attribute to set the
+temperature for the next equilibration.
+
+:return float: Temperature in Kelvin.
+
+**Example:**
+
+.. code-block:: python
+
+    print("temperature", engine.temperature)
+)doc")
+            .def_property_readonly("pressure", &ChemicalEngineMaps::pressure,
+             R"doc(
+Read-only property: current pressure of the system in Pa after the last equilibration.
+
+Mirrors ``ChemicalEngine.pressure()``. Use the writable ``P`` attribute to set the
+pressure for the next equilibration.
+
+:return float: Pressure in Pascals.
+
+**Example:**
+
+.. code-block:: python
+
+    print("pressure", engine.pressure)
+)doc")
+            .def("readDbrFromFile", &ChemicalEngineMaps::readDbrFromFile,
+                 py::arg("filename"),
+             R"doc(
+Reads a DBR file from disk, updating the system composition.
+
+Mirrors ``ChemicalEngine.readDbrFromFile(filename)``.
+
+:param str filename: Path to the DBR file (e.g., "*-dbr.json").
+
+**Example:**
+
+.. code-block:: python
+
+    engine.readDbrFromFile("system-dbr-0-0000.json")
+)doc")
+            .def("readDbrFromJsonString", &ChemicalEngineMaps::readDbrFromJsonString,
+                 py::arg("dbr_json"),
+             R"doc(
+Reads the system DBR composition from a JSON string.
+
+Mirrors ``ChemicalEngine.readDbrFromJsonString(dbr_json)``.
+
+:param str dbr_json: JSON string containing DBR composition data.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.readDbrFromJsonString(dbr_json_str)
+)doc")
+            .def("writeDbrToFile", &ChemicalEngineMaps::writeDbrToFile,
+                 py::arg("filename"),
+             R"doc(
+Writes the current DBR to a file.
+
+Mirrors ``ChemicalEngine.writeDbrToFile(filename)``.
+
+:param str filename: Path to the output DBR file.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.writeDbrToFile("system-dbr-0-0001.dat")
+)doc")
+            .def("writeDbrToJsonString", &ChemicalEngineMaps::writeDbrToJsonString,
+             R"doc(
+Returns the current DBR as a JSON string.
+
+Mirrors ``ChemicalEngine.writeDbrToJsonString()``.
+
+:return str: JSON representation of the current system state.
+
+**Example:**
+
+.. code-block:: python
+
+    json_str = engine.writeDbrToJsonString()
+    print(json_str)
 )doc")
             .def("cold_start", &ChemicalEngineMaps::cold_start,
              R"doc(
@@ -401,6 +566,102 @@ Read-only property: the total mass of the system in kg.
 
     print("system_mass", engine.system_mass)
 )doc")
+            .def_property_readonly("Eh", &ChemicalEngineMaps::Eh,
+             R"doc(
+Read-only property: the Eh (redox potential) of the aqueous phase in V.
+
+:return float: Eh of the aqueous phase in Volts.
+
+**Example:**
+
+.. code-block:: python
+
+    print("Eh", engine.Eh)
+)doc")
+            .def_property_readonly("converged", &ChemicalEngineMaps::converged,
+             R"doc(
+Read-only property: whether the last equilibrium computation converged.
+
+:return bool: True if the last equilibration converged.
+
+**Example:**
+
+.. code-block:: python
+
+    print("converged", engine.converged)
+)doc")
+            .def_property_readonly("num_iterations", &ChemicalEngineMaps::num_iterations,
+             R"doc(
+Read-only property: number of iterations of the last equilibrium computation.
+
+:return int: Number of iterations.
+
+**Example:**
+
+.. code-block:: python
+
+    print("num_iterations", engine.num_iterations)
+)doc")
+            .def_property_readonly("elapsed_time", &ChemicalEngineMaps::elapsed_time,
+             R"doc(
+Read-only property: elapsed time of the last equilibrium computation in seconds.
+
+:return float: Elapsed time in seconds.
+
+**Example:**
+
+.. code-block:: python
+
+    print("elapsed_time", engine.elapsed_time)
+)doc")
+            .def_property_readonly("system_gibbs_energy", &ChemicalEngineMaps::system_gibbs_energy,
+             R"doc(
+Read-only property: the total Gibbs energy of the system in J.
+
+:return float: Total Gibbs energy in J.
+
+**Example:**
+
+.. code-block:: python
+
+    print("system_gibbs_energy", engine.system_gibbs_energy)
+)doc")
+            .def_property_readonly("system_enthalpy", &ChemicalEngineMaps::system_enthalpy,
+             R"doc(
+Read-only property: the total enthalpy of the system in J.
+
+:return float: Total enthalpy in J.
+
+**Example:**
+
+.. code-block:: python
+
+    print("system_enthalpy", engine.system_enthalpy)
+)doc")
+            .def_property_readonly("system_entropy", &ChemicalEngineMaps::system_entropy,
+             R"doc(
+Read-only property: the total entropy of the system in J/K.
+
+:return float: Total entropy in J/K.
+
+**Example:**
+
+.. code-block:: python
+
+    print("system_entropy", engine.system_entropy)
+)doc")
+            .def_property_readonly("system_heat_capacity_const_p", &ChemicalEngineMaps::system_heat_capacity_const_p,
+             R"doc(
+Read-only property: the total isobaric heat capacity of the system in J/K.
+
+:return float: Total isobaric heat capacity in J/K.
+
+**Example:**
+
+.. code-block:: python
+
+    print("system_heat_capacity_const_p", engine.system_heat_capacity_const_p)
+)doc")
             .def_property_readonly("phases_molar_volume", &ChemicalEngineMaps::phases_molar_volume,
              R"doc(
 Read-only property: the dictionary of the phases molar volumes in m³/mol.
@@ -424,6 +685,66 @@ Read-only property: the dictionary of the saturation indices of all phases (log�
 .. code-block:: python
 
     print("phase_sat_indices", engine.phase_sat_indices)
+)doc")
+            .def_property_readonly("phases_density", &ChemicalEngineMaps::phases_density,
+             R"doc(
+Read-only property: the dictionary of the densities of all phases in kg/m³.
+
+:return dict[str:float]: The densities of all phases in kg/m³.
+
+**Example:**
+
+.. code-block:: python
+
+    print("phases_density", engine.phases_density)
+)doc")
+            .def_property_readonly("phases_enthalpy", &ChemicalEngineMaps::phases_enthalpy,
+             R"doc(
+Read-only property: the dictionary of the total enthalpies of all phases in J.
+
+:return dict[str:float]: The total enthalpies of all phases in J.
+
+**Example:**
+
+.. code-block:: python
+
+    print("phases_enthalpy", engine.phases_enthalpy)
+)doc")
+            .def_property_readonly("phases_entropy", &ChemicalEngineMaps::phases_entropy,
+             R"doc(
+Read-only property: the dictionary of the total entropies of all phases in J/K.
+
+:return dict[str:float]: The total entropies of all phases in J/K.
+
+**Example:**
+
+.. code-block:: python
+
+    print("phases_entropy", engine.phases_entropy)
+)doc")
+            .def_property_readonly("phases_molar_gibbs_energy", &ChemicalEngineMaps::phases_molar_gibbs_energy,
+             R"doc(
+Read-only property: the dictionary of the molar Gibbs energies of all phases in J/mol.
+
+:return dict[str:float]: The molar Gibbs energies of all phases in J/mol.
+
+**Example:**
+
+.. code-block:: python
+
+    print("phases_molar_gibbs_energy", engine.phases_molar_gibbs_energy)
+)doc")
+            .def_property_readonly("phases_heat_capacity_const_p", &ChemicalEngineMaps::phases_heat_capacity_const_p,
+             R"doc(
+Read-only property: the dictionary of the total isobaric heat capacities of all phases in J/K.
+
+:return dict[str:float]: The total isobaric heat capacities of all phases in J/K.
+
+**Example:**
+
+.. code-block:: python
+
+    print("phases_heat_capacity_const_p", engine.phases_heat_capacity_const_p)
 )doc")
 
             .def_property_readonly("aq_elements_molarity", &ChemicalEngineMaps::aq_elements_molarity,
@@ -617,6 +938,90 @@ Read-only property: the dictionary of the ln activity coefficients of all specie
 .. code-block:: python
 
     print("species_ln_activity_coefficients", engine.species_ln_activity_coefficients)
+)doc")
+            .def_property_readonly("species_mole_fractions", &ChemicalEngineMaps::species_mole_fractions,
+             R"doc(
+Read-only property: the dictionary of the mole fractions of all species.
+
+:return dict[str:float]: The mole fractions of all species.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_mole_fractions", engine.species_mole_fractions)
+)doc")
+            .def_property_readonly("species_ln_concentrations", &ChemicalEngineMaps::species_ln_concentrations,
+             R"doc(
+Read-only property: the dictionary of the ln concentrations of all species.
+
+:return dict[str:float]: The ln concentrations of all species.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_ln_concentrations", engine.species_ln_concentrations)
+)doc")
+            .def_property_readonly("species_chemical_potentials", &ChemicalEngineMaps::species_chemical_potentials,
+             R"doc(
+Read-only property: the dictionary of the chemical potentials of all species in J/mol.
+
+:return dict[str:float]: The chemical potentials of all species in J/mol.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_chemical_potentials", engine.species_chemical_potentials)
+)doc")
+            .def_property_readonly("species_gibbs_energies", &ChemicalEngineMaps::species_gibbs_energies,
+             R"doc(
+Read-only property: the dictionary of the standard molar Gibbs energies of all species in J/mol.
+
+:return dict[str:float]: The standard molar Gibbs energies in J/mol.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_gibbs_energies", engine.species_gibbs_energies)
+)doc")
+            .def_property_readonly("species_enthalpies", &ChemicalEngineMaps::species_enthalpies,
+             R"doc(
+Read-only property: the dictionary of the standard molar enthalpies of all species in J/mol.
+
+:return dict[str:float]: The standard molar enthalpies in J/mol.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_enthalpies", engine.species_enthalpies)
+)doc")
+            .def_property_readonly("species_entropies", &ChemicalEngineMaps::species_entropies,
+             R"doc(
+Read-only property: the dictionary of the standard molar entropies of all species in J/mol/K.
+
+:return dict[str:float]: The standard molar entropies in J/mol/K.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_entropies", engine.species_entropies)
+)doc")
+            .def_property_readonly("species_heat_capacities_const_p", &ChemicalEngineMaps::species_heat_capacities_const_p,
+             R"doc(
+Read-only property: the dictionary of the standard molar isobaric heat capacities of all species in J/mol/K.
+
+:return dict[str:float]: The standard molar heat capacities in J/mol/K.
+
+**Example:**
+
+.. code-block:: python
+
+    print("species_heat_capacities_const_p", engine.species_heat_capacities_const_p)
 )doc")
             .def_property_readonly("species_upper_bounds", &ChemicalEngineMaps::species_upper_bounds,
              R"doc(

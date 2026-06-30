@@ -93,6 +93,48 @@ auto ChemicalEngineMaps::equilibrate() -> std::string
     return _status_encoder[outcode];
 }
 
+auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount) -> std::string
+{
+    T = T_new;
+    P = P_new;
+    set_bulk_composition(b_dict, min_amount);
+    return equilibrate();
+}
+
+auto ChemicalEngineMaps::reequilibrate() -> std::string
+{
+    return _status_encoder[gem.reequilibrate()];
+}
+
+auto ChemicalEngineMaps::reequilibrate(bool warmstart) -> std::string
+{
+    return _status_encoder[gem.reequilibrate(warmstart)];
+}
+
+auto ChemicalEngineMaps::setPT(double P_new, double T_new) -> bool
+{
+    P = P_new;
+    T = T_new;
+    return gem.setPT(P_new, T_new);
+}
+
+auto ChemicalEngineMaps::setB(ValuesMap b_input, double min_amount) -> void
+{
+    set_bulk_composition(b_input, min_amount);
+}
+
+auto ChemicalEngineMaps::temperature() -> double { return gem.temperature(); }
+
+auto ChemicalEngineMaps::pressure() -> double { return gem.pressure(); }
+
+auto ChemicalEngineMaps::readDbrFromFile(std::string filename) -> void { gem.readDbrFromFile(filename); }
+
+auto ChemicalEngineMaps::readDbrFromJsonString(std::string dbr_json) -> void { gem.readDbrFromJsonString(dbr_json); }
+
+auto ChemicalEngineMaps::writeDbrToFile(std::string filename) -> void { gem.writeDbrToFile(filename); }
+
+auto ChemicalEngineMaps::writeDbrToJsonString() -> const std::string { return gem.writeDbrToJsonString(); }
+
 auto ChemicalEngineMaps::clear_vector(Vector& bb, double min_amount) -> void
 {
     if( min_amount > 0 ) {
@@ -303,6 +345,57 @@ auto ChemicalEngineMaps::species_ln_activities() -> ValuesMap
 auto ChemicalEngineMaps::species_ln_activity_coefficients() -> ValuesMap
 {
     return to_map( m_species_names,  gem.lnActivityCoefficients() );
+}
+
+auto ChemicalEngineMaps::species_mole_fractions() -> ValuesMap
+{
+    return to_map(m_species_names, gem.moleFractions());
+}
+
+auto ChemicalEngineMaps::species_ln_concentrations() -> ValuesMap
+{
+    return to_map(m_species_names, gem.lnConcentrations());
+}
+
+auto ChemicalEngineMaps::species_chemical_potentials() -> ValuesMap
+{
+    return to_map(m_species_names, gem.chemicalPotentials());
+}
+
+auto ChemicalEngineMaps::species_gibbs_energies() -> ValuesMap
+{
+    ValuesMap out;
+    for(Index i = 0; i < nspecies(); ++i) {
+        out[m_species_names[i]] = gem.standardMolarGibbsEnergy_i(i);
+    }
+    return out;
+}
+
+auto ChemicalEngineMaps::species_enthalpies() -> ValuesMap
+{
+    ValuesMap out;
+    for(Index i = 0; i < nspecies(); ++i) {
+        out[m_species_names[i]] = gem.standardMolarEnthalpy_i(i);
+    }
+    return out;
+}
+
+auto ChemicalEngineMaps::species_entropies() -> ValuesMap
+{
+    ValuesMap out;
+    for(Index i = 0; i < nspecies(); ++i) {
+        out[m_species_names[i]] = gem.standardMolarEntropy_i(i);
+    }
+    return out;
+}
+
+auto ChemicalEngineMaps::species_heat_capacities_const_p() -> ValuesMap
+{
+    ValuesMap out;
+    for(Index i = 0; i < nspecies(); ++i) {
+        out[m_species_names[i]] = gem.standardMolarHeatCapacityConstP_i(i);
+    }
+    return out;
 }
 
 // returns the upper limits for the species
@@ -654,6 +747,22 @@ auto ChemicalEngineMaps::activate_species(const std::string& species_name, std::
 }
 
 
+auto ChemicalEngineMaps::Eh() -> double { return gem.Eh(); }
+
+auto ChemicalEngineMaps::converged() -> bool { return gem.converged(); }
+
+auto ChemicalEngineMaps::num_iterations() -> int { return static_cast<int>(gem.numIterations()); }
+
+auto ChemicalEngineMaps::elapsed_time() -> double { return gem.elapsedTime(); }
+
+auto ChemicalEngineMaps::system_gibbs_energy() -> double { return gem.systemGibbsEnergy(); }
+
+auto ChemicalEngineMaps::system_enthalpy() -> double { return gem.systemEnthalpy(); }
+
+auto ChemicalEngineMaps::system_entropy() -> double { return gem.systemEntropy(); }
+
+auto ChemicalEngineMaps::system_heat_capacity_const_p() -> double { return gem.systemHeatCapacityConstP(); }
+
 // returns pH of the solution
 auto ChemicalEngineMaps::pH() -> double
 {
@@ -698,6 +807,35 @@ auto ChemicalEngineMaps::phases_molar_volume() -> ValuesMap
 auto ChemicalEngineMaps::phase_sat_indices() -> ValuesMap
 {
     return to_map(m_phase_names, gem.phaseSatIndices());
+}
+
+auto ChemicalEngineMaps::phases_density() -> ValuesMap
+{
+    return to_map(m_phase_names, gem.phaseDensities());
+}
+
+auto ChemicalEngineMaps::phases_enthalpy() -> ValuesMap
+{
+    return to_map(m_phase_names, gem.phaseEnthalpies());
+}
+
+auto ChemicalEngineMaps::phases_entropy() -> ValuesMap
+{
+    return to_map(m_phase_names, gem.phaseEntropies());
+}
+
+auto ChemicalEngineMaps::phases_molar_gibbs_energy() -> ValuesMap
+{
+    ValuesMap out;
+    for(Index i = 0; i < nphases(); ++i) {
+        out[m_phase_names[i]] = gem.phaseMolarGibbsEnergy_i(i);
+    }
+    return out;
+}
+
+auto ChemicalEngineMaps::phases_heat_capacity_const_p() -> ValuesMap
+{
+    return to_map(m_phase_names, gem.phaseHeatCapacitiesConstP());
 }
 
 auto operator<<(std::ostream &out, const ChemicalEngineMaps &state) -> std::ostream &

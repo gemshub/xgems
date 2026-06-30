@@ -168,6 +168,10 @@ Add a constituent by chemical-formula string.
                  if (value_obj.is_none()) {
                      return self.add(formula, units, react_ext);
                  }
+                 // unit string passed as second positional arg (absolute-amount mode)
+                 if (py::isinstance<py::str>(value_obj)) {
+                     return self.add(formula, value_obj.cast<std::string>(), react_ext);
+                 }
                  return self.add(formula, value_obj.cast<double>(), units, react_ext);
              },
              py::arg("formula"),
@@ -273,7 +277,8 @@ Ready to be passed to ``engine.equilibrate(T, P, b)``.
 Return the bulk-composition as a ``{element_name: moles}`` dict.
 
 Natural form for ChemicalEngineDicts users. Includes one entry per
-engine element (zeros for elements not in the recipe).
+engine element; elements absent from the recipe receive ``default_amount``
+(1e-15 by default) rather than zero.
 )doc")
 
         .def("mass_kg", &Material::massKg,
