@@ -5,3 +5,10 @@ Python Interface Reference
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. autofunction:: xgems.PyxGEMS::parse_chemical_formula
+
+.. autoclass:: xgems.PyxGEMS::Material
+   :members:
+   :undoc-members:
+   :show-inheritance:

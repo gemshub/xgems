@@ -1994,6 +1994,7 @@ Access specified element with bounds checking.
         Returns the density of a specific phase (kg/m³).
 
         :param str phase: Name of the phase.
+
         **Example:**
 
         .. code-block:: python
