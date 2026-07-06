@@ -424,6 +424,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEdd14VectorConstRef"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEddRK8Material"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine9convergedEv"><code class="docutils literal notranslate"><span class="pre">converged()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine13numIterationsEv"><code class="docutils literal notranslate"><span class="pre">numIterations()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine11elapsedTimeEv"><code class="docutils literal notranslate"><span class="pre">elapsedTime()</span></code></a></li>
@@ -553,6 +554,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps18ChemicalEngineMapsERKNSt6stringERKNSt6stringERKNSt6stringEbb"><code class="docutils literal notranslate"><span class="pre">ChemicalEngineMaps()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEv"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEdd9ValuesMapd"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps5setPTEdd"><code class="docutils literal notranslate"><span class="pre">setPT()</span></code></a></li>
@@ -1022,24 +1024,33 @@ Access specified element without bounds checking.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="xgems.PyxGEMS.ChemicalEngine.equilibrate">
-<span class="sig-name descname"><span class="pre">equilibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#xgems.PyxGEMS.ChemicalEngine" title="xgems.PyxGEMS.ChemicalEngine"><span class="pre">xgems.PyxGEMS.ChemicalEngine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'[m,</span> <span class="pre">1]'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.equilibrate" title="Link to this definition"></a></dt>
-<dd><p>Compute the chemical equilibrium state from temperature, pressure, and element amounts.</p>
+<span class="sig-name descname"><span class="pre">equilibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#xgems.PyxGEMS.ChemicalEngine.equilibrate" title="Link to this definition"></a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic">
+<li><p>equilibrate(self: xgems.PyxGEMS.ChemicalEngine, T: typing.SupportsFloat | typing.SupportsIndex, P: typing.SupportsFloat | typing.SupportsIndex, b: typing.Annotated[numpy.typing.NDArray[numpy.float64], “[m, 1]”]) -&gt; int</p>
+<blockquote>
+<div><p>Compute the chemical equilibrium state from temperature, pressure, and element amounts.</p>
 <p>This method resets any existing state and computes a new equilibrium based on the
 provided temperature (in Kelvin), pressure (in Pascals), and vector of element amounts (in mol).
 The order of the elements in the vector must match the chemical system’s element ordering.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>T</strong> (<em>float</em>) – Temperature in Kelvin.</p></li>
-<li><p><strong>P</strong> (<em>float</em>) – Pressure in Pascals.</p></li>
-<li><p><strong>b</strong> (<em>numpy.ndarray</em><em> or </em><em>Eigen::VectorXd</em>) – Vector of element amounts (in mol). Must be a NumPy array or Eigen vector of correct length.</p></li>
-</ul>
+<dt class="field-odd">param float T<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Temperature in Kelvin.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Integer return code indicating the status of the equilibrium computation.</p>
+<dt class="field-even">param float P<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pressure in Pascals.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">param b<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector of element amounts (in mol). Must be a NumPy array or Eigen vector of correct length.</p>
+</dd>
+<dt class="field-even">type b<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray or Eigen::VectorXd</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer return code indicating the status of the equilibrium computation.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 <p><strong>Example</strong></p>
@@ -1070,6 +1081,34 @@ The order of the elements in the vector must match the chemical system’s eleme
 <p class="admonition-title">Note</p>
 <p>Ensure the <cite>b</cite> vector is properly ordered and matches the number of elements
 defined in the chemical system.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>equilibrate(self: xgems.PyxGEMS.ChemicalEngine, T: typing.SupportsFloat | typing.SupportsIndex, P: typing.SupportsFloat | typing.SupportsIndex, material: xGEMS::Material) -&gt; int</p></li>
+</ol>
+<p>Compute the equilibrium state from temperature, pressure, and a Material recipe.</p>
+<p>Convenience overload that extracts the element-amount vector from <em>material</em> and
+forwards to <code class="docutils literal notranslate"><span class="pre">equilibrate(T,</span> <span class="pre">P,</span> <span class="pre">b)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em>) – Temperature in Kelvin.</p></li>
+<li><p><strong>P</strong> (<em>float</em>) – Pressure in Pascals.</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="#xgems.PyxGEMS.Material" title="xgems.PyxGEMS.Material"><em>Material</em></a>) – A Material object whose element amounts define the bulk composition.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer return code (same as <code class="docutils literal notranslate"><span class="pre">equilibrate(T,</span> <span class="pre">P,</span> <span class="pre">b)</span></code>).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rock</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;rock&quot;</span><span class="p">)</span>
+<span class="n">rock</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;SiO2&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;CaCO3&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">)</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="mf">298.15</span><span class="p">,</span> <span class="mi">101325</span><span class="p">,</span> <span class="n">rock</span><span class="p">)</span>
+</pre></div>
 </div>
 </dd></dl>
 

@@ -30,6 +30,7 @@ using namespace pybind11::literals;
 
 // xGEMS includes
 #include <xGEMS/ChemicalEngineMaps.hpp>
+#include <xGEMS/Material.hpp>
 using namespace xGEMS;
 
 
@@ -352,6 +353,30 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 
     b = {'C': 0.001, 'Ca': 1e-9, 'Cl': 0.002, 'H': 110.68, 'Mg': 0.001, 'O': 55.34, 'Zz': 0.0}
     result = engine.equilibrate(298.15, 101325.0, b)
+    print(result)
+)doc")
+            .def("equilibrate",
+                 static_cast<std::string(ChemicalEngineMaps::*)(double, double, const Material&, double)>(&ChemicalEngineMaps::equilibrate),
+                 py::arg("T"), py::arg("P"), py::arg("material"), py::arg("min_amount")=1e-15,
+             R"doc(
+Computes the equilibrium state from temperature, pressure, and a Material recipe.
+
+Convenience overload that extracts the element-amount dictionary from *material*
+(via ``bMap()``) and forwards to ``equilibrate(T, P, b_dict, min_amount)``.
+
+:param float T: Temperature in Kelvin.
+:param float P: Pressure in Pascals.
+:param Material material: A Material object whose element amounts define the bulk composition.
+:param float min_amount: Minimum amount for elements absent from the material, default 1e-15.
+:return str: The string indicating the status.
+
+**Example:**
+
+.. code-block:: python
+
+    rock = Material(engine, "rock")
+    rock.add("SiO2", 1.0, "mol").add("CaCO3", 0.5, "mol")
+    result = engine.equilibrate(298.15, 101325.0, rock)
     print(result)
 )doc")
             .def("reequilibrate", static_cast<std::string(ChemicalEngineMaps::*)()>(&ChemicalEngineMaps::reequilibrate),

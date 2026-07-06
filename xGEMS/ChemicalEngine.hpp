@@ -40,6 +40,9 @@
 namespace xGEMS
 {
 
+// Forward declaration to avoid circular dependency with Material.hpp
+class Material;
+
   /**
    * @brief Updates logger settings.
    *
@@ -1008,6 +1011,25 @@ namespace xGEMS
      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
      */
     auto equilibrate(double T, double P, VectorConstRef b) -> int;
+
+    /**
+     * @brief Computes the equilibrium state from a Material recipe object.
+     *
+     * Convenience overload: extracts the element-amount vector from @p material
+     * and forwards to equilibrate(T, P, b).
+     *
+     * @param T Temperature in Kelvin.
+     * @param P Pressure in Pascals.
+     * @param material A Material object whose b() vector defines the bulk composition.
+     * @return Integer return code (same as equilibrate(T, P, b)).
+     *
+     * @code
+     * Material rock(engine);
+     * rock.add("SiO2", 1.0, "mol").add("CaCO3", 0.5, "mol");
+     * int ret = engine.equilibrate(298.15, 101325, rock);
+     * @endcode
+     */
+    auto equilibrate(double T, double P, const Material& material) -> int;
 
     /**
      * @brief Checks if the equilibrium calculation converged.

@@ -21,6 +21,7 @@
 #include <cmath>
 #include <map>
 #include "ChemicalEngineMaps.hpp"
+#include "Material.hpp"
 
 
 namespace xGEMS {
@@ -110,6 +111,11 @@ auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, ValuesMap b_dic
     P = P_new;
     set_bulk_composition(b_dict, min_amount);
     return equilibrate();
+}
+
+auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, const Material& material, double min_amount) -> std::string
+{
+    return equilibrate(T_new, P_new, material.bMap(), min_amount);
 }
 
 auto ChemicalEngineMaps::reequilibrate() -> std::string

@@ -423,6 +423,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEdd14VectorConstRef"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEddRK8Material"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4NK5xGEMS14ChemicalEngine9convergedEv"><code class="docutils literal notranslate"><span class="pre">converged()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4NK5xGEMS14ChemicalEngine13numIterationsEv"><code class="docutils literal notranslate"><span class="pre">numIterations()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4NK5xGEMS14ChemicalEngine11elapsedTimeEv"><code class="docutils literal notranslate"><span class="pre">elapsedTime()</span></code></a></li>
@@ -552,6 +553,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps18ChemicalEngineMapsERKNSt6stringERKNSt6stringERKNSt6stringEbb"><code class="docutils literal notranslate"><span class="pre">ChemicalEngineMaps()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEv"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEdd9ValuesMapd"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N5xGEMS18ChemicalEngineMaps5setPTEdd"><code class="docutils literal notranslate"><span class="pre">setPT()</span></code></a></li>
@@ -2050,6 +2052,31 @@ std::cout &lt;&lt; (no_error ? &quot;PT set correctly&quot; : &quot;PT error&quo
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>(int) Return code of the equilibrium solver.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5xGEMS14ChemicalEngine11equilibrateEddRK8Material">
+<span id="_CPPv3N5xGEMS14ChemicalEngine11equilibrateEddRK8Material"></span><span id="_CPPv2N5xGEMS14ChemicalEngine11equilibrateEddRK8Material"></span><span id="xGEMS::ChemicalEngine::equilibrate__double.double.MaterialCR"></span><span class="target" id="dc/d0d/classxGEMS_1_1ChemicalEngine_1a5ca1889c45b796993c702b5e93331e52"></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equilibrate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">T</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">P</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5xGEMS8MaterialE" title="xGEMS::Material"><span class="n"><span class="pre">Material</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">material</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEddRK8Material" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the equilibrium state from a <a class="reference internal" href="#da/d78/classxGEMS_1_1Material"><span class="std std-ref">Material</span></a> recipe object. </p>
+<p>Convenience overload: extracts the element-amount vector from <code class="docutils literal notranslate"><span class="pre">material</span></code> and forwards to equilibrate(T, P, b).</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Material</span> <span class="n">rock</span><span class="p">(</span><span class="n">engine</span><span class="p">);</span>
+<span class="n">rock</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;SiO2&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;CaCO3&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">);</span>
+<span class="nb">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="mf">298.15</span><span class="p">,</span> <span class="mi">101325</span><span class="p">,</span> <span class="n">rock</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Temperature in Kelvin. </p></li>
+<li><p><strong>P</strong> – Pressure in Pascals. </p></li>
+<li><p><strong>material</strong> – A <a class="reference internal" href="#da/d78/classxGEMS_1_1Material"><span class="std std-ref">Material</span></a> object whose b() vector defines the bulk composition. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer return code (same as equilibrate(T, P, b)).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4361,6 +4388,32 @@ std::cout &lt;&lt; (no_error ? &quot;PT set correctly&quot; : &quot;PT error&quo
 <li><p><strong>P_new</strong> – Pressure in Pascals (Pa). </p></li>
 <li><p><strong>b_dict</strong> – (ValuesMap) Dictionary of element amounts in mol. </p></li>
 <li><p><strong>min_amount</strong> – (double) Minimum amount for elements not in b_dict, default 1e-15. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(std::string) Status string of the equilibrium solver.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald">
+<span id="_CPPv3N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald"></span><span id="_CPPv2N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald"></span><span id="xGEMS::ChemicalEngineMaps::equilibrate__double.double.MaterialCR.double"></span><span class="target" id="d2/dea/classxGEMS_1_1ChemicalEngineMaps_1a9127f697dd585b8024c8d10bad498faa"></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equilibrate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">T_new</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">P_new</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5xGEMS8MaterialE" title="xGEMS::Material"><span class="n"><span class="pre">Material</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">material</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">min_amount</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><a class="headerlink" href="#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the equilibrium state from a <a class="reference internal" href="#da/d78/classxGEMS_1_1Material"><span class="std std-ref">Material</span></a> recipe object. </p>
+<p>Convenience overload: extracts the element-amount dictionary from <code class="docutils literal notranslate"><span class="pre">material</span></code> (via bMap()) and forwards to equilibrate(T_new, P_new, b_dict, min_amount).</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Material</span> <span class="n">rock</span><span class="p">(</span><span class="n">engine</span><span class="p">);</span>
+<span class="n">rock</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;SiO2&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;CaCO3&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">string</span> <span class="n">retcode</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="mf">298.15</span><span class="p">,</span> <span class="mf">101325.0</span><span class="p">,</span> <span class="n">rock</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T_new</strong> – Temperature in Kelvin (K). </p></li>
+<li><p><strong>P_new</strong> – Pressure in Pascals (Pa). </p></li>
+<li><p><strong>material</strong> – A <a class="reference internal" href="#da/d78/classxGEMS_1_1Material"><span class="std std-ref">Material</span></a> object whose bMap() defines the bulk composition. </p></li>
+<li><p><strong>min_amount</strong> – Minimum amount for elements absent from the material, default 1e-15. </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -7303,6 +7356,8 @@ seawater.add({{&quot;Cl&quot;,0.5467499},{&quot;Na&quot;,0.4689999},
 <dd><div class="docutils container">
 <em>#include “<a class="reference internal" href="#d9/dd7/ChemicalEngine_8hpp"><span class="std std-ref">ChemicalEngine.hpp</span></a>”</em></div>
 <div class="docutils container">
+<em>#include “<a class="reference internal" href="#d0/d70/Material_8hpp"><span class="std std-ref">Material.hpp</span></a>”</em></div>
+<div class="docutils container">
 <em>#include &lt;chrono&gt;</em></div>
 <div class="docutils container">
 <em>#include &lt;cmath&gt;</em></div>
@@ -7369,6 +7424,8 @@ license GNU General Public License v3 or later <dl class="simple">
 <em>#include &lt;map&gt;</em></div>
 <div class="docutils container">
 <em>#include “<a class="reference internal" href="#d3/d95/ChemicalEngineMaps_8hpp"><span class="std std-ref">ChemicalEngineMaps.hpp</span></a>”</em></div>
+<div class="docutils container">
+<em>#include “<a class="reference internal" href="#d0/d70/Material_8hpp"><span class="std std-ref">Material.hpp</span></a>”</em></div>
 </dd></dl>
 
 <dl>
