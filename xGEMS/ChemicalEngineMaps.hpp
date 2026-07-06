@@ -30,6 +30,9 @@
 
 namespace xGEMS {
 
+// Forward declaration to avoid circular dependency with Material.hpp
+class Material;
+
 /**
  * ValuesMap is a sorted associative dictionary that contains name-value pairs.
  */
@@ -135,6 +138,26 @@ public:
      * @endcode
      */
     auto equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount=1e-15) -> std::string;
+
+    /**
+     * @brief Computes the equilibrium state from a Material recipe object.
+     *
+     * Convenience overload: extracts the element-amount dictionary from @p material
+     * (via bMap()) and forwards to equilibrate(T_new, P_new, b_dict, min_amount).
+     *
+     * @param T_new Temperature in Kelvin (K).
+     * @param P_new Pressure in Pascals (Pa).
+     * @param material A Material object whose bMap() defines the bulk composition.
+     * @param min_amount Minimum amount for elements absent from the material, default 1e-15.
+     * @return (std::string) Status string of the equilibrium solver.
+     *
+     * @code
+     * Material rock(engine);
+     * rock.add("SiO2", 1.0, "mol").add("CaCO3", 0.5, "mol");
+     * std::string retcode = engine.equilibrate(298.15, 101325.0, rock);
+     * @endcode
+     */
+    auto equilibrate(double T_new, double P_new, const Material& material, double min_amount=1e-15) -> std::string;
 
     /**
      * @brief Re-equilibrates the system using the current internal state (T, P, b).

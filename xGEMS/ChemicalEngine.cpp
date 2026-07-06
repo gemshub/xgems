@@ -16,6 +16,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ChemicalEngine.hpp"
+#include "Material.hpp"
 
 // C++ includes
 #include <chrono>
@@ -689,6 +690,11 @@ namespace xGEMS
         // Set the elapsed time member
         pimpl->elapsed_time = std::chrono::duration<double>(end - begin).count();
         return valueOutputGem;
+    }
+
+    auto ChemicalEngine::equilibrate(double T, double P, const Material& material) -> int
+    {
+        return equilibrate(T, P, material.b());
     }
 
     auto ChemicalEngine::setSpeciesAmounts(VectorConstRef n) -> void
