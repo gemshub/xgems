@@ -424,6 +424,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEdd14VectorConstRef"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS14ChemicalEngine11equilibrateEddRK8Material"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine9convergedEv"><code class="docutils literal notranslate"><span class="pre">converged()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine13numIterationsEv"><code class="docutils literal notranslate"><span class="pre">numIterations()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4NK5xGEMS14ChemicalEngine11elapsedTimeEv"><code class="docutils literal notranslate"><span class="pre">elapsedTime()</span></code></a></li>
@@ -553,6 +554,7 @@
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps18ChemicalEngineMapsERKNSt6stringERKNSt6stringERKNSt6stringEbb"><code class="docutils literal notranslate"><span class="pre">ChemicalEngineMaps()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEv"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEdd9ValuesMapd"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps11equilibrateEddRK8Materiald"><code class="docutils literal notranslate"><span class="pre">equilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps13reequilibrateEv"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps13reequilibrateEb"><code class="docutils literal notranslate"><span class="pre">reequilibrate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp_api_reference.html#_CPPv4N5xGEMS18ChemicalEngineMaps5setPTEdd"><code class="docutils literal notranslate"><span class="pre">setPT()</span></code></a></li>
@@ -1552,6 +1554,32 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s1">&#39;Ca&#39;</span><span class="p">:</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="s1">&#39;Cl&#39;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mf">110.68</span><span class="p">,</span> <span class="s1">&#39;Mg&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mf">55.34</span><span class="p">,</span> <span class="s1">&#39;Zz&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="mf">298.15</span><span class="p">,</span> <span class="mf">101325.0</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>equilibrate(self: xgems.PyxGEMS.ChemicalEngineDicts, T: typing.SupportsFloat | typing.SupportsIndex, P: typing.SupportsFloat | typing.SupportsIndex, material: xGEMS::Material, min_amount: typing.SupportsFloat | typing.SupportsIndex = 1e-15) -&gt; str</p></li>
+</ol>
+<p>Computes the equilibrium state from temperature, pressure, and a Material recipe.</p>
+<p>Convenience overload that extracts the element-amount dictionary from <em>material</em>
+(via <code class="docutils literal notranslate"><span class="pre">bMap()</span></code>) and forwards to <code class="docutils literal notranslate"><span class="pre">equilibrate(T,</span> <span class="pre">P,</span> <span class="pre">b_dict,</span> <span class="pre">min_amount)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em>) – Temperature in Kelvin.</p></li>
+<li><p><strong>P</strong> (<em>float</em>) – Pressure in Pascals.</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="python_api_reference.html#xgems.PyxGEMS.Material" title="xgems.PyxGEMS.Material"><em>Material</em></a>) – A Material object whose element amounts define the bulk composition.</p></li>
+<li><p><strong>min_amount</strong> (<em>float</em>) – Minimum amount for elements absent from the material, default 1e-15.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return str<span class="colon">:</span></dt>
+<dd class="field-even"><p>The string indicating the status.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rock</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;rock&quot;</span><span class="p">)</span>
+<span class="n">rock</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;SiO2&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;CaCO3&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;mol&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="mf">298.15</span><span class="p">,</span> <span class="mf">101325.0</span><span class="p">,</span> <span class="n">rock</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
