@@ -35,13 +35,15 @@ void print_map(const std::string title, const std::map<std::string, T>& data)
 static void demo_dict();
 static void demo_warnings_map();
 static void demo_warnings();
+static void check_err();
 
 
 int main(int argc, char **argv)
 {
     //demo_dict();
     //demo_warnings_map();
-    demo_warnings();
+    //demo_warnings();
+    check_err();
     return 0;
 }
 
@@ -255,5 +257,62 @@ void demo_dict()
     print_map("engine.element_molar_masses()", engine.element_molar_masses());
 
     print_map("engine.phases_moles()", engine.phases_moles());
+
+}
+
+
+void check_err()
+{
+    std::string path{"resources/gems_files/M1-6-dat.lst"};
+
+    xGEMS::ChemicalEngine xgEngine(path);
+
+    auto T = xgEngine.temperature();
+    auto P = xgEngine.pressure();
+    xGEMS::Vector b0 = xgEngine.elementAmounts();
+
+    std::cout << "Task " << path << " T " << T<< " P " << P << std::endl;
+    std::cout << b0 << std::endl;
+    std::cout<< "reequilibrate " << xgEngine.reequilibrate() << std::endl;
+
+
+    std::map<std::string, int>   element_indexes = {
+        {"Pb", xgEngine.indexElement("Pb")},
+        {"I", xgEngine.indexElement("I")},
+        {"O", xgEngine.indexElement("O")},
+        {"He", xgEngine.indexElement("He")}
+    };
+
+    std::map<std::string, int>   species_indexes = {
+        {"Pb", xgEngine.indexSpecies("Pb")},
+        {"I2", xgEngine.indexSpecies("I2")},
+        {"I(g)", xgEngine.indexSpecies("I(g)")},
+        {"I2(g)", xgEngine.indexSpecies("I2(g)")},
+        {"Pb(g)", xgEngine.indexSpecies("Pb(g)")},
+        {"Pb2(g)", xgEngine.indexSpecies("Pb2(g)")},
+        {"PbI(g)", xgEngine.indexSpecies("PbI(g)")},
+        {"PbI2(g)", xgEngine.indexSpecies("PbI2(g)")},
+        {"PbI2(s)", xgEngine.indexSpecies("PbI2(s)")}
+    };
+
+
+    b0[element_indexes["Pb"]] = 1.61e-5;
+    b0[element_indexes["I"]]  = 2 * b0[element_indexes["Pb"]];
+    b0[element_indexes["He"]] = 0.75;
+    b0[element_indexes["O"]]  = 2e-10;
+
+    std::cout << "b0\n" << b0 << std::endl;
+    P = 1e5;
+
+    for(double t=25.; t<=1000.; t=t+1.) {
+     auto code = xgEngine.equilibrate(t + 273.15, P, b0);
+     std::cout << " T " << t << " code " << code << std::endl;
+
+
+     if(code!=2 && code !=6) {
+         std::cout <<"Warning: equilibrium not fully converged at " << t << " °C (code " << code << ")\n";
+     }
+    }
+    std::cout <<"Finish" << std::endl;
 
 }

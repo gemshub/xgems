@@ -43,10 +43,12 @@ HEADERS	 += \
     $$XGEMS_H/xGEMS/ChemicalEngineMaps.hpp \
     $$XGEMS_H/xGEMS/Eigen.hpp \
     $$XGEMS_H/xGEMS/Index.hpp \
-    $$XGEMS_H/xGEMS/Interface.hpp
+    $$XGEMS_H/xGEMS/Interface.hpp \
+    ../xGEMS/Material.hpp
 SOURCES	+=  demo1-dict.cpp \
     $$XGEMS_CPP/xGEMS/ChemicalEngine.cpp \
-    $$XGEMS_CPP/xGEMS/ChemicalEngineMaps.cpp
+    $$XGEMS_CPP/xGEMS/ChemicalEngineMaps.cpp \
+    ../xGEMS/Material.cpp
 
 
 
