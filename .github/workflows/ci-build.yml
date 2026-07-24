@@ -38,16 +38,16 @@ jobs:
       - name: Setup Conda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-activate-base: false
-          channels: conda-forge, defaults
-          channel-priority: true
+          auto-activate: false
+          activate-environment: base
+          channels: conda-forge
 
       - name: Configuring Conda Environment
         run: |
           conda config --set always_yes yes --set changeps1 no
           conda config --add channels conda-forge
-          conda install conda-devenv
-          conda devenv
+          conda install -n base conda-devenv
+          conda run -n base python -m conda_devenv
 
       - name: Building, Testing & Installing xgems
         if: matrix.os != 'windows-latest'

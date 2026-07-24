@@ -23,6 +23,7 @@ namespace py = pybind11;
 
 // xGEMS includes
 #include <xGEMS/ChemicalEngine.hpp>
+#include <xGEMS/Material.hpp>
 using namespace xGEMS;
 
 void exportChemicalEngine(py::module &m)
@@ -879,7 +880,9 @@ Access specified element with bounds checking.
 
               )doc")
 
-    .def("equilibrate", &ChemicalEngine::equilibrate,
+    .def("equilibrate",
+         static_cast<int(ChemicalEngine::*)(double, double, VectorConstRef)>(&ChemicalEngine::equilibrate),
+         py::arg("T"), py::arg("P"), py::arg("b"),
                 R"doc(
            Compute the chemical equilibrium state from temperature, pressure, and element amounts.
            
@@ -925,8 +928,31 @@ Access specified element with bounds checking.
               Ensure the `b` vector is properly ordered and matches the number of elements
               defined in the chemical system.
            )doc")
-           
-           
+
+    .def("equilibrate",
+         static_cast<int(ChemicalEngine::*)(double, double, const Material&)>(&ChemicalEngine::equilibrate),
+         py::arg("T"), py::arg("P"), py::arg("material"),
+         R"doc(
+Compute the equilibrium state from temperature, pressure, and a Material recipe.
+
+Convenience overload that extracts the element-amount vector from *material* and
+forwards to ``equilibrate(T, P, b)``.
+
+:param float T: Temperature in Kelvin.
+:param float P: Pressure in Pascals.
+:param Material material: A Material object whose element amounts define the bulk composition.
+:returns: Integer return code (same as ``equilibrate(T, P, b)``).
+:rtype: int
+
+**Example**
+
+.. code-block:: python
+
+    rock = Material(engine, "rock")
+    rock.add("SiO2", 1.0, "mol").add("CaCO3", 0.5, "mol")
+    ret = engine.equilibrate(298.15, 101325, rock)
+)doc")
+
         .def("converged", &ChemicalEngine::converged,
              R"doc(
             Checks if the equilibrium computation has converged.
@@ -1994,6 +2020,7 @@ Access specified element with bounds checking.
         Returns the density of a specific phase (kg/m³).
 
         :param str phase: Name of the phase.
+
         **Example:**
 
         .. code-block:: python

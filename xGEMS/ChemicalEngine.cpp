@@ -16,9 +16,11 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ChemicalEngine.hpp"
+#include "Material.hpp"
 
 // C++ includes
 #include <chrono>
+#include <cmath>
 #include <iomanip>
 #include <memory>
 
@@ -690,6 +692,11 @@ namespace xGEMS
         return valueOutputGem;
     }
 
+    auto ChemicalEngine::equilibrate(double T, double P, const Material& material) -> int
+    {
+        return equilibrate(T, P, material.b());
+    }
+
     auto ChemicalEngine::setSpeciesAmounts(VectorConstRef n) -> void
     {
 
@@ -811,6 +818,20 @@ namespace xGEMS
         VectorConstRef np = n(ispecies);
         Vector res = Wp * np;
         return res;
+    }
+
+    auto ChemicalEngine::massBalanceErrors() const -> Vector
+    {
+        return formulaMatrix() * speciesAmounts() - elementAmounts();
+    }
+
+    auto ChemicalEngine::massBalanceRelativeErrors() const -> Vector
+    {
+        VectorConstRef b = elementAmounts();
+        Vector errors = massBalanceErrors();
+        for (Index i = 0; i < numElements(); ++i)
+            errors[i] = (std::abs(b[i]) > 0.0) ? errors[i] / b[i] : 0.0;
+        return errors;
     }
 
     auto ChemicalEngine::speciesAmount_i(Index ispecies) const -> double
@@ -1672,6 +1693,36 @@ namespace xGEMS
         return pimpl->node->pCNode()->Eh;
     }
 
+    auto ChemicalEngine::waterActivity() const -> double
+    {
+        std::string aqPhase = aqueousPhaseName();
+        if (aqPhase.empty()) return 1.0;
+        Index iwater = indexSpecies("H2O@", aqPhase);
+        if (iwater >= numSpecies()) return 1.0;
+        return std::exp(lnActivities()[iwater]);
+    }
+
+    auto ChemicalEngine::osmoticCoefficient() const -> double
+    {
+        std::string aqPhase = aqueousPhaseName();
+        if (aqPhase.empty()) return 1.0;
+        Index iwater = indexSpecies("H2O@", aqPhase);
+        if (iwater >= numSpecies()) return 1.0;
+        double ln_aw = lnActivities()[iwater];
+        if (ln_aw >= 0.0) return 1.0;
+        double n_water = speciesAmount_i(iwater);
+        if (n_water <= 0.0) return 1.0;
+        Index iph = indexPhase(aqPhase);
+        auto first = indexFirstSpeciesInPhase_i(iph);
+        auto count = numSpeciesInPhase_i(iph);
+        VectorConstRef n = speciesAmounts();
+        double n_solutes = 0.0;
+        for (Index i = first; i < first + count; ++i)
+            if (i != iwater) n_solutes += n[i];
+        if (n_solutes <= 0.0) return 1.0;
+        return -ln_aw * n_water / n_solutes;
+    }
+
     auto ChemicalEngine::systemGibbsEnergy() const -> double
     {
         return pimpl->node->pCNode()->Gs; // *RT to get it in J
@@ -1761,6 +1812,19 @@ namespace xGEMS
         auto flags = out.flags();
         out << std::setprecision(6) << std::scientific;
 
+        // Input bulk composition table
+        {
+            std::vector<std::string> element_names;
+            std::vector<Vector> element_rows;
+            VectorConstRef b = state.elementAmounts();
+            for (Index i = 0; i < state.numElements(); ++i)
+            {
+                element_names.push_back(state.elementName_i(i));
+                element_rows.push_back(Vector::Constant(1, b[i]));
+            }
+            printWrappedTable(out, "Element", {"InputAmount[mol]"}, element_names, element_rows);
+        }
+
         // Element table (wrapped)
         // Filter phases with non-zero amount
         std::vector<Index> valid_phase_indices;
@@ -1793,7 +1857,7 @@ namespace xGEMS
             element_rows.push_back(row);
         }
 
-        printWrappedTable(out, "Element", phase_names, element_names, element_rows);
+        printWrappedTable(out, "Composition", phase_names, element_names, element_rows);
 
         // Phase state properties
         // Filter phases with non-zero amount
@@ -1801,7 +1865,7 @@ namespace xGEMS
         phase_names.clear();
         for (Index i = 0; i < state.numPhases(); ++i)
         {
-            if (state.phaseAmounts()[i] != 0.0 && !options.print_zero_amounts)
+            if ((state.phaseAmounts()[i] != 0.0 || state.phaseSatIndices()[i] > 1e-5) && !options.print_zero_amounts)
             {
                 valid_phase_indices.push_back(i);
                 phase_names.push_back(state.phaseName_i(i));
@@ -1918,6 +1982,52 @@ namespace xGEMS
             }
         }
         return {};
+    }
+
+    auto ChemicalEngine::phaseIsPresent(Index iphase, double threshold) const -> bool
+    {
+        if (!pimpl->node->check_Phase_xCH(iphase)) return false;
+        return phaseAmount_i(iphase) > threshold;
+    }
+
+    auto ChemicalEngine::phaseIsPresent(std::string phase, double threshold) const -> bool
+    {
+        auto iphase = indexPhase(phase);
+        if (iphase >= numPhases()) return false;
+        return phaseAmount_i(iphase) > threshold;
+    }
+
+    auto ChemicalEngine::presentPhases(double threshold) const -> std::vector<std::string>
+    {
+        std::vector<std::string> result;
+        for (Index i = 0; i < numPhases(); ++i)
+            if (phaseAmount_i(i) > threshold)
+                result.push_back(phaseName_i(i));
+        return result;
+    }
+
+    auto ChemicalEngine::logK(VectorConstRef stoich) const -> double
+    {
+        double dG0 = deltaG0Reaction(stoich);
+        constexpr double R = 8.314472;
+        constexpr double ln10 = 2.302585093;
+        return -dG0 / (R * temperature() * ln10);
+    }
+
+    auto ChemicalEngine::deltaG0Reaction(VectorConstRef stoich) const -> double
+    {
+        double dG0 = 0.0;
+        for (Index i = 0; i < numSpecies(); ++i)
+            dG0 += stoich[i] * standardMolarGibbsEnergy_i(i);
+        return dG0;
+    }
+
+    auto ChemicalEngine::deltaH0Reaction(VectorConstRef stoich) const -> double
+    {
+        double dH0 = 0.0;
+        for (Index i = 0; i < numSpecies(); ++i)
+            dH0 += stoich[i] * standardMolarEnthalpy_i(i);
+        return dH0;
     }
 
 } // namespace xGEMS

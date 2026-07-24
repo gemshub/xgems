@@ -19,4 +19,5 @@ demos/demo.pro.user*
 CMakeLists.txt.user
 environment.yml
 *log*
+*.ipynb_checkpoints*
 
