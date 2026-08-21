@@ -615,7 +615,7 @@ Cold start resets the initial guess to default values for robust convergence.
 Sets the upper limit for a species by its name.
 
 :param str name: Name of the species.
-:param float limit: Upper limit for the species amount.
+:param float limit: Upper limit for the species amount, in moles (mol).
 :param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
@@ -631,7 +631,7 @@ Sets the upper limit for a species by its index.
 Access specified element with bounds checking.
 
 :param int index: Index of the species.
-:param float limit: Upper limit for the species amount.
+:param float limit: Upper limit for the species amount, in moles (mol).
 
 **Example:**
 
@@ -646,7 +646,7 @@ Access specified element without bounds checking.
 
 
 :param int index: Index of the species.
-:param float limit: Upper limit for the species amount.
+:param float limit: Upper limit for the species amount, in moles (mol).
 
 **Example:**
 
@@ -660,7 +660,7 @@ Access specified element without bounds checking.
 Sets the lower limit for a species by its name.
 
 :param str name: Name of the species.
-:param float limit: Lower limit for the species amount.
+:param float limit: Lower limit for the species amount, in moles (mol).
 :param str phase: Name of the phase the species was included in. If None get the first index.
 
 **Example:**
@@ -676,7 +676,7 @@ Sets the lower limit for a species by its index.
 Access specified element with bounds checking.
 
 :param int index: Index of the species.
-:param float limit: Lower limit for the species amount.
+:param float limit: Lower limit for the species amount, in moles (mol).
 
 **Example:**
 
@@ -691,7 +691,7 @@ Sets the lower limit for a species by its index.
 Access specified element without bounds checking.
 
 :param int index: Index of the species.
-:param float limit: Lower limit for the species amount.
+:param float limit: Lower limit for the species amount, in moles (mol).
 
 **Example:**
 
