@@ -4387,7 +4387,7 @@ std::cout &lt;&lt; (no_error ? &quot;PT set correctly&quot; : &quot;PT error&quo
 <li><p><strong>T_new</strong> – Temperature in Kelvin (K). </p></li>
 <li><p><strong>P_new</strong> – Pressure in Pascals (Pa). </p></li>
 <li><p><strong>b_dict</strong> – (ValuesMap) Dictionary of element amounts in mol. </p></li>
-<li><p><strong>min_amount</strong> – (double) Minimum amount for elements not in b_dict, default 1e-15. </p></li>
+<li><p><strong>min_amount</strong> – (double) Minimum amount in mol for elements not in b_dict, default 1e-15. </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4413,7 +4413,7 @@ std::cout &lt;&lt; (no_error ? &quot;PT set correctly&quot; : &quot;PT error&quo
 <li><p><strong>T_new</strong> – Temperature in Kelvin (K). </p></li>
 <li><p><strong>P_new</strong> – Pressure in Pascals (Pa). </p></li>
 <li><p><strong>material</strong> – A <a class="reference internal" href="#da/d78/classxGEMS_1_1Material"><span class="std std-ref">Material</span></a> object whose bMap() defines the bulk composition. </p></li>
-<li><p><strong>min_amount</strong> – Minimum amount for elements absent from the material, default 1e-15. </p></li>
+<li><p><strong>min_amount</strong> – Minimum amount in mol for elements absent from the material, default 1e-15. </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4491,7 +4491,7 @@ std::cout &lt;&lt; (no_error ? &quot;PT set correctly&quot; : &quot;PT error&quo
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>b_input</strong> – (ValuesMap) Dictionary of element amounts in mol. </p></li>
-<li><p><strong>min_amount</strong> – (double) Minimum amount for elements not provided, default 1e-15.</p></li>
+<li><p><strong>min_amount</strong> – (double) Minimum amount in mol for elements not provided, default 1e-15.</p></li>
 </ul>
 </dd>
 </dl>

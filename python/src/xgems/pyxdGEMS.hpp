@@ -344,7 +344,7 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 :param float T: Temperature in Kelvin.
 :param float P: Pressure in Pascals.
 :param dict b_dict: Dictionary of element amounts in mol (elements not listed keep their current value).
-:param float min_amount: Minimum amount for unspecified elements, default 1e-15.
+:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
 :return str: The string indicating the status.
 
 **Example:**
@@ -367,7 +367,7 @@ Convenience overload that extracts the element-amount dictionary from *material*
 :param float T: Temperature in Kelvin.
 :param float P: Pressure in Pascals.
 :param Material material: A Material object whose element amounts define the bulk composition.
-:param float min_amount: Minimum amount for elements absent from the material, default 1e-15.
+:param float min_amount: Minimum amount in mol for elements absent from the material, default 1e-15.
 :return str: The string indicating the status.
 
 **Example:**
@@ -438,7 +438,7 @@ Elements absent from ``b_dict`` are left at their current value (or set to ``min
 if they fall below it).
 
 :param dict b_dict: Dictionary of element amounts in mol.
-:param float min_amount: Minimum amount for unspecified elements, default 1e-15.
+:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
 
 **Example:**
 

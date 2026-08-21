@@ -129,7 +129,7 @@ public:
      * @param T_new Temperature in Kelvin (K).
      * @param P_new Pressure in Pascals (Pa).
      * @param b_dict (ValuesMap) Dictionary of element amounts in mol.
-     * @param min_amount (double) Minimum amount for elements not in b_dict, default 1e-15.
+     * @param min_amount (double) Minimum amount in mol for elements not in b_dict, default 1e-15.
      * @return (std::string) Status string of the equilibrium solver.
      *
      * @code
@@ -148,7 +148,7 @@ public:
      * @param T_new Temperature in Kelvin (K).
      * @param P_new Pressure in Pascals (Pa).
      * @param material A Material object whose bMap() defines the bulk composition.
-     * @param min_amount Minimum amount for elements absent from the material, default 1e-15.
+     * @param min_amount Minimum amount in mol for elements absent from the material, default 1e-15.
      * @return (std::string) Status string of the equilibrium solver.
      *
      * @code
@@ -207,7 +207,7 @@ public:
      * Elements absent from b_dict are left unchanged (or set to min_amount if below it).
      *
      * @param b_input (ValuesMap) Dictionary of element amounts in mol.
-     * @param min_amount (double) Minimum amount for elements not provided, default 1e-15.
+     * @param min_amount (double) Minimum amount in mol for elements not provided, default 1e-15.
      *
      * @code
      * engine.setB({ {"Ca", 0.001}, {"Cl", 0.002}, {"H", 110.0}, {"O", 55.0}, {"Zz", 0.0} });
