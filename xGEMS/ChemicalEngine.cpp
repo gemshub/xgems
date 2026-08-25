@@ -1741,12 +1741,18 @@ namespace xGEMS
 
     auto ChemicalEngine::systemEntropy() const -> double
     {
-        return 0.0;
+        auto entr = 0.0;
+        for (Index i = 0; i < numPhases(); ++i)
+            entr += pimpl->node->Ph_Entropy(i);
+        return entr;
     }
 
     auto ChemicalEngine::systemHeatCapacityConstP() const -> double
     {
-        return 0.0;
+        auto cp = 0.0;
+        for (Index i = 0; i < numPhases(); ++i)
+            cp += pimpl->node->Ph_HeatCapacityCp(i);
+        return cp;
     }
 
     void printWrappedTable(std::ostream &out,
