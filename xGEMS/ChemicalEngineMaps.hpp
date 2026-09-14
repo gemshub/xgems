@@ -185,6 +185,26 @@ public:
      */
     auto reequilibrate(bool warmstart) -> std::string;
 
+    /// Selects the GEMS3K solver: "native", "aop", "sop" or "rop".
+    /// Forwards to ChemicalEngine::setSolverMode().
+    auto setSolverMode(const std::string& mode) -> void;
+
+    /// The solver mode currently selected.
+    auto solverMode() const -> std::string;
+
+    /// Constrains pH inside the equilibrium solve (AOP/SOP modes only).
+    /// Forwards to ChemicalEngine::setpHTarget().
+    auto setpHTarget(double pH_target, double tolerance = -1.) -> void;
+
+    /// Constrains Eh (V) inside the equilibrium solve (AOP/SOP modes only).
+    auto setEhTarget(double Eh_target, double tolerance = -1.) -> void;
+
+    /// Removes every registered pH/Eh control condition.
+    auto clearControlConditions() -> void;
+
+    /// Titrant amount solved for the named condition ("pH"/"Eh") last solve.
+    auto controlConditionTitrant(const std::string& name) const -> double;
+
     /**
      * @brief Sets the pressure and temperature without computing equilibrium.
      *

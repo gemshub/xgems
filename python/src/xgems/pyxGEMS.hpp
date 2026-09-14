@@ -609,6 +609,85 @@ Cold start resets the initial guess to default values for robust convergence.
   engine.setColdStart()
 )doc")
 
+        .def("setSolverMode", &ChemicalEngine::setSolverMode, py::arg("mode"),
+             R"doc(
+Selects which GEMS3K solver subsequent equilibrations use.
+
+:param str mode: One of ``"native"``, ``"aop"``, ``"sop"``, ``"rop"``
+    (case-insensitive).
+
+``"native"`` uses SIA when warm start is enabled and AIA otherwise. The Optima
+modes ignore the warm/cold start setting:
+
+- ``"aop"`` -- Optima, cold (AIA-equivalent) start
+- ``"sop"`` -- Optima, warm (SIA-equivalent) start
+- ``"rop"`` -- Optima with Reaktoro's own numerics
+
+:raises RuntimeError: for an unknown mode, or for an Optima mode when GEMS3K was
+    built without Optima.
+
+**Example:**
+
+.. code-block:: python
+
+  engine.setSolverMode("aop")
+)doc")
+
+        .def("solverMode", &ChemicalEngine::solverMode,
+             R"doc(
+The solver mode currently selected ("native", "aop", "sop" or "rop").
+)doc")
+
+        .def_static("builtWithOptima", &ChemicalEngine::builtWithOptima,
+             R"doc(
+Whether the linked GEMS3K was built with the Optima solver.
+)doc")
+
+        .def("setpHTarget", &ChemicalEngine::setpHTarget,
+             py::arg("pH_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Constrains pH; the titrant amount is solved within the equilibrium calculation.
+
+Applies to the ``"aop"`` and ``"sop"`` modes and persists until
+:py:meth:`clearControlConditions`.
+
+:param float pH_target: Requested pH.
+:param float tolerance: Tolerance on the achieved pH; negative uses the default.
+
+:raises RuntimeError: if GEMS3K was built without Optima.
+
+**Example:**
+
+.. code-block:: python
+
+  engine.setSolverMode("aop")
+  engine.setpHTarget(7.0)
+  engine.setEhTarget(0.2)
+  engine.equilibrate(298.15, 1e5, b)
+)doc")
+
+        .def("setEhTarget", &ChemicalEngine::setEhTarget,
+             py::arg("Eh_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Constrains Eh (V); see :py:meth:`setpHTarget`.
+
+:raises RuntimeError: if GEMS3K was built without Optima.
+)doc")
+
+        .def("clearControlConditions", &ChemicalEngine::clearControlConditions,
+             R"doc(
+Removes every registered pH/Eh control condition.
+)doc")
+
+        .def("controlConditionTitrant", &ChemicalEngine::controlConditionTitrant,
+             py::arg("name"),
+             R"doc(
+Titrant amount (mol) solved for the named condition in the last equilibration;
+0 if the condition was not active.
+
+:param str name: ``"pH"`` or ``"Eh"``.
+)doc")
+
         .def("setSpeciesUpperLimit", static_cast<void (ChemicalEngine::*)(std::string, double, std::optional<std::string>)>(&ChemicalEngine::setSpeciesUpperLimit),
              py::arg("name"), py::arg("limit"), py::arg("phase") = py::none(),
              R"doc(

@@ -19,10 +19,13 @@
 #include "Material.hpp"
 
 // C++ includes
+#include <cctype>
 #include <chrono>
 #include <cmath>
 #include <iomanip>
 #include <memory>
+#include <stdexcept>
+#include <string>
 
 // GEMS3K includes
 // #define IPMGEMPLUGIN
@@ -36,6 +39,37 @@
 
 namespace xGEMS
 {
+    namespace
+    {
+        /// Lower-cased copy, for case-insensitive mode names.
+        auto lower( std::string s ) -> std::string
+        {
+            for( auto& c : s ) c = (char)std::tolower((unsigned char)c);
+            return s;
+        }
+
+        /// NodeStatusCH value for a solver mode; `warmstart` applies to "native" only.
+        auto nodeStatusFor( const std::string& mode, bool warmstart ) -> long int
+        {
+            const auto m = lower( mode );
+            if( m == "native" ) return warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+#ifdef USE_OPTIMA_SOLVER
+            if( m == "aop" ) return NEED_GEM_AOP;
+            if( m == "sop" ) return NEED_GEM_SOP;
+            if( m == "rop" ) return NEED_GEM_ROP;
+#endif
+            throw std::runtime_error(
+                "xGEMS: unknown or unavailable solver mode '" + mode + "'. "
+                "Expected one of: native, aop, sop, rop"
+#ifndef USE_OPTIMA_SOLVER
+                " -- but this xGEMS was built against a GEMS3K WITHOUT Optima, "
+                "so only 'native' is available. Rebuild GEMS3K with "
+                "-DUSE_OPTIMA_SOLVER=ON."
+#endif
+                );
+        }
+    } // namespace
+
 
     void update_loggers(bool use_cout, const std::string &logfile_name, size_t log_level)
     {
@@ -652,7 +686,7 @@ namespace xGEMS
         auto begin = std::chrono::high_resolution_clock::now();
         // Solve the equilibrium problem with gems
         pimpl->node->pCNode()->NodeStatusCH =
-            pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            nodeStatusFor( pimpl->options.solver_mode, pimpl->options.warmstart );
         auto valueOutputGem = pimpl->node->GEM_run(false);
         // Finish timing
         auto end = std::chrono::high_resolution_clock::now();
@@ -681,7 +715,7 @@ namespace xGEMS
 
         // Solve the equilibrium problem with gems
         pimpl->node->pCNode()->NodeStatusCH =
-            pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            nodeStatusFor( pimpl->options.solver_mode, pimpl->options.warmstart );
         auto valueOutputGem = pimpl->node->GEM_run(false);
 
         // Finish timing
@@ -691,6 +725,64 @@ namespace xGEMS
         pimpl->elapsed_time = std::chrono::duration<double>(end - begin).count();
         return valueOutputGem;
     }
+
+    auto ChemicalEngine::setSolverMode(const std::string& mode) -> void
+    {
+        nodeStatusFor( mode, pimpl->options.warmstart );
+        pimpl->options.solver_mode = lower( mode );
+    }
+
+    auto ChemicalEngine::solverMode() const -> std::string
+    {
+        return pimpl->options.solver_mode;
+    }
+
+    auto ChemicalEngine::builtWithOptima() -> bool
+    {
+#ifdef USE_OPTIMA_SOLVER
+        return true;
+#else
+        return false;
+#endif
+    }
+
+#ifdef USE_OPTIMA_SOLVER
+    auto ChemicalEngine::setpHTarget(double pH_target, double tolerance) -> void
+    {
+        pimpl->node->Set_pH_target(pH_target, tolerance);
+    }
+
+    auto ChemicalEngine::setEhTarget(double Eh_target, double tolerance) -> void
+    {
+        pimpl->node->Set_Eh_target(Eh_target, tolerance);
+    }
+
+    auto ChemicalEngine::clearControlConditions() -> void
+    {
+        pimpl->node->Clear_ControlConditions();
+    }
+
+    auto ChemicalEngine::controlConditionTitrant(const std::string& name) const -> double
+    {
+        return pimpl->node->Get_ControlCondition_titrant(name);
+    }
+#else
+    auto ChemicalEngine::setpHTarget(double, double) -> void
+    {
+        throw std::runtime_error("xGEMS: setpHTarget() needs a GEMS3K built with "
+                                 "-DUSE_OPTIMA_SOLVER=ON");
+    }
+    auto ChemicalEngine::setEhTarget(double, double) -> void
+    {
+        throw std::runtime_error("xGEMS: setEhTarget() needs a GEMS3K built with "
+                                 "-DUSE_OPTIMA_SOLVER=ON");
+    }
+    auto ChemicalEngine::clearControlConditions() -> void {}
+    auto ChemicalEngine::controlConditionTitrant(const std::string&) const -> double
+    {
+        return 0.;
+    }
+#endif
 
     auto ChemicalEngine::equilibrate(double T, double P, const Material& material) -> int
     {

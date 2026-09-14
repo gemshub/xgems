@@ -411,6 +411,57 @@ Mirrors ``ChemicalEngine.reequilibrate(warmstart)``.
     result = engine.reequilibrate(True)
     print(result)
 )doc")
+            .def("setSolverMode", &ChemicalEngineMaps::setSolverMode,
+                 py::arg("mode"),
+             R"doc(
+Selects the solver used by subsequent equilibrations; see ``ChemicalEngine.setSolverMode``.
+
+:param str mode: ``"native"``, ``"aop"``, ``"sop"`` or ``"rop"``.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.setSolverMode("aop")
+)doc")
+            .def("solverMode", &ChemicalEngineMaps::solverMode,
+             R"doc(
+The solver mode currently selected ("native", "aop", "sop" or "rop").
+)doc")
+            .def("setpHTarget", &ChemicalEngineMaps::setpHTarget,
+                 py::arg("pH_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Constrains pH; the titrant amount is solved within the equilibrium calculation.
+
+Applies to the ``"aop"`` and ``"sop"`` modes; see ``ChemicalEngine.setpHTarget``.
+
+:param float pH_target: Requested pH.
+:param float tolerance: Tolerance on the achieved pH; negative uses the default.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.setSolverMode("aop")
+    engine.setpHTarget(7.0)
+    engine.setEhTarget(0.2)
+    engine.equilibrate(298.15, 1e5, b)
+)doc")
+            .def("setEhTarget", &ChemicalEngineMaps::setEhTarget,
+                 py::arg("Eh_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Constrains Eh (V); see ``setpHTarget()``.
+)doc")
+            .def("clearControlConditions", &ChemicalEngineMaps::clearControlConditions,
+             R"doc(
+Removes every registered pH/Eh control condition.
+)doc")
+            .def("controlConditionTitrant", &ChemicalEngineMaps::controlConditionTitrant,
+                 py::arg("name"),
+             R"doc(
+Titrant amount (mol) solved for the ``"pH"`` or ``"Eh"`` condition in the last
+equilibration; 0 if the condition was not active.
+)doc")
             .def("setPT", &ChemicalEngineMaps::setPT,
                  py::arg("P"), py::arg("T"),
              R"doc(

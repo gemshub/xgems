@@ -79,6 +79,11 @@ class Material;
     /// Use smart start initial approximation (faster convergence, may be less accurate).
     bool warmstart = false;
     bool print_zero_amounts = false; // print zero amounts in the output
+
+    /// Solver mode: "native" (AIA, or SIA when `warmstart` is set), "aop"
+    /// (Optima, cold start), "sop" (Optima, warm start) or "rop" (Optima with
+    /// Reaktoro's settings).
+    std::string solver_mode = "native";
   };
 
   /**
@@ -739,6 +744,49 @@ class Material;
      * @endcode
      */
     auto setColdStart() -> void;
+
+    /**
+     * @brief Selects the solver used by subsequent equilibrations.
+     *
+     * @param mode "native", "aop", "sop" or "rop" (case-insensitive).
+     * @throws std::runtime_error for an unknown mode, or for an Optima mode
+     *         when GEMS3K was built without Optima.
+     *
+     * @code
+     * engine.setSolverMode("aop");
+     * @endcode
+     */
+    auto setSolverMode(const std::string& mode) -> void;
+
+    /// The solver mode currently selected ("native", "aop", "sop" or "rop").
+    auto solverMode() const -> std::string;
+
+    /// Whether the linked GEMS3K was built with the Optima solver.
+    static auto builtWithOptima() -> bool;
+
+    /**
+     * @brief Constrains pH; the titrant amount is solved within the equilibrium calculation.
+     *
+     * Applies to the "aop" and "sop" modes and persists until clearControlConditions().
+     *
+     * @param pH_target Requested pH.
+     * @param tolerance Tolerance on the achieved pH; negative uses the default.
+     * @throws std::runtime_error if GEMS3K was built without Optima.
+     */
+    auto setpHTarget(double pH_target, double tolerance = -1.) -> void;
+
+    /**
+     * @brief Constrains Eh (V); see setpHTarget().
+     * @throws std::runtime_error if GEMS3K was built without Optima.
+     */
+    auto setEhTarget(double Eh_target, double tolerance = -1.) -> void;
+
+    /// Removes every registered pH/Eh control condition.
+    auto clearControlConditions() -> void;
+
+    /// Titrant amount (mol) solved for the "pH" or "Eh" condition in the last
+    /// equilibration; 0 if the condition was not active.
+    auto controlConditionTitrant(const std::string& name) const -> double;
 
     /**
      * @brief Sets an upper bound for a species identified by name.

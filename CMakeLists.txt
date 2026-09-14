@@ -140,6 +140,22 @@ if(XGEMS_USE_THERMOFUN MATCHES ON)
   #add_definitions(-DUSE_THERMO_LOG)
 endif()
 
+# Enable the Optima solver modes when the linked GEMS3K was built with Optima
+# (detected from the link interface of the imported GEMS3K target).
+if(TARGET GEMS3K::GEMS3K)
+  get_target_property(_g3k_link_libs GEMS3K::GEMS3K INTERFACE_LINK_LIBRARIES)
+  if(_g3k_link_libs MATCHES "Optima")
+    message(STATUS "GEMS3K has the Optima solver -- enabling AOP/SOP/ROP modes "
+                   "and the native pH/Eh control conditions")
+    add_definitions(-DUSE_OPTIMA_SOLVER)
+    # GEMS3K::GEMS3K links Optima::Optima, so the target must be defined here
+    find_package(Optima REQUIRED)
+  else()
+    message(STATUS "GEMS3K was built WITHOUT Optima -- only the native solver "
+                   "mode will be available")
+  endif()
+endif()
+
 # Build the C++ library and the Python bindings
 add_subdirectory(xGEMS)
 link_directories(${CMAKE_BINARY_DIR}/xGEMS)
