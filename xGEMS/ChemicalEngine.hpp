@@ -32,6 +32,8 @@
 #include <string>
 #include <optional>
 #include <map>
+#include <utility>
+#include <vector>
 
 // xGEMS includes (assumed to define Index and Eigen-based vector/matrix types)
 #include <xGEMS/Index.hpp>
@@ -84,6 +86,31 @@ class Material;
     /// (Optima, cold start), "sop" (Optima, warm start) or "rop" (Optima with
     /// Reaktoro's settings).
     std::string solver_mode = "native";
+  };
+
+  /**
+   * @brief Result of ChemicalEngine::traceRegimes() for one trace element.
+   */
+  struct TraceRegime
+  {
+    /// Element index (the index setB()/elementAmounts() use).
+    Index element = -1;
+    /// Element name.
+    std::string name;
+    /// Bulk amount as given (mol).
+    double amount = 0.;
+    /// LINEAR (phase fractions unchanged at every factor), SATURATED (a pure
+    /// phase of the element is present and its dissolved amount is constant),
+    /// BOUNDARY (a pure phase of the element appears or disappears), NONLINEAR,
+    /// STRANDED (all of it is in one multi-species phase present in a trace
+    /// amount; may be combined, e.g. "STRANDED+NONLINEAR") or FAILED.
+    std::string verdict;
+    /// Largest change of a phase fraction over the factors.
+    double maxFractionChange = 0.;
+    /// Fractions of the element per phase (> 1e-4), largest first.
+    std::vector<std::pair<std::string, double>> phases;
+    /// Phases that appear or disappear across the factors.
+    std::vector<std::string> boundaryPhases;
   };
 
   /**
@@ -787,6 +814,30 @@ class Material;
     /// Titrant amount (mol) solved for the "pH" or "Eh" condition in the last
     /// equilibration; 0 if the condition was not active.
     auto controlConditionTitrant(const std::string& name) const -> double;
+
+    /**
+     * @brief Classifies how each trace element partitions between phases.
+     *
+     * Re-solves the system cold, in the current solver mode, with all trace
+     * element amounts scaled by each factor, and compares the phase fractions.
+     * The engine state is restored afterwards.
+     *
+     * @param factors Multipliers applied to the trace amounts.
+     * @param traceRel An element is trace when its amount is at most traceRel
+     *                 times the total bulk amount; ignored when ofInterest is given.
+     * @param tol Largest phase-fraction change counted as LINEAR.
+     * @param ofInterest Element names to check; empty checks every trace element.
+     * @return One TraceRegime per checked element, in element order.
+     *
+     * @code
+     * engine.equilibrate(T, P, b);
+     * for (auto& r : engine.traceRegimes({0.1, 10.}, 1e-6, 1e-3, {"Cs", "Sr"}))
+     *     std::cout << r.name << " " << r.verdict << "\n";
+     * @endcode
+     */
+    auto traceRegimes(const std::vector<double>& factors = {0.1, 10.}, double traceRel = 1e-6,
+                      double tol = 1e-3, const std::vector<std::string>& ofInterest = {})
+        -> std::vector<TraceRegime>;
 
     /**
      * @brief Sets an upper bound for a species identified by name.

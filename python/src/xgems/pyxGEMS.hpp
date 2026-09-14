@@ -70,6 +70,34 @@ Whether to include zero-amount species/phases in the printed output.
   )doc",
           py::arg("use_cout"), py::arg("logfile_name"), py::arg("log_level"));
 
+    py::class_<TraceRegime>(m, "TraceRegime",
+        R"doc(
+Result of :meth:`ChemicalEngine.traceRegimes` for one trace element.
+
+Attributes:
+    element (int): Element index.
+    name (str): Element name.
+    amount (float): Bulk amount (mol).
+    verdict (str): ``LINEAR``, ``SATURATED``, ``BOUNDARY``, ``NONLINEAR``,
+        ``STRANDED`` (may be combined, e.g. ``STRANDED+NONLINEAR``) or ``FAILED``.
+    maxFractionChange (float): Largest change of a phase fraction over the factors.
+    phases (list[tuple[str, float]]): Fractions of the element per phase, largest first.
+    boundaryPhases (list[str]): Phases that appear or disappear across the factors.
+)doc")
+        .def_readonly("element", &TraceRegime::element)
+        .def_readonly("name", &TraceRegime::name)
+        .def_readonly("amount", &TraceRegime::amount)
+        .def_readonly("verdict", &TraceRegime::verdict)
+        .def_readonly("maxFractionChange", &TraceRegime::maxFractionChange)
+        .def_readonly("phases", &TraceRegime::phases)
+        .def_readonly("boundaryPhases", &TraceRegime::boundaryPhases)
+        .def("__repr__", [](const TraceRegime& r) {
+            std::string s = "<TraceRegime " + r.name + " " + r.verdict + " amount=" + std::to_string(r.amount);
+            for (const auto& p : r.phases)
+                s += " " + p.first + ":" + std::to_string(p.second);
+            return s + ">";
+        });
+
     py::class_<ChemicalEngine>(m, "ChemicalEngine")
         .def(py::init<>(),
              R"doc(
@@ -686,6 +714,32 @@ Titrant amount (mol) solved for the named condition in the last equilibration;
 0 if the condition was not active.
 
 :param str name: ``"pH"`` or ``"Eh"``.
+)doc")
+
+        .def("traceRegimes", &ChemicalEngine::traceRegimes,
+             py::arg("factors") = std::vector<double>{0.1, 10.}, py::arg("trace_rel") = 1e-6,
+             py::arg("tol") = 1e-3, py::arg("of_interest") = std::vector<std::string>{},
+             R"doc(
+Classifies how each trace element partitions between phases.
+
+Re-solves the system cold, in the current solver mode, with all trace element
+amounts scaled by each factor, and compares the phase fractions. The engine
+state is restored afterwards.
+
+:param list[float] factors: Multipliers applied to the trace amounts.
+:param float trace_rel: An element is trace when its amount is at most
+    ``trace_rel`` times the total bulk amount; ignored when ``of_interest`` is given.
+:param float tol: Largest phase-fraction change counted as ``LINEAR``.
+:param list[str] of_interest: Element names to check; empty checks every trace element.
+:returns: ``list[TraceRegime]``, in element order.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.equilibrate(T, P, b)
+    for r in engine.traceRegimes(of_interest=["Cs", "Sr"]):
+        print(r.name, r.verdict, r.phases)
 )doc")
 
         .def("setSpeciesUpperLimit", static_cast<void (ChemicalEngine::*)(std::string, double, std::optional<std::string>)>(&ChemicalEngine::setSpeciesUpperLimit),

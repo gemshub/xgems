@@ -205,6 +205,11 @@ public:
     /// Titrant amount solved for the named condition ("pH"/"Eh") last solve.
     auto controlConditionTitrant(const std::string& name) const -> double;
 
+    /// Trace-element regimes keyed by element name; see ChemicalEngine::traceRegimes().
+    auto traceRegimes(const std::vector<double>& factors = {0.1, 10.}, double traceRel = 1e-6,
+                      double tol = 1e-3, const std::vector<std::string>& ofInterest = {})
+        -> std::map<std::string, TraceRegime>;
+
     /**
      * @brief Sets the pressure and temperature without computing equilibrium.
      *

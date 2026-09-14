@@ -161,6 +161,16 @@ auto ChemicalEngineMaps::controlConditionTitrant(const std::string& name) const 
     return gem.controlConditionTitrant(name);
 }
 
+auto ChemicalEngineMaps::traceRegimes(const std::vector<double>& factors, double traceRel, double tol,
+                                      const std::vector<std::string>& ofInterest)
+    -> std::map<std::string, TraceRegime>
+{
+    std::map<std::string, TraceRegime> out;
+    for (auto& r : gem.traceRegimes(factors, traceRel, tol, ofInterest))
+        out[r.name] = r;
+    return out;
+}
+
 auto ChemicalEngineMaps::reequilibrate() -> std::string
 {
     gem.setPT(P, T);

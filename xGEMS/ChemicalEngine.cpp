@@ -784,6 +784,31 @@ namespace xGEMS
     }
 #endif
 
+    auto ChemicalEngine::traceRegimes(const std::vector<double>& factors, double traceRel, double tol,
+                                      const std::vector<std::string>& ofInterest) -> std::vector<TraceRegime>
+    {
+        // cold re-solves: "native" runs AIA and "sop" runs AOP
+        long int mode = nodeStatusFor( pimpl->options.solver_mode, false );
+#ifdef USE_OPTIMA_SOLVER
+        if( mode == NEED_GEM_SOP )
+            mode = NEED_GEM_AOP;
+#endif
+        std::vector<TraceRegime> out;
+        for( const auto& r : pimpl->node->GEM_trace_regimes( factors, traceRel, tol, mode, ofInterest ) )
+        {
+            TraceRegime t;
+            t.element = r.xIC;
+            t.name = r.name;
+            t.amount = r.amount;
+            t.verdict = r.verdict;
+            t.maxFractionChange = r.maxFractionChange;
+            t.phases = r.phases;
+            t.boundaryPhases = r.boundaryPhases;
+            out.push_back( std::move( t ) );
+        }
+        return out;
+    }
+
     auto ChemicalEngine::equilibrate(double T, double P, const Material& material) -> int
     {
         return equilibrate(T, P, material.b());

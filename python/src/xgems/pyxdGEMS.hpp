@@ -462,6 +462,14 @@ Removes every registered pH/Eh control condition.
 Titrant amount (mol) solved for the ``"pH"`` or ``"Eh"`` condition in the last
 equilibration; 0 if the condition was not active.
 )doc")
+            .def("traceRegimes", &ChemicalEngineMaps::traceRegimes,
+                 py::arg("factors") = std::vector<double>{0.1, 10.}, py::arg("trace_rel") = 1e-6,
+                 py::arg("tol") = 1e-3, py::arg("of_interest") = std::vector<std::string>{},
+             R"doc(
+Trace-element regimes keyed by element name; see :meth:`ChemicalEngine.traceRegimes`.
+
+:returns: ``{element name: TraceRegime}``.
+)doc")
             .def("setPT", &ChemicalEngineMaps::setPT,
                  py::arg("P"), py::arg("T"),
              R"doc(
