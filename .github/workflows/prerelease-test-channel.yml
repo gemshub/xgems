@@ -58,7 +58,7 @@ jobs:
             local r="$1"; shift
             conda build "$RECIPE_ROOT/$r" -m "$PIN" "$@" --output-folder "$BUILD_DIR" -c "$UPSTREAM_CHANNEL"
           }
-          for p in $BASE_PACKAGES; do build "$p"; done
+          for p in $BASE_PACKAGES; do build "$p" || { echo "::error::base package $p failed"; exit 1; }; done
           for v in $PYTHON_VERSIONS; do
             if ! VARIANT=$(python "$RECIPE_ROOT/python_variant.py" "$PIN" "$v"); then
               echo "::warning::python $v is not in the conda-forge pinning yet - skipped"; continue

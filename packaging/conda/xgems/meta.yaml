@@ -14,9 +14,14 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - cmake
     - ninja
+    - python  # [win or osx]
+    - pip  # [win or osx]
+    - setuptools  # [win or osx]
+    - wheel  # [win or osx]
   host:
     - gems3k * optima*
     - optima * optima*
@@ -27,6 +32,8 @@ requirements:
     - pybind11
     - python
     - pip
+    - setuptools
+    - wheel
     - numpy
   run:
     # gems3k and optima are linked statically into PyxGEMS (host-only): this prerelease needs
