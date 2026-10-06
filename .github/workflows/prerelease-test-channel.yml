@@ -49,11 +49,11 @@ jobs:
           auto-activate-base: true
       - name: Install conda-build
         shell: bash -el {0}
-        run: conda install -y conda-build conda-forge-pinning
+        run: conda install -n base -y conda-build conda-forge-pinning  # base: that is where `conda build` is looked up
       - name: Build base packages once, then python packages per python version
         shell: bash -el {0}
         run: |
-          PIN="$CONDA_PREFIX/conda_build_config.yaml"
+          PIN="$(conda info --base)/conda_build_config.yaml"
           build() {  # build() <recipe> [--variants "<variant>"]
             local r="$1"; shift
             conda build "$RECIPE_ROOT/$r" -m "$PIN" "$@" --output-folder "$BUILD_DIR" -c "$UPSTREAM_CHANNEL"
