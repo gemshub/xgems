@@ -1,0 +1,42 @@
+{% set version = "5.0.0" %}
+
+package:
+  name: gems3k
+  version: {{ version }}
+
+source:
+  git_url: {{ environ.get("GEMS3K_REPO", "https://github.com/gemshub/GEMS3K.git") }}
+  git_rev: {{ environ.get("GEMS3K_BRANCH", "develop_optima") }}
+
+build:
+  number: 900
+  string: optima_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ stdlib('c') }}
+    - cmake
+    - ninja
+    - git
+  host:
+    - optima * optima*
+    - thermofun >=0.7.1
+    - chemicalfun
+    - eigen >=3.4.0
+    - spdlog
+    - nlohmann_json >=3.7.0
+    - autodiff
+  run:
+    - thermofun >=0.7.1
+
+test:
+  commands:
+    - test -f ${PREFIX}/lib/cmake/GEMS3K/GEMS3KConfig.cmake  # [unix]
+    - if exist %LIBRARY_PREFIX%\lib\cmake\GEMS3K\GEMS3KConfig.cmake (exit 0) else (exit 1)  # [win]
+
+about:
+  home: https://github.com/gemshub/GEMS3K
+  license: LGPL-3.0-or-later
+  summary: GEMS3K (develop_optima branch, with Optima solver) - TEST BUILD.

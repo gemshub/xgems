@@ -1,0 +1,17 @@
+# Conda environment Read the Docs uses to build the docs of this branch (see .readthedocs.yaml).
+# The Python API docs are read from the installed xgems package, so xgems comes from the prerelease
+# channel built by .github/workflows/prerelease-test-channel.yml (the channel is public). GEMS3K and Optima
+# are bundled inside the xgems package, so only xgems is taken from that channel.
+# Do not name this file environment.yml: that name is git-ignored in this repo.
+name: xgems-docs
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - sphinx
+  - sphinx_rtd_theme
+  - breathe
+  - doxygen
+  - numpy
+  - https://gemshub.github.io/xgems/prerelease::xgems

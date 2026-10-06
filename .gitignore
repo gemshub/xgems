@@ -7,6 +7,7 @@ build/
 .cache
 .pydevproject
 *.pyc
+__pycache__/
 ~lock.*
 .ptp-sync-folder
 .ptp-sync/
@@ -21,3 +22,7 @@ environment.yml
 *log*
 *.ipynb_checkpoints*
 
+CLAUDE.md
+.claude/
+*Untitled*
+tests/test_mines

@@ -48,22 +48,25 @@ namespace xGEMS
             return s;
         }
 
-        /// NodeStatusCH value for a solver mode; `warmstart` applies to "native" only.
+        /// NodeStatusCH value for a solver mode. `warmstart` turns "aia" into "sia", "aop"
+        /// into "sop" and "hop" into "shp".
         auto nodeStatusFor( const std::string& mode, bool warmstart ) -> long int
         {
             const auto m = lower( mode );
-            if( m == "native" ) return warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            if( m == "aia" ) return warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            if( m == "sia" ) return NEED_GEM_SIA;
 #ifdef USE_OPTIMA_SOLVER
-            if( m == "aop" ) return NEED_GEM_AOP;
+            if( m == "aop" ) return warmstart ? NEED_GEM_SOP : NEED_GEM_AOP;
             if( m == "sop" ) return NEED_GEM_SOP;
-            if( m == "rop" ) return NEED_GEM_ROP;
+            if( m == "hop" ) return warmstart ? NEED_GEM_SHP : NEED_GEM_HOP;
+            if( m == "shp" ) return NEED_GEM_SHP;
 #endif
             throw std::runtime_error(
                 "xGEMS: unknown or unavailable solver mode '" + mode + "'. "
-                "Expected one of: native, aop, sop, rop"
+                "Expected one of: aia, sia, aop, sop, hop, shp"
 #ifndef USE_OPTIMA_SOLVER
                 " -- but this xGEMS was built against a GEMS3K WITHOUT Optima, "
-                "so only 'native' is available. Rebuild GEMS3K with "
+                "so only 'aia' and 'sia' are available. Rebuild GEMS3K with "
                 "-DUSE_OPTIMA_SOLVER=ON."
 #endif
                 );
@@ -92,6 +95,9 @@ namespace xGEMS
 
         /// The formula matrix of the species
         Matrix formula_matrix;
+
+        /// Last solver mode that was accepted (restored when assigned options are rejected)
+        std::string valid_mode = "aia";
 
         /// The elapsed time of the equilibrate method (in units of s)
         double elapsed_time = 0;
@@ -648,7 +654,21 @@ namespace xGEMS
 
     auto ChemicalEngine::setOptions(const ChemicalEngineOptions &options) -> void
     {
+        // reject an unknown or unavailable solver mode up front
+        try
+        {
+            nodeStatusFor( options.solver_mode, options.warmstart );
+        }
+        catch( ... )
+        {
+            // `options` may be the engine's own options (Python hands out a live reference), so
+            // put the last accepted mode back and the engine stays usable
+            pimpl->options.solver_mode = pimpl->valid_mode;
+            throw;
+        }
         pimpl->options = options;
+        pimpl->options.solver_mode = lower( options.solver_mode );
+        pimpl->valid_mode = pimpl->options.solver_mode;
     }
 
     auto ChemicalEngine::setWarmStart() -> void
@@ -659,6 +679,11 @@ namespace xGEMS
     auto ChemicalEngine::setColdStart() -> void
     {
         pimpl->options.warmstart = false;
+        // a cold start also makes an explicit warm mode cold
+        const auto m = lower( pimpl->options.solver_mode );
+        if( m == "sia" ) pimpl->options.solver_mode = "aia";
+        if( m == "sop" ) pimpl->options.solver_mode = "aop";
+        if( m == "shp" ) pimpl->options.solver_mode = "hop";
     }
 
     auto ChemicalEngine::setPT(double P, double T) const -> bool
@@ -730,11 +755,19 @@ namespace xGEMS
     {
         nodeStatusFor( mode, pimpl->options.warmstart );
         pimpl->options.solver_mode = lower( mode );
+        pimpl->valid_mode = pimpl->options.solver_mode;
     }
 
     auto ChemicalEngine::solverMode() const -> std::string
     {
-        return pimpl->options.solver_mode;
+        const auto m = lower( pimpl->options.solver_mode );
+        // the mode actually run: the warm start flag turns a cold mode into its warm one
+        const bool warm = pimpl->options.warmstart;
+        if( m == "aia" || m == "sia" )
+            return ( m == "sia" || warm ) ? "sia" : "aia";
+        if( m == "hop" || m == "shp" )
+            return ( m == "shp" || warm ) ? "shp" : "hop";
+        return ( m == "sop" || warm ) ? "sop" : "aop";
     }
 
     auto ChemicalEngine::builtWithOptima() -> bool
@@ -787,11 +820,15 @@ namespace xGEMS
     auto ChemicalEngine::traceRegimes(const std::vector<double>& factors, double traceRel, double tol,
                                       const std::vector<std::string>& ofInterest) -> std::vector<TraceRegime>
     {
-        // cold re-solves: "native" runs AIA and "sop" runs AOP
+        // cold re-solves: "sia" runs AIA, "sop" runs AOP and "shp" runs HOP
         long int mode = nodeStatusFor( pimpl->options.solver_mode, false );
+        if( mode == NEED_GEM_SIA )
+            mode = NEED_GEM_AIA;
 #ifdef USE_OPTIMA_SOLVER
         if( mode == NEED_GEM_SOP )
             mode = NEED_GEM_AOP;
+        if( mode == NEED_GEM_SHP )
+            mode = NEED_GEM_HOP;
 #endif
         std::vector<TraceRegime> out;
         for( const auto& r : pimpl->node->GEM_trace_regimes( factors, traceRel, tol, mode, ofInterest ) )

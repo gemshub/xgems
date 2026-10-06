@@ -25,7 +25,13 @@
 #pragma once
 
 // Eigen includes
+#include <cassert> // Eigen 5 no longer includes this itself
 #include <eigen3/Eigen/Core>
+
+// Eigen 5 keeps `all` in Eigen::placeholders; Eigen 3.4 has it in Eigen directly
+#if EIGEN_MAJOR_VERSION >= 5
+namespace Eigen { using placeholders::all; }
+#endif
 
 namespace xGEMS {
 

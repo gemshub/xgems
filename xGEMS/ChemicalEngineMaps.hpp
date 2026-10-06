@@ -185,9 +185,13 @@ public:
      */
     auto reequilibrate(bool warmstart) -> std::string;
 
-    /// Selects the GEMS3K solver: "native", "aop", "sop" or "rop".
+    /// Selects the GEMS3K solver: "aia", "sia", "aop", "sop", "hop" or "shp".
     /// Forwards to ChemicalEngine::setSolverMode().
     auto setSolverMode(const std::string& mode) -> void;
+
+    /// Whether the linked GEMS3K was built with the Optima solver.
+    /// Forwards to ChemicalEngine::builtWithOptima().
+    static auto builtWithOptima() -> bool;
 
     /// The solver mode currently selected.
     auto solverMode() const -> std::string;

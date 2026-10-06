@@ -1,0 +1,34 @@
+{% set version = "0.6.0" %}
+
+package:
+  name: optima
+  version: {{ version }}
+
+source:
+  git_url: {{ environ.get("OPTIMA_REPO", "https://github.com/gemshub/optima.git") }}
+  git_rev: {{ environ.get("OPTIMA_BRANCH", "optima_develop") }}
+
+build:
+  number: 900
+  string: optima_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ stdlib('c') }}
+    - cmake
+    - ninja
+  host:
+    - eigen >=3.4.0
+  run:
+    - eigen >=3.4.0
+
+test:
+  commands:
+    - test -f ${PREFIX}/lib/cmake/Optima/OptimaConfig.cmake  # [unix]
+    - if exist %LIBRARY_PREFIX%\lib\cmake\Optima\OptimaConfig.cmake (exit 0) else (exit 1)  # [win]
+
+about:
+  home: https://github.com/gemshub/optima
+  license: LGPL-3.0-or-later
+  summary: Optima optimization library (gemshub fork, optima_develop branch) - TEST BUILD.

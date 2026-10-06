@@ -7,25 +7,21 @@ Welcome to xGEMS ChemicalEngine!
       <p>A powerful tool for Gibbs-energy minimization and equilibrium computations.</p>
    </div>
 
-Contents
---------
+.. toctree::
+   :maxdepth: 1
+   :caption: Getting started
+
+   installation
+   solver_guide
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Interface Documentation
-
-   python_dicts_api_reference
-
-.. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :caption: Interfaces
 
    python_api_reference
    cpp_api_reference
 
-.. .. toctree::
-..   :maxdepth: 1
-..   :caption: Developer Guide
+.. rubric:: Examples
 
-..   contributing
-..   architecture
-..   changelog
+Worked examples of using xGEMS, as Jupyter notebooks, are in the
+`xgems-jupyter <https://github.com/gemshub/xgems-jupyter>`_ repository.

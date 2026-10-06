@@ -416,7 +416,7 @@ Mirrors ``ChemicalEngine.reequilibrate(warmstart)``.
              R"doc(
 Selects the solver used by subsequent equilibrations; see ``ChemicalEngine.setSolverMode``.
 
-:param str mode: ``"native"``, ``"aop"``, ``"sop"`` or ``"rop"``.
+:param str mode: ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"`` or ``"shp"``.
 
 **Example:**
 
@@ -424,16 +424,27 @@ Selects the solver used by subsequent equilibrations; see ``ChemicalEngine.setSo
 
     engine.setSolverMode("aop")
 )doc")
+            .def_static("builtWithOptima", &ChemicalEngineMaps::builtWithOptima,
+             R"doc(
+Whether the linked GEMS3K was built with the Optima solver (``"aop"``, ``"sop"``, ``"hop"`` and ``"shp"`` need it).
+
+**Example:**
+
+.. code-block:: python
+
+    if ChemicalEngineDicts.builtWithOptima():
+        engine.setSolverMode("aop")
+)doc")
             .def("solverMode", &ChemicalEngineMaps::solverMode,
              R"doc(
-The solver mode currently selected ("native", "aop", "sop" or "rop").
+The solver mode currently selected ("aia", "sia", "aop", "sop", "hop" or "shp").
 )doc")
             .def("setpHTarget", &ChemicalEngineMaps::setpHTarget,
                  py::arg("pH_target"), py::arg("tolerance") = -1.,
              R"doc(
 Constrains pH; the titrant amount is solved within the equilibrium calculation.
 
-Applies to the ``"aop"`` and ``"sop"`` modes; see ``ChemicalEngine.setpHTarget``.
+Applies to the Optima modes (not "aia" or "sia", which ignore it); see ``ChemicalEngine.setpHTarget``.
 
 :param float pH_target: Requested pH.
 :param float tolerance: Tolerance on the achieved pH; negative uses the default.
@@ -542,7 +553,7 @@ Reads a DBR file from disk, updating the system composition.
 
 Mirrors ``ChemicalEngine.readDbrFromFile(filename)``.
 
-:param str filename: Path to the DBR file (e.g., "*-dbr.json").
+:param str filename: Path to the DBR file (e.g., ``*-dbr.json``).
 
 **Example:**
 

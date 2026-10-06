@@ -1,0 +1,110 @@
+# Prerelease test channel: builds optima + gems3k (develop_optima) + xgems (this checkout) as conda
+# packages and publishes them as a static conda channel on the gh-pages branch of this repo:
+#   https://gemshub.github.io/xgems/prerelease
+# Testers install with:
+#   conda create -n xgems-optima --override-channels --strict-channel-priority \
+#     -c https://gemshub.github.io/xgems/prerelease -c conda-forge xgems
+# Requires: repo Settings > Pages > source = branch gh-pages (after the first run creates it).
+name: prerelease-test-channel
+on:
+  workflow_dispatch:
+
+# ---- Settings: edit here ----------------------------------------------------------------------
+env:
+  BASE_PACKAGES: "optima gems3k"            # python-independent recipes under RECIPE_ROOT, built once, in order
+  PUBLISH_PACKAGES: "xgems"                 # only these go into the channel; the base packages are statically bundled into them
+  PYTHON_PACKAGES: "xgems"                  # recipes built once per python version below
+  PYTHON_VERSIONS: "3.12 3.13 3.14 3.15"    # a version missing from the conda-forge pinning is skipped with a warning
+  RECIPE_ROOT: packaging/conda
+  UPSTREAM_CHANNEL: conda-forge
+  CHANNEL_NAME: prerelease                  # served at https://<owner>.github.io/<repo>/<CHANNEL_NAME>
+  PAGES_DIR: site                           # staging dir published to the gh-pages branch
+  BUILD_DIR: channel                        # conda-build output folder
+  ARTIFACT_PREFIX: channel                  # per-platform artifact name prefix
+  # Source repos and branches, read by the recipes' meta.yaml through jinja environ.get(...)
+  OPTIMA_REPO: https://github.com/gemshub/optima.git
+  OPTIMA_BRANCH: optima_develop
+  GEMS3K_REPO: https://github.com/gemshub/GEMS3K.git
+  GEMS3K_BRANCH: develop_optima
+# xgems itself is built from the branch/commit this workflow is run on.
+# ------------------------------------------------------------------------------------------------
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest,  subdir: linux-64}
+          - {os: macos-latest,   subdir: osx-arm64}
+          - {os: windows-latest, subdir: win-64}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          channels: ${{ env.UPSTREAM_CHANNEL }}
+          channel-priority: strict
+          auto-activate-base: true
+      - name: Install conda-build
+        shell: bash -el {0}
+        run: conda install -y conda-build conda-forge-pinning
+      - name: Build base packages once, then python packages per python version
+        shell: bash -el {0}
+        run: |
+          PIN="$CONDA_PREFIX/conda_build_config.yaml"
+          build() {  # build() <recipe> [--variants "<variant>"]
+            local r="$1"; shift
+            conda build "$RECIPE_ROOT/$r" -m "$PIN" "$@" --output-folder "$BUILD_DIR" -c "$UPSTREAM_CHANNEL"
+          }
+          for p in $BASE_PACKAGES; do build "$p"; done
+          for v in $PYTHON_VERSIONS; do
+            if ! VARIANT=$(python "$RECIPE_ROOT/python_variant.py" "$PIN" "$v"); then
+              echo "::warning::python $v is not in the conda-forge pinning yet - skipped"; continue
+            fi
+            for p in $PYTHON_PACKAGES; do
+              build "$p" --variants "$VARIANT" || echo "::warning::$p failed for python $v"
+            done
+          done
+      - name: Collect the packages to publish
+        shell: bash -el {0}
+        run: |
+          mkdir -p publish
+          for p in $PUBLISH_PACKAGES; do cp "$BUILD_DIR/${{ matrix.subdir }}/$p"-[0-9]*.conda publish/; done
+          ls publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_PREFIX }}-${{ matrix.subdir }}
+          path: publish/*.conda
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    if: always() && needs.build.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dl
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          channels: ${{ env.UPSTREAM_CHANNEL }}
+      - name: Index channel
+        shell: bash -el {0}
+        run: |
+          conda install -y conda-index
+          mkdir -p "$PAGES_DIR/$CHANNEL_NAME"
+          for d in dl/$ARTIFACT_PREFIX-*; do
+            sub=${d#dl/$ARTIFACT_PREFIX-}
+            mkdir -p "$PAGES_DIR/$CHANNEL_NAME/$sub"; cp "$d"/* "$PAGES_DIR/$CHANNEL_NAME/$sub/"
+          done
+          python -m conda_index "$PAGES_DIR/$CHANNEL_NAME"
+          touch "$PAGES_DIR/.nojekyll"
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ env.PAGES_DIR }}

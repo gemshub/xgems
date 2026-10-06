@@ -1,0 +1,45 @@
+{% set version = "2.2.0" %}
+
+package:
+  name: xgems
+  version: {{ version }}
+
+source:
+  path: ../../..
+
+build:
+  number: 900
+  string: optima_py{{ py }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ stdlib('c') }}
+    - cmake
+    - ninja
+  host:
+    - gems3k * optima*
+    - optima * optima*
+    - thermofun >=0.7.1
+    - eigen >=3.4.0
+    - spdlog
+    - nlohmann_json
+    - pybind11
+    - python
+    - pip
+    - numpy
+  run:
+    # gems3k and optima are linked statically into PyxGEMS (host-only): this prerelease needs
+    # specific branches of them that exist in no channel, so they are not published/required.
+    - thermofun >=0.7.1
+    - python
+    - numpy
+
+test:
+  imports:
+    - xgems
+
+about:
+  home: https://github.com/gemshub/xgems
+  license: LGPL-3.0-or-later
+  summary: xGEMS (develop_optima branch, with Optima solver modes; GEMS3K and Optima bundled statically) - TEST BUILD.

@@ -82,10 +82,11 @@ class Material;
     bool warmstart = false;
     bool print_zero_amounts = false; // print zero amounts in the output
 
-    /// Solver mode: "native" (AIA, or SIA when `warmstart` is set), "aop"
-    /// (Optima, cold start), "sop" (Optima, warm start) or "rop" (Optima with
-    /// Reaktoro's settings).
-    std::string solver_mode = "native";
+    /// Solver mode: "aia" (GEMS3K IPM, cold start), "sia" (GEMS3K IPM, warm start),
+    /// "aop" (Optima, cold start), "sop" (Optima, warm start), "hop" (IPM then Optima
+    /// check, cold start) or "shp" (the same, warm start). When `warmstart` is set,
+    /// "aia" runs as "sia", "aop" as "sop" and "hop" as "shp".
+    std::string solver_mode = "aia";
   };
 
   /**
@@ -775,7 +776,7 @@ class Material;
     /**
      * @brief Selects the solver used by subsequent equilibrations.
      *
-     * @param mode "native", "aop", "sop" or "rop" (case-insensitive).
+     * @param mode "aia", "sia", "aop", "sop", "hop" or "shp" (case-insensitive). The default is "aia".
      * @throws std::runtime_error for an unknown mode, or for an Optima mode
      *         when GEMS3K was built without Optima.
      *
@@ -785,7 +786,7 @@ class Material;
      */
     auto setSolverMode(const std::string& mode) -> void;
 
-    /// The solver mode currently selected ("native", "aop", "sop" or "rop").
+    /// The solver mode that runs: "aia", "sia", "aop", "sop", "hop" or "shp" (a set `warmstart` turns "aia" into "sia", "aop" into "sop" and "hop" into "shp").
     auto solverMode() const -> std::string;
 
     /// Whether the linked GEMS3K was built with the Optima solver.
@@ -794,7 +795,12 @@ class Material;
     /**
      * @brief Constrains pH; the titrant amount is solved within the equilibrium calculation.
      *
-     * Applies to the "aop" and "sop" modes and persists until clearControlConditions().
+     * Applies to the Optima modes ("aop", "sop", "hop" and "shp") and persists until clearControlConditions().
+     * The "aia" and "sia" modes ignore it without an error: the pH is not constrained and
+     * controlConditionTitrant() returns 0.
+     * The titrant is added to the engine's own bulk composition, which elementAmounts()
+     * returns as a live view: copy the original amounts first if the next calculation
+     * must start from them. The amount added is given by controlConditionTitrant().
      *
      * @param pH_target Requested pH.
      * @param tolerance Tolerance on the achieved pH; negative uses the default.

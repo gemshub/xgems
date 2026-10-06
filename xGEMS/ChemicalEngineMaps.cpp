@@ -50,6 +50,15 @@ static std::map<int, std::string> _status_encoder = {
     {19, "OK after GEM calculation via the ROP mechanism"},
     {20, "Bad (not fully trustful) result after GEM calculation via the ROP mechanism"},
     {21, "Failure (no result) in GEM calculation via the ROP mechanism"},
+    // Hybrid modes: GEMS3K IPM solver first, then Optima refines and checks the answer
+    {22, "Need GEM calculation by the GEMS3K IPM solver from scratch, then Optima refines and checks it (HOP)"},
+    {23, "OK after the hybrid IPM-then-Optima calculation (HOP)"},
+    {24, "Bad (not fully trustful) result after the hybrid IPM-then-Optima calculation (HOP)"},
+    {25, "Failure (no result) in the hybrid IPM-then-Optima calculation (HOP)"},
+    {26, "Need the hybrid IPM-then-Optima calculation with the IPM part started from the previous result (SHP)"},
+    {27, "OK after the hybrid calculation with a warm IPM part (SHP)"},
+    {28, "Bad (not fully trustful) result after the hybrid calculation with a warm IPM part (SHP)"},
+    {29, "Failure (no result) in the hybrid calculation with a warm IPM part (SHP)"},
 };
 
 
@@ -134,6 +143,11 @@ auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, const Material&
 auto ChemicalEngineMaps::setSolverMode(const std::string& mode) -> void
 {
     gem.setSolverMode(mode);
+}
+
+auto ChemicalEngineMaps::builtWithOptima() -> bool
+{
+    return ChemicalEngine::builtWithOptima();
 }
 
 auto ChemicalEngineMaps::solverMode() const -> std::string
