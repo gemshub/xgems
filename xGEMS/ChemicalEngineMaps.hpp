@@ -107,16 +107,12 @@ public:
      * std::string retcode = engine.equilibrate();
      * @endcode
      *
-     * - No GEM re-calculation needed
-     * - Need GEM calculation with LPP (automatic) initial approximation (AIA)
-     * - OK after GEM calculation with LPP AIA
-     * - Bad (not fully trustful) result after GEM calculation with LPP AIA
-     * - Failure (no result) in GEM calculation with LPP AIA
-     * - Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-     * - OK after GEM calculation with SIA
-     * - Bad (not fully trustful) result after GEM calculation with SIA
-     * - Failure (no result) in GEM calculation with SIA
-     * - Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+     * The returned text describes the status, for example "OK after GEM calculation with LPP AIA". It is one of:
+     *
+     * - "No GEM re-calculation needed"
+     * - "OK ..." for a good result, "Bad (not fully trustful) result ..." or "Failure (no result) ..." after the
+     *   solver that ran (AIA, SIA, AOP, SOP, HOP or SHP; the last four need GEMS3K built with Optima)
+     * - "Terminal error in GEMS3K (e.g. memory corruption). Restart is required."
      */
     auto equilibrate() -> std::string;
 

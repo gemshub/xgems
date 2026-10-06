@@ -319,7 +319,8 @@ Read-only property: the dictionary of the species standard molar volumes in m³/
 Computes the equilibrium state of the current system.
 Uses current temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.
 
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -330,7 +331,9 @@ Uses current temperature (K), pressure (Pa), and element amounts (in mol) to com
     bulk_composition = {'C': 1e-08, 'Ca': 1e-08, 'Cl': 0.002, 'H': 111.016746657646,
                         'Mg': 0.001, 'O': 55.5083933588231, 'Sn': 130.841288437146, 'Zz': 0.0}
     engine.set_bulk_composition(bulk_composition)
-    engine.equilibrate()
+    result = engine.equilibrate()
+    print(result)     # for example: OK after GEM calculation with LPP AIA
+    print(engine)     # the equilibrium state: T, P, elements, phases and species
 )doc")
             .def("equilibrate",
                  static_cast<std::string(ChemicalEngineMaps::*)(double, double, ValuesMap, double)>(&ChemicalEngineMaps::equilibrate),
@@ -345,7 +348,8 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 :param float P: Pressure in Pascals.
 :param dict b_dict: Dictionary of element amounts in mol (elements not listed keep their current value).
 :param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -368,7 +372,8 @@ Convenience overload that extracts the element-amount dictionary from *material*
 :param float P: Pressure in Pascals.
 :param Material material: A Material object whose element amounts define the bulk composition.
 :param float min_amount: Minimum amount in mol for elements absent from the material, default 1e-15.
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -385,7 +390,8 @@ Re-equilibrates the system using the current internal state without changing T, 
 
 Mirrors ``ChemicalEngine.reequilibrate()``.
 
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -402,7 +408,8 @@ Re-equilibrates the system with explicit warm/cold start control.
 Mirrors ``ChemicalEngine.reequilibrate(warmstart)``.
 
 :param bool warmstart: If true, uses previous speciation as initial guess (SIA).
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 

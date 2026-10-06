@@ -1003,15 +1003,26 @@ Access specified element with bounds checking.
                    The function returns an integer code indicating the status:
                    
                    - 0: No GEM re-calculation needed
-                   - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-                   - 2: OK after GEM calculation with LPP AIA
-                   - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-                   - 4: Failure (no result) in GEM calculation with LPP AIA
-                   - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-                   - 6: OK after GEM calculation with SIA
-                   - 7: Bad (not fully trustful) result after GEM calculation with SIA
-                   - 8: Failure (no result) in GEM calculation with SIA
                    - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+                   For the other results, the code depends on the solver mode that ran (see ``setSolverMode``):
+
+                   ======  ======  ====================================  ======================
+                   Mode    OK      Bad (result not fully trustworthy)    Failure (no result)
+                   ======  ======  ====================================  ======================
+                   aia     2       3                                     4
+                   sia     6       7                                     8
+                   aop     11      12                                    13
+                   sop     15      16                                    17
+                   hop     23      24                                    25
+                   shp     27      28                                    29
+                   ======  ======  ====================================  ======================
+
+                   OK: the result can be used. Bad: there is a result, but check it. The modes ``aop``, ``sop``, ``hop`` and
+                   ``shp`` need GEMS3K built with Optima.
+                   
+                   This is a number, so ``print(ret)`` shows for example ``2``. ``ChemicalEngineDicts`` returns the same information as text.
+                   The solver modes are explained in the :doc:`solver_guide`.
 
               )doc")
 
@@ -1032,15 +1043,26 @@ Access specified element with bounds checking.
                    The function returns an integer code indicating the status:
                    
                    - 0: No GEM re-calculation needed
-                   - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-                   - 2: OK after GEM calculation with LPP AIA
-                   - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-                   - 4: Failure (no result) in GEM calculation with LPP AIA
-                   - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-                   - 6: OK after GEM calculation with SIA
-                   - 7: Bad (not fully trustful) result after GEM calculation with SIA
-                   - 8: Failure (no result) in GEM calculation with SIA
                    - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+                   For the other results, the code depends on the solver mode that ran (see ``setSolverMode``):
+
+                   ======  ======  ====================================  ======================
+                   Mode    OK      Bad (result not fully trustworthy)    Failure (no result)
+                   ======  ======  ====================================  ======================
+                   aia     2       3                                     4
+                   sia     6       7                                     8
+                   aop     11      12                                    13
+                   sop     15      16                                    17
+                   hop     23      24                                    25
+                   shp     27      28                                    29
+                   ======  ======  ====================================  ======================
+
+                   OK: the result can be used. Bad: there is a result, but check it. The modes ``aop``, ``sop``, ``hop`` and
+                   ``shp`` need GEMS3K built with Optima.
+                   
+                   This is a number, so ``print(ret)`` shows for example ``2``. ``ChemicalEngineDicts`` returns the same information as text.
+                   The solver modes are explained in the :doc:`solver_guide`.
 
               )doc")
 
@@ -1078,15 +1100,26 @@ Access specified element with bounds checking.
            The function returns an integer code indicating the status:
            
            - 0: No GEM re-calculation needed
-           - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-           - 2: OK after GEM calculation with LPP AIA
-           - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-           - 4: Failure (no result) in GEM calculation with LPP AIA
-           - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-           - 6: OK after GEM calculation with SIA
-           - 7: Bad (not fully trustful) result after GEM calculation with SIA
-           - 8: Failure (no result) in GEM calculation with SIA
            - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+           For the other results, the code depends on the solver mode that ran (see ``setSolverMode``):
+
+           ======  ======  ====================================  ======================
+           Mode    OK      Bad (result not fully trustworthy)    Failure (no result)
+           ======  ======  ====================================  ======================
+           aia     2       3                                     4
+           sia     6       7                                     8
+           aop     11      12                                    13
+           sop     15      16                                    17
+           hop     23      24                                    25
+           shp     27      28                                    29
+           ======  ======  ====================================  ======================
+
+           OK: the result can be used. Bad: there is a result, but check it. The modes ``aop``, ``sop``, ``hop`` and
+           ``shp`` need GEMS3K built with Optima.
+           
+           This is a number, so ``print(ret)`` shows for example ``2``. ``ChemicalEngineDicts`` returns the same information as text.
+           The solver modes are explained in the :doc:`solver_guide`.
            
            .. note::
               Ensure the `b` vector is properly ordered and matches the number of elements

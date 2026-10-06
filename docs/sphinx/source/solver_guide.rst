@@ -12,6 +12,58 @@ how to fix the pH or Eh with Optima, how to check trace elements, and what to ex
    every other call below raises ``RuntimeError``. See :doc:`installation`.
 
 
+The GEMS system files
+---------------------
+
+xGEMS works on a chemical system exported from GEM-Selektor (or created by the GEMS3K code). How to create a
+modeling project in GEM-Selektor is described in the `GEM-Selektor documentation
+<https://gemshub.github.io/site/start/gemselektor/documentation/>`_. To export it, open a calculated equilibrium
+(a SysEq record), re-calculate it, and choose *Data -> Write GEMS3K files*. The export gives a small
+set of files that share a name, for example ``MyTask``:
+
+============================ =======================================================================================
+File                         What it holds
+============================ =======================================================================================
+``MyTask-dat.lst``           The list of the three files below. This is the file you give to xGEMS.
+``MyTask-dch.json``          The chemical system: elements, species and phases, and their thermodynamic data.
+``MyTask-ipm.json``          The solver settings (the ``pa_...`` entries) and the parameters of the mixing models.
+``MyTask-dbr-0-0000.json``   The bulk composition, temperature and pressure of a calculation. When it was written
+                             after a calculation, it also holds the equilibrium result.
+============================ =======================================================================================
+
+The files come as key-value text (``.dat``) or as JSON (``.json``). The first entry of ``-dat.lst`` tells which one:
+``-t`` for text and ``-j`` for JSON. The three files must be in the same folder as the ``-dat.lst`` file.
+
+There is also a ThermoFun option. With ``-f`` (JSON) or ``-o`` (text) as the first entry, the ``-dat.lst`` lists one
+more file, ``MyTask-fun.json``. The thermodynamic data of the substances then sits in that ThermoFun file, and
+the thermodynamic properties are calculated with ThermoFun at the temperature and pressure
+of each calculation, instead of being read from the tables in the ``-dch`` file. The kaolinite examples below use it.
+
+The solver settings live in the ``-ipm`` file; they are explained in :ref:`project-file-settings`.
+
+.. code-block:: python
+
+   from xgems import ChemicalEngine
+
+   engine = ChemicalEngine("MyTask-dat.lst")      # reads the three files
+   b = engine.elementAmounts()                    # the bulk composition from the -dbr file
+   print(engine.temperature(), engine.pressure())
+
+Ready-made example systems are in the `tests/gems3k <https://github.com/gemshub/xgems/tree/master/tests/gems3k>`_ folder of the xGEMS repository.
+The examples in this guide use ``CASHNK1/1TCi+CH-dat.lst``, a cement system (Ca, Si, N, H, O) with an aqueous
+solution, a gas, a C-S-H solid solution and portlandite. The folders are:
+
+* `CASHNK1 <https://github.com/gemshub/xgems/tree/master/tests/gems3k/CASHNK1>`_ and `CASHNK1-json <https://github.com/gemshub/xgems/tree/master/tests/gems3k/CASHNK1-json>`_: the system as JSON files (the two
+  folders hold the same files)
+* `CASHNK1-keyvalue <https://github.com/gemshub/xgems/tree/master/tests/gems3k/CASHNK1-keyvalue>`_: the same system as text files
+* `CASHNK1-T-json <https://github.com/gemshub/xgems/tree/master/tests/gems3k/CASHNK1-T-json>`_: JSON files with a finer temperature grid (1 K steps from 274.15 K,
+  instead of 5 K steps)
+* `Kaolinite-funjson <https://github.com/gemshub/xgems/tree/master/tests/gems3k/Kaolinite-funjson>`_, `Kaolinite-funkeyvalue <https://github.com/gemshub/xgems/tree/master/tests/gems3k/Kaolinite-funkeyvalue>`_ and
+  `Kaolinite-T-funjson <https://github.com/gemshub/xgems/tree/master/tests/gems3k/Kaolinite-T-funjson>`_: a second system, a kaolinite pH titration (``pHtitr``),
+  in the same formats
+
+Download a folder, and give the path of its ``-dat.lst`` file to ``ChemicalEngine``.
+
 Selecting a solver
 ------------------
 
@@ -160,6 +212,50 @@ The return value of ``equilibrate`` is the GEMS3K status code. The good ones are
 trustworthy, and the one after that (4, 8, 13, 17, 25 and 29) means failure.
 
 
+Looking at the results
+----------------------
+
+``print(engine)`` writes the whole equilibrium state as tables: temperature and pressure, the element amounts,
+the composition and properties of every phase, and the amount, activity and chemical potential of every species.
+It works on a ``ChemicalEngine`` and on a ``ChemicalEngineDicts``, after any solver mode:
+
+.. code-block:: python
+
+   engine.equilibrate(T, P, b)
+   print(engine)
+
+The first tables of the output for the example system look like this (the species table, with all species,
+follows):
+
+.. code-block:: text
+
+   ==============================================================================
+   Temperature[K]           Temperature[C]           Pressure[MPa]
+   ------------------------------------------------------------------------------
+   298.15                   25                       0.1
+   ==============================================================================
+   Element                  InputAmount[mol]
+   ------------------------------------------------------------------------------
+   Ca                       4.000000e-01
+   H                        1.118167e+02
+   Nit                      2.000000e+00
+   O                        5.671037e+01
+   Si                       2.000000e-01
+   Zz                       0.000000e+00
+   ==============================================================================
+   Property                 aq_gen                   gas_gen                  CSHK
+   ------------------------------------------------------------------------------
+   PhaseAmount[mol]         5.551774e+01             1.000350e+00             9.027775e-02
+   PhaseMass[kg]            1.000666e+00             2.802720e-02             3.356960e-02
+   PhaseVolume[m^3]         1.001646e-03             2.479840e-02             1.291614e-05
+   ...
+
+The return value of ``equilibrate`` is separate from this. ``ChemicalEngine.equilibrate`` returns the status as a
+number, so ``print(engine.equilibrate(T, P, b))`` prints ``2``. ``ChemicalEngineDicts.equilibrate`` returns it as
+text, so ``print(engine.equilibrate())`` prints ``OK after GEM calculation with LPP AIA``. The text names the solver
+that ran, for example ``OK after GEM calculation via Optima with cold initial approximation (AOP)``.
+
+
 Fixing the pH or Eh
 -------------------
 
@@ -255,6 +351,8 @@ The GEMS3K IPM solver writes diagnostics to ``ipmlog.txt`` in the working direct
 much (0 = nothing, 2 = also warnings, 3 = detailed trace). The log level of the xGEMS and GEMS3K messages on
 screen is set with ``update_loggers``.
 
+
+.. _project-file-settings:
 
 Settings in project files
 -------------------------
