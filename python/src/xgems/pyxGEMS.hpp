@@ -79,6 +79,15 @@ rejected with ``RuntimeError`` when the options are assigned to the engine.
   :param bool use_cout: If true, prints log messages to stdout.
   :param str logfile_name: The filename for a rotating log file. If empty, file logging is disabled.
   :param int log_level: Verbosity level for logging (trace=0, debug=1, info=2, warn=3, err=4, critical=5, off=6).
+
+  The log file is created when the first message is written to it, so no empty file is left behind when nothing is
+  logged (for example with ``log_level=6``). The warnings of the Optima solver (for example "Proceeding with
+  linear-search algorithm even though current Newton step is not a descent direction") are logged at warning level:
+  they appear on the console only if ``use_cout`` is true and ``log_level`` <= 3, go to the log file if one is given,
+  and are not logged at all when ``log_level`` >= 4.
+
+  Full description of every value, the loggers and the configuration file:
+  `GEMS3K logging documentation <https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md>`_.
   
   **Example:**
   

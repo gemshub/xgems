@@ -349,7 +349,8 @@ keep one that should not. Use ``"aop"`` there.
 
 The GEMS3K IPM solver writes diagnostics to ``ipmlog.txt`` in the working directory; ``pa_PSM`` controls how
 much (0 = nothing, 2 = also warnings, 3 = detailed trace). The log level of the xGEMS and GEMS3K messages on
-screen is set with ``update_loggers``.
+screen is set with ``update_loggers``; what each of its values means, and which loggers exist, is described in the
+`GEMS3K logging documentation <https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md>`_.
 
 
 .. _project-file-settings:
