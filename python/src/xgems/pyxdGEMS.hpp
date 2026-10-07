@@ -337,7 +337,7 @@ Uses current temperature (K), pressure (Pa), and element amounts (in mol) to com
 )doc")
             .def("equilibrate",
                  static_cast<std::string(ChemicalEngineMaps::*)(double, double, ValuesMap, double)>(&ChemicalEngineMaps::equilibrate),
-                 py::arg("T"), py::arg("P"), py::arg("b_dict"), py::arg("min_amount")=1e-15,
+                 py::arg("T"), py::arg("P"), py::arg("b_dict"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Computes the equilibrium state with explicit temperature, pressure, and bulk composition.
 
@@ -347,7 +347,7 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 :param float T: Temperature in Kelvin.
 :param float P: Pressure in Pascals.
 :param dict b_dict: Dictionary of element amounts in mol (elements not listed keep their current value).
-:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
+:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-11.
 :return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
     prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
@@ -361,7 +361,7 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 )doc")
             .def("equilibrate",
                  static_cast<std::string(ChemicalEngineMaps::*)(double, double, const Material&, double)>(&ChemicalEngineMaps::equilibrate),
-                 py::arg("T"), py::arg("P"), py::arg("material"), py::arg("min_amount")=1e-15,
+                 py::arg("T"), py::arg("P"), py::arg("material"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Computes the equilibrium state from temperature, pressure, and a Material recipe.
 
@@ -371,7 +371,7 @@ Convenience overload that extracts the element-amount dictionary from *material*
 :param float T: Temperature in Kelvin.
 :param float P: Pressure in Pascals.
 :param Material material: A Material object whose element amounts define the bulk composition.
-:param float min_amount: Minimum amount in mol for elements absent from the material, default 1e-15.
+:param float min_amount: Minimum amount in mol for elements absent from the material, default 1e-11.
 :return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
     prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
@@ -506,7 +506,7 @@ Mirrors ``ChemicalEngine.setPT(P, T)``. Also updates the T and P member variable
     ok = engine.setPT(101325.0, 298.15)
 )doc")
             .def("setB", &ChemicalEngineMaps::setB,
-                 py::arg("b_dict"), py::arg("min_amount")=1e-15,
+                 py::arg("b_dict"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Sets the amounts of elements from a dictionary.
 
@@ -515,7 +515,7 @@ Elements absent from ``b_dict`` are left at their current value (or set to ``min
 if they fall below it).
 
 :param dict b_dict: Dictionary of element amounts in mol.
-:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
+:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-11.
 
 **Example:**
 
@@ -673,11 +673,11 @@ Read-only property: the number of species in the system.
 
     print("nspecies", engine.nspecies)
 )doc")
-            .def("clear", &ChemicalEngineMaps::clear, py::arg("min_amount")=1e-15,
+            .def("clear", &ChemicalEngineMaps::clear, py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Clear the amounts of elements (set the default amount for all components).
 
-:param float min_amount: Min amount of element in mol, default 1e-15.
+:param float min_amount: Min amount of element in mol, default 1e-11.
 
 **Example:**
 
@@ -1221,12 +1221,12 @@ Read-only property: the dictionary of the amounts of each element in the aqueous
     print("aq_elements_moles", engine.aq_elements_moles)
 )doc")
             .def("set_bulk_composition", &ChemicalEngineMaps::set_bulk_composition,
-             py::arg("b_input"), py::arg("min_amount")=1e-15,
+             py::arg("b_input"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Sets the amounts of elements (vector b).
 
 :param dict b_input: Dictionary of elements amounts in mol.
-:param float min_amount: Min amount of element in mol, default 1e-15.
+:param float min_amount: Min amount of element in mol, default 1e-11.
 
 **Example:**
 
@@ -1662,7 +1662,7 @@ Add multiple elements using user defined formula.
     engine.add_amt_from_formula({'K': 2, 'O': 1}, 4.108e-3, "kg")
 )doc")
             .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula,
-             py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=1e-15,
+             py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Returns a bulk vector b from user-defined formula (as dict {"H":2,"O":1})
 and amount of the formula object in units of "moles" or "kg".
@@ -1670,7 +1670,7 @@ and amount of the formula object in units of "moles" or "kg".
 :param dict formula: User defined formula.
 :param float val: Amount of the formula object in units, default 1.
 :param str units: Units of amount ("moles", "kg"), default "moles".
-:param float min_amount: Min amount of element in mol, default 1e-15.
+:param float min_amount: Min amount of element in mol, default 1e-11.
 :return list[float]: Vector of element amounts in mol.
 
 **Example:**

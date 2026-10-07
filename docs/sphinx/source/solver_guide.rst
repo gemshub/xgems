@@ -291,6 +291,50 @@ Things to know:
   of a system without a redox couple.
 
 
+Elements that are not in the recipe
+-----------------------------------
+
+Every element of the chemical system needs an amount larger than zero. An element that the bulk composition does
+not contain is given a tiny placeholder amount, ``min_amount``, whose **default is 1e-11 mol** (it was 1e-15 mol
+before xGEMS 2.2). It applies to ``Material`` (``material.min_amount``) and to the ``min_amount`` argument of
+``equilibrate``, ``setB``, ``clear``, ``set_bulk_composition`` and ``get_b_from_formula`` of the dictionary interface
+(``ChemicalEngineDicts``). The charge element ``Zz`` is always 0. In C++ the default is
+``xGEMS::default_min_element_amount``.
+
+.. code-block:: python
+
+   mat = Material(engine, "recipe")
+   mat.add("H2O", 1.0, "kg")
+   mat.add({"Ca": 1e-3, "Si": 1e-3, "O": 3e-3})     # N and the other elements get 1e-11 mol
+   mat.min_amount = 1e-9                            # use another placeholder amount
+   mat.min_amount = 0.0                             # no placeholder at all
+
+**Why 1e-11 and not less.** The Optima modes (``aop``, ``sop``, ``hop``, ``shp``) keep every species above a small
+floor amount. An element whose total amount is smaller than what its species must hold at that floor cannot satisfy its
+own mass balance, and GEMS3K repairs the balance after the solve. With 1e-15 mol that happened for every placeholder
+element, and the log filled with two warnings:
+
+* ``Optima: N element(s) have less material than the solver's floor amount allows ...`` before the solve,
+  naming the elements and the amount that would be enough;
+* ``Mass balance is still off after repair (worst element X, ...x its tolerance)`` after it.
+
+Both come from GEMS3K (``update_loggers`` decides where they go, see the
+`GEMS3K logging documentation <https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md>`_). They are
+warnings, not errors: on the copper Pourbaix system the computed pH and Eh changed by less than 1e-12 when the
+placeholders were raised above the floor, and one of 1500 grid points changed phase (on a phase boundary). But the repair costs time, and a few solves per thousand fail: in one comparison on a 1500-point grid,
+1498 points were on target with 1e-15 mol and 1500 with 1e-9 mol, and the run took about 40 % less time.
+
+**If the warnings still appear.** 1e-11 mol is above the floor requirement of the first warning for an element with up to
+roughly a hundred species in an aqueous system of about 1 kg of water (each species must hold about 2e-14 mol there); it
+removed both warnings in the copper system at 1e-6 M and 1 M. Some systems need more: a nitrogen placeholder in a small calcium-silicate recipe still gave the mass-balance warning at 1e-11 mol and 1e-9 mol and was
+clean at 1e-7 mol. The first warning states the amount to use; set ``min_amount`` to it, or to about ten times the amount of
+the element you actually care about being exact. Raise it only as far as needed: a placeholder is real material, so 1e-7 mol of an element in
+1 kg of water is a 0.1 micromolal concentration, which matters for trace chemistry.
+
+**Lower or exact values.** For trace chemistry where even 1e-11 mol of an extra element matters (for example ppb levels
+of a radionuclide), put the element in the recipe explicitly, or set ``min_amount`` back to 1e-15 or 0. The native modes
+(``aia``, ``sia``) do not use the floor, so the first warning never appears with them.
+
 Trace elements
 --------------
 

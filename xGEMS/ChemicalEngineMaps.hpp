@@ -125,7 +125,7 @@ public:
      * @param T_new Temperature in Kelvin (K).
      * @param P_new Pressure in Pascals (Pa).
      * @param b_dict (ValuesMap) Dictionary of element amounts in mol.
-     * @param min_amount (double) Minimum amount in mol for elements not in b_dict, default 1e-15.
+     * @param min_amount (double) Minimum amount in mol for elements not in b_dict, default 1e-11 (xGEMS::default_min_element_amount).
      * @return (std::string) Status string of the equilibrium solver.
      *
      * @code
@@ -133,7 +133,7 @@ public:
      * std::string retcode = engine.equilibrate(298.15, 101325.0, b);
      * @endcode
      */
-    auto equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount=1e-15) -> std::string;
+    auto equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount=default_min_element_amount) -> std::string;
 
     /**
      * @brief Computes the equilibrium state from a Material recipe object.
@@ -144,7 +144,7 @@ public:
      * @param T_new Temperature in Kelvin (K).
      * @param P_new Pressure in Pascals (Pa).
      * @param material A Material object whose bMap() defines the bulk composition.
-     * @param min_amount Minimum amount in mol for elements absent from the material, default 1e-15.
+     * @param min_amount Minimum amount in mol for elements absent from the material, default 1e-11 (xGEMS::default_min_element_amount).
      * @return (std::string) Status string of the equilibrium solver.
      *
      * @code
@@ -153,7 +153,7 @@ public:
      * std::string retcode = engine.equilibrate(298.15, 101325.0, rock);
      * @endcode
      */
-    auto equilibrate(double T_new, double P_new, const Material& material, double min_amount=1e-15) -> std::string;
+    auto equilibrate(double T_new, double P_new, const Material& material, double min_amount=default_min_element_amount) -> std::string;
 
     /**
      * @brief Re-equilibrates the system using the current internal state (T, P, b).
@@ -232,13 +232,13 @@ public:
      * Elements absent from b_dict are left unchanged (or set to min_amount if below it).
      *
      * @param b_input (ValuesMap) Dictionary of element amounts in mol.
-     * @param min_amount (double) Minimum amount in mol for elements not provided, default 1e-15.
+     * @param min_amount (double) Minimum amount in mol for elements not provided, default 1e-11 (xGEMS::default_min_element_amount).
      *
      * @code
      * engine.setB({ {"Ca", 0.001}, {"Cl", 0.002}, {"H", 110.0}, {"O", 55.0}, {"Zz", 0.0} });
      * @endcode
      */
-    auto setB(ValuesMap b_input, double min_amount=1e-15) -> void;
+    auto setB(ValuesMap b_input, double min_amount=default_min_element_amount) -> void;
 
     /**
      * @brief Returns the current temperature of the system after the last equilibration.
@@ -337,13 +337,13 @@ public:
     /**
      * @brief Clear the amounts of elements (set the default amount for all components).
      *
-     * @param min_amount (double) The minimum amount of element in mole, default 1e-15.
+     * @param min_amount (double) The minimum amount of element in mole, default 1e-11 (xGEMS::default_min_element_amount).
      *
      * @code
-     * engine.clear(1e-15);
+     * engine.clear();
      * @endcode
      */
-    auto clear(double min_amount=1e-15) -> void;
+    auto clear(double min_amount=default_min_element_amount) -> void;
 
     /**
      * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
@@ -362,7 +362,7 @@ public:
      * @brief Sets the amounts of elements (vector b).
      *
      * @param b_input (ValuesMap) Dictionary of elements amounts in mol.
-     * @param min_amount (double) min amount of element in mol, default 1e-15.
+     * @param min_amount (double) min amount of element in mol, default 1e-11 (xGEMS::default_min_element_amount).
      *
      * @code
      * xGEMS::ValuesMap  bulk_composition = { {"C", 1e-08}, {"Ca", 1e-08}, {"Cl", 0.002},
@@ -371,7 +371,7 @@ public:
      * engine.set_bulk_composition(bulk_composition);
      * @endcode
      */
-    auto set_bulk_composition(ValuesMap b_input, double min_amount=1e-15) -> void;
+    auto set_bulk_composition(ValuesMap b_input, double min_amount=default_min_element_amount) -> void;
 
     /**
      * @brief Removes bulk elemental aqueous solution composition from vector b.
@@ -1530,14 +1530,14 @@ public:
      * @param formula (ValuesMap) User defined formula.
      * @param val (double) Amount of the formula [object] in units, default 1.
      * @param units (std::string) Units of amount ("moles", "kg"), default "moles".
-     * @param min_amount (double) min amount of element in mol, default 1e-15.
+     * @param min_amount (double) min amount of element in mol, default 1e-11 (xGEMS::default_min_element_amount).
      * @return (VectorConstRef) Vector of element amounts in mol.
      *
      * @code
      * auto vect = engine.get_b_from_formula( {{"H",2},{"O",1}}, 0.1, "kg");
      * @endcode
      */
-    auto get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles", double min_amount=1e-15) -> Vector;
+    auto get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles", double min_amount=default_min_element_amount) -> Vector;
 
     /**
      * @brief Sets an lower bound for multiple species.

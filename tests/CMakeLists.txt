@@ -3,6 +3,7 @@ file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test1.py" DESTINATION "${CMAKE_CURRENT_BI
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_systems.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_solver_modes.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_logging.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_min_amount.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
 
 enable_testing()
 
@@ -14,3 +15,6 @@ COMMAND ${Python3_EXECUTABLE} "-m" "unittest" "-v" test_solver_modes.py)
 
 add_test(NAME test_logging
 COMMAND ${Python3_EXECUTABLE} "-m" "unittest" "-v" test_logging.py)
+
+add_test(NAME test_min_amount
+COMMAND ${Python3_EXECUTABLE} "-m" "unittest" "-v" test_min_amount.py)

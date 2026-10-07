@@ -46,6 +46,18 @@ namespace xGEMS
 class Material;
 
   /**
+   * @brief Default minimum amount (mol) given to an element that the bulk composition does not contain.
+   *
+   * An element of the chemical system cannot have amount zero in the solver, so absent elements are set to a tiny
+   * amount. The Optima solver modes keep every species above a floor amount, and an element whose total amount is
+   * smaller than what its species must hold at that floor has its mass balance repaired afterwards (GEMS3K then warns
+   * "N element(s) have less material than the solver's floor amount allows"). 1e-11 mol is above that for an element
+   * with up to about a hundred species in an aqueous system of about 1 kg of water, and far below anything chemically
+   * relevant. It was 1e-15 mol before. Pass `min_amount` (or set `Material::min_amount`) to use another value.
+   */
+  constexpr double default_min_element_amount = 1.0e-11;
+
+  /**
    * @brief Updates logger settings.
    *
    * Configures logging behavior for the ChemicalEngine.
