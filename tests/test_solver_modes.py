@@ -64,6 +64,14 @@ class TestSolverModes(unittest.TestCase):
                 self.assertEqual(self.solve(mode), OK[mode])
                 self.assertEqual(self.engine.solverMode(), mode)
 
+    def test_converged_in_every_mode(self):
+        """converged() is True after a good result in any mode, not only the IPM ones."""
+        modes = ("aia", "sia", "aop", "sop", "hop", "shp") if OPTIMA else ("aia", "sia")
+        for mode in modes:
+            with self.subTest(mode=mode):
+                self.assertEqual(self.solve(mode), OK[mode])
+                self.assertTrue(self.engine.converged())
+
     @needs_optima
     def test_modes_agree(self):
         """Every mode finds the same equilibrium of this system."""

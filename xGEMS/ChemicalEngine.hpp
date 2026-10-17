@@ -1181,7 +1181,7 @@ class Material;
     /**
      * @brief Checks if the equilibrium calculation converged.
      *
-     * @return (bool) True if converged, false otherwise.
+     * @return (bool) True if the last calculation ended with a good result in any solver mode, false otherwise.
      *
      * @code
      * // Example: Check convergence status.

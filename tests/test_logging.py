@@ -7,8 +7,8 @@
 #
 # Each case runs in a fresh Python process in an empty directory, because the loggers are process-wide and the
 # files are created in the current directory. The Optima cases need GEMS3K built with Optima and are skipped
-# without it. The trigger is a pH target (25) that no equilibrium can reach, which makes the Optima line search
-# warn that its Newton step is not a descent direction.
+# without it. The trigger is a warm Optima calculation (sop) with a pH target of 25, which makes the Optima line
+# search warn that its Newton step is not a descent direction.
 
 import os
 import subprocess
@@ -35,10 +35,17 @@ T, P, b = engine.temperature(), engine.pressure(), np.array(engine.elementAmount
 
 NORMAL_SOLVE = "engine.equilibrate(T, P, b.copy())\n"
 UNREACHABLE_PH = """
-engine.setSolverMode("aop")
+engine.equilibrate(T, P, b.copy())
+engine.setSolverMode("sop")
 engine.setpHTarget(25.0)
 engine.equilibrate(T, P, b.copy())
 """
+
+
+def console(out, err):
+    """What was printed, without the line a modified Optima build prints when it is loaded (not a log message)."""
+    return "".join(line for line in (out + err).splitlines(keepends=True)
+                   if not line.startswith("[Optima] LOCAL MODIFIED BUILD"))
 
 
 def run(code):
@@ -78,25 +85,25 @@ class TestOptimaWarnings(unittest.TestCase):
 
     def test_warning_is_silent_when_logging_is_off(self):
         out, err, files, contents = run('xgems.update_loggers(False, "", 6)\n' + UNREACHABLE_PH)
-        self.assertNotIn("OPTIMA WARNING", out + err)
-        self.assertNotIn("Optima:", out + err)
+        self.assertNotIn("OPTIMA WARNING", console(out, err))
+        self.assertNotIn("Optima:", console(out, err))
         self.assertEqual(files, [])
 
     def test_warning_is_silent_above_warning_level(self):
         # level 4 = error: warnings are not logged
         out, err, files, contents = run('xgems.update_loggers(True, "log.txt", 4)\n' + UNREACHABLE_PH)
-        self.assertNotIn("Optima:", out + err)
+        self.assertNotIn("Optima:", console(out, err))
         self.assertNotIn("log.txt", files)
 
     def test_warning_reaches_the_console_when_asked(self):
         out, err, files, contents = run('xgems.update_loggers(True, "", 3)\n' + UNREACHABLE_PH)
-        self.assertIn("Optima:", out + err)
-        self.assertIn("not a descent direction", out + err)
-        self.assertNotIn("***OPTIMA WARNING***", out + err)   # no longer printed directly by Optima
+        self.assertIn("Optima:", console(out, err))
+        self.assertIn("not a descent direction", console(out, err))
+        self.assertNotIn("***OPTIMA WARNING***", console(out, err))   # no longer printed directly by Optima
 
     def test_warning_goes_to_the_log_file_not_the_console(self):
         out, err, files, contents = run('xgems.update_loggers(False, "log.txt", 3)\n' + UNREACHABLE_PH)
-        self.assertEqual((out + err).strip(), "")              # nothing on the console
+        self.assertEqual(console(out, err).strip(), "")              # nothing on the console
         self.assertIn("log.txt", files)
         self.assertIn("Optima:", contents["log.txt"])
         self.assertIn("not a descent direction", contents["log.txt"])

@@ -907,7 +907,10 @@ namespace xGEMS
     auto ChemicalEngine::converged() const -> bool
     {
         const auto status = pimpl->node->pCNode()->NodeStatusCH;
-        return status == OK_GEM_AIA || status == OK_GEM_SIA;
+        // a good result in any solver mode
+        return status == OK_GEM_AIA || status == OK_GEM_SIA
+            || status == OK_GEM_AOP || status == OK_GEM_SOP || status == OK_GEM_ROP
+            || status == OK_GEM_HOP || status == OK_GEM_SHP;
     }
 
     auto ChemicalEngine::numIterations() const -> Index

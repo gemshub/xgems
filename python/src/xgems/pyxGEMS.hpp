@@ -1163,7 +1163,7 @@ forwards to ``equilibrate(T, P, b)``.
              R"doc(
             Checks if the equilibrium computation has converged.
             
-            :return bool: True if the computation has converged, False otherwise.
+            :return bool: True if the last calculation ended with a good result in any solver mode, False otherwise.
             
             **Example:**
             

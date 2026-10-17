@@ -387,6 +387,10 @@ system by an interior-point method (IPM) and has these stages:
 When AIA does not converge, GEMS3K retries automatically, from a slightly changed composition
 (``pa_ColdRetryNudges``) and then from scratch, before it reports a failure.
 
+If a solid phase is left out or in a trace amount but still tends to form, Optima finishes the IPM answer, and the
+result is kept only if it is better (``pa_NativeOptimaFinish``). If the IPM stops at its iteration limit, Optima finishes
+it from where it stopped. Without Optima, GEMS3K writes a warning instead.
+
 The IPM solver is the fastest on almost every system. Its weak point is strongly non-ideal systems where
 several solid solutions or melts compete: it can then leave out a phase that should be present, or
 keep one that should not. Use ``"aop"`` there.
@@ -450,7 +454,7 @@ These settings are in most project files already.
    * - ``pa_IIM``
      - 7000
      - Maximum number of iterations of the main calculation before it gives up. Raise it for large or difficult systems that run out of iterations.
-     - Up to 9999.
+     - Up to 32767; a larger value is reduced to 32767 with a warning.
    * - ``pa_DP``
      - 130
      - Maximum number of iterations of the step that makes the element totals add up. Raise it if that step runs out of iterations on a difficult system.
@@ -598,6 +602,10 @@ Settings added in GEMS3K 5.0, which older project files do not contain:
      - 0 (off)
      - Limits how much the starting guess may disturb the element totals, as a fraction of each element's amount. Systems with elements present only in traces.
      - A positive fraction = on.
+   * - ``pa_NativeOptimaFinish``
+     - 500
+     - Finishes the IPM answer with Optima when a solid still tends to form, or when the IPM stops at its iteration limit (see above); the value is the most Optima iterations allowed. Leave on.
+     - 0 = off.
    * - ``pa_DeterminacyWarn``
      - 0.01
      - Warns when the amount of a phase in the answer is fixed by the energy only to worse than this relative uncertainty, i.e. when small amounts are not reliable. Leave on; it tells you when reported small amounts should not be relied on.
@@ -615,6 +623,10 @@ any effect: ``pa_LpDualFillout``, ``pa_OptimaLSWindow``, ``pa_IpmLoopTweaks``, `
 
 Optima solver settings
 ~~~~~~~~~~~~~~~~~~~~~~
+
+A calculation from scratch (``aop``) first tries a quick solve; if that fails, the full solve runs. A solve
+that stops making progress is stopped early and retried, and a failed warm calculation (``sop``) is retried
+from scratch.
 
 The ones most often adjusted:
 
@@ -646,8 +658,20 @@ The ones most often adjusted:
    * - ``pa_OptimaZeroAbsent``
      - 2
      - How absent species are reported. Use 1 for exact zeros for absent phases.
+   * - ``pa_OptimaFastFirst``
+     - 60
+     - Iterations allowed for the quick first try of ``aop``. 0 = no quick try.
+   * - ``pa_OptimaStallWindow``
+     - 200
+     - Stops a solve that has not improved for this many iterations, so a retry starts sooner. Raise it (e.g. 500) for a system that converges slowly.
+   * - ``pa_OptimaDryOut``
+     - 0 (off)
+     - When the water runs out, solve the solids without the water phase. Only for systems where the water is used up (e.g. cement hydration); set it in that project's file.
 
-The full list, including the fine-tuning settings, is in the GEMS3K documentation.
+The full list is in the GEMS3K
+`solver settings guide <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-OPTIONS-GUIDE.md>`_;
+the order of every step and retry is in the
+`solver path guide <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-PATH-GRAPH.md>`_.
 
 
 Known limitations
@@ -658,7 +682,8 @@ Known limitations
 * **Some strongly non-ideal systems** can still be difficult to solve.
 * **Very little water.** Close to the point where water runs out, ``aop`` and ``sop`` can fail. Use ``aia`` or
   ``hop`` there. Slightly further from that point, they work if the project sets ``pa_OptimaAcceptRepair = 1`` and
-  ``pa_GAS = 0.002``.
+  ``pa_GAS = 0.002``. Where the water is used up completely, set ``pa_OptimaDryOut = 1``; the answer then has
+  no water phase and its pH is reported as 0.
 * **Redox not fixed by the system.** Without a redox couple the energy and amounts are well defined, but
   Eh is not, and it can differ between runs and modes. Compare solvers on energy and phases, not Eh.
 * **No free water solution** (very dry systems): pH, Eh and ionic strength are not meaningful and can
@@ -667,6 +692,7 @@ Known limitations
   the main elements are exact.
 * **GEMS3K IPM solver iteration counts** vary on many systems with tiny input changes. The answer does not.
 * **Trace phases:** the GEMS3K IPM solver can leave out a slightly supersaturated phase that Optima finds.
+  With Optima built in, GEMS3K finishes such answers with Optima (``pa_NativeOptimaFinish``).
 * **Warm-started IPM (``sia``)** along a sequence can keep phases that are no longer stable when a phase
   boundary is crossed.
 * **Large systems** can cost tens of seconds per point in the Optima modes, and some fail where the GEMS3K IPM

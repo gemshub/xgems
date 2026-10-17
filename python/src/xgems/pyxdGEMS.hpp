@@ -835,7 +835,7 @@ Dictionary keys: "total", "Ca", "Mg".
              R"doc(
 Read-only property: whether the last equilibrium computation converged.
 
-:return bool: True if the last equilibration converged.
+:return bool: True if the last equilibration ended with a good result in any solver mode.
 
 **Example:**
 
