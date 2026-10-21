@@ -188,7 +188,7 @@ GEMS3K 5 added these settings. Older project files do not contain them.
      - 0 = no warning.
    * - ``pa_FailRescue``
      - 2 (on)
-     - Both solvers. Tries a failed or BAD call again in steps. Keep 2 for transport codes. A call that no step can save stops after ``pa_RescueBudget`` (100000) iterations. See :ref:`batch-and-transport`.
+     - Both solvers. Tries a failed or BAD call again in steps. Keep 2 for transport codes. A call that no step can save stops soon after ``pa_RescueBudget`` (100000) iterations. See :ref:`batch-and-transport`.
      - 0 = off. 1 = steps 1 to 5 only.
 
 
