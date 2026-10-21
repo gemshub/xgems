@@ -183,6 +183,22 @@ class TestSolverModes(unittest.TestCase):
         self.assertGreater(self.engine.pH(), 12.0)
         self.assertEqual(self.engine.controlConditionTitrant("pH"), 0.0)
 
+    def test_rescue_step_is_zero_on_a_good_call(self):
+        """A call that succeeds by itself needs no rescue step."""
+        for mode in ["aia", "sia"] + (["aop", "sop", "hop", "shp"] if OPTIMA else []):
+            with self.subTest(mode=mode):
+                self.assertEqual(self.solve(mode), OK[mode])
+                self.assertEqual(self.engine.rescueStep(), 0)
+
+    @needs_optima
+    def test_present_phases_rel_same_in_both_solvers(self):
+        """The share rule shows the same phases for the GEMS3K IPM solver and Optima."""
+        self.solve("aia")
+        ipm = sorted(self.engine.presentPhasesRel())
+        self.solve("aop")
+        self.assertEqual(sorted(self.engine.presentPhasesRel()), ipm)
+        self.assertTrue(ipm)
+
     def test_trace_regimes(self):
         self.solve("aia")
         regimes = self.engine.traceRegimes(of_interest=["Ca"])
@@ -203,6 +219,11 @@ class TestSolverModesDicts(unittest.TestCase):
                 self.engine.setSolverMode(mode)
                 self.assertEqual(self.engine.solverMode(), mode)
                 self.assertTrue(self.engine.equilibrate().startswith("OK"))
+
+    def test_rescue_step_and_present_phases_rel(self):
+        self.assertTrue(self.engine.equilibrate().startswith("OK"))
+        self.assertEqual(self.engine.rescue_step, 0)
+        self.assertTrue(self.engine.present_phases_rel())
 
     def test_built_with_optima_matches_engine(self):
         self.assertEqual(ChemicalEngineDicts.builtWithOptima(), OPTIMA)

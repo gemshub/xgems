@@ -854,6 +854,8 @@ auto ChemicalEngineMaps::Eh() -> double { return gem.Eh(); }
 
 auto ChemicalEngineMaps::converged() -> bool { return gem.converged(); }
 
+auto ChemicalEngineMaps::rescue_step() -> int { return static_cast<int>(gem.rescueStep()); }
+
 auto ChemicalEngineMaps::num_iterations() -> int { return static_cast<int>(gem.numIterations()); }
 
 auto ChemicalEngineMaps::elapsed_time() -> double { return gem.elapsedTime(); }
@@ -1010,6 +1012,11 @@ auto ChemicalEngineMaps::phase_is_present(const std::string& phase_name, double 
 auto ChemicalEngineMaps::present_phases(double threshold) -> std::vector<std::string>
 {
     return gem.presentPhases(threshold);
+}
+
+auto ChemicalEngineMaps::present_phases_rel(double rel_floor) -> std::vector<std::string>
+{
+    return gem.presentPhasesRel(rel_floor);
 }
 
 auto ChemicalEngineMaps::present_minerals(double threshold) -> std::vector<std::string>

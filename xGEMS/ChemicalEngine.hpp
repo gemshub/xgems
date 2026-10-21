@@ -48,12 +48,14 @@ class Material;
   /**
    * @brief Default minimum amount (mol) given to an element that the bulk composition does not contain.
    *
-   * An element of the chemical system cannot have amount zero in the solver, so absent elements are set to a tiny
-   * amount. The Optima solver modes keep every species above a floor amount, and an element whose total amount is
-   * smaller than what its species must hold at that floor has its mass balance repaired afterwards (GEMS3K then warns
-   * "N element(s) have less material than the solver's floor amount allows"). 1e-11 mol is above that for an element
-   * with up to about a hundred species in an aqueous system of about 1 kg of water, and far below anything chemically
-   * relevant. It was 1e-15 mol before. Pass `min_amount` (or set `Material::min_amount`) to use another value.
+   * Each element of the chemical system needs an amount larger than zero in the solver.
+   * Thus xGEMS gives a small amount to each element that is not in the bulk composition.
+   *
+   * The Optima solver modes keep each species above a floor amount.
+   * If the amount of an element is smaller than its species need at this floor, GEMS3K repairs the mass balance
+   * after the solve. GEMS3K then writes the warning "N element(s) have less material than the solver's floor amount allows".
+   * The default 1e-11 mol is large enough for most systems.
+   * Use `min_amount` (or `Material::min_amount`) to set another value.
    */
   constexpr double default_min_element_amount = 1.0e-11;
 
@@ -66,13 +68,15 @@ class Material;
    * @param logfile_name The filename for a rotating log file. If empty, file logging is disabled.
    * @param log_level Verbosity level for logging (trace = 0, debug = 1, info = 2, warn = 3, err = 4, critical = 5, off = 6 ).
    *
-   * The log file is created when the first message is written to it, so no empty file is left behind when nothing is
-   * logged (for example with `log_level` = 6). The warnings of the Optima solver (for example "Proceeding with
-   * linear-search algorithm even though current Newton step is not a descent direction") are logged at warning
-   * level: they appear on the console only if `use_cout` is true and `log_level` <= 3, go to the log file if one is
-   * given, and are not logged at all when `log_level` >= 4.
+   * xGEMS creates the log file when the first message is written to it.
+   * Thus no empty file stays when nothing is logged (for example with `log_level` = 6).
    *
-   * Full description of every value, the loggers and the configuration file:
+   * The Optima solver writes its warnings at warning level.
+   * An example is "Proceeding with linear-search algorithm even though current Newton step is not a descent direction".
+   * These warnings go to the console if `use_cout` is true and `log_level` <= 3.
+   * They go to the log file if you give a file name. With `log_level` >= 4, xGEMS does not log them.
+   *
+   * The GEMS3K logging documentation describes each value, the loggers and the configuration file:
    * https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md
    *
    * @code
@@ -103,10 +107,10 @@ class Material;
     bool warmstart = false;
     bool print_zero_amounts = false; // print zero amounts in the output
 
-    /// Solver mode: "aia" (GEMS3K IPM, cold start), "sia" (GEMS3K IPM, warm start),
-    /// "aop" (Optima, cold start), "sop" (Optima, warm start), "hop" (IPM then Optima
-    /// check, cold start) or "shp" (the same, warm start). When `warmstart` is set,
-    /// "aia" runs as "sia", "aop" as "sop" and "hop" as "shp".
+    /// Solver mode. "aia": GEMS3K IPM solver, cold start. "sia": GEMS3K IPM solver, warm start.
+    /// "aop": Optima solver, cold start. "sop": Optima solver, warm start.
+    /// "hop": IPM solver, then an Optima check, cold start. "shp": the same, warm start.
+    /// If `warmstart` is set, "aia" runs as "sia", "aop" as "sop" and "hop" as "shp".
     std::string solver_mode = "aia";
   };
 
@@ -807,21 +811,24 @@ class Material;
      */
     auto setSolverMode(const std::string& mode) -> void;
 
-    /// The solver mode that runs: "aia", "sia", "aop", "sop", "hop" or "shp" (a set `warmstart` turns "aia" into "sia", "aop" into "sop" and "hop" into "shp").
+    /// Returns the solver mode that runs: "aia", "sia", "aop", "sop", "hop" or "shp".
+    /// A set `warmstart` changes "aia" to "sia", "aop" to "sop" and "hop" to "shp".
     auto solverMode() const -> std::string;
 
     /// Whether the linked GEMS3K was built with the Optima solver.
     static auto builtWithOptima() -> bool;
 
     /**
-     * @brief Constrains pH; the titrant amount is solved within the equilibrium calculation.
+     * @brief Fixes the pH. The solver finds the titrant amount in the equilibrium calculation.
      *
-     * Applies to the Optima modes ("aop", "sop", "hop" and "shp") and persists until clearControlConditions().
-     * The "aia" and "sia" modes ignore it without an error: the pH is not constrained and
-     * controlConditionTitrant() returns 0.
-     * The titrant is added to the engine's own bulk composition, which elementAmounts()
-     * returns as a live view: copy the original amounts first if the next calculation
-     * must start from them. The amount added is given by controlConditionTitrant().
+     * The target applies to the Optima modes ("aop", "sop", "hop" and "shp"). It stays active until clearControlConditions().
+     * The modes "aia" and "sia" ignore the target and do not raise an error.
+     * Then the pH is free and controlConditionTitrant() returns 0.
+     *
+     * The titrant becomes part of the bulk composition of the engine.
+     * elementAmounts() returns a live view of this composition.
+     * Copy the original amounts first if the next calculation must start from them.
+     * controlConditionTitrant() gives the amount added.
      *
      * @param pH_target Requested pH.
      * @param tolerance Tolerance on the achieved pH; negative uses the default.
@@ -838,8 +845,8 @@ class Material;
     /// Removes every registered pH/Eh control condition.
     auto clearControlConditions() -> void;
 
-    /// Titrant amount (mol) solved for the "pH" or "Eh" condition in the last
-    /// equilibration; 0 if the condition was not active.
+    /// Returns the titrant amount (mol) for the "pH" or "Eh" condition in the last equilibration.
+    /// The value is 0 if the condition was not active.
     auto controlConditionTitrant(const std::string& name) const -> double;
 
     /**
@@ -1202,6 +1209,28 @@ class Material;
      * @endcode
      */
     auto numIterations() const -> Index;
+
+    /**
+     * @brief Returns the rescue step that made the last result.
+     *
+     * GEMS3K tries a failed call again in steps. The setting `pa_FailRescue` in the `-ipm` file controls this.
+     * - 0: the call itself
+     * - 1: a warm restart
+     * - 2: a composition that changes by a very small amount
+     * - 3: a walk from the previous result
+     * - 4: looser settings
+     * - 5: the other solver
+     * - 6: the best balanced attempt. Its status is always BAD.
+     *
+     * @return (Index) The rescue step, from 0 to 6.
+     *
+     * @code
+     * engine.reequilibrate();
+     * if (engine.rescueStep() == 6)
+     *     std::cerr << "no good result; the best balanced attempt was returned" << std::endl;
+     * @endcode
+     */
+    auto rescueStep() const -> Index;
 
     /**
      * @brief Returns the elapsed time of the equilibrium computation.
@@ -2683,6 +2712,45 @@ class Material;
      * @endcode
      */
     auto presentPhases(double threshold = 1e-12) const -> std::vector<std::string>;
+
+    /**
+     * @brief Returns true if a phase holds more than a share of the total amount of all phases.
+     *
+     * This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+     * The Optima solver keeps a phase that does not form at a very small floor amount.
+     * A fixed limit in mol can count this phase as present.
+     *
+     * @param iphase (Index) Phase index.
+     * @param relFloor (double) Share of the total phase amount, default 1e-9.
+     * @return (bool) True if the phase is present.
+     *
+     * @code
+     * bool calcite_present = engine.phasePresentRel(engine.indexPhase("Calcite"));
+     * @endcode
+     */
+    auto phasePresentRel(Index iphase, double relFloor = 1e-9) const -> bool;
+
+    /**
+     * @brief Returns true if a phase identified by name is present under the rule of phasePresentRel().
+     *
+     * @param phase (std::string) Phase name.
+     * @param relFloor (double) Share of the total phase amount, default 1e-9.
+     * @return (bool) True if the phase is present.
+     */
+    auto phasePresentRel(std::string phase, double relFloor = 1e-9) const -> bool;
+
+    /**
+     * @brief Returns the names of all phases that are present under the rule of phasePresentRel().
+     *
+     * @param relFloor (double) Share of the total phase amount, default 1e-9.
+     * @return (std::vector<std::string>) Names of present phases.
+     *
+     * @code
+     * for (auto& name : engine.presentPhasesRel())
+     *     std::cout << name << std::endl;
+     * @endcode
+     */
+    auto presentPhasesRel(double relFloor = 1e-9) const -> std::vector<std::string>;
 
     // -----------------------------------------------------------------------
     // Reaction thermodynamics
