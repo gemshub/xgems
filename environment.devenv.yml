@@ -17,6 +17,6 @@ dependencies:
   - pybind11
   - nlohmann_json
   - numpy
-  - eigen=3.4.0
+  - eigen>=3.4.0
   - gems3k>=4.5.2
  
