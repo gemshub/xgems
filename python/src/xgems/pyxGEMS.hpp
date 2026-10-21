@@ -80,13 +80,15 @@ rejected with ``RuntimeError`` when the options are assigned to the engine.
   :param str logfile_name: The filename for a rotating log file. If empty, file logging is disabled.
   :param int log_level: Verbosity level for logging (trace=0, debug=1, info=2, warn=3, err=4, critical=5, off=6).
 
-  The log file is created when the first message is written to it, so no empty file is left behind when nothing is
-  logged (for example with ``log_level=6``). The warnings of the Optima solver (for example "Proceeding with
-  linear-search algorithm even though current Newton step is not a descent direction") are logged at warning level:
-  they appear on the console only if ``use_cout`` is true and ``log_level`` <= 3, go to the log file if one is given,
-  and are not logged at all when ``log_level`` >= 4.
+  xGEMS creates the log file when the first message is written to it.
+  Thus no empty file stays when nothing is logged (for example with ``log_level=6``).
 
-  Full description of every value, the loggers and the configuration file:
+  The Optima solver writes its warnings at warning level.
+  An example is "Proceeding with linear-search algorithm even though current Newton step is not a descent direction".
+  These warnings go to the console if ``use_cout`` is true and ``log_level`` <= 3.
+  They go to the log file if you give a file name. With ``log_level`` >= 4, xGEMS does not log them.
+
+  The GEMS3K logging documentation describes each value, the loggers and the configuration file:
   `GEMS3K logging documentation <https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md>`_.
   
   **Example:**
@@ -666,7 +668,7 @@ Cold start resets the initial guess to default values for robust convergence.
 
         .def("setSolverMode", &ChemicalEngine::setSolverMode, py::arg("mode"),
              R"doc(
-Selects which GEMS3K solver subsequent equilibrations use.
+Selects the solver for the next equilibrations.
 
 :param str mode: One of ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"``, ``"shp"`` (case-insensitive).
     The default is ``"aia"``.
@@ -675,13 +677,13 @@ Selects which GEMS3K solver subsequent equilibrations use.
 - ``"sia"`` -- GEMS3K IPM solver, warm start (starts from the previous result)
 - ``"aop"`` -- Optima solver, cold start
 - ``"sop"`` -- Optima solver, warm start
-- ``"hop"`` -- hybrid: the GEMS3K IPM solver from scratch, then Optima refines and checks its answer
-  (the IPM answer is kept and flagged if Optima fails)
-- ``"shp"`` -- hybrid with a warm start (the IPM part starts from the previous result)
+- ``"hop"`` -- the GEMS3K IPM solver from scratch, then Optima refines and checks the result.
+  If Optima fails, xGEMS keeps the GEMS3K IPM result and flags it.
+- ``"shp"`` -- the same as ``"hop"``, but the GEMS3K IPM solver starts from the previous result
 
-Warm start (:py:meth:`setWarmStart`, ``options.warmstart`` or ``reequilibrate(True)``)
-turns ``"aia"`` into ``"sia"``, ``"aop"`` into ``"sop"`` and ``"hop"`` into ``"shp"``. :py:meth:`solverMode`
-returns the mode that actually runs. :py:meth:`setColdStart` turns every warm mode cold again.
+A warm start (:py:meth:`setWarmStart`, ``options.warmstart`` or ``reequilibrate(True)``)
+changes ``"aia"`` to ``"sia"``, ``"aop"`` to ``"sop"`` and ``"hop"`` to ``"shp"``.
+:py:meth:`solverMode` returns the mode that runs. :py:meth:`setColdStart` changes each warm mode to a cold mode.
 
 :raises RuntimeError: for an unknown mode, or for an Optima mode when GEMS3K was
     built without Optima.
@@ -695,7 +697,8 @@ returns the mode that actually runs. :py:meth:`setColdStart` turns every warm mo
 
         .def("solverMode", &ChemicalEngine::solverMode,
              R"doc(
-The solver mode that runs: "aia", "sia", "aop", "sop", "hop" or "shp" (a set ``warmstart`` turns ``"aia"`` into ``"sia"``, ``"aop"`` into ``"sop"`` and ``"hop"`` into ``"shp"``).
+Returns the solver mode that runs: ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"`` or ``"shp"``.
+A set ``warmstart`` changes ``"aia"`` to ``"sia"``, ``"aop"`` to ``"sop"`` and ``"hop"`` to ``"shp"``.
 )doc")
 
         .def_static("builtWithOptima", &ChemicalEngine::builtWithOptima,
@@ -706,11 +709,11 @@ Whether the linked GEMS3K was built with the Optima solver.
         .def("setpHTarget", &ChemicalEngine::setpHTarget,
              py::arg("pH_target"), py::arg("tolerance") = -1.,
              R"doc(
-Constrains pH; the titrant amount is solved within the equilibrium calculation.
+Fixes the pH. The solver finds the titrant amount in the equilibrium calculation.
 
-Applies to the Optima modes (``"aop"``, ``"sop"``, ``"hop"`` and ``"shp"``) and persists until
-:py:meth:`clearControlConditions`. The ``"aia"`` and ``"sia"`` modes ignore it without an error (the pH is not
-constrained and the titrant stays 0).
+The target applies to the Optima modes (``"aop"``, ``"sop"``, ``"hop"`` and ``"shp"``).
+It stays active until :py:meth:`clearControlConditions`.
+The modes ``"aia"`` and ``"sia"`` ignore the target and do not raise an error. Then the pH is free and the titrant is 0.
 
 :param float pH_target: Requested pH.
 :param float tolerance: Tolerance on the achieved pH; negative uses the default.
@@ -737,7 +740,7 @@ constrained and the titrant stays 0).
         .def("setEhTarget", &ChemicalEngine::setEhTarget,
              py::arg("Eh_target"), py::arg("tolerance") = -1.,
              R"doc(
-Constrains Eh (V); see :py:meth:`setpHTarget`.
+Fixes the Eh (in volts); see :py:meth:`setpHTarget`.
 
 :raises RuntimeError: if GEMS3K was built without Optima.
 )doc")
@@ -1163,7 +1166,7 @@ forwards to ``equilibrate(T, P, b)``.
              R"doc(
             Checks if the equilibrium computation has converged.
             
-            :return bool: True if the computation has converged, False otherwise.
+            :return bool: True if the last calculation ended with a good result in any solver mode, False otherwise.
             
             **Example:**
             
@@ -1171,6 +1174,41 @@ forwards to ``equilibrate(T, P, b)``.
             
                 is_converged = engine.converged()
                 print(is_converged)
+            )doc")
+
+        .def("rescueStep", &ChemicalEngine::rescueStep,
+             R"doc(
+            Returns the rescue step that made the last result.
+
+            GEMS3K tries a failed call again in steps. The setting ``pa_FailRescue`` in the ``-ipm`` file controls this.
+
+            :return int: 0 = the call itself. 1 = a warm restart. 2 = a composition that changes by a very small amount.
+                3 = a walk from the previous result. 4 = looser settings. 5 = the other solver.
+                6 = the best balanced attempt. Its status is always BAD.
+
+            **Example:**
+
+            .. code-block:: python
+
+                engine.reequilibrate()
+                if engine.rescueStep() == 6:
+                    print("no good result; the best balanced attempt was returned")
+            )doc")
+
+        .def("presentPhasesRel", &ChemicalEngine::presentPhasesRel, py::arg("relFloor") = 1e-9,
+             R"doc(
+            Returns the names of the phases that hold more than a share of the total phase amount.
+
+            This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+
+            :param float relFloor: Share of the total phase amount (default 1e-9).
+            :return list[str]: Names of present phases.
+
+            **Example:**
+
+            .. code-block:: python
+
+                print(engine.presentPhasesRel())
             )doc")
 
         .def("numIterations", &ChemicalEngine::numIterations,

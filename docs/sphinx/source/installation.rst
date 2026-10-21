@@ -34,14 +34,14 @@ Examples of using xGEMS, as Jupyter notebooks, are in the
 
       .. code-block:: bash
 
-         conda create -n xgems-optima --override-channels --strict-channel-priority \
+         conda create -n xgems-prerelease --override-channels --strict-channel-priority \
              -c https://gemshub.github.io/xgems/prerelease -c conda-forge xgems
 
    2. Switch to it:
 
       .. code-block:: bash
 
-         conda activate xgems-optima
+         conda activate xgems-prerelease
 
    3. Check that the new solver is there. This should print ``True``:
 
@@ -54,7 +54,7 @@ Examples of using xGEMS, as Jupyter notebooks, are in the
    Good to know:
 
    * Always use a separate environment for the test version, as above, and not your normal one.
-   * To remove it again: ``conda env remove -n xgems-optima``.
+   * To remove it again: ``conda env remove -n xgems-prerelease``.
    * It is built for Python 3.12 to 3.14 on Linux, macOS (Apple silicon) and Windows. The macOS and Windows
      builds are still being checked.
    * If you were given a folder with the packages instead of the web address, use

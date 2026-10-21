@@ -13,6 +13,9 @@ Welcome to xGEMS ChemicalEngine!
 
    installation
    solver_guide
+   advanced_usage
+   solver_settings
+   expert_settings
 
 .. toctree::
    :maxdepth: 1

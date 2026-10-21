@@ -907,12 +907,20 @@ namespace xGEMS
     auto ChemicalEngine::converged() const -> bool
     {
         const auto status = pimpl->node->pCNode()->NodeStatusCH;
-        return status == OK_GEM_AIA || status == OK_GEM_SIA;
+        // a good result in any solver mode
+        return status == OK_GEM_AIA || status == OK_GEM_SIA
+            || status == OK_GEM_AOP || status == OK_GEM_SOP || status == OK_GEM_ROP
+            || status == OK_GEM_HOP || status == OK_GEM_SHP;
     }
 
     auto ChemicalEngine::numIterations() const -> Index
     {
         return pimpl->node->pCNode()->IterDone;
+    }
+
+    auto ChemicalEngine::rescueStep() const -> Index
+    {
+        return pimpl->node->GEM_rescue_step();
     }
 
     auto ChemicalEngine::elapsedTime() const -> double
@@ -2162,6 +2170,28 @@ namespace xGEMS
         std::vector<std::string> result;
         for (Index i = 0; i < numPhases(); ++i)
             if (phaseAmount_i(i) > threshold)
+                result.push_back(phaseName_i(i));
+        return result;
+    }
+
+    auto ChemicalEngine::phasePresentRel(Index iphase, double relFloor) const -> bool
+    {
+        if (!pimpl->node->check_Phase_xCH(iphase)) return false;
+        return pimpl->node->Ph_Present(iphase, relFloor);
+    }
+
+    auto ChemicalEngine::phasePresentRel(std::string phase, double relFloor) const -> bool
+    {
+        auto iphase = indexPhase(phase);
+        if (iphase >= numPhases()) return false;
+        return pimpl->node->Ph_Present(iphase, relFloor);
+    }
+
+    auto ChemicalEngine::presentPhasesRel(double relFloor) const -> std::vector<std::string>
+    {
+        std::vector<std::string> result;
+        for (Index i = 0; i < numPhases(); ++i)
+            if (pimpl->node->Ph_Present(i, relFloor))
                 result.push_back(phaseName_i(i));
         return result;
     }

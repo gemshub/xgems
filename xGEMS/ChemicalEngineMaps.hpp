@@ -110,8 +110,9 @@ public:
      * The returned text describes the status, for example "OK after GEM calculation with LPP AIA". It is one of:
      *
      * - "No GEM re-calculation needed"
-     * - "OK ..." for a good result, "Bad (not fully trustful) result ..." or "Failure (no result) ..." after the
-     *   solver that ran (AIA, SIA, AOP, SOP, HOP or SHP; the last four need GEMS3K built with Optima)
+     * - "OK ...", "Bad (not fully trustful) result ..." or "Failure (no result) ..."
+     *   These words name the solver that ran: AIA, SIA, AOP, SOP, HOP or SHP.
+     *   The last four need a GEMS3K that is built with Optima.
      * - "Terminal error in GEMS3K (e.g. memory corruption). Restart is required."
      */
     auto equilibrate() -> std::string;
@@ -192,17 +193,17 @@ public:
     /// The solver mode currently selected.
     auto solverMode() const -> std::string;
 
-    /// Constrains pH inside the equilibrium solve (AOP/SOP modes only).
+    /// Fixes the pH in the equilibrium solve (Optima modes only).
     /// Forwards to ChemicalEngine::setpHTarget().
     auto setpHTarget(double pH_target, double tolerance = -1.) -> void;
 
-    /// Constrains Eh (V) inside the equilibrium solve (AOP/SOP modes only).
+    /// Fixes the Eh (V) in the equilibrium solve (Optima modes only).
     auto setEhTarget(double Eh_target, double tolerance = -1.) -> void;
 
     /// Removes every registered pH/Eh control condition.
     auto clearControlConditions() -> void;
 
-    /// Titrant amount solved for the named condition ("pH"/"Eh") last solve.
+    /// Returns the titrant amount for the named condition ("pH" or "Eh") in the last solve.
     auto controlConditionTitrant(const std::string& name) const -> double;
 
     /// Trace-element regimes keyed by element name; see ChemicalEngine::traceRegimes().
@@ -687,6 +688,18 @@ public:
     auto converged() -> bool;
 
     /**
+     * @brief Returns the rescue step that made the last result (see ChemicalEngine::rescueStep()).
+     *
+     * @return (int) 0 = the call itself; 1 to 5 = a rescue step; 6 = the best balanced attempt (status BAD).
+     *
+     * @code
+     * if (engine.rescue_step() > 0)
+     *     std::cout << "rescued at step " << engine.rescue_step() << std::endl;
+     * @endcode
+     */
+    auto rescue_step() -> int;
+
+    /**
      * @brief Returns the number of iterations of the last equilibrium computation.
      *
      * @return (int) Number of iterations.
@@ -1002,6 +1015,21 @@ public:
      * @endcode
      */
     auto present_minerals(double threshold = 1e-12) -> std::vector<std::string>;
+
+    /**
+     * @brief Returns the names of all phases that hold more than a share of the total amount of all phases.
+     *
+     * This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+     *
+     * @param rel_floor (double) Share of the total phase amount, default 1e-9.
+     * @return (std::vector<std::string>) Names of present phases.
+     *
+     * @code
+     * for (auto& name : engine.present_phases_rel())
+     *     std::cout << name << std::endl;
+     * @endcode
+     */
+    auto present_phases_rel(double rel_floor = 1e-9) -> std::vector<std::string>;
 
     /**
      * @brief Returns true if the phase is the aqueous phase.

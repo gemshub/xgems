@@ -46,10 +46,10 @@ static std::map<int, std::string> _status_encoder = {
     {15, "OK after GEM calculation via Optima with warm initial approximation (SOP)"},
     {16, "Bad (not fully trustful) result after GEM calculation via Optima with warm initial approximation (SOP)"},
     {17, "Failure (no result) in GEM calculation via Optima with warm initial approximation (SOP)"},
-    {18, "Need GEM calculation via Optima using Reaktoro's own mechanism (ROP)"},
-    {19, "OK after GEM calculation via the ROP mechanism"},
-    {20, "Bad (not fully trustful) result after GEM calculation via the ROP mechanism"},
-    {21, "Failure (no result) in GEM calculation via the ROP mechanism"},
+    {18, "Need GEM calculation via Optima with its reference settings (ROP, for testing only)"},
+    {19, "OK after GEM calculation via Optima with its reference settings (ROP)"},
+    {20, "Bad (not fully trustful) result after GEM calculation via Optima with its reference settings (ROP)"},
+    {21, "Failure (no result) in GEM calculation via Optima with its reference settings (ROP)"},
     // Hybrid modes: GEMS3K IPM solver first, then Optima refines and checks the answer
     {22, "Need GEM calculation by the GEMS3K IPM solver from scratch, then Optima refines and checks it (HOP)"},
     {23, "OK after the hybrid IPM-then-Optima calculation (HOP)"},
@@ -854,6 +854,8 @@ auto ChemicalEngineMaps::Eh() -> double { return gem.Eh(); }
 
 auto ChemicalEngineMaps::converged() -> bool { return gem.converged(); }
 
+auto ChemicalEngineMaps::rescue_step() -> int { return static_cast<int>(gem.rescueStep()); }
+
 auto ChemicalEngineMaps::num_iterations() -> int { return static_cast<int>(gem.numIterations()); }
 
 auto ChemicalEngineMaps::elapsed_time() -> double { return gem.elapsedTime(); }
@@ -1010,6 +1012,11 @@ auto ChemicalEngineMaps::phase_is_present(const std::string& phase_name, double 
 auto ChemicalEngineMaps::present_phases(double threshold) -> std::vector<std::string>
 {
     return gem.presentPhases(threshold);
+}
+
+auto ChemicalEngineMaps::present_phases_rel(double rel_floor) -> std::vector<std::string>
+{
+    return gem.presentPhasesRel(rel_floor);
 }
 
 auto ChemicalEngineMaps::present_minerals(double threshold) -> std::vector<std::string>

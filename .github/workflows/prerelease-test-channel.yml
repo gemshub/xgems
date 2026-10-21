@@ -2,7 +2,7 @@
 # packages and publishes them as a static conda channel on the gh-pages branch of this repo:
 #   https://gemshub.github.io/xgems/prerelease
 # Testers install with:
-#   conda create -n xgems-optima --override-channels --strict-channel-priority \
+#   conda create -n xgems-prerelease --override-channels --strict-channel-priority \
 #     -c https://gemshub.github.io/xgems/prerelease -c conda-forge xgems
 # Requires: repo Settings > Pages > source = branch gh-pages (after the first run creates it).
 name: prerelease-test-channel
@@ -118,7 +118,7 @@ jobs:
           <h1>xgems prerelease conda channel</h1>
           <p>Test builds of xGEMS with the Optima solver modes. GEMS3K (<code>${GEMS3K_BRANCH}</code>) and Optima (<code>${OPTIMA_BRANCH}</code>) are bundled into the xgems package. Not a release: it can change or disappear at any time.</p>
           <h2>Install</h2>
-          <pre>conda create -n xgems-optima --override-channels --strict-channel-priority \\
+          <pre>conda create -n xgems-prerelease --override-channels --strict-channel-priority \\
             -c ${URL} -c conda-forge xgems</pre>
           <h2>Packages in this channel</h2>
           <ul>${PKGS}</ul>

@@ -444,14 +444,14 @@ Whether the linked GEMS3K was built with the Optima solver (``"aop"``, ``"sop"``
 )doc")
             .def("solverMode", &ChemicalEngineMaps::solverMode,
              R"doc(
-The solver mode currently selected ("aia", "sia", "aop", "sop", "hop" or "shp").
+Returns the selected solver mode: "aia", "sia", "aop", "sop", "hop" or "shp".
 )doc")
             .def("setpHTarget", &ChemicalEngineMaps::setpHTarget,
                  py::arg("pH_target"), py::arg("tolerance") = -1.,
              R"doc(
-Constrains pH; the titrant amount is solved within the equilibrium calculation.
+Fixes the pH. The solver finds the titrant amount in the equilibrium calculation.
 
-Applies to the Optima modes (not "aia" or "sia", which ignore it); see ``ChemicalEngine.setpHTarget``.
+The target applies to the Optima modes. The modes "aia" and "sia" ignore it. See ``ChemicalEngine.setpHTarget``.
 
 :param float pH_target: Requested pH.
 :param float tolerance: Tolerance on the achieved pH; negative uses the default.
@@ -468,7 +468,7 @@ Applies to the Optima modes (not "aia" or "sia", which ignore it); see ``Chemica
             .def("setEhTarget", &ChemicalEngineMaps::setEhTarget,
                  py::arg("Eh_target"), py::arg("tolerance") = -1.,
              R"doc(
-Constrains Eh (V); see ``setpHTarget()``.
+Fixes the Eh (in volts); see ``setpHTarget()``.
 )doc")
             .def("clearControlConditions", &ChemicalEngineMaps::clearControlConditions,
              R"doc(
@@ -477,8 +477,8 @@ Removes every registered pH/Eh control condition.
             .def("controlConditionTitrant", &ChemicalEngineMaps::controlConditionTitrant,
                  py::arg("name"),
              R"doc(
-Titrant amount (mol) solved for the ``"pH"`` or ``"Eh"`` condition in the last
-equilibration; 0 if the condition was not active.
+Returns the titrant amount (mol) for the ``"pH"`` or ``"Eh"`` condition in the last equilibration.
+The value is 0 if the condition was not active.
 )doc")
             .def("traceRegimes", &ChemicalEngineMaps::traceRegimes,
                  py::arg("factors") = std::vector<double>{0.1, 10.}, py::arg("trace_rel") = 1e-6,
@@ -835,13 +835,27 @@ Dictionary keys: "total", "Ca", "Mg".
              R"doc(
 Read-only property: whether the last equilibrium computation converged.
 
-:return bool: True if the last equilibration converged.
+:return bool: True if the last equilibration ended with a good result in any solver mode.
 
 **Example:**
 
 .. code-block:: python
 
     print("converged", engine.converged)
+)doc")
+            .def_property_readonly("rescue_step", &ChemicalEngineMaps::rescue_step,
+             R"doc(
+Read-only property: the rescue step that made the last result.
+
+:return int: 0 = the call itself; 1 to 5 = a rescue step (see ``ChemicalEngine.rescueStep``);
+    6 = the best balanced attempt (status BAD).
+
+**Example:**
+
+.. code-block:: python
+
+    if engine.rescue_step > 0:
+        print("rescued at step", engine.rescue_step)
 )doc")
             .def_property_readonly("mass_balance_errors", &ChemicalEngineMaps::mass_balance_errors,
              R"doc(
@@ -906,6 +920,23 @@ Return names of all phases whose molar amount exceeds the threshold.
 
     for name in engine.present_phases():
         print(name)
+)doc")
+            .def("present_phases_rel", &ChemicalEngineMaps::present_phases_rel,
+             py::arg("rel_floor") = 1e-9,
+             R"doc(
+Returns the names of all phases that hold more than a share of the total phase amount.
+
+This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+``present_phases`` uses a fixed amount in mol. This can count an Optima floor amount as present.
+
+:param float rel_floor: Share of the total phase amount (default 1e-9).
+:return list[str]: Names of present phases.
+
+**Example:**
+
+.. code-block:: python
+
+    print(engine.present_phases_rel())
 )doc")
             .def("present_minerals", &ChemicalEngineMaps::present_minerals,
              py::arg("threshold") = 1e-12,
