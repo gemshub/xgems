@@ -171,6 +171,9 @@ Stop rules (Optima)
    * - ``pa_OptimaStallWindow``
      - 200 (on)
      - Stops a calculation that does not improve for this number of iterations. A new try can then start sooner.
+   * - ``pa_OptimaStallNetFactor``
+     - 5 (on)
+     - After a stall, Optima solves one more time with the stall check off. This last solve gets at most this number times the iterations of the solve that stalled, and at least 2000. 0 = the normal limit.
    * - ``pa_OptimaFrozenCut``
      - 20 (on)
      - Stops a calculation when its energy and error do not change for this number of iterations. The finishing step and the new tries then take over.
@@ -234,6 +237,9 @@ Both solvers
    * - ``pa_RescueWalkSteps``
      - 8
      - Sets the number of equal steps in the walk from the previous result to the new composition.
+   * - ``pa_RescueBudget``
+     - 100000 (on)
+     - The rescue (``pa_FailRescue``) skips steps 1 to 4 after the call has used this number of iterations. The count includes the first attempt and both solvers. Step 5, the other solver, still runs one time. 0 = no limit.
 
 
 GEMS3K IPM solver

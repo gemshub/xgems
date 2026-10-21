@@ -63,6 +63,13 @@ Step  What made the result
 Keep ``pa_FailRescue = 2`` for transport codes. A transport code needs a result for each node.
 The rescue costs more iterations only on calls that fail.
 
+Two limits keep the cost of a call that no step can save small:
+
+* ``pa_RescueBudget`` (default 100000). After the call has used this number of iterations, the rescue skips
+  steps 1 to 4. It still tries the other solver (step 5) one time.
+* ``pa_OptimaStallNetFactor`` (default 5). When an Optima solve stops making progress, Optima solves one more time
+  with the progress check off. This last solve gets at most 5 times the iterations of the solve that stopped.
+
 A result from step 6 keeps the mass balance, but it is not converged. Mark this point, or solve it again with a smaller change.
 Use ``pa_FailRescue = 1`` if you prefer an error to a BAD result. Use ``pa_FailRescue = 0`` to switch the rescue off.
 
@@ -77,38 +84,74 @@ Use ``pa_FailRescue = 1`` if you prefer an error to a BAD result. Use ``pa_FailR
 
 ``ChemicalEngineDicts`` gives the step as a property (``engine.rescue_step``). In C++, use ``engine.rescueStep()``.
 
-**Settings for long runs.** Put them in the ``-ipm`` file of the project. See :ref:`project-file-settings`.
+.. _suggested-settings:
+
+Suggested settings for common cases
+-----------------------------------
+
+Most projects need no change. The table gives the settings that help in some common cases.
+They are suggestions for one project or one run. They do not change the defaults.
+The GEMS3K `advanced usage <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-ADVANCED-USAGE.md>`_ page has the same table.
+Put them in the ``-ipm`` file of the project (see :ref:`project-file-settings`). The code after the table changes them from Python.
 
 .. list-table::
    :header-rows: 1
-   :widths: 28 72
+   :widths: 26 34 40
 
-   * - Setting
-     - Use
-   * - ``pa_FailRescue = 2``
-     - The default. Keep it. Each node gets a result.
-   * - ``pa_OptimaMaxSeconds = 60``
-     - Limits each Optima solve. The results then depend on the speed of the computer. The limit starts again
-       for each try and each rescue step. Thus a call that fails can take several times the limit.
-   * - ``pa_OptimaCallCap = -1``
-     - Stops a calculation that runs for a very long time. -1 sets the cap from the size of the system.
-       The results do not depend on the computer.
-   * - ``pa_OptimaColdRetry = 2``
-     - The default. A failed warm Optima call stops early and starts again cold.
-   * - ``pa_PSM = 0``
-     - For large runs. GEMS3K writes no diagnostic log file.
+   * - Case
+     - Settings and mode
+     - Why
+   * - Reactive transport and batch runs: each node must have a result
+     - Keep the defaults ``pa_FailRescue = 2`` and ``pa_RescueBudget = 100000``. Solve the first point cold and the next
+       points warm (``sia``, ``sop``). ``pa_PSM = 0`` for large runs.
+     - The rescue tries a failed node again in steps. The limit stops a node that no step can save.
+       ``pa_PSM = 0`` writes no log file.
+   * - Some calls run for a very long time
+     - ``pa_OptimaCallCap = -1``
+     - Sets a cap from the size of the system. The results do not depend on the computer.
+       ``pa_OptimaMaxSeconds`` also limits each solve, but then the results depend on the speed of the computer.
+   * - Phase diagrams and Pourbaix maps where a failed point is acceptable
+     - ``pa_FailRescue = 0``. Use ``aop`` or ``sop``, not ``sia``, along a row.
+     - A point that cannot be solved, for example a target outside the water window of the model, then costs much
+       less. You get the error instead of the best attempt. ``sia`` can keep phases after a phase boundary.
+   * - Water used up by design (for example cement hydration with little water)
+     - ``pa_OptimaDryOut = 1``. If ``aop`` or ``sop`` still fails: ``pa_OptimaAcceptRepair = 1`` and ``pa_GAS = 0.002``,
+       or use ``aia`` or ``hop``.
+     - Optima solves the solids without the water phase when the water runs out. The pH of a result without water
+       is reported as 0.
+   * - No redox couple in the system
+     - ``pa_OptimaRedoxFree = 2``, or give an Eh target.
+     - The bulk composition does not fix the Eh. The setting aims at pe 4.
+   * - Solid solutions with end-members that are almost the same
+     - ``pa_DK = 1e-7``
+     - Gives a clearly more accurate composition with the GEMS3K IPM solver.
+   * - Sorption models
+     - ``pa_DGC = 0.001``
+     - Damps the non-ideal corrections between iterations.
+   * - Absent phases must show exactly zero
+     - ``pa_OptimaZeroAbsent = 1``
+     - Optima keeps an absent species at a very small floor amount by default.
+   * - Large systems (hundreds of species)
+     - Mode ``aia``, or ``hop`` for a checked result. With Optima: ``pa_OptimaTol`` a little larger.
+     - Optima alone is much slower on large systems.
+   * - Trace elements
+     - A stricter ``pa_DHB``. Put the element in the recipe, or set ``min_amount``.
+     - Keeps the mass balance of small amounts exact.
+   * - Find the cause of a failed calculation
+     - ``pa_PSM = 2`` or ``3``
+     - Writes warnings or a detailed trace to ``ipmlog.txt``.
 
 xGEMS has no call that changes a setting after the project is loaded. Copy the project and edit the copy.
 This code works for JSON projects:
 
 .. code-block:: python
 
-   import json, pathlib, shutil
+   import json, pathlib, shutil, tempfile
    from xgems import ChemicalEngine
 
-   def project_with_settings(lst, folder, **settings):
-       """Copy a JSON project to folder and set pa_ values in its -ipm file."""
-       src, dst = pathlib.Path(lst).parent, pathlib.Path(folder)
+   def project_with_settings(lst, **settings):
+       """Copy a JSON project to a new folder and set pa_ values in its -ipm file."""
+       src, dst = pathlib.Path(lst).parent, pathlib.Path(tempfile.mkdtemp())   # the folder is outside the project
        shutil.copytree(src, dst, dirs_exist_ok=True)
        for ipm in dst.glob("*-ipm.json"):
            data = json.loads(ipm.read_text())
@@ -116,7 +159,7 @@ This code works for JSON projects:
            ipm.write_text(json.dumps(data, indent=2))
        return str(dst / pathlib.Path(lst).name)
 
-   lst = project_with_settings("project-dat.lst", "run1", pa_PSM=0, pa_OptimaCallCap=-1)
+   lst = project_with_settings("project-dat.lst", pa_PSM=0, pa_OptimaCallCap=-1)
    engine = ChemicalEngine(lst)
 
 

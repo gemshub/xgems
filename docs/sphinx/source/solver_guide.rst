@@ -155,6 +155,8 @@ Good    2     6     11    15    23    27
 
 The next code in each group (3, 7, 12, 16, 24, 28) shows a result that you cannot fully trust.
 The code after that (4, 8, 13, 17, 25, 29) shows a failure.
+Two more codes are possible in each mode: 0 means that no calculation was necessary.
+9 means a terminal error in GEMS3K. Restart the program after code 9.
 ``engine.converged()`` is true for a good result in all modes.
 
 GEMS3K tries a failed call again in steps before it reports the failure. ``engine.rescueStep()`` shows
@@ -201,6 +203,7 @@ Note these points:
 * The modes ``aia`` and ``sia`` ignore the targets. They do not raise an error.
 * A target can be impossible, for example an Eh in a system with no redox couple. The status can be OK and the
   target can be missed. Compare ``engine.pH()`` and ``engine.Eh()`` with the target.
+* A target very near a water stability line can be outside the water window of the model. The call then fails, correctly.
 
 
 Advanced options
