@@ -26,6 +26,8 @@ TraceRegime
 -----------
 
 .. autoclass:: xgems.PyxGEMS::TraceRegime
+   :members:
+   :undoc-members:
 
 Material
 --------

@@ -31,6 +31,8 @@ xGEMS does not read a setting before ``<END_DIM>``.
 Write each setting one time in the file. If a name occurs twice, xGEMS uses the later value.
 Some settings, such as ``pa_PE``, ``pa_DHB`` and ``pa_DG``, apply to both solvers.
 
+For suggested settings in common cases (transport, grids, dry systems and others), see :ref:`suggested-settings`.
+
 
 GEMS3K IPM solver settings
 --------------------------
@@ -186,7 +188,7 @@ GEMS3K 5 added these settings. Older project files do not contain them.
      - 0 = no warning.
    * - ``pa_FailRescue``
      - 2 (on)
-     - Both solvers. Tries a failed or BAD call again in steps. Keep 2 for transport codes. See :ref:`batch-and-transport`.
+     - Both solvers. Tries a failed or BAD call again in steps. Keep 2 for transport codes. A call that no step can save stops after ``pa_RescueBudget`` (100000) iterations. See :ref:`batch-and-transport`.
      - 0 = off. 1 = steps 1 to 5 only.
 
 
@@ -262,5 +264,5 @@ Known limits
 * **Large systems** can need a long time for each point in the Optima modes.
 * **Rescued calls cost more.** A call that the rescue saves can use several times the iterations of a normal call.
   A call that no step can save uses the most. One such call can take more time than all other points of a grid.
-  ``pa_OptimaMaxSeconds`` does not limit the total time, because it starts again for each step.
-  If an error is acceptable, use ``pa_FailRescue = 0`` for that run.
+  ``pa_RescueBudget`` limits the iterations of such a call. ``pa_OptimaMaxSeconds`` does not limit the total time,
+  because it starts again for each step. For grids where an error is acceptable, see :ref:`suggested-settings`.

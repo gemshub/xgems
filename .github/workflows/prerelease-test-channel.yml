@@ -9,6 +9,9 @@ name: prerelease-test-channel
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read   # the publish job asks for write access itself
+
 # ---- Settings: edit here ----------------------------------------------------------------------
 env:
   BASE_PACKAGES: "optima gems3k"            # python-independent recipes under RECIPE_ROOT, built once, in order
@@ -64,7 +67,10 @@ jobs:
               echo "::warning::python $v is not in the conda-forge pinning yet - skipped"; continue
             fi
             for p in $PYTHON_PACKAGES; do
-              build "$p" --variants "$VARIANT" || echo "::warning::$p failed for python $v"
+              build "$p" --variants "$VARIANT" || {
+                echo "::warning::$p failed for python $v"
+                echo "- $p failed for python $v" >> "$GITHUB_STEP_SUMMARY"  # the channel then lacks this variant
+              }
             done
           done
       - name: Collect the packages to publish
@@ -81,6 +87,7 @@ jobs:
 
   publish:
     needs: build
+    # Publish also when one platform fails (for example macOS or Windows): the channel then holds the platforms that built.
     if: always() && needs.build.result != 'cancelled'
     runs-on: ubuntu-latest
     permissions:
