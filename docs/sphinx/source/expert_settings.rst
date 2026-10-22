@@ -176,7 +176,7 @@ Stop rules (Optima)
      - Stops a calculation that does not improve for this number of iterations. A new try can then start sooner.
    * - ``pa_OptimaStallNetFactor``
      - 5 (on)
-     - After a stall, Optima solves one more time with the stall check off. This last solve gets at most this number times the iterations of the solve that stalled, and at least 2000. 0 = the normal limit.
+     - After a stall, Optima solves one more time with the stall check off. The limit of this last solve is max(2000, ``pa_OptimaStallNetFactor`` × the iterations of the solve that stalled). 0 = the normal limit.
    * - ``pa_IpmTwinSplit``
      - 1e-6 (on)
      - After a warm GEMS3K IPM calculation, two copies of one solid solution can keep one composition where they should split into two phases. The solver then tests that composition. If a split is lower by more than this value (RT per mole), the calculation is solved again from a cold start. 0 = off.

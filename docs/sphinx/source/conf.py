@@ -31,7 +31,7 @@ def _is_prerelease():
         return forced == '1'
     name = os.environ.get('READTHEDOCS_VERSION_NAME')
     if name is not None:  # Read the Docs: "latest" is the default (main) branch
-        return os.environ.get('READTHEDOCS_VERSION_TYPE') == 'branch' and name not in ('latest', 'stable')
+        return os.environ.get('READTHEDOCS_VERSION_TYPE') in ('branch', 'external') and name not in ('latest', 'stable')
     try:
         branch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'],
                                          stderr=subprocess.DEVNULL, text=True).strip()
@@ -45,7 +45,7 @@ if _is_prerelease():
 
 project = 'xGEMS'
 copyright = '2025, GEMS Team'
-author = 'Allan Leal, Dmitrii Kulik, G.D. Miron'
+author = 'G.D. Miron, Allan Leal, Dmitrii Kulik'
 release = '2.2.0'
 
 # -- General configuration ---------------------------------------------------
