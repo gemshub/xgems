@@ -44,10 +44,13 @@ Finish and acceptance of a result (Optima)
      - The direct check of ``pa_OptimaTpdAccept`` cannot overrule the phase stability check. This is for a mixed phase that the direct check cannot test, for example a water phase that is gone.
    * - ``pa_OptimaCollapseCheck``
      - 1 (on)
-     - The check of a result judges a phase that disappeared by its pure species. A phase that must come back is then not accepted as absent.
+     - The check of a result judges a phase that disappeared by its pure species. A phase that must come back is then not accepted as absent. A pure solid below the presence limit (``pa_DS``) is judged by its chemical potential. A water phase that has almost vanished is judged as absent.
    * - ``pa_OptimaTwinReadmit``
      - 1 (on)
      - The solver can switch off a mixed phase because a copy of it took over. After the calculation, the solver tries the phase again if the phase stability check says that it must form.
+   * - ``pa_OptimaTwinLabel``
+     - 1 (on)
+     - Two copies of one solid solution can be present at two different compositions. After an Optima calculation, each composition goes into the copy whose major end-members (class M) it holds most. This is done only when the two copies have the same species, standard energies, limits and mixing parameters. G does not change. 0 = off.
    * - ``pa_OptimaTraceRespread``
      - 1 (on)
      - After the calculation, an element that only the floor amounts of its species hold gets its real amount back.
@@ -174,6 +177,9 @@ Stop rules (Optima)
    * - ``pa_OptimaStallNetFactor``
      - 5 (on)
      - After a stall, Optima solves one more time with the stall check off. This last solve gets at most this number times the iterations of the solve that stalled, and at least 2000. 0 = the normal limit.
+   * - ``pa_IpmTwinSplit``
+     - 1e-6 (on)
+     - After a warm GEMS3K IPM calculation, two copies of one solid solution can keep one composition where they should split into two phases. The solver then tests that composition. If a split is lower by more than this value (RT per mole), the calculation is solved again from a cold start. 0 = off.
    * - ``pa_OptimaFrozenCut``
      - 20 (on)
      - Stops a calculation when its energy and error do not change for this number of iterations. The finishing step and the new tries then take over.

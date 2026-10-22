@@ -922,14 +922,14 @@ Return names of all phases whose molar amount exceeds the threshold.
         print(name)
 )doc")
             .def("present_phases_rel", &ChemicalEngineMaps::present_phases_rel,
-             py::arg("rel_floor") = 1e-9,
+             py::arg("rel_floor") = 0.,
              R"doc(
-Returns the names of all phases that hold more than a share of the total phase amount.
+Returns the names of all present phases.
 
-This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+Both solvers decide by the same rule when a phase is absent.
 ``present_phases`` uses a fixed amount in mol. This can count an Optima floor amount as present.
 
-:param float rel_floor: Share of the total phase amount (default 1e-9).
+:param float rel_floor: If above 0, a phase below this share of the total phase amount is also absent (default 0, off).
 :return list[str]: Names of present phases.
 
 **Example:**

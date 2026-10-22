@@ -192,7 +192,7 @@ class TestSolverModes(unittest.TestCase):
 
     @needs_optima
     def test_present_phases_rel_same_in_both_solvers(self):
-        """The share rule shows the same phases for the GEMS3K IPM solver and Optima."""
+        """The GEMS3K IPM solver and Optima show the same present phases."""
         self.solve("aia")
         ipm = sorted(self.engine.presentPhasesRel())
         self.solve("aop")

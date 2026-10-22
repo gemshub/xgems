@@ -128,9 +128,6 @@ Put them in the ``-ipm`` file of the project (see :ref:`project-file-settings`).
    * - Sorption models
      - ``pa_DGC = 0.001``
      - Damps the non-ideal corrections between iterations.
-   * - Absent phases must show exactly zero
-     - ``pa_OptimaZeroAbsent = 1``
-     - Optima keeps an absent species at a very small floor amount by default.
    * - Large systems (hundreds of species)
      - Mode ``aia``, or ``hop`` for a checked result. With Optima: ``pa_OptimaTol`` a little larger.
      - Optima alone is much slower on large systems.
@@ -166,16 +163,18 @@ This code works for JSON projects:
 Present phases
 --------------
 
-Optima never sets an amount to exactly zero. A phase that does not form stays at a very small floor amount.
-A fixed limit in mol can count this phase as present.
+Both solvers use the same rule to decide that a phase is absent.
+The GEMS3K IPM solver sets an absent phase to 0 mol.
+Optima cannot reach exactly 0. It sets an absent phase to 0 after the calculation (``pa_OptimaZeroAbsent = 3``, the default).
+If 0 would break the balance of an element, the phase keeps a very small floor amount.
 
-``presentPhasesRel()`` uses the GEMS3K rule. A phase is present when it holds more than 1e-9 of the total amount of all phases.
-With this rule, the Optima modes and the GEMS3K IPM modes show the same phases.
+``presentPhasesRel()`` does not show these floor phases.
+It does not use a limit in mol, so it keeps real trace phases.
 
 .. code-block:: python
 
    print(engine.presentPhasesRel())              # ChemicalEngine
-   print(engine.present_phases_rel(1e-9))        # ChemicalEngineDicts
+   print(engine.present_phases_rel())            # ChemicalEngineDicts
 
 
 Elements that are not in the recipe

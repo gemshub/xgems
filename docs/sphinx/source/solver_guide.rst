@@ -201,6 +201,9 @@ Note these points:
 * The titrant becomes part of the bulk composition. The array from ``elementAmounts()`` is a live view,
   and it changes. Keep a copy (``b0 = np.array(engine.elementAmounts())``) and give the copy to ``equilibrate``.
 * The modes ``aia`` and ``sia`` ignore the targets. They do not raise an error.
+* A DBR file can give the targets in the optional fields ``pHtarget`` and ``Ehtarget``. GEMSGUI writes them
+  when the system recipe has a target. The engine uses them in the Optima modes. ``clearControlConditions()``
+  also removes them.
 * A target can be impossible, for example an Eh in a system with no redox couple. The status can be OK and the
   target can be missed. Compare ``engine.pH()`` and ``engine.Eh()`` with the target.
 * A target very near a water stability line can be outside the water window of the model. The call then fails, correctly.
@@ -215,7 +218,7 @@ These options help in batch runs and transport codes. :doc:`advanced_usage` give
   See :ref:`batch-and-transport`.
 * **Rescue.** GEMS3K tries a failed call again in steps. ``engine.rescueStep()`` shows the step that made the result.
   Step 6 is a balanced result that is not converged. See :ref:`rescue-steps`.
-* **Present phases.** ``presentPhasesRel()`` gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+* **Present phases.** Both solvers use the same rule to set an absent phase to 0. ``presentPhasesRel()`` gives the present phases.
 * **Absent elements.** ``min_amount`` sets the placeholder amount of an element that is not in the recipe.
 * **Trace elements.** ``traceRegimes`` shows if a trace element behaves linearly.
 

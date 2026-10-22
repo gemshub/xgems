@@ -2714,35 +2714,36 @@ class Material;
     auto presentPhases(double threshold = 1e-12) const -> std::vector<std::string>;
 
     /**
-     * @brief Returns true if a phase holds more than a share of the total amount of all phases.
+     * @brief Returns true if a phase is present.
      *
-     * This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
-     * The Optima solver keeps a phase that does not form at a very small floor amount.
-     * A fixed limit in mol can count this phase as present.
+     * A phase is present when its amount is above 0 and the solver did not mark it as absent.
+     * Both solvers decide by the same rule when a phase is absent. The Optima solver can keep an absent
+     * phase at a very small floor amount; such a phase is not present.
      *
      * @param iphase (Index) Phase index.
-     * @param relFloor (double) Share of the total phase amount, default 1e-9.
+     * @param relFloor (double) If above 0, a phase below this share of the total phase amount is also
+     *        absent. Default 0 (off). This test can also hide real trace phases.
      * @return (bool) True if the phase is present.
      *
      * @code
      * bool calcite_present = engine.phasePresentRel(engine.indexPhase("Calcite"));
      * @endcode
      */
-    auto phasePresentRel(Index iphase, double relFloor = 1e-9) const -> bool;
+    auto phasePresentRel(Index iphase, double relFloor = 0.) const -> bool;
 
     /**
      * @brief Returns true if a phase identified by name is present under the rule of phasePresentRel().
      *
      * @param phase (std::string) Phase name.
-     * @param relFloor (double) Share of the total phase amount, default 1e-9.
+     * @param relFloor (double) Optional share test, see phasePresentRel(). Default 0 (off).
      * @return (bool) True if the phase is present.
      */
-    auto phasePresentRel(std::string phase, double relFloor = 1e-9) const -> bool;
+    auto phasePresentRel(std::string phase, double relFloor = 0.) const -> bool;
 
     /**
      * @brief Returns the names of all phases that are present under the rule of phasePresentRel().
      *
-     * @param relFloor (double) Share of the total phase amount, default 1e-9.
+     * @param relFloor (double) Optional share test, see phasePresentRel(). Default 0 (off).
      * @return (std::vector<std::string>) Names of present phases.
      *
      * @code
@@ -2750,7 +2751,7 @@ class Material;
      *     std::cout << name << std::endl;
      * @endcode
      */
-    auto presentPhasesRel(double relFloor = 1e-9) const -> std::vector<std::string>;
+    auto presentPhasesRel(double relFloor = 0.) const -> std::vector<std::string>;
 
     // -----------------------------------------------------------------------
     // Reaction thermodynamics

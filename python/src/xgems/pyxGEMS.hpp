@@ -1195,13 +1195,14 @@ forwards to ``equilibrate(T, P, b)``.
                     print("no good result; the best balanced attempt was returned")
             )doc")
 
-        .def("presentPhasesRel", &ChemicalEngine::presentPhasesRel, py::arg("relFloor") = 1e-9,
+        .def("presentPhasesRel", &ChemicalEngine::presentPhasesRel, py::arg("relFloor") = 0.,
              R"doc(
-            Returns the names of the phases that hold more than a share of the total phase amount.
+            Returns the names of the present phases.
 
-            This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+            Both solvers decide by the same rule when a phase is absent.
+            An absent phase that Optima keeps at a very small floor amount is not in the list.
 
-            :param float relFloor: Share of the total phase amount (default 1e-9).
+            :param float relFloor: If above 0, a phase below this share of the total phase amount is also absent (default 0, off).
             :return list[str]: Names of present phases.
 
             **Example:**
