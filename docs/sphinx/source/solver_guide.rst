@@ -202,8 +202,10 @@ Note these points:
   and it changes. Keep a copy (``b0 = np.array(engine.elementAmounts())``) and give the copy to ``equilibrate``.
 * The modes ``aia`` and ``sia`` ignore the targets. They do not raise an error.
 * A DBR file can give the targets in the optional fields ``pHtarget`` and ``Ehtarget``. GEMSGUI writes them
-  when the system recipe has a target. The engine uses them in the Optima modes. ``clearControlConditions()``
-  also removes them.
+  when the system recipe has a target. The engine uses them only in the Optima modes. In other modes it ignores
+  them and writes a warning. A value that is not a finite number is not used. A binary DBR file has no targets.
+* A DBR target replaces a target that you set with ``setpHTarget()`` or ``setEhTarget()``. Your target comes back
+  when a later DBR has no target. ``clearControlConditions()`` removes all targets.
 * A target can be impossible, for example an Eh in a system with no redox couple. The status can be OK and the
   target can be missed. Compare ``engine.pH()`` and ``engine.Eh()`` with the target.
 * A target very near a water stability line can be outside the water window of the model. The call then fails, correctly.
