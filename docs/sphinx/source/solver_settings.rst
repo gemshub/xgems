@@ -225,7 +225,7 @@ Optima stops a solve that makes no progress and tries again. A failed warm calcu
      - Corrects a small error in the element totals before it accepts a nearly converged result. It helps systems with very little water.
    * - ``pa_OptimaZeroAbsent``
      - 3
-     - Sets how the result shows absent phases. 3 = 0 mol, by the same rule as the GEMS3K IPM solver. 2 = very small floor amounts.
+     - Sets how the result shows absent phases. 3 = 0 mol, by the same rule as the GEMS3K IPM solver. A trace species of a present phase also gets its real amount. 2 = very small floor amounts.
    * - ``pa_OptimaRedoxFree``
      - 1
      - Writes a log message if the bulk composition does not fix the redox level. 2 = also aim at pe 4 when you give no pH or Eh target. 0 = off.

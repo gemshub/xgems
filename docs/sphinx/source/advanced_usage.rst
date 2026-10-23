@@ -167,6 +167,7 @@ Both solvers use the same rule to decide that a phase is absent.
 The GEMS3K IPM solver sets an absent phase to 0 mol.
 Optima cannot reach exactly 0. It sets an absent phase to 0 after the calculation (``pa_OptimaZeroAbsent = 3``, the default).
 If 0 would break the balance of an element, the phase keeps a very small floor amount.
+A trace species of a present solution phase does not stay on the floor. It gets the amount that the result gives it.
 
 ``presentPhasesRel()`` does not show these floor phases.
 It does not use a limit in mol, so it keeps real trace phases.
