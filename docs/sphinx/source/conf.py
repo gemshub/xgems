@@ -46,7 +46,9 @@ if _is_prerelease():
 project = 'xGEMS'
 copyright = '2025, GEMS Team'
 author = 'G.D. Miron, Allan Leal, Dmitrii Kulik'
-release = '2.2.0'
+# The version is read from the top-level CMakeLists.txt
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'CMakeLists.txt')) as f:
+    release = re.search(r'project\(xGEMS VERSION ([0-9.]+)', f.read()).group(1)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

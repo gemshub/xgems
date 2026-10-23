@@ -53,7 +53,7 @@ jobs:
       - name: Install conda-build
         shell: bash -el {0}
         run: conda install -n base -y conda-build conda-forge-pinning  # base: that is where `conda build` is looked up
-      - name: Read the GEMS3K version from its CMakeLists.txt
+      - name: Read the GEMS3K and xGEMS versions from their CMakeLists.txt
         shell: bash -el {0}
         run: |
           RAW="${GEMS3K_REPO%.git}/${GEMS3K_BRANCH}/CMakeLists.txt"
@@ -61,6 +61,9 @@ jobs:
           V="$(curl -fsSL "$RAW" | sed -n 's/^project(GEMS3K VERSION \([0-9.]*\).*/\1/p')"
           [ -n "$V" ] || { echo "::error::GEMS3K version not found in $RAW"; exit 1; }
           echo "GEMS3K_VERSION=$V" >> "$GITHUB_ENV"
+          XV="$(sed -n 's/^project(xGEMS VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)"
+          [ -n "$XV" ] || { echo "::error::xGEMS version not found in CMakeLists.txt"; exit 1; }
+          echo "XGEMS_VERSION=$XV" >> "$GITHUB_ENV"
       - name: Build base packages once, then python packages per python version
         shell: bash -el {0}
         run: |

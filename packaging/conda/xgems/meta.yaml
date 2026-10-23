@@ -1,4 +1,4 @@
-{% set version = "2.2.0" %}
+{% set version = load_file_regex(load_file="CMakeLists.txt", regex_pattern="project\\(xGEMS VERSION ([0-9.]+)").group(1) %}
 
 package:
   name: xgems

@@ -1,4 +1,4 @@
-{% set version = environ.get("GEMS3K_VERSION", "5.2.0") %}
+{% set version = environ["GEMS3K_VERSION"] %}
 
 package:
   name: gems3k
