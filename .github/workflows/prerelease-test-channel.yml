@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-version: latest
+          miniforge-version: 26.7.2-1   # 26.9.4-0 fails in "conda init --all" on Windows; unpin when fixed
           channels: ${{ env.UPSTREAM_CHANNEL }}
           channel-priority: strict
           auto-activate-base: true
@@ -109,7 +109,7 @@ jobs:
           path: dl
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-version: latest
+          miniforge-version: 26.7.2-1   # 26.9.4-0 fails in "conda init --all" on Windows; unpin when fixed
           channels: ${{ env.UPSTREAM_CHANNEL }}
       - name: Index channel
         shell: bash -el {0}
