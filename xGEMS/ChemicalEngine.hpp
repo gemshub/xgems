@@ -32,6 +32,8 @@
 #include <string>
 #include <optional>
 #include <map>
+#include <utility>
+#include <vector>
 
 // xGEMS includes (assumed to define Index and Eigen-based vector/matrix types)
 #include <xGEMS/Index.hpp>
@@ -44,6 +46,20 @@ namespace xGEMS
 class Material;
 
   /**
+   * @brief Default minimum amount (mol) given to an element that the bulk composition does not contain.
+   *
+   * Each element of the chemical system needs an amount larger than zero in the solver.
+   * Thus xGEMS gives a small amount to each element that is not in the bulk composition.
+   *
+   * The Optima solver modes keep each species above a floor amount.
+   * If the amount of an element is smaller than its species need at this floor, GEMS3K repairs the mass balance
+   * after the solve. GEMS3K then writes the warning "N element(s) have less material than the solver's floor amount allows".
+   * The default 1e-11 mol is large enough for most systems.
+   * Use `min_amount` (or `Material::min_amount`) to set another value.
+   */
+  constexpr double default_min_element_amount = 1.0e-11;
+
+  /**
    * @brief Updates logger settings.
    *
    * Configures logging behavior for the ChemicalEngine.
@@ -51,6 +67,17 @@ class Material;
    * @param use_cout If true, prints log messages to stdout.
    * @param logfile_name The filename for a rotating log file. If empty, file logging is disabled.
    * @param log_level Verbosity level for logging (trace = 0, debug = 1, info = 2, warn = 3, err = 4, critical = 5, off = 6 ).
+   *
+   * xGEMS creates the log file when the first message is written to it.
+   * Thus no empty file stays when nothing is logged (for example with `log_level` = 6).
+   *
+   * The Optima solver writes its warnings at warning level.
+   * An example is "Proceeding with linear-search algorithm even though current Newton step is not a descent direction".
+   * These warnings go to the console if `use_cout` is true and `log_level` <= 3.
+   * They go to the log file if you give a file name. With `log_level` >= 4, xGEMS does not log them.
+   *
+   * The GEMS3K logging documentation describes each value, the loggers and the configuration file:
+   * https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md
    *
    * @code
    * // Example: Enable stdout logging and log to "chemical_log.txt" with verbosity level 2.
@@ -79,6 +106,37 @@ class Material;
     /// Use smart start initial approximation (faster convergence, may be less accurate).
     bool warmstart = false;
     bool print_zero_amounts = false; // print zero amounts in the output
+
+    /// Solver mode. "aia": GEMS3K IPM solver, cold start. "sia": GEMS3K IPM solver, warm start.
+    /// "aop": Optima solver, cold start. "sop": Optima solver, warm start.
+    /// "hop": IPM solver, then an Optima check, cold start. "shp": the same, warm start.
+    /// If `warmstart` is set, "aia" runs as "sia", "aop" as "sop" and "hop" as "shp".
+    std::string solver_mode = "aia";
+  };
+
+  /**
+   * @brief Result of ChemicalEngine::traceRegimes() for one trace element.
+   */
+  struct TraceRegime
+  {
+    /// Element index (the index setB()/elementAmounts() use).
+    Index element = -1;
+    /// Element name.
+    std::string name;
+    /// Bulk amount as given (mol).
+    double amount = 0.;
+    /// LINEAR (phase fractions unchanged at every factor), SATURATED (a pure
+    /// phase of the element is present and its dissolved amount is constant),
+    /// BOUNDARY (a pure phase of the element appears or disappears), NONLINEAR,
+    /// STRANDED (all of it is in one multi-species phase present in a trace
+    /// amount; may be combined, e.g. "STRANDED+NONLINEAR") or FAILED.
+    std::string verdict;
+    /// Largest change of a phase fraction over the factors.
+    double maxFractionChange = 0.;
+    /// Fractions of the element per phase (> 1e-4), largest first.
+    std::vector<std::pair<std::string, double>> phases;
+    /// Phases that appear or disappear across the factors.
+    std::vector<std::string> boundaryPhases;
   };
 
   /**
@@ -741,6 +799,81 @@ class Material;
     auto setColdStart() -> void;
 
     /**
+     * @brief Selects the solver used by subsequent equilibrations.
+     *
+     * @param mode "aia", "sia", "aop", "sop", "hop" or "shp" (case-insensitive). The default is "aia".
+     * @throws std::runtime_error for an unknown mode, or for an Optima mode
+     *         when GEMS3K was built without Optima.
+     *
+     * @code
+     * engine.setSolverMode("aop");
+     * @endcode
+     */
+    auto setSolverMode(const std::string& mode) -> void;
+
+    /// Returns the solver mode that runs: "aia", "sia", "aop", "sop", "hop" or "shp".
+    /// A set `warmstart` changes "aia" to "sia", "aop" to "sop" and "hop" to "shp".
+    auto solverMode() const -> std::string;
+
+    /// Whether the linked GEMS3K was built with the Optima solver.
+    static auto builtWithOptima() -> bool;
+
+    /**
+     * @brief Fixes the pH. The solver finds the titrant amount in the equilibrium calculation.
+     *
+     * The target applies to the Optima modes ("aop", "sop", "hop" and "shp"). It stays active until clearControlConditions().
+     * The modes "aia" and "sia" ignore the target and do not raise an error.
+     * Then the pH is free and controlConditionTitrant() returns 0.
+     *
+     * The titrant becomes part of the bulk composition of the engine.
+     * elementAmounts() returns a live view of this composition.
+     * Copy the original amounts first if the next calculation must start from them.
+     * controlConditionTitrant() gives the amount added.
+     *
+     * @param pH_target Requested pH.
+     * @param tolerance Tolerance on the achieved pH; negative uses the default.
+     * @throws std::runtime_error if GEMS3K was built without Optima.
+     */
+    auto setpHTarget(double pH_target, double tolerance = -1.) -> void;
+
+    /**
+     * @brief Constrains Eh (V); see setpHTarget().
+     * @throws std::runtime_error if GEMS3K was built without Optima.
+     */
+    auto setEhTarget(double Eh_target, double tolerance = -1.) -> void;
+
+    /// Removes every registered pH/Eh control condition.
+    auto clearControlConditions() -> void;
+
+    /// Returns the titrant amount (mol) for the "pH" or "Eh" condition in the last equilibration.
+    /// The value is 0 if the condition was not active.
+    auto controlConditionTitrant(const std::string& name) const -> double;
+
+    /**
+     * @brief Classifies how each trace element partitions between phases.
+     *
+     * Re-solves the system cold, in the current solver mode, with all trace
+     * element amounts scaled by each factor, and compares the phase fractions.
+     * The engine state is restored afterwards.
+     *
+     * @param factors Multipliers applied to the trace amounts.
+     * @param traceRel An element is trace when its amount is at most traceRel
+     *                 times the total bulk amount; ignored when ofInterest is given.
+     * @param tol Largest phase-fraction change counted as LINEAR.
+     * @param ofInterest Element names to check; empty checks every trace element.
+     * @return One TraceRegime per checked element, in element order.
+     *
+     * @code
+     * engine.equilibrate(T, P, b);
+     * for (auto& r : engine.traceRegimes({0.1, 10.}, 1e-6, 1e-3, {"Cs", "Sr"}))
+     *     std::cout << r.name << " " << r.verdict << "\n";
+     * @endcode
+     */
+    auto traceRegimes(const std::vector<double>& factors = {0.1, 10.}, double traceRel = 1e-6,
+                      double tol = 1e-3, const std::vector<std::string>& ofInterest = {})
+        -> std::vector<TraceRegime>;
+
+    /**
      * @brief Sets an upper bound for a species identified by name.
      *
      * If amount < 0, resets to default 1e6.
@@ -944,15 +1077,22 @@ class Material;
      * @endcode
      *
      * - 0: No GEM re-calculation needed
-     * - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-     * - 2: OK after GEM calculation with LPP AIA
-     * - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-     * - 4: Failure (no result) in GEM calculation with LPP AIA
-     * - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-     * - 6: OK after GEM calculation with SIA
-     * - 7: Bad (not fully trustful) result after GEM calculation with SIA
-     * - 8: Failure (no result) in GEM calculation with SIA
      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+     *
+     * For the other results, the code depends on the solver mode that ran (see setSolverMode()):
+     *
+     * | Mode | OK | Bad (result not fully trustworthy) | Failure (no result) |
+     * |------|----|------------------------------------|---------------------|
+     * | aia | 2 | 3 | 4 |
+     * | sia | 6 | 7 | 8 |
+     * | aop | 11 | 12 | 13 |
+     * | sop | 15 | 16 | 17 |
+     * | hop | 23 | 24 | 25 |
+     * | shp | 27 | 28 | 29 |
+     *
+     * OK: the result can be used. Bad: there is a result, but check it. The modes aop, sop, hop and shp need
+     * GEMS3K built with Optima.
+     * The solver modes are explained in the Solver Guide page of the documentation.
      */
     auto reequilibrate(bool warmstart) -> int;
 
@@ -967,15 +1107,22 @@ class Material;
      * @endcode
      *
      * - 0: No GEM re-calculation needed
-     * - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-     * - 2: OK after GEM calculation with LPP AIA
-     * - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-     * - 4: Failure (no result) in GEM calculation with LPP AIA
-     * - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-     * - 6: OK after GEM calculation with SIA
-     * - 7: Bad (not fully trustful) result after GEM calculation with SIA
-     * - 8: Failure (no result) in GEM calculation with SIA
      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+     *
+     * For the other results, the code depends on the solver mode that ran (see setSolverMode()):
+     *
+     * | Mode | OK | Bad (result not fully trustworthy) | Failure (no result) |
+     * |------|----|------------------------------------|---------------------|
+     * | aia | 2 | 3 | 4 |
+     * | sia | 6 | 7 | 8 |
+     * | aop | 11 | 12 | 13 |
+     * | sop | 15 | 16 | 17 |
+     * | hop | 23 | 24 | 25 |
+     * | shp | 27 | 28 | 29 |
+     *
+     * OK: the result can be used. Bad: there is a result, but check it. The modes aop, sop, hop and shp need
+     * GEMS3K built with Optima.
+     * The solver modes are explained in the Solver Guide page of the documentation.
      */
     auto reequilibrate() -> int;
 
@@ -1000,15 +1147,22 @@ class Material;
      * int retcode = engine.equilibrate(298.15, 101325, b);
      * @endcode
      * - 0: No GEM re-calculation needed
-     * - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-     * - 2: OK after GEM calculation with LPP AIA
-     * - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-     * - 4: Failure (no result) in GEM calculation with LPP AIA
-     * - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-     * - 6: OK after GEM calculation with SIA
-     * - 7: Bad (not fully trustful) result after GEM calculation with SIA
-     * - 8: Failure (no result) in GEM calculation with SIA
      * - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+     *
+     * For the other results, the code depends on the solver mode that ran (see setSolverMode()):
+     *
+     * | Mode | OK | Bad (result not fully trustworthy) | Failure (no result) |
+     * |------|----|------------------------------------|---------------------|
+     * | aia | 2 | 3 | 4 |
+     * | sia | 6 | 7 | 8 |
+     * | aop | 11 | 12 | 13 |
+     * | sop | 15 | 16 | 17 |
+     * | hop | 23 | 24 | 25 |
+     * | shp | 27 | 28 | 29 |
+     *
+     * OK: the result can be used. Bad: there is a result, but check it. The modes aop, sop, hop and shp need
+     * GEMS3K built with Optima.
+     * The solver modes are explained in the Solver Guide page of the documentation.
      */
     auto equilibrate(double T, double P, VectorConstRef b) -> int;
 
@@ -1034,7 +1188,7 @@ class Material;
     /**
      * @brief Checks if the equilibrium calculation converged.
      *
-     * @return (bool) True if converged, false otherwise.
+     * @return (bool) True if the last calculation ended with a good result in any solver mode, false otherwise.
      *
      * @code
      * // Example: Check convergence status.
@@ -1055,6 +1209,28 @@ class Material;
      * @endcode
      */
     auto numIterations() const -> Index;
+
+    /**
+     * @brief Returns the rescue step that made the last result.
+     *
+     * GEMS3K tries a failed call again in steps. The setting `pa_FailRescue` in the `-ipm` file controls this.
+     * - 0: the call itself
+     * - 1: a warm restart
+     * - 2: a composition that changes by a very small amount
+     * - 3: a walk from the previous result
+     * - 4: looser settings
+     * - 5: the other solver
+     * - 6: the best balanced attempt. Its status is always BAD.
+     *
+     * @return (Index) The rescue step, from 0 to 6.
+     *
+     * @code
+     * engine.reequilibrate();
+     * if (engine.rescueStep() == 6)
+     *     std::cerr << "no good result; the best balanced attempt was returned" << std::endl;
+     * @endcode
+     */
+    auto rescueStep() const -> Index;
 
     /**
      * @brief Returns the elapsed time of the equilibrium computation.
@@ -2536,6 +2712,46 @@ class Material;
      * @endcode
      */
     auto presentPhases(double threshold = 1e-12) const -> std::vector<std::string>;
+
+    /**
+     * @brief Returns true if a phase is present.
+     *
+     * A phase is present when its amount is above 0 and the solver did not mark it as absent.
+     * Both solvers decide by the same rule when a phase is absent. The Optima solver can keep an absent
+     * phase at a very small floor amount; such a phase is not present.
+     *
+     * @param iphase (Index) Phase index.
+     * @param relFloor (double) If above 0, a phase below this share of the total phase amount is also
+     *        absent. Default 0 (off). This test can also hide real trace phases.
+     * @return (bool) True if the phase is present.
+     *
+     * @code
+     * bool calcite_present = engine.phasePresentRel(engine.indexPhase("Calcite"));
+     * @endcode
+     */
+    auto phasePresentRel(Index iphase, double relFloor = 0.) const -> bool;
+
+    /**
+     * @brief Returns true if a phase identified by name is present under the rule of phasePresentRel().
+     *
+     * @param phase (std::string) Phase name.
+     * @param relFloor (double) Optional share test, see phasePresentRel(). Default 0 (off).
+     * @return (bool) True if the phase is present.
+     */
+    auto phasePresentRel(std::string phase, double relFloor = 0.) const -> bool;
+
+    /**
+     * @brief Returns the names of all phases that are present under the rule of phasePresentRel().
+     *
+     * @param relFloor (double) Optional share test, see phasePresentRel(). Default 0 (off).
+     * @return (std::vector<std::string>) Names of present phases.
+     *
+     * @code
+     * for (auto& name : engine.presentPhasesRel())
+     *     std::cout << name << std::endl;
+     * @endcode
+     */
+    auto presentPhasesRel(double relFloor = 0.) const -> std::vector<std::string>;
 
     // -----------------------------------------------------------------------
     // Reaction thermodynamics

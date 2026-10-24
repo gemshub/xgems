@@ -359,7 +359,7 @@ public:
      *
      * Natural form for ChemicalEngineMaps users. Includes one entry
      * per engine element; each non-``Zz`` value is clamped to at least
-     * ``min_amount`` (default 1e-15). ``Zz`` is always 0.
+     * ``min_amount`` (default 1e-11). ``Zz`` is always 0.
      *
      * @return (ElementMap) {element_name: total moles}.
      * @throws std::runtime_error if no engine is bound.
@@ -392,7 +392,7 @@ public:
      * @brief Minimum [mol] returned for each non-``Zz`` entry in ``b()`` / ``bMap()``.
      *
      * The GEM solver requires strictly positive bulk amounts. Any non-``Zz``
-     * entry below this value is raised to the floor (default 1e-15 mol).
+     * entry below this value is raised to the floor (default 1e-11 mol).
      * Set to 0.0 to disable the clamp and pass exact recipe amounts to the solver.
      */
     auto minAmount() const -> double;
@@ -432,7 +432,7 @@ private:
     std::shared_ptr<const MaterialEngineAdapter> adapter_;
     std::string           name_{"material"};
     std::vector<Constituent> constituents_;
-    double                min_amount_{1.0e-15};
+    double                min_amount_{default_min_element_amount};
 
     /// Compute the molar mass of a formula (kg/mol) using the engine's
     /// element-molar-mass table. Throws if no engine bound or if the

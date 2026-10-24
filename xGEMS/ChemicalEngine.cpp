@@ -19,10 +19,13 @@
 #include "Material.hpp"
 
 // C++ includes
+#include <cctype>
 #include <chrono>
 #include <cmath>
 #include <iomanip>
 #include <memory>
+#include <stdexcept>
+#include <string>
 
 // GEMS3K includes
 // #define IPMGEMPLUGIN
@@ -36,6 +39,40 @@
 
 namespace xGEMS
 {
+    namespace
+    {
+        /// Lower-cased copy, for case-insensitive mode names.
+        auto lower( std::string s ) -> std::string
+        {
+            for( auto& c : s ) c = (char)std::tolower((unsigned char)c);
+            return s;
+        }
+
+        /// NodeStatusCH value for a solver mode. `warmstart` turns "aia" into "sia", "aop"
+        /// into "sop" and "hop" into "shp".
+        auto nodeStatusFor( const std::string& mode, bool warmstart ) -> long int
+        {
+            const auto m = lower( mode );
+            if( m == "aia" ) return warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            if( m == "sia" ) return NEED_GEM_SIA;
+#ifdef USE_OPTIMA_SOLVER
+            if( m == "aop" ) return warmstart ? NEED_GEM_SOP : NEED_GEM_AOP;
+            if( m == "sop" ) return NEED_GEM_SOP;
+            if( m == "hop" ) return warmstart ? NEED_GEM_SHP : NEED_GEM_HOP;
+            if( m == "shp" ) return NEED_GEM_SHP;
+#endif
+            throw std::runtime_error(
+                "xGEMS: unknown or unavailable solver mode '" + mode + "'. "
+                "Expected one of: aia, sia, aop, sop, hop, shp"
+#ifndef USE_OPTIMA_SOLVER
+                " -- but this xGEMS was built against a GEMS3K WITHOUT Optima, "
+                "so only 'aia' and 'sia' are available. Rebuild GEMS3K with "
+                "-DUSE_OPTIMA_SOLVER=ON."
+#endif
+                );
+        }
+    } // namespace
+
 
     void update_loggers(bool use_cout, const std::string &logfile_name, size_t log_level)
     {
@@ -58,6 +95,9 @@ namespace xGEMS
 
         /// The formula matrix of the species
         Matrix formula_matrix;
+
+        /// Last solver mode that was accepted (restored when assigned options are rejected)
+        std::string valid_mode = "aia";
 
         /// The elapsed time of the equilibrate method (in units of s)
         double elapsed_time = 0;
@@ -614,7 +654,21 @@ namespace xGEMS
 
     auto ChemicalEngine::setOptions(const ChemicalEngineOptions &options) -> void
     {
+        // reject an unknown or unavailable solver mode up front
+        try
+        {
+            nodeStatusFor( options.solver_mode, options.warmstart );
+        }
+        catch( ... )
+        {
+            // `options` may be the engine's own options (Python hands out a live reference), so
+            // put the last accepted mode back and the engine stays usable
+            pimpl->options.solver_mode = pimpl->valid_mode;
+            throw;
+        }
         pimpl->options = options;
+        pimpl->options.solver_mode = lower( options.solver_mode );
+        pimpl->valid_mode = pimpl->options.solver_mode;
     }
 
     auto ChemicalEngine::setWarmStart() -> void
@@ -625,6 +679,11 @@ namespace xGEMS
     auto ChemicalEngine::setColdStart() -> void
     {
         pimpl->options.warmstart = false;
+        // a cold start also makes an explicit warm mode cold
+        const auto m = lower( pimpl->options.solver_mode );
+        if( m == "sia" ) pimpl->options.solver_mode = "aia";
+        if( m == "sop" ) pimpl->options.solver_mode = "aop";
+        if( m == "shp" ) pimpl->options.solver_mode = "hop";
     }
 
     auto ChemicalEngine::setPT(double P, double T) const -> bool
@@ -652,7 +711,7 @@ namespace xGEMS
         auto begin = std::chrono::high_resolution_clock::now();
         // Solve the equilibrium problem with gems
         pimpl->node->pCNode()->NodeStatusCH =
-            pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            nodeStatusFor( pimpl->options.solver_mode, pimpl->options.warmstart );
         auto valueOutputGem = pimpl->node->GEM_run(false);
         // Finish timing
         auto end = std::chrono::high_resolution_clock::now();
@@ -681,7 +740,7 @@ namespace xGEMS
 
         // Solve the equilibrium problem with gems
         pimpl->node->pCNode()->NodeStatusCH =
-            pimpl->options.warmstart ? NEED_GEM_SIA : NEED_GEM_AIA;
+            nodeStatusFor( pimpl->options.solver_mode, pimpl->options.warmstart );
         auto valueOutputGem = pimpl->node->GEM_run(false);
 
         // Finish timing
@@ -690,6 +749,101 @@ namespace xGEMS
         // Set the elapsed time member
         pimpl->elapsed_time = std::chrono::duration<double>(end - begin).count();
         return valueOutputGem;
+    }
+
+    auto ChemicalEngine::setSolverMode(const std::string& mode) -> void
+    {
+        nodeStatusFor( mode, pimpl->options.warmstart );
+        pimpl->options.solver_mode = lower( mode );
+        pimpl->valid_mode = pimpl->options.solver_mode;
+    }
+
+    auto ChemicalEngine::solverMode() const -> std::string
+    {
+        const auto m = lower( pimpl->options.solver_mode );
+        // the mode actually run: the warm start flag turns a cold mode into its warm one
+        const bool warm = pimpl->options.warmstart;
+        if( m == "aia" || m == "sia" )
+            return ( m == "sia" || warm ) ? "sia" : "aia";
+        if( m == "hop" || m == "shp" )
+            return ( m == "shp" || warm ) ? "shp" : "hop";
+        return ( m == "sop" || warm ) ? "sop" : "aop";
+    }
+
+    auto ChemicalEngine::builtWithOptima() -> bool
+    {
+#ifdef USE_OPTIMA_SOLVER
+        return true;
+#else
+        return false;
+#endif
+    }
+
+#ifdef USE_OPTIMA_SOLVER
+    auto ChemicalEngine::setpHTarget(double pH_target, double tolerance) -> void
+    {
+        pimpl->node->Set_pH_target(pH_target, tolerance);
+    }
+
+    auto ChemicalEngine::setEhTarget(double Eh_target, double tolerance) -> void
+    {
+        pimpl->node->Set_Eh_target(Eh_target, tolerance);
+    }
+
+    auto ChemicalEngine::clearControlConditions() -> void
+    {
+        pimpl->node->Clear_ControlConditions();
+    }
+
+    auto ChemicalEngine::controlConditionTitrant(const std::string& name) const -> double
+    {
+        return pimpl->node->Get_ControlCondition_titrant(name);
+    }
+#else
+    auto ChemicalEngine::setpHTarget(double, double) -> void
+    {
+        throw std::runtime_error("xGEMS: setpHTarget() needs a GEMS3K built with "
+                                 "-DUSE_OPTIMA_SOLVER=ON");
+    }
+    auto ChemicalEngine::setEhTarget(double, double) -> void
+    {
+        throw std::runtime_error("xGEMS: setEhTarget() needs a GEMS3K built with "
+                                 "-DUSE_OPTIMA_SOLVER=ON");
+    }
+    auto ChemicalEngine::clearControlConditions() -> void {}
+    auto ChemicalEngine::controlConditionTitrant(const std::string&) const -> double
+    {
+        return 0.;
+    }
+#endif
+
+    auto ChemicalEngine::traceRegimes(const std::vector<double>& factors, double traceRel, double tol,
+                                      const std::vector<std::string>& ofInterest) -> std::vector<TraceRegime>
+    {
+        // cold re-solves: "sia" runs AIA, "sop" runs AOP and "shp" runs HOP
+        long int mode = nodeStatusFor( pimpl->options.solver_mode, false );
+        if( mode == NEED_GEM_SIA )
+            mode = NEED_GEM_AIA;
+#ifdef USE_OPTIMA_SOLVER
+        if( mode == NEED_GEM_SOP )
+            mode = NEED_GEM_AOP;
+        if( mode == NEED_GEM_SHP )
+            mode = NEED_GEM_HOP;
+#endif
+        std::vector<TraceRegime> out;
+        for( const auto& r : pimpl->node->GEM_trace_regimes( factors, traceRel, tol, mode, ofInterest ) )
+        {
+            TraceRegime t;
+            t.element = r.xIC;
+            t.name = r.name;
+            t.amount = r.amount;
+            t.verdict = r.verdict;
+            t.maxFractionChange = r.maxFractionChange;
+            t.phases = r.phases;
+            t.boundaryPhases = r.boundaryPhases;
+            out.push_back( std::move( t ) );
+        }
+        return out;
     }
 
     auto ChemicalEngine::equilibrate(double T, double P, const Material& material) -> int
@@ -753,12 +907,20 @@ namespace xGEMS
     auto ChemicalEngine::converged() const -> bool
     {
         const auto status = pimpl->node->pCNode()->NodeStatusCH;
-        return status == OK_GEM_AIA || status == OK_GEM_SIA;
+        // a good result in any solver mode
+        return status == OK_GEM_AIA || status == OK_GEM_SIA
+            || status == OK_GEM_AOP || status == OK_GEM_SOP || status == OK_GEM_ROP
+            || status == OK_GEM_HOP || status == OK_GEM_SHP;
     }
 
     auto ChemicalEngine::numIterations() const -> Index
     {
         return pimpl->node->pCNode()->IterDone;
+    }
+
+    auto ChemicalEngine::rescueStep() const -> Index
+    {
+        return pimpl->node->GEM_rescue_step();
     }
 
     auto ChemicalEngine::elapsedTime() const -> double
@@ -2008,6 +2170,28 @@ namespace xGEMS
         std::vector<std::string> result;
         for (Index i = 0; i < numPhases(); ++i)
             if (phaseAmount_i(i) > threshold)
+                result.push_back(phaseName_i(i));
+        return result;
+    }
+
+    auto ChemicalEngine::phasePresentRel(Index iphase, double relFloor) const -> bool
+    {
+        if (!pimpl->node->check_Phase_xCH(iphase)) return false;
+        return pimpl->node->Ph_Present(iphase, relFloor);
+    }
+
+    auto ChemicalEngine::phasePresentRel(std::string phase, double relFloor) const -> bool
+    {
+        auto iphase = indexPhase(phase);
+        if (iphase >= numPhases()) return false;
+        return pimpl->node->Ph_Present(iphase, relFloor);
+    }
+
+    auto ChemicalEngine::presentPhasesRel(double relFloor) const -> std::vector<std::string>
+    {
+        std::vector<std::string> result;
+        for (Index i = 0; i < numPhases(); ++i)
+            if (pimpl->node->Ph_Present(i, relFloor))
                 result.push_back(phaseName_i(i));
         return result;
     }
