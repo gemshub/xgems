@@ -458,7 +458,7 @@ class Material;
      * @brief Returns the electrical charge of a species identified by name.
      *
      * @param species (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (double) Charge of the species.
      *
      * @code
@@ -532,7 +532,7 @@ class Material;
      * @brief Returns the index of a species by name.
      *
      * @param species (std::string) Name of the species.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (Index) Index of the species (or total species if not found).
      *
      * @code
@@ -705,7 +705,7 @@ class Material;
      *
      * @param name (std::string) Species name.
      * @param amount (double) New amount in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the amount of "CaSO4@" to 0.01 mol.
@@ -880,7 +880,7 @@ class Material;
      *
      * @param name (std::string) Species name.
      * @param amount (double) Upper limit in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the upper limit for "SiO2" to 0.1 mol.
@@ -896,7 +896,7 @@ class Material;
      *
      * @param name (std::string) Species name.
      * @param amount (double) Lower limit in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the lower limit for "SiO2" to 0.05 mol.
@@ -974,7 +974,7 @@ class Material;
      *
      * @param name (std::string) Species name.
      * @param value (double) Standard molar Gibbs energy in J/mol.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Set the standard molar Gibbs energy of H2O.
@@ -1388,7 +1388,7 @@ class Material;
      *
      * @param name (std::string) Species name.
      * @return (double) Amount in mol.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * // Example: Get the amount of "OH-".
@@ -1527,7 +1527,7 @@ class Material;
      * @brief Returns the standard molar Gibbs energy of a species.
      *
      * @param species (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (double) Standard molar Gibbs energy in J/mol.
      *
      * @code
@@ -1568,7 +1568,7 @@ class Material;
      * @brief Returns the standard molar enthalpy of a species.
      *
      * @param species (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (double) Standard molar enthalpy in J/mol.
      *
      * @code
@@ -1607,7 +1607,7 @@ class Material;
      * @brief Returns the standard molar volume of a species.
      *
      * @param species (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (double) Standard molar volume in m³/mol.
      *
      * @code
@@ -1646,7 +1646,7 @@ class Material;
      * @brief Returns the standard molar entropy of a species.
      *
      * @param species (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (double) Standard molar entropy in J/(mol·K).
      *
      * @code
@@ -1685,7 +1685,7 @@ class Material;
      * @brief Returns the standard molar isobaric heat capacity of a species.
      *
      * @param species (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      * @return (double) Heat capacity in J/(mol·K).
      *
      * @code
