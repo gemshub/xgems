@@ -270,7 +270,7 @@ Return the bulk-composition vector ``b`` indexed by the engine's
 element list (length ``engine.numElements()``).
 
 Each non-``Zz`` engine element is clamped to at least ``min_amount``
-(default 1e-15). The charge element ``Zz`` is always 0. Ready to be passed to
+(default 1e-11). The charge element ``Zz`` is always 0. Ready to be passed to
 ``engine.equilibrate(T, P, b)``.
 
 **Example:**
@@ -286,7 +286,7 @@ Return the bulk-composition as a ``{element_name: moles}`` dict.
 
 Natural form for ChemicalEngineDicts users. Includes one entry per
 engine element; each non-``Zz`` value is clamped to at least
-``min_amount`` (default 1e-15). ``Zz`` is always 0.
+``min_amount`` (default 1e-11). ``Zz`` is always 0.
 
 **Example:**
 
@@ -313,7 +313,7 @@ engine element; each non-``Zz`` value is clamped to at least
 Minimum [mol] returned for each non-``Zz`` entry in ``b()`` and ``b_dict()``.
 
 The GEM solver requires strictly positive bulk amounts. Any non-``Zz``
-entry below this value is raised to the floor (default 1e-15). Set to
+entry below this value is raised to the floor (default 1e-11). Set to
 0.0 to disable the clamp and pass exact recipe amounts to the solver.
 
 **Example:**

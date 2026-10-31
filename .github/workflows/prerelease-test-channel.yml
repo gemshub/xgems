@@ -2,12 +2,15 @@
 # packages and publishes them as a static conda channel on the gh-pages branch of this repo:
 #   https://gemshub.github.io/xgems/prerelease
 # Testers install with:
-#   conda create -n xgems-optima --override-channels --strict-channel-priority \
+#   conda create -n xgems-prerelease --override-channels --strict-channel-priority \
 #     -c https://gemshub.github.io/xgems/prerelease -c conda-forge xgems
 # Requires: repo Settings > Pages > source = branch gh-pages (after the first run creates it).
 name: prerelease-test-channel
 on:
   workflow_dispatch:
+
+permissions:
+  contents: read   # the publish job asks for write access itself
 
 # ---- Settings: edit here ----------------------------------------------------------------------
 env:
@@ -43,28 +46,42 @@ jobs:
       - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-version: latest
+          miniforge-version: 26.7.2-1   # 26.9.4-0 fails in "conda init --all" on Windows; unpin when fixed
           channels: ${{ env.UPSTREAM_CHANNEL }}
           channel-priority: strict
           auto-activate-base: true
       - name: Install conda-build
         shell: bash -el {0}
-        run: conda install -y conda-build conda-forge-pinning
+        run: conda install -n base -y conda-build conda-forge-pinning  # base: that is where `conda build` is looked up
+      - name: Read the GEMS3K and xGEMS versions from their CMakeLists.txt
+        shell: bash -el {0}
+        run: |
+          RAW="${GEMS3K_REPO%.git}/${GEMS3K_BRANCH}/CMakeLists.txt"
+          RAW="${RAW/github.com/raw.githubusercontent.com}"
+          V="$(curl -fsSL "$RAW" | sed -n 's/^project(GEMS3K VERSION \([0-9.]*\).*/\1/p')"
+          [ -n "$V" ] || { echo "::error::GEMS3K version not found in $RAW"; exit 1; }
+          echo "GEMS3K_VERSION=$V" >> "$GITHUB_ENV"
+          XV="$(sed -n 's/^project(xGEMS VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)"
+          [ -n "$XV" ] || { echo "::error::xGEMS version not found in CMakeLists.txt"; exit 1; }
+          echo "XGEMS_VERSION=$XV" >> "$GITHUB_ENV"
       - name: Build base packages once, then python packages per python version
         shell: bash -el {0}
         run: |
-          PIN="$CONDA_PREFIX/conda_build_config.yaml"
+          PIN="$(conda info --base)/conda_build_config.yaml"
           build() {  # build() <recipe> [--variants "<variant>"]
             local r="$1"; shift
             conda build "$RECIPE_ROOT/$r" -m "$PIN" "$@" --output-folder "$BUILD_DIR" -c "$UPSTREAM_CHANNEL"
           }
-          for p in $BASE_PACKAGES; do build "$p"; done
+          for p in $BASE_PACKAGES; do build "$p" || { echo "::error::base package $p failed"; exit 1; }; done
           for v in $PYTHON_VERSIONS; do
             if ! VARIANT=$(python "$RECIPE_ROOT/python_variant.py" "$PIN" "$v"); then
               echo "::warning::python $v is not in the conda-forge pinning yet - skipped"; continue
             fi
             for p in $PYTHON_PACKAGES; do
-              build "$p" --variants "$VARIANT" || echo "::warning::$p failed for python $v"
+              build "$p" --variants "$VARIANT" || {
+                echo "::warning::$p failed for python $v"
+                echo "- $p failed for python $v" >> "$GITHUB_STEP_SUMMARY"  # the channel then lacks this variant
+              }
             done
           done
       - name: Collect the packages to publish
@@ -81,6 +98,7 @@ jobs:
 
   publish:
     needs: build
+    # Publish also when one platform fails (for example macOS or Windows): the channel then holds the platforms that built.
     if: always() && needs.build.result != 'cancelled'
     runs-on: ubuntu-latest
     permissions:
@@ -91,7 +109,7 @@ jobs:
           path: dl
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-version: latest
+          miniforge-version: 26.7.2-1   # 26.9.4-0 fails in "conda init --all" on Windows; unpin when fixed
           channels: ${{ env.UPSTREAM_CHANNEL }}
       - name: Index channel
         shell: bash -el {0}
@@ -103,6 +121,28 @@ jobs:
             mkdir -p "$PAGES_DIR/$CHANNEL_NAME/$sub"; cp "$d"/* "$PAGES_DIR/$CHANNEL_NAME/$sub/"
           done
           python -m conda_index "$PAGES_DIR/$CHANNEL_NAME"
+          find "$PAGES_DIR/$CHANNEL_NAME" -name .cache -prune -exec rm -rf {} +
+          # Landing page for humans (conda itself only reads <subdir>/repodata.json)
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${REPO_NAME}/${CHANNEL_NAME}"
+          PKGS=$(cd "$PAGES_DIR/$CHANNEL_NAME" && ls */*.conda 2>/dev/null | sed 's#^#<li>#; s#$#</li>#')
+          cat > "$PAGES_DIR/$CHANNEL_NAME/index.html" <<EOP
+          <!doctype html>
+          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>xgems prerelease channel</title>
+          <style>body{font-family:system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;line-height:1.5}
+          pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}@media(prefers-color-scheme:dark){body{background:#111;color:#ddd}pre{background:#222}}</style></head>
+          <body>
+          <h1>xgems prerelease conda channel</h1>
+          <p>Test builds of xGEMS with the Optima solver modes. GEMS3K (<code>${GEMS3K_BRANCH}</code>) and Optima (<code>${OPTIMA_BRANCH}</code>) are bundled into the xgems package. Not a release: it can change or disappear at any time.</p>
+          <h2>Install</h2>
+          <pre>conda create -n xgems-prerelease --override-channels --strict-channel-priority \\
+            -c ${URL} -c conda-forge xgems</pre>
+          <h2>Packages in this channel</h2>
+          <ul>${PKGS}</ul>
+          <p>Built from <a href="https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_REF_NAME}">${GITHUB_REPOSITORY}@${GITHUB_REF_NAME}</a> at ${GITHUB_SHA}. Platforms and Python versions are those listed above; others are not available.</p>
+          </body></html>
+          EOP
           touch "$PAGES_DIR/.nojekyll"
       - uses: peaceiris/actions-gh-pages@v4
         with:

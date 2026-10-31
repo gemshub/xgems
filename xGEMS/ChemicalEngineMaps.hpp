@@ -107,16 +107,13 @@ public:
      * std::string retcode = engine.equilibrate();
      * @endcode
      *
-     * - No GEM re-calculation needed
-     * - Need GEM calculation with LPP (automatic) initial approximation (AIA)
-     * - OK after GEM calculation with LPP AIA
-     * - Bad (not fully trustful) result after GEM calculation with LPP AIA
-     * - Failure (no result) in GEM calculation with LPP AIA
-     * - Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-     * - OK after GEM calculation with SIA
-     * - Bad (not fully trustful) result after GEM calculation with SIA
-     * - Failure (no result) in GEM calculation with SIA
-     * - Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+     * The returned text describes the status, for example "OK after GEM calculation with LPP AIA". It is one of:
+     *
+     * - "No GEM re-calculation needed"
+     * - "OK ...", "Bad (not fully trustful) result ..." or "Failure (no result) ..."
+     *   These words name the solver that ran: AIA, SIA, AOP, SOP, HOP or SHP.
+     *   The last four need a GEMS3K that is built with Optima.
+     * - "Terminal error in GEMS3K (e.g. memory corruption). Restart is required."
      */
     auto equilibrate() -> std::string;
 
@@ -129,7 +126,7 @@ public:
      * @param T_new Temperature in Kelvin (K).
      * @param P_new Pressure in Pascals (Pa).
      * @param b_dict (ValuesMap) Dictionary of element amounts in mol.
-     * @param min_amount (double) Minimum amount in mol for elements not in b_dict, default 1e-15.
+     * @param min_amount (double) Minimum amount in mol for elements not in b_dict, default 1e-11 (xGEMS::default_min_element_amount).
      * @return (std::string) Status string of the equilibrium solver.
      *
      * @code
@@ -137,7 +134,7 @@ public:
      * std::string retcode = engine.equilibrate(298.15, 101325.0, b);
      * @endcode
      */
-    auto equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount=1e-15) -> std::string;
+    auto equilibrate(double T_new, double P_new, ValuesMap b_dict, double min_amount=default_min_element_amount) -> std::string;
 
     /**
      * @brief Computes the equilibrium state from a Material recipe object.
@@ -148,7 +145,7 @@ public:
      * @param T_new Temperature in Kelvin (K).
      * @param P_new Pressure in Pascals (Pa).
      * @param material A Material object whose bMap() defines the bulk composition.
-     * @param min_amount Minimum amount in mol for elements absent from the material, default 1e-15.
+     * @param min_amount Minimum amount in mol for elements absent from the material, default 1e-11 (xGEMS::default_min_element_amount).
      * @return (std::string) Status string of the equilibrium solver.
      *
      * @code
@@ -157,7 +154,7 @@ public:
      * std::string retcode = engine.equilibrate(298.15, 101325.0, rock);
      * @endcode
      */
-    auto equilibrate(double T_new, double P_new, const Material& material, double min_amount=1e-15) -> std::string;
+    auto equilibrate(double T_new, double P_new, const Material& material, double min_amount=default_min_element_amount) -> std::string;
 
     /**
      * @brief Re-equilibrates the system using the current internal state (T, P, b).
@@ -185,13 +182,42 @@ public:
      */
     auto reequilibrate(bool warmstart) -> std::string;
 
+    /// Selects the GEMS3K solver: "aia", "sia", "aop", "sop", "hop" or "shp".
+    /// Forwards to ChemicalEngine::setSolverMode().
+    auto setSolverMode(const std::string& mode) -> void;
+
+    /// Whether the linked GEMS3K was built with the Optima solver.
+    /// Forwards to ChemicalEngine::builtWithOptima().
+    static auto builtWithOptima() -> bool;
+
+    /// The solver mode currently selected.
+    auto solverMode() const -> std::string;
+
+    /// Fixes the pH in the equilibrium solve (Optima modes only).
+    /// Forwards to ChemicalEngine::setpHTarget().
+    auto setpHTarget(double pH_target, double tolerance = -1.) -> void;
+
+    /// Fixes the Eh (V) in the equilibrium solve (Optima modes only).
+    auto setEhTarget(double Eh_target, double tolerance = -1.) -> void;
+
+    /// Removes every registered pH/Eh control condition.
+    auto clearControlConditions() -> void;
+
+    /// Returns the titrant amount for the named condition ("pH" or "Eh") in the last solve.
+    auto controlConditionTitrant(const std::string& name) const -> double;
+
+    /// Trace-element regimes keyed by element name; see ChemicalEngine::traceRegimes().
+    auto traceRegimes(const std::vector<double>& factors = {0.1, 10.}, double traceRel = 1e-6,
+                      double tol = 1e-3, const std::vector<std::string>& ofInterest = {})
+        -> std::map<std::string, TraceRegime>;
+
     /**
      * @brief Sets the pressure and temperature without computing equilibrium.
      *
      * Mirrors ChemicalEngine::setPT. Also updates the T and P member variables.
      *
-     * @param P Pressure in Pascals (Pa).
-     * @param T Temperature in Kelvin (K).
+     * @param P_new Pressure in Pascals (Pa).
+     * @param T_new Temperature in Kelvin (K).
      * @return (bool) true if PT was set correctly, false if out of range.
      *
      * @code
@@ -207,13 +233,13 @@ public:
      * Elements absent from b_dict are left unchanged (or set to min_amount if below it).
      *
      * @param b_input (ValuesMap) Dictionary of element amounts in mol.
-     * @param min_amount (double) Minimum amount in mol for elements not provided, default 1e-15.
+     * @param min_amount (double) Minimum amount in mol for elements not provided, default 1e-11 (xGEMS::default_min_element_amount).
      *
      * @code
      * engine.setB({ {"Ca", 0.001}, {"Cl", 0.002}, {"H", 110.0}, {"O", 55.0}, {"Zz", 0.0} });
      * @endcode
      */
-    auto setB(ValuesMap b_input, double min_amount=1e-15) -> void;
+    auto setB(ValuesMap b_input, double min_amount=default_min_element_amount) -> void;
 
     /**
      * @brief Returns the current temperature of the system after the last equilibration.
@@ -312,20 +338,20 @@ public:
     /**
      * @brief Clear the amounts of elements (set the default amount for all components).
      *
-     * @param min_amount (double) The minimum amount of element in mole, default 1e-15.
+     * @param min_amount (double) The minimum amount of element in mole, default 1e-11 (xGEMS::default_min_element_amount).
      *
      * @code
-     * engine.clear(1e-15);
+     * engine.clear();
      * @endcode
      */
-    auto clear(double min_amount=1e-15) -> void;
+    auto clear(double min_amount=default_min_element_amount) -> void;
 
     /**
      * @brief Sets the standard molar Gibbs energy for a species (@ T, P of the system).
      *
      * @param symbol (std::string) Species symbol.
      * @param value (double) Standard molar Gibbs energy in J/mol.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.set_species_G0("H2O", -237140); // Value in J/mol.
@@ -337,7 +363,7 @@ public:
      * @brief Sets the amounts of elements (vector b).
      *
      * @param b_input (ValuesMap) Dictionary of elements amounts in mol.
-     * @param min_amount (double) min amount of element in mol, default 1e-15.
+     * @param min_amount (double) min amount of element in mol, default 1e-11 (xGEMS::default_min_element_amount).
      *
      * @code
      * xGEMS::ValuesMap  bulk_composition = { {"C", 1e-08}, {"Ca", 1e-08}, {"Cl", 0.002},
@@ -346,7 +372,7 @@ public:
      * engine.set_bulk_composition(bulk_composition);
      * @endcode
      */
-    auto set_bulk_composition(ValuesMap b_input, double min_amount=1e-15) -> void;
+    auto set_bulk_composition(ValuesMap b_input, double min_amount=default_min_element_amount) -> void;
 
     /**
      * @brief Removes bulk elemental aqueous solution composition from vector b.
@@ -660,6 +686,18 @@ public:
      * @endcode
      */
     auto converged() -> bool;
+
+    /**
+     * @brief Returns the rescue step that made the last result (see ChemicalEngine::rescueStep()).
+     *
+     * @return (int) 0 = the call itself; 1 to 5 = a rescue step; 6 = the best balanced attempt (status BAD).
+     *
+     * @code
+     * if (engine.rescue_step() > 0)
+     *     std::cout << "rescued at step " << engine.rescue_step() << std::endl;
+     * @endcode
+     */
+    auto rescue_step() -> int;
 
     /**
      * @brief Returns the number of iterations of the last equilibrium computation.
@@ -977,6 +1015,21 @@ public:
      * @endcode
      */
     auto present_minerals(double threshold = 1e-12) -> std::vector<std::string>;
+
+    /**
+     * @brief Returns the names of all phases that hold more than a share of the total amount of all phases.
+     *
+     * This is the GEMS3K rule. It gives the same phases in the Optima modes and in the GEMS3K IPM modes.
+     *
+     * @param rel_floor (double) Share of the total phase amount, default 1e-9.
+     * @return (std::vector<std::string>) Names of present phases.
+     *
+     * @code
+     * for (auto& name : engine.present_phases_rel())
+     *     std::cout << name << std::endl;
+     * @endcode
+     */
+    auto present_phases_rel(double rel_floor = 1e-9) -> std::vector<std::string>;
 
     /**
      * @brief Returns true if the phase is the aqueous phase.
@@ -1452,7 +1505,7 @@ public:
      * @param species (std::string) Species symbol.
      * @param val (double) Species amount in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.add_species_amt("H2O@", 0.01, "kg");
@@ -1505,14 +1558,14 @@ public:
      * @param formula (ValuesMap) User defined formula.
      * @param val (double) Amount of the formula [object] in units, default 1.
      * @param units (std::string) Units of amount ("moles", "kg"), default "moles".
-     * @param min_amount (double) min amount of element in mol, default 1e-15.
+     * @param min_amount (double) min amount of element in mol, default 1e-11 (xGEMS::default_min_element_amount).
      * @return (VectorConstRef) Vector of element amounts in mol.
      *
      * @code
      * auto vect = engine.get_b_from_formula( {{"H",2},{"O",1}}, 0.1, "kg");
      * @endcode
      */
-    auto get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles", double min_amount=1e-15) -> Vector;
+    auto get_b_from_formula(const ValuesMap &formula, double val = 1, const std::string &units = "moles", double min_amount=default_min_element_amount) -> Vector;
 
     /**
      * @brief Sets an lower bound for multiple species.
@@ -1544,7 +1597,7 @@ public:
      * @param name (std::string) Species name.
      * @param val (double) Lower limit in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.set_species_lower_bound( "Ca(HCO3)+", 200, "moles");
@@ -1559,7 +1612,7 @@ public:
      * @param name (std::string) Species name.
      * @param val (double) Upper limit in units.
      * @param units (std::string) Units of amount ("moles", "kg", "m3"), default "moles".
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.set_species_upper_bound("CaOH+", 500, "kg");
@@ -1628,7 +1681,7 @@ public:
      * @param species_name (std::string) Species name.
      * @param min_amount (double) Lower amount of specie in mol, default 0.
      * @param max_amount (double) Upper amount of specie in mol, default 1e-15.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.suppress_species("Ca(CO3)@");
@@ -1687,7 +1740,7 @@ public:
      * @brief Activate a suppressed species in phase.
      *
      * @param species_name (std::string) Species name.
-     * @param optional phase (std::string) Name of the phase the species was included in. If default get the first index.
+     * @param phase (optional, std::string) Name of the phase the species was included in. If default get the first index.
      *
      * @code
      * engine.activate_species("Ca(CO3)@");

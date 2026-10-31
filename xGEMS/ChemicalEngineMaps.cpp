@@ -37,6 +37,28 @@ static std::map<int, std::string> _status_encoder = {
     { 7, "Bad (not fully trustful) result after GEM calculation with SIA"},
     { 8, "Failure (no result) in GEM calculation with SIA"},
     { 9, "Terminal error has occurred in GEMS3K (e.g. memory corruption). Restart is required."},
+    // Optima solver modes
+    {10, "Need GEM calculation via Optima with cold (AIA-equivalent) initial approximation (AOP)"},
+    {11, "OK after GEM calculation via Optima with cold initial approximation (AOP)"},
+    {12, "Bad (not fully trustful) result after GEM calculation via Optima with cold initial approximation (AOP)"},
+    {13, "Failure (no result) in GEM calculation via Optima with cold initial approximation (AOP)"},
+    {14, "Need GEM calculation via Optima with warm (SIA-equivalent) initial approximation (SOP)"},
+    {15, "OK after GEM calculation via Optima with warm initial approximation (SOP)"},
+    {16, "Bad (not fully trustful) result after GEM calculation via Optima with warm initial approximation (SOP)"},
+    {17, "Failure (no result) in GEM calculation via Optima with warm initial approximation (SOP)"},
+    {18, "Need GEM calculation via Optima with its reference settings (ROP, for testing only)"},
+    {19, "OK after GEM calculation via Optima with its reference settings (ROP)"},
+    {20, "Bad (not fully trustful) result after GEM calculation via Optima with its reference settings (ROP)"},
+    {21, "Failure (no result) in GEM calculation via Optima with its reference settings (ROP)"},
+    // Hybrid modes: GEMS3K IPM solver first, then Optima refines and checks the answer
+    {22, "Need GEM calculation by the GEMS3K IPM solver from scratch, then Optima refines and checks it (HOP)"},
+    {23, "OK after the hybrid IPM-then-Optima calculation (HOP)"},
+    {24, "Bad (not fully trustful) result after the hybrid IPM-then-Optima calculation (HOP)"},
+    {25, "Failure (no result) in the hybrid IPM-then-Optima calculation (HOP)"},
+    {26, "Need the hybrid IPM-then-Optima calculation with the IPM part started from the previous result (SHP)"},
+    {27, "OK after the hybrid calculation with a warm IPM part (SHP)"},
+    {28, "Bad (not fully trustful) result after the hybrid calculation with a warm IPM part (SHP)"},
+    {29, "Failure (no result) in the hybrid calculation with a warm IPM part (SHP)"},
 };
 
 
@@ -116,6 +138,51 @@ auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, ValuesMap b_dic
 auto ChemicalEngineMaps::equilibrate(double T_new, double P_new, const Material& material, double min_amount) -> std::string
 {
     return equilibrate(T_new, P_new, material.bMap(), min_amount);
+}
+
+auto ChemicalEngineMaps::setSolverMode(const std::string& mode) -> void
+{
+    gem.setSolverMode(mode);
+}
+
+auto ChemicalEngineMaps::builtWithOptima() -> bool
+{
+    return ChemicalEngine::builtWithOptima();
+}
+
+auto ChemicalEngineMaps::solverMode() const -> std::string
+{
+    return gem.solverMode();
+}
+
+auto ChemicalEngineMaps::setpHTarget(double pH_target, double tolerance) -> void
+{
+    gem.setpHTarget(pH_target, tolerance);
+}
+
+auto ChemicalEngineMaps::setEhTarget(double Eh_target, double tolerance) -> void
+{
+    gem.setEhTarget(Eh_target, tolerance);
+}
+
+auto ChemicalEngineMaps::clearControlConditions() -> void
+{
+    gem.clearControlConditions();
+}
+
+auto ChemicalEngineMaps::controlConditionTitrant(const std::string& name) const -> double
+{
+    return gem.controlConditionTitrant(name);
+}
+
+auto ChemicalEngineMaps::traceRegimes(const std::vector<double>& factors, double traceRel, double tol,
+                                      const std::vector<std::string>& ofInterest)
+    -> std::map<std::string, TraceRegime>
+{
+    std::map<std::string, TraceRegime> out;
+    for (auto& r : gem.traceRegimes(factors, traceRel, tol, ofInterest))
+        out[r.name] = r;
+    return out;
 }
 
 auto ChemicalEngineMaps::reequilibrate() -> std::string
@@ -787,6 +854,8 @@ auto ChemicalEngineMaps::Eh() -> double { return gem.Eh(); }
 
 auto ChemicalEngineMaps::converged() -> bool { return gem.converged(); }
 
+auto ChemicalEngineMaps::rescue_step() -> int { return static_cast<int>(gem.rescueStep()); }
+
 auto ChemicalEngineMaps::num_iterations() -> int { return static_cast<int>(gem.numIterations()); }
 
 auto ChemicalEngineMaps::elapsed_time() -> double { return gem.elapsedTime(); }
@@ -943,6 +1012,11 @@ auto ChemicalEngineMaps::phase_is_present(const std::string& phase_name, double 
 auto ChemicalEngineMaps::present_phases(double threshold) -> std::vector<std::string>
 {
     return gem.presentPhases(threshold);
+}
+
+auto ChemicalEngineMaps::present_phases_rel(double rel_floor) -> std::vector<std::string>
+{
+    return gem.presentPhasesRel(rel_floor);
 }
 
 auto ChemicalEngineMaps::present_minerals(double threshold) -> std::vector<std::string>
