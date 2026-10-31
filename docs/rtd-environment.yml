@@ -2,7 +2,8 @@
 # The Python API docs are read from the installed xgems package, so xgems comes from the prerelease
 # channel built by .github/workflows/prerelease-test-channel.yml (the channel is public). GEMS3K and Optima
 # are bundled inside the xgems package, so only xgems is taken from that channel.
-# The channel is listed first, so it has the highest priority, and xgems is pinned to the prerelease version.
+# The channel is listed first, so it has the highest priority. @XGEMS_VERSION@ is replaced with the version in
+# CMakeLists.txt by .readthedocs.yaml before the environment is created.
 # (The `https://...::xgems` form does not work here: conda reads it as a channel named "xgems/prerelease".)
 # Do not name this file environment.yml: that name is git-ignored in this repo.
 name: xgems-docs
@@ -18,4 +19,4 @@ dependencies:
   - breathe
   - doxygen
   - numpy
-  - xgems=2.2.0
+  - xgems=@XGEMS_VERSION@

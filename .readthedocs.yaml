@@ -11,6 +11,9 @@ build:
   os: ubuntu-24.04
   tools:
     python: "miniforge3-latest"
+  jobs:
+    pre_create_environment:
+      - XV="$(sed -n 's/^project(xGEMS VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)"; test -n "$XV" && sed -i "s/@XGEMS_VERSION@/$XV/" docs/rtd-environment.yml
 
 conda:
   environment: docs/rtd-environment.yml
