@@ -117,8 +117,13 @@ public:
  * Supports nested parentheses and hydrate notation with ``.`` separators
  * (e.g. ``"CaSO4.2H2O"``). Element symbols follow the standard pattern
  * uppercase letter, optional lowercase letter, optional integer subscript.
+ * Element names of a chemical system that do not follow this pattern
+ * (e.g. ``"Inert"``, ``"N_atm"``) are read if they are in @p elements: at
+ * each uppercase letter, the longest name from @p elements that matches
+ * (and is not followed by a lowercase letter) is taken first.
  *
  * @param formula The formula to parse (e.g. ``"Ca(OH)2"``).
+ * @param elements Element names of the chemical system (optional).
  * @return (ElementMap) A map of element symbol to count (mol per
  *         formula unit).
  *
@@ -127,7 +132,8 @@ public:
  *   // el == { {"Ca",1}, {"S",1}, {"O",6}, {"H",4} }
  * @endcode
  */
-auto parseChemicalFormula(const std::string& formula) -> ElementMap;
+auto parseChemicalFormula(const std::string& formula,
+                          const std::vector<std::string>& elements = {}) -> ElementMap;
 
 
 /**

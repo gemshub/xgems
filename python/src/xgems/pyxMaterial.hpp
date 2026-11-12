@@ -35,13 +35,16 @@ inline void exportMaterial(py::module& m)
 {
     // ─── Free helper ────────────────────────────────────────────────
     m.def("parse_chemical_formula", &parseChemicalFormula,
-          py::arg("formula"),
+          py::arg("formula"), py::arg("elements") = std::vector<std::string>{},
           R"doc(
 Parse a chemical-formula string into a {element: count} dictionary.
 
 Supports nested parentheses and hydrate notation with '.' separators.
 
 :param str formula: Chemical formula (e.g. "CaSO4.2H2O", "Ca(OH)2", "Cl").
+:param list[str] elements: Element names of the chemical system (optional). A name that is not a
+    one- or two-letter symbol (e.g. "Inert", "N_atm") is read only if it is in this list.
+    ``Material.add`` gives the element names of its engine.
 :return dict: {element_symbol: float count per formula unit}
 
 **Example:**
@@ -50,6 +53,8 @@ Supports nested parentheses and hydrate notation with '.' separators.
 
     parse_chemical_formula("CaSO4.2H2O")
     # → {"Ca": 1, "S": 1, "O": 6, "H": 4}
+    parse_chemical_formula("Inert2O", ["Inert", "O"])
+    # → {"Inert": 2, "O": 1}
 )doc");
 
     // ─── Material class ────────────────────────────────────────────
