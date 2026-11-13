@@ -12,6 +12,7 @@ For detailed information about how to use this project through its C++ and Pytho
 ### Briefly about xGEMS
 
 * Currently uses the [GEMS3K](https://github.com/gemshub/GEMS3K) code that implements the improved GEM IPM-3 algorithm for Gibbs energy minimization in very complex non-ideal chemical systems with two-sided metastability constraints.
+* With GEMS3K 5, a second solver, Optima, is available. It is more robust for solid solutions and melts, and it can fix the pH or the Eh. A failed calculation is tried again in steps before GEMS3K reports it. See the [Solver Guide](https://xgems.readthedocs.io/en/latest/solver_guide.html).
 * Written in C/C++. The xGEMS code can be compiled as a standalone program (see /demos); or built as a static or dynamic library for coupling with a mass transport simulator or another code.
 
 ### License

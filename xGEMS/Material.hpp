@@ -117,8 +117,13 @@ public:
  * Supports nested parentheses and hydrate notation with ``.`` separators
  * (e.g. ``"CaSO4.2H2O"``). Element symbols follow the standard pattern
  * uppercase letter, optional lowercase letter, optional integer subscript.
+ * Element names of a chemical system that do not follow this pattern
+ * (e.g. ``"Inert"``, ``"N_atm"``) are read if they are in @p elements: at
+ * each uppercase letter, the longest name from @p elements that matches
+ * (and is not followed by a lowercase letter) is taken first.
  *
  * @param formula The formula to parse (e.g. ``"Ca(OH)2"``).
+ * @param elements Element names of the chemical system (optional).
  * @return (ElementMap) A map of element symbol to count (mol per
  *         formula unit).
  *
@@ -127,7 +132,8 @@ public:
  *   // el == { {"Ca",1}, {"S",1}, {"O",6}, {"H",4} }
  * @endcode
  */
-auto parseChemicalFormula(const std::string& formula) -> ElementMap;
+auto parseChemicalFormula(const std::string& formula,
+                          const std::vector<std::string>& elements = {}) -> ElementMap;
 
 
 /**
@@ -198,7 +204,9 @@ public:
      * @brief Add a constituent by chemical formula string.
      *
      * @param formula   Chemical formula (e.g. ``"CaCO3"``, ``"H2O"``,
-     *                  ``"Cl"``, ``"CaSO4.2H2O"``).
+     *                  ``"Cl"``, ``"CaSO4.2H2O"``). The element names of the
+     *                  engine that are not one- or two-letter symbols (e.g.
+     *                  ``"Inert"``, ``"N_atm"``) can also be used.
      * @param value     Amount in ``units``; default 1.0.
      * @param units     Unit string. Default ``"mol"``. See class header.
      * @param react_ext Reaction-extent multiplier in [0, 1]; default 1.
@@ -359,7 +367,7 @@ public:
      *
      * Natural form for ChemicalEngineMaps users. Includes one entry
      * per engine element; each non-``Zz`` value is clamped to at least
-     * ``min_amount`` (default 1e-15). ``Zz`` is always 0.
+     * ``min_amount`` (default 1e-11). ``Zz`` is always 0.
      *
      * @return (ElementMap) {element_name: total moles}.
      * @throws std::runtime_error if no engine is bound.
@@ -392,7 +400,7 @@ public:
      * @brief Minimum [mol] returned for each non-``Zz`` entry in ``b()`` / ``bMap()``.
      *
      * The GEM solver requires strictly positive bulk amounts. Any non-``Zz``
-     * entry below this value is raised to the floor (default 1e-15 mol).
+     * entry below this value is raised to the floor (default 1e-11 mol).
      * Set to 0.0 to disable the clamp and pass exact recipe amounts to the solver.
      */
     auto minAmount() const -> double;
@@ -432,7 +440,7 @@ private:
     std::shared_ptr<const MaterialEngineAdapter> adapter_;
     std::string           name_{"material"};
     std::vector<Constituent> constituents_;
-    double                min_amount_{1.0e-15};
+    double                min_amount_{default_min_element_amount};
 
     /// Compute the molar mass of a formula (kg/mol) using the engine's
     /// element-molar-mass table. Throws if no engine bound or if the

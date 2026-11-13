@@ -11,7 +11,10 @@ file(GLOB_RECURSE SOURCE_FILES *.cpp)
 # Include the xGEMS/python directory
 include_directories(${PROJECT_SOURCE_DIR}/python)
 include_directories(${CONDA_AWARE_PREFIX}/include/eigen3)
-include_directories(/usr/local/include/eigen3)
+# Fallback for non-conda builds only: inside a conda env a stale /usr/local Eigen would shadow the env's one
+if(NOT CONDA_AWARE_PREFIX)
+    include_directories(/usr/local/include/eigen3)
+endif()
 
 # Create the PyxGEMS library
 pybind11_add_module(PyxGEMS ${SOURCE_FILES} NO_EXTRAS) # NO_EXTRAS used to decrease linking time, but causes larger module file size
