@@ -178,6 +178,25 @@ It does not use a limit in mol, so it keeps real trace phases.
    print(engine.present_phases_rel())            # ChemicalEngineDicts
 
 
+Element names in formulas
+-------------------------
+
+``Material.add`` reads a formula with the element symbols of one or two letters (``Ca``, ``O``, ``Cl``) and also
+with the other element names of the chemical system. A GEMS system can have elements such as ``Inert`` (an inert
+solid) or ``N_atm`` (atmospheric nitrogen). Give these names in the formula as they are in the system:
+
+.. code-block:: python
+
+   sand = Material(engine, "inert sand")
+   sand.add("Inert", 70.0, "g")          # the element Inert of the chemical system
+   air = Material(engine, "air")
+   air.add("N_atm2", 0.79, "mol")        # 0.79 mol N_atm2 = 1.58 mol N_atm
+
+At each uppercase letter, the longest element name of the system that matches is read first. A name is not read
+if a lowercase letter follows it. ``parse_chemical_formula`` reads these names only if you give the element list:
+``parse_chemical_formula("Inert2O", ["Inert", "O"])``. xGEMS versions before this change accept these names only
+as a dict, for example ``add({"Inert": 1.0}, 70.0, "g")``.
+
 Elements that are not in the recipe
 -----------------------------------
 

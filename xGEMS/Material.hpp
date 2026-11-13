@@ -204,7 +204,9 @@ public:
      * @brief Add a constituent by chemical formula string.
      *
      * @param formula   Chemical formula (e.g. ``"CaCO3"``, ``"H2O"``,
-     *                  ``"Cl"``, ``"CaSO4.2H2O"``).
+     *                  ``"Cl"``, ``"CaSO4.2H2O"``). The element names of the
+     *                  engine that are not one- or two-letter symbols (e.g.
+     *                  ``"Inert"``, ``"N_atm"``) can also be used.
      * @param value     Amount in ``units``; default 1.0.
      * @param units     Unit string. Default ``"mol"``. See class header.
      * @param react_ext Reaction-extent multiplier in [0, 1]; default 1.

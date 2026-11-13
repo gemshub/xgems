@@ -157,7 +157,8 @@ C++ ``ChemicalEngineMaps`` type.
              R"doc(
 Add a constituent by chemical-formula string.
 
-:param str formula: e.g. "CaCO3", "H2O", "Cl", "CaSO4.2H2O".
+:param str formula: e.g. "CaCO3", "H2O", "Cl", "CaSO4.2H2O". Element names of the chemical system
+    that are not one- or two-letter symbols (e.g. "Inert", "N_atm") can also be used.
 :param float value: Amount in ``units`` (default 1.0).
 :param str units: One of "mol"/"moles", "mmol", "umol", "kg", "g", "mg", "ug".
 :param float react_ext: Reaction-extent multiplier in [0,1] (default 1).
