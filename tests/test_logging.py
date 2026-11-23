@@ -2,7 +2,7 @@
 #
 # Checks that logging follows xgems.update_loggers(use_cout, logfile_name, log_level):
 #  * the log files (ipmlog.txt, xGEMS.log, or the one named by the user) are created only when a message is written,
-#  * the warnings of the Optima solver are logged at warning level, so they reach the console, a log file, or
+#  * the notes of the Optima solver are logged at debug level, so they reach the console, a log file, or
 #    nowhere, depending on update_loggers, instead of being printed to the console unconditionally.
 #
 # Each case runs in a fresh Python process in an empty directory, because the loggers are process-wide and the
@@ -89,20 +89,20 @@ class TestOptimaWarnings(unittest.TestCase):
         self.assertNotIn("Optima:", console(out, err))
         self.assertEqual(files, [])
 
-    def test_warning_is_silent_above_warning_level(self):
-        # level 4 = error: warnings are not logged
-        out, err, files, contents = run('xgems.update_loggers(True, "log.txt", 4)\n' + UNREACHABLE_PH)
+    def test_warning_is_silent_at_warning_level(self):
+        # level 3 = warning: the Optima notes are debug messages and are not logged
+        out, err, files, contents = run('xgems.update_loggers(True, "", 3)\n' + UNREACHABLE_PH)
         self.assertNotIn("Optima:", console(out, err))
         self.assertNotIn("log.txt", files)
 
     def test_warning_reaches_the_console_when_asked(self):
-        out, err, files, contents = run('xgems.update_loggers(True, "", 3)\n' + UNREACHABLE_PH)
+        out, err, files, contents = run('xgems.update_loggers(True, "", 1)\n' + UNREACHABLE_PH)
         self.assertIn("Optima:", console(out, err))
         self.assertIn("not a descent direction", console(out, err))
         self.assertNotIn("***OPTIMA WARNING***", console(out, err))   # no longer printed directly by Optima
 
     def test_warning_goes_to_the_log_file_not_the_console(self):
-        out, err, files, contents = run('xgems.update_loggers(False, "log.txt", 3)\n' + UNREACHABLE_PH)
+        out, err, files, contents = run('xgems.update_loggers(False, "log.txt", 1)\n' + UNREACHABLE_PH)
         self.assertEqual(console(out, err).strip(), "")              # nothing on the console
         self.assertIn("log.txt", files)
         self.assertIn("Optima:", contents["log.txt"])
