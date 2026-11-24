@@ -5,6 +5,16 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml.in ${CMAKE_CURRENT_BIN
 
 add_subdirectory(src/xgems)
 
+# Building a wheel with scikit-build-core (pyproject.toml at the repo root):
+# install the module and python files straight into the wheel and skip pip below.
+if(SKBUILD)
+    install(TARGETS PyxGEMS LIBRARY DESTINATION xgems COMPONENT python
+                            RUNTIME DESTINATION xgems COMPONENT python)
+    install(FILES src/xgems/__init__.py src/xgems/PyxGEMS.pyi src/xgems/py.typed
+            DESTINATION xgems COMPONENT python)
+    return()
+endif()
+
 # Install where the python package is installed to CMAKE_INSTALL_PREFIX if not given
 if(NOT DEFINED XGEMS_PYTHON_INSTALL_PREFIX)
 
