@@ -63,9 +63,9 @@ jobs:
             root="$RUNNER_TEMP"; here="$PWD"
           fi
           echo "XGEMS_DEPS_PREFIX=$root/xgems-deps" >> "$GITHUB_ENV"
-          echo "XGEMS_DEPS_PRELOAD=$here/ci/preload-deps.cmake" >> "$GITHUB_ENV"
+          echo "XGEMS_DEPS_PRELOAD=$here/.github/workflows/preload-deps.cmake" >> "$GITHUB_ENV"
           XGEMS_DEPS_PREFIX="$root/xgems-deps" XGEMS_DEPS_WORK="$root/xgems-deps-src" JOBS=4 \
-            bash ci/build-deps.sh
+            bash .github/workflows/build-deps.sh
 
       - name: Build and test wheels
         uses: pypa/cibuildwheel@v4.3.5

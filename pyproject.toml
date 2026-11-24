@@ -39,7 +39,7 @@ cmake.build-type = "Release"
 # Only the python component goes into the wheel (no headers / static libs).
 install.components = ["python"]
 wheel.packages = []
-sdist.exclude = [".github", "docs", "demos", "build", "ci/_*"]
+sdist.exclude = [".github", "docs", "demos", "build"]
 
 [tool.scikit-build.cmake.define]
 XGEMS_BUILD_PYTHON = "ON"
@@ -74,5 +74,5 @@ environment = { CMAKE_PREFIX_PATH = "$XGEMS_DEPS_PREFIX", CXXFLAGS = "-I$XGEMS_D
 environment = { CMAKE_PREFIX_PATH = "$XGEMS_DEPS_PREFIX", CXXFLAGS = "-I$XGEMS_DEPS_PREFIX/include -I$XGEMS_DEPS_PREFIX/include/eigen3", CMAKE_ARGS = "-DCMAKE_PROJECT_INCLUDE=$XGEMS_DEPS_PRELOAD" }
 
 [tool.cibuildwheel.linux]
-before-all = "XGEMS_DEPS_PREFIX=/opt/xgems-deps JOBS=4 bash {package}/ci/build-deps.sh"
-environment = { CMAKE_PREFIX_PATH = "/opt/xgems-deps", CXXFLAGS = "-I/opt/xgems-deps/include -I/opt/xgems-deps/include/eigen3", CMAKE_ARGS = "-DCMAKE_PROJECT_INCLUDE=/project/ci/preload-deps.cmake" }
+before-all = "XGEMS_DEPS_PREFIX=/opt/xgems-deps JOBS=4 bash {package}/.github/workflows/build-deps.sh"
+environment = { CMAKE_PREFIX_PATH = "/opt/xgems-deps", CXXFLAGS = "-I/opt/xgems-deps/include -I/opt/xgems-deps/include/eigen3", CMAKE_ARGS = "-DCMAKE_PROJECT_INCLUDE=/project/.github/workflows/preload-deps.cmake" }

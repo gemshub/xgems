@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the C++ dependencies of xgems as static libraries into $XGEMS_DEPS_PREFIX,
 # so the Python wheel is self-contained (nothing to install besides the wheel).
-# Used by cibuildwheel (before-all) on Linux, macOS and Windows (Git Bash).
+# Called from pypi.yml / cibuildwheel (before-all) on Linux, macOS and Windows (Git Bash).
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
