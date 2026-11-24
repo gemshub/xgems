@@ -13,7 +13,7 @@ JOBS="${JOBS:-4}"
 EIGEN_TAG=3.4.0
 EIGEN_URL="${EIGEN_URL:-https://gitlab.com/libeigen/eigen.git}"
 JSON_TAG=v3.11.3
-SPDLOG_TAG=v1.11.0
+SPDLOG_TAG=v1.15.3   # >=1.15 needed: bundled fmt of older versions fails on recent Apple clang
 CHEMICALFUN_REF=master
 THERMOFUN_REF=master
 GEMS3K_REF=master
@@ -50,6 +50,14 @@ fetch() {  # fetch <url> <ref> <dir>
   [[ -d "$3" ]] || git clone --depth 1 --branch "$2" "$1" "$3"
 }
 
+# ChemicalFun/ThermoFun/GEMS3K install $<TARGET_PDB_FILE:...> under MSVC, which CMake
+# rejects for static libraries ("allowed only for targets with linker created artifacts").
+# Drop those install() blocks; we never need the .pdb files.
+strip_pdb_install() {  # strip_pdb_install <src-dir>
+  find "$1" -name CMakeLists.txt -print0 | xargs -0 perl -0pi -e \
+    's/install\s*\(\s*FILES\s+\$<TARGET_PDB_FILE:[^>]+>[^)]*\)//g'
+}
+
 # --- header-only libraries ---------------------------------------------------
 fetch "$EIGEN_URL" "$EIGEN_TAG" eigen
 build eigen -DBUILD_TESTING=OFF -DEIGEN_BUILD_DOC=OFF -DEIGEN_BUILD_PKGCONFIG=OFF
@@ -62,13 +70,16 @@ build spdlog -DSPDLOG_BUILD_EXAMPLE=OFF -DSPDLOG_BUILD_TESTS=OFF
 
 # --- compiled libraries (static, no python bindings) -------------------------
 fetch https://github.com/thermohub/chemicalfun.git "$CHEMICALFUN_REF" chemicalfun
+strip_pdb_install chemicalfun
 build chemicalfun -DBUILD_SHARED_LIBS=OFF -DCHEMICALFUN_BUILD_PYTHON=OFF \
   -DCHEMICALFUN_BUILD_TESTS=OFF -DCHEMICALFUN_BUILD_EXAMPLES=OFF
 
 fetch https://github.com/thermohub/thermofun.git "$THERMOFUN_REF" thermofun
+strip_pdb_install thermofun
 build thermofun -DBUILD_SHARED_LIBS=OFF -DTFUN_BUILD_PYTHON=OFF -DTFUN_BUILD_TESTS=OFF
 
 fetch https://github.com/gemshub/GEMS3K.git "$GEMS3K_REF" GEMS3K
+strip_pdb_install GEMS3K
 build GEMS3K -DCMAKE_PROJECT_INCLUDE="$HERE/preload-deps.cmake" -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON -DUSE_THERMOFUN=ON \
   -DBUILD_TOOLS=OFF -DBUILD_SOLMOD=OFF -DBUILD_SOLMOD_PYTHON=OFF
 
