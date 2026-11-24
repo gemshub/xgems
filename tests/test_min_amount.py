@@ -85,11 +85,13 @@ class TestFloorWarning(unittest.TestCase):
         count, output = self.floor_warnings("")
         self.assertEqual(count, 0, output)
 
-    def test_floor_warning_with_the_old_value(self):
-        count, output = self.floor_warnings("material.min_amount = 1e-15")
+    def test_floor_warning_below_the_floor(self):
+        # 1e-17 mol is below the floor of the quick first try (1e-16 mol) and of the full solve,
+        # so the warning comes whichever of the two gives the answer
+        count, output = self.floor_warnings("material.min_amount = 1e-17")
         if count == 0:
             # show every solver message of the same run on the console
-            _, output = self.floor_warnings("material.min_amount = 1e-15", 'xgems.update_loggers(True, "", 1)')
+            _, output = self.floor_warnings("material.min_amount = 1e-17", 'xgems.update_loggers(True, "", 1)')
         self.assertGreater(count, 0, output)
 
 
