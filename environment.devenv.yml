@@ -22,7 +22,7 @@ dependencies:
   - autodiff>=1.1.1
   - gems3k >=5.2 optima*   # prerelease build with the Optima solver
   - optima * optima*
-  - thermofun >=0.7.1
+  - thermofun >=0.7.1,<1
   - chemicalfun
   - spdlog
  

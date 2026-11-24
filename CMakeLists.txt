@@ -148,8 +148,11 @@ if(TARGET GEMS3K::GEMS3K)
     message(STATUS "GEMS3K has the Optima solver -- enabling AOP/SOP/ROP modes "
                    "and the native pH/Eh control conditions")
     add_definitions(-DUSE_OPTIMA_SOLVER)
-    # GEMS3K::GEMS3K links Optima::Optima, so the target must be defined here
-    find_package(Optima REQUIRED)
+    # GEMS3K::GEMS3K links Optima::Optima, so the target must be defined here.
+    # Finding GEMS3K usually defines it already, with the Optima that GEMS3K was built with.
+    if(NOT TARGET Optima::Optima)
+      find_package(Optima REQUIRED)
+    endif()
   else()
     message(STATUS "GEMS3K was built WITHOUT Optima -- only the native solver "
                    "mode will be available")

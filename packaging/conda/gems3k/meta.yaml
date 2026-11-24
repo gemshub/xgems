@@ -22,14 +22,14 @@ requirements:
     - git
   host:
     - optima * optima*
-    - thermofun >=0.7.1
+    - thermofun >=0.7.1,<1
     - chemicalfun
     - eigen >=3.4.0
     - spdlog
     - nlohmann_json >=3.7.0
     - autodiff
   run:
-    - thermofun >=0.7.1
+    - thermofun >=0.7.1,<1
 
 test:
   commands:
