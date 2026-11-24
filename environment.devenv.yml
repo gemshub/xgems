@@ -18,5 +18,6 @@ dependencies:
   - nlohmann_json
   - numpy
   - eigen>=3.4.0
+  - autodiff>=1.1.1
   - gems3k>=4.5.2
  
