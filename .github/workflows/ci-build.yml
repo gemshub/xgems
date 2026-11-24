@@ -5,10 +5,14 @@ on:
       - github_actions
       - master
       - main
+      - develop_optima
+      - develop_optima3
   pull_request:
     branches:
       - main
       - master
+      - develop_optima
+      - develop_optima3
 
 jobs:
   build:

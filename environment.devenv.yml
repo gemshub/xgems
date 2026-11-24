@@ -1,6 +1,7 @@
 name: xgems
 
 channels:
+  - https://gemshub.github.io/xgems/prerelease   # gems3k and optima from the develop_optima branches
   - conda-forge
 
 dependencies:
@@ -19,5 +20,9 @@ dependencies:
   - numpy
   - eigen>=3.4.0
   - autodiff>=1.1.1
-  - gems3k>=4.5.2
+  - gems3k >=5.2 optima*   # prerelease build with the Optima solver
+  - optima * optima*
+  - thermofun >=0.7.1
+  - chemicalfun
+  - spdlog
  
