@@ -63,7 +63,8 @@ class TestFloorWarning(unittest.TestCase):
     material.add("H2O", 1.0, "kg")
     material.add({{"Ca": 1e-3, "Si": 1e-3, "O": 3e-3}})
     {setting}
-    engine.equilibrate(298.15, 1e5, material)
+    status = engine.equilibrate(298.15, 1e5, material)
+    print("status", status, "mode", engine.solverMode(), "converged", engine.converged, "Nit", material.b_dict()["Nit"])
     """
 
     def floor_warnings(self, setting):
@@ -72,13 +73,20 @@ class TestFloorWarning(unittest.TestCase):
             proc = subprocess.run([sys.executable, "-c", code], cwd=cwd, capture_output=True, text=True, timeout=300)
             self.assertEqual(proc.returncode, 0, proc.stderr)
             path = os.path.join(cwd, "log.txt")
-            return open(path).read().count("element(s) have less material") if os.path.exists(path) else 0
+            log = "(no log file)"
+            if os.path.exists(path):
+                with open(path) as f:
+                    log = f.read()
+            # the run's output and log are shown when an assertion fails
+            return log.count("element(s) have less material"), f"{proc.stdout}{proc.stderr}\nlog:\n{log[-3000:]}"
 
     def test_no_floor_warning_with_the_default(self):
-        self.assertEqual(self.floor_warnings(""), 0)
+        count, output = self.floor_warnings("")
+        self.assertEqual(count, 0, output)
 
     def test_floor_warning_with_the_old_value(self):
-        self.assertGreater(self.floor_warnings("material.min_amount = 1e-15"), 0)
+        count, output = self.floor_warnings("material.min_amount = 1e-15")
+        self.assertGreater(count, 0, output)
 
 
 if __name__ == "__main__":
