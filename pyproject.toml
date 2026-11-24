@@ -1,0 +1,81 @@
+# Used to build PyPI wheels/sdist (pip install . / cibuildwheel).
+# The regular CMake + conda workflow (python/pyproject.toml.in) is unchanged.
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "xgems"
+dynamic = ["version"]
+description = "The next-generation of C++ and Python API for GEMS."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+authors = [
+  {name = "G.D. Miron", email = "dan.miron@psi.ch"},
+  {name = "D. Kulik", email = "dkulik@congineer.com"},
+  {name = "S. Dmytriieva", email = "sv.dmytr@gmail.com"},
+]
+maintainers = [{name = "G.D. Miron", email = "dan.miron@psi.ch"}]
+keywords = ["equilibrium computations", "thermodynamic analysis", "Gibbs energy minimization", "chemical system"]
+dependencies = ["numpy"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: C++",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Topic :: Scientific/Engineering :: Chemistry",
+]
+
+[project.urls]
+Homepage = "https://gemshub.github.io/site/"
+Repository = "https://github.com/gemshub/xgems"
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+build-dir = "build/{wheel_tag}"
+cmake.build-type = "Release"
+# Only the python component goes into the wheel (no headers / static libs).
+install.components = ["python"]
+wheel.packages = []
+sdist.exclude = [".github", "docs", "demos", "build"]
+
+[tool.scikit-build.cmake.define]
+XGEMS_BUILD_PYTHON = "ON"
+XGEMS_BUILD_DEMOS = "OFF"
+XGEMS_BUILD_TESTS = "OFF"
+XGEMS_BUILD_DOCS = "OFF"
+XGEMS_BUILD_SHARED_LIBS = "OFF"
+XGEMS_BUILD_STATIC_LIBS = "ON"
+XGEMS_USE_THERMOFUN = "ON"
+USE_SPDLOG_PRECOMPILED = "OFF"
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "CMakeLists.txt"
+regex = 'project\(xGEMS VERSION (?P<value>[0-9][0-9.]*)'
+
+# ---- Wheels for PyPI (see .github/workflows/pypi.yml) ----------------------
+[tool.cibuildwheel]
+build = "cp310-* cp311-* cp312-* cp313-* cp314-*"
+skip = ["*-musllinux_*", "*-win32", "*_i686"]
+archs = ["native"]
+build-verbosity = 1
+test-requires = ["numpy"]
+test-command = "cd {project}/tests && python -m unittest -v test_systems.py"
+
+# On macOS/Windows the workflow builds the C++ deps on the host first and sets
+# XGEMS_DEPS_PREFIX; on Linux they are built inside the manylinux container.
+[tool.cibuildwheel.macos]
+environment = { CMAKE_PREFIX_PATH = "$XGEMS_DEPS_PREFIX", CXXFLAGS = "-I$XGEMS_DEPS_PREFIX/include -I$XGEMS_DEPS_PREFIX/include/eigen3", CMAKE_ARGS = "-DCMAKE_PROJECT_INCLUDE=$XGEMS_DEPS_PRELOAD" }
+
+[tool.cibuildwheel.windows]
+# cmd's cd needs /d: tests run from a temp dir on another drive than the checkout.
+test-command = "cd /d {project}\\tests && python -m unittest -v test_systems.py"
+environment = { CMAKE_PREFIX_PATH = "$XGEMS_DEPS_PREFIX", CXXFLAGS = "-utf-8 -I$XGEMS_DEPS_PREFIX/include -I$XGEMS_DEPS_PREFIX/include/eigen3", CMAKE_ARGS = "-DCMAKE_PROJECT_INCLUDE=$XGEMS_DEPS_PRELOAD", PATH = "$XGEMS_DEPS_PREFIX/bin;$PATH" }
+# ChemicalFun/ThermoFun are DLLs on Windows; delvewheel (default repair) finds them on PATH.
+
+[tool.cibuildwheel.linux]
+before-all = "XGEMS_DEPS_PREFIX=/opt/xgems-deps SPDLOG_TAG=v1.11.0 JOBS=4 bash {package}/.github/workflows/build-deps.sh"
+environment = { CMAKE_PREFIX_PATH = "/opt/xgems-deps", CXXFLAGS = "-I/opt/xgems-deps/include -I/opt/xgems-deps/include/eigen3", CMAKE_ARGS = "-DCMAKE_PROJECT_INCLUDE=/project/.github/workflows/preload-deps.cmake" }
