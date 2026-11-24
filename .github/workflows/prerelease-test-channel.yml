@@ -15,7 +15,8 @@ permissions:
 # ---- Settings: edit here ----------------------------------------------------------------------
 env:
   BASE_PACKAGES: "optima gems3k"            # python-independent recipes under RECIPE_ROOT, built once, in order
-  PUBLISH_PACKAGES: "xgems"                 # only these go into the channel; the base packages are statically bundled into them
+  PUBLISH_PACKAGES: "optima gems3k xgems"   # these go into the channel; xgems bundles optima and gems3k statically,
+                                            # and ci-build compiles xgems against the optima and gems3k packages
   PYTHON_PACKAGES: "xgems"                  # recipes built once per python version below
   PYTHON_VERSIONS: "3.12 3.13 3.14 3.15"    # a version missing from the conda-forge pinning is skipped with a warning
   RECIPE_ROOT: packaging/conda
