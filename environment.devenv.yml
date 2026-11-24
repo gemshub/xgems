@@ -19,4 +19,5 @@ dependencies:
   - numpy
   - eigen>=3.4.0
   - gems3k>=4.5.2
+  - autodiff>=1.1.2  # header-only, included by ThermoFun headers; >=1.1.2 so the solver cannot fall back to 0.5.x (no forward/real.hpp)
  
