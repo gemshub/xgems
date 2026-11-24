@@ -57,19 +57,20 @@ class TestFloorWarning(unittest.TestCase):
     import os, sys, xgems
     from xgems import ChemicalEngineDicts, Material
     engine = ChemicalEngineDicts({project!r})
-    xgems.update_loggers(False, "log.txt", 3)
+    {logging}
     engine.setSolverMode("aop")
     material = Material(engine, "m")
     material.add("H2O", 1.0, "kg")
     material.add({{"Ca": 1e-3, "Si": 1e-3, "O": 3e-3}})
     {setting}
     status = engine.equilibrate(298.15, 1e5, material)
-    print("status", status, "mode", engine.solverMode(), "converged", engine.converged, "Nit", material.b_dict()["Nit"])
+    print("status", status, "mode", engine.solverMode(), "converged", engine.converged, "Nit", material.b_dict()["Nit"],
+          "engine Nit", engine.bulk_composition["Nit"], "iterations", engine.num_iterations)
     """
 
-    def floor_warnings(self, setting):
+    def floor_warnings(self, setting, logging='xgems.update_loggers(False, "log.txt", 3)'):
         with tempfile.TemporaryDirectory() as cwd:
-            code = textwrap.dedent(self.CODE).format(project=PROJECT, setting=setting)
+            code = textwrap.dedent(self.CODE).format(project=PROJECT, setting=setting, logging=logging)
             proc = subprocess.run([sys.executable, "-c", code], cwd=cwd, capture_output=True, text=True, timeout=300)
             self.assertEqual(proc.returncode, 0, proc.stderr)
             path = os.path.join(cwd, "log.txt")
@@ -78,7 +79,7 @@ class TestFloorWarning(unittest.TestCase):
                 with open(path) as f:
                     log = f.read()
             # the run's output and log are shown when an assertion fails
-            return log.count("element(s) have less material"), f"{proc.stdout}{proc.stderr}\nlog:\n{log[-3000:]}"
+            return log.count("element(s) have less material"), f"{proc.stdout[-6000:]}{proc.stderr[-2000:]}\nlog:\n{log[-3000:]}"
 
     def test_no_floor_warning_with_the_default(self):
         count, output = self.floor_warnings("")
@@ -86,6 +87,9 @@ class TestFloorWarning(unittest.TestCase):
 
     def test_floor_warning_with_the_old_value(self):
         count, output = self.floor_warnings("material.min_amount = 1e-15")
+        if count == 0:
+            # show every solver message of the same run on the console
+            _, output = self.floor_warnings("material.min_amount = 1e-15", 'xgems.update_loggers(True, "", 1)')
         self.assertGreater(count, 0, output)
 
 
