@@ -19,4 +19,5 @@ dependencies:
   - numpy
   - eigen>=3.4.0
   - gems3k>=4.5.2
+  - autodiff  # header-only; included by ThermoFun's public headers (Common/Real.hpp)
  
