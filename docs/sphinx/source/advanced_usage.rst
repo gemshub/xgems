@@ -91,7 +91,7 @@ Suggested settings for common cases
 
 Most projects need no change. The table gives the settings that help in some common cases.
 They are suggestions for one project or one run. They do not change the defaults.
-The GEMS3K `advanced usage <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-ADVANCED-USAGE.md>`_ page has the same table.
+The GEMS3K `advanced usage <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/SOLVER-ADVANCED-USAGE.md>`_ page has the same table.
 Put them in the ``-ipm`` file of the project (see :ref:`project-file-settings`). The code after the table changes them from Python.
 
 .. list-table::
@@ -121,7 +121,7 @@ Put them in the ``-ipm`` file of the project (see :ref:`project-file-settings`).
        is reported as 0.
    * - No redox couple in the system
      - ``pa_OptimaRedoxFree = 2``, or give an Eh target.
-     - The bulk composition does not fix the Eh. The setting aims at pe 4.
+     - The bulk composition does not fix the Eh. The setting aims at pe 4. If the activity of a species such as H2 or O2 is not determined for this reason, the warning in the log says so.
    * - Solid solutions with end-members that are almost the same
      - ``pa_DK = 1e-7``
      - Gives a clearly more accurate composition with the GEMS3K IPM solver.

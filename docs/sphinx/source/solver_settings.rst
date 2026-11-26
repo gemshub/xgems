@@ -235,9 +235,9 @@ Optima stops a solve that makes no progress and tries again. A failed warm calcu
 
 The GEMS3K documentation gives more detail:
 
-* The `options guide <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-OPTIONS-GUIDE.md>`_ lists all options.
-* The `solver path guide <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-PATH-GRAPH.md>`_ shows the order of each step and try.
-* The `glossary <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/GLOSSARY.md>`_ defines the technical words.
+* The `options guide <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/SOLVER-OPTIONS-GUIDE.md>`_ lists all options.
+* The `solver path guide <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/SOLVER-PATH-GRAPH.md>`_ shows the order of each step and try.
+* The `glossary <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/GLOSSARY.md>`_ defines the technical words.
 
 Settings for tests are on the page :doc:`expert_settings`.
 

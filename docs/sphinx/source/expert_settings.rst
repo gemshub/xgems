@@ -8,7 +8,7 @@ Each setting switches a correctness fix or a speed tuning on or off, or sets an 
 The settings are separate so that a test can check each mechanism alone.
 A project file keeps a setting only if its value is not the default.
 The same list is in the GEMS3K
-`advanced settings <https://github.com/gemshub/GEMS3K/blob/develop_optima2/Docs/SOLVER-ADVANCED-SETTINGS.md>`_.
+`advanced settings <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/SOLVER-ADVANCED-SETTINGS.md>`_.
 
 The settings that a user can change are on the page :doc:`solver_settings`.
 See :ref:`project-file-settings` for how to put a setting in a project file.
@@ -102,6 +102,9 @@ Line search and curvature (Optima)
    * - ``pa_OptimaPartialPivLU``
      - 100 (on)
      - Optima uses a faster method for its linear equations when there are at least this number of equations.
+   * - ``pa_OptimaJumpAhead``
+     - 1 (on)
+     - Two successive steps of the Optima solver can point in the same direction and become shorter at a steady ratio. Then the solver tries one longer step. It does not try the step if an amount would go past its limit. It keeps the step only if the error becomes smaller. 0 = off.
 
 
 First solve and cold start (Optima)
@@ -289,6 +292,24 @@ GEMS3K IPM solver
      - 500 (on)
      - Needs a build with Optima. A solid can be left out, or be in a trace amount, and still tend to form. Then Optima finishes the result. The solver keeps the new result only if it is better. Optima also finishes a calculation that reaches its iteration limit or fails to solve its equations, from the point where it stopped.
 
+   * - ``pa_PhaseSmoothing``
+     - 1 (on)
+     - The GEMS3K IPM solver damps the change of the non-ideal corrections of a solid or melt solution between iterations by 1/(1 + sum of x·\|ln γ\|). It damps a species only when its correction changes direction; a steady change is not damped. The aqueous, sorption and polyelectrolyte phases keep the ``pa_AG`` / ``pa_DGC`` rule. 0 = the ``pa_AG`` / ``pa_DGC`` rule for every phase.
+   * - ``pa_IpmBalanceStep``
+     - 2
+     - After each step, the GEMS3K IPM solver adds a small correction that restores the mass balance. 2 = the correction is solved on its own, with each element scaled to the same size; a species below 1e-10 of its phase gets no correction, except when only such species hold an element. A pure phase, or a phase that holds below 1e-10 of each of its elements, gets no correction while the step makes it smaller. If nothing in the system fixes the redox state and each element has one valence in all species (no H2 or O2), the hydrogen balance follows from the oxygen and charge balances. 3 = as 2, but only after a step that leaves the balance outside its tolerance. 1 = the correction uses the equations of the step. 0 = off.
+   * - ``pa_PsscCleanupBudget``
+     - 3
+     - Phase selection can raise a species of a present mixed phase that was set to zero. 3 = as 2, and a present pure phase that stays oversaturated and is limited by a trace element gets that element from its dissolved species, up to saturation. 2 = all raises of one pass together use at most the amount of each element that the system has, and a species is not raised when its estimated mole fraction is above 1. 1 = each raise can use the full amount of each element. 0 = a fixed raise.
+   * - ``pa_DcMinMolecule``
+     - 0 (off)
+     - On a cold start (AIA), the GEMS3K IPM solver removes a species only when it is less than one molecule in real moles. Without this setting, the limit is ``pa_DcMin``. Use it together with ``pa_IpmBalanceStep``. 0 = off.
+   * - ``pa_IpmJumpAhead``
+     - 0 (off)
+     - Two successive steps of the GEMS3K IPM solver can point in the same direction and become shorter at a steady ratio. Then the solver tries a longer step in that direction. It keeps the longer step only if the energy becomes lower and the mass balance does not become worse. 1 = on.
+   * - ``pa_TracePolish``
+     - 1e-5 (on)
+     - After the GEMS3K IPM solver stops, the solver calculates each trace element again. A trace element has less than this fraction of the total amount in the system. The potentials of all other elements stay fixed. A pure solid of the element can limit its potential at saturation. The solver keeps the result only if the energy does not increase. The mass balance must also stay within its tolerance, or not become worse than before. A dissolved species that the input switches off stays at zero. Each phase must stay dilute in the trace species. 0 = off.
 
 Names with no effect
 --------------------
