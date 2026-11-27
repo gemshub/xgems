@@ -120,6 +120,7 @@ First solve and cold start (Optima)
    * - ``pa_OptimaFastFirst``
      - 60 (on)
      - A cold calculation (AOP) first tries a quick solve with full steps. If the quick solve does not end well, the normal calculation runs from the same start.
+       If the quick solve ends OK and the normal calculation still runs, GEMS3K keeps the result with the lower energy.
    * - ``pa_OptimaFastFrozen``
      - 3 (on)
      - The quick first try stops when this number of steps in a row change almost nothing.

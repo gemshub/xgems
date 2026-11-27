@@ -38,6 +38,14 @@ If one engine solves all nodes of a transport step, each node starts from the pr
 This is good when neighbor nodes are similar. If they are very different, use a cold mode.
 You can also use one engine for each group of similar nodes.
 
+**Built-in kinetics needs one engine for each node.** This applies only to the kinetic rate laws of GEMS3K, set in the input files.
+These rate laws keep the start amounts and surface areas of a node in the engine.
+If one engine takes such kinetic steps for several nodes, a node can use the history of another node.
+GEMS3K then writes a warning, but only if the nodes have different node handles.
+Kinetics that you calculate in Python is not affected.
+An example is a rate function that changes the bulk composition or the species bounds before each call.
+Then your script keeps the history of each node, and one engine can solve all nodes.
+
 
 .. _rescue-steps:
 
@@ -105,7 +113,7 @@ Put them in the ``-ipm`` file of the project (see :ref:`project-file-settings`).
      - Keep the defaults ``pa_FailRescue = 2`` and ``pa_RescueBudget = 100000``. Solve the first point cold and the next
        points warm (``sia``, ``sop``). ``pa_PSM = 0`` for large runs.
      - The rescue tries a failed node again in steps. The limit stops a node that no step can save.
-       ``pa_PSM = 0`` writes no log file.
+       ``pa_PSM = 0`` writes fewer log records. For no ``ipmlog.txt`` at all, set the log level 6 (see the GEMS3K logging documentation below).
    * - Some calls run for a very long time
      - ``pa_OptimaCallCap = -1``
      - Sets a cap from the size of the system. The results do not depend on the computer.
