@@ -74,17 +74,20 @@ jobs:
             conda build "$RECIPE_ROOT/$r" -m "$PIN" "$@" --output-folder "$BUILD_DIR" -c "$UPSTREAM_CHANNEL"
           }
           for p in $BASE_PACKAGES; do build "$p" || { echo "::error::base package $p failed"; exit 1; }; done
+          failed=0
           for v in $PYTHON_VERSIONS; do
             if ! VARIANT=$(python "$RECIPE_ROOT/python_variant.py" "$PIN" "$v"); then
               echo "::warning::python $v is not in the conda-forge pinning yet - skipped"; continue
             fi
             for p in $PYTHON_PACKAGES; do
               build "$p" --variants "$VARIANT" || {
-                echo "::warning::$p failed for python $v"
-                echo "- $p failed for python $v" >> "$GITHUB_STEP_SUMMARY"  # the channel then lacks this variant
+                echo "::error::$p failed for python $v"
+                echo "- $p failed for python $v" >> "$GITHUB_STEP_SUMMARY"
+                failed=1
               }
             done
           done
+          [ "$failed" = 0 ] || { echo "::error::a python package failed; the job fails after all versions are tried"; exit 1; }
       - name: Collect the packages to publish
         shell: bash -el {0}
         run: |
@@ -99,8 +102,8 @@ jobs:
 
   publish:
     needs: build
-    # Publish also when one platform fails (for example macOS or Windows): the channel then holds the platforms that built.
-    if: always() && needs.build.result != 'cancelled'
+    # Publish only when every platform built, so testers never get an incomplete channel.
+    if: needs.build.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write
