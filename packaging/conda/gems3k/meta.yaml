@@ -4,9 +4,14 @@ package:
   name: gems3k
   version: {{ version }}
 
+# GEMS3K and the modified Optima it needs. Optima has no conda package of its own:
+# it is built from the gemshub fork on GitHub and installed inside this package (lib/gems3k-optima).
 source:
-  git_url: {{ environ.get("GEMS3K_REPO", "https://github.com/gemshub/GEMS3K.git") }}
-  git_rev: {{ environ.get("GEMS3K_BRANCH", "develop_optima") }}
+  - git_url: {{ environ.get("GEMS3K_REPO", "https://github.com/gemshub/GEMS3K.git") }}
+    git_rev: {{ environ.get("GEMS3K_BRANCH", "master") }}
+  - git_url: {{ environ.get("OPTIMA_REPO", "https://github.com/gemshub/optima.git") }}
+    git_rev: {{ environ.get("OPTIMA_BRANCH", "optima_develop") }}
+    folder: optima-src
 
 build:
   number: 900
@@ -21,7 +26,6 @@ requirements:
     - ninja
     - git
   host:
-    - optima * optima*
     - thermofun >=0.7.1,<1
     - chemicalfun
     - eigen >=3.4.0
@@ -29,15 +33,17 @@ requirements:
     - nlohmann_json >=3.7.0
     - autodiff
   run:
-    - optima * optima*  # GEMS3KConfig.cmake looks for Optima
     - thermofun >=0.7.1,<1
+    - eigen >=3.4.0  # the Optima headers inside this package need it
 
 test:
   commands:
     - test -f ${PREFIX}/lib/cmake/GEMS3K/GEMS3KConfig.cmake  # [unix]
+    - test -f ${PREFIX}/lib/gems3k-optima/lib/cmake/Optima/OptimaConfig.cmake  # [unix]
     - if exist %LIBRARY_PREFIX%\lib\cmake\GEMS3K\GEMS3KConfig.cmake (exit 0) else (exit 1)  # [win]
+    - if exist %LIBRARY_PREFIX%\lib\gems3k-optima\lib\cmake\Optima\OptimaConfig.cmake (exit 0) else (exit 1)  # [win]
 
 about:
   home: https://github.com/gemshub/GEMS3K
   license: LGPL-3.0-or-later
-  summary: GEMS3K (develop_optima branch, with Optima solver) - TEST BUILD.
+  summary: GEMS3K with the Optima solver (Optima from github.com/gemshub/optima, branch optima_develop, built in).

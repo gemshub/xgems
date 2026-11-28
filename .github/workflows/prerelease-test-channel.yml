@@ -1,4 +1,5 @@
-# Prerelease test channel: builds optima + gems3k (develop_optima) + xgems (this checkout) as conda
+# Prerelease test channel: builds gems3k (master, with Optima from github.com/gemshub/optima, branch optima_develop,
+# built in) + xgems (this checkout) as conda
 # packages and publishes them as a static conda channel on the gh-pages branch of this repo:
 #   https://gemshub.github.io/xgems/prerelease
 # Testers install with:
@@ -14,9 +15,9 @@ permissions:
 
 # ---- Settings: edit here ----------------------------------------------------------------------
 env:
-  BASE_PACKAGES: "optima gems3k"            # python-independent recipes under RECIPE_ROOT, built once, in order
-  PUBLISH_PACKAGES: "optima gems3k xgems"   # these go into the channel; xgems bundles optima and gems3k statically,
-                                            # and ci-build compiles xgems against the optima and gems3k packages
+  BASE_PACKAGES: "gems3k"                   # python-independent recipes under RECIPE_ROOT, built once, in order
+  PUBLISH_PACKAGES: "gems3k xgems"          # these go into the channel; gems3k carries its Optima (no optima package),
+                                            # xgems bundles gems3k statically
   PYTHON_PACKAGES: "xgems"                  # recipes built once per python version below
   PYTHON_VERSIONS: "3.12 3.13 3.14 3.15"    # a version missing from the conda-forge pinning is skipped with a warning
   RECIPE_ROOT: packaging/conda
@@ -29,7 +30,7 @@ env:
   OPTIMA_REPO: https://github.com/gemshub/optima.git
   OPTIMA_BRANCH: optima_develop
   GEMS3K_REPO: https://github.com/gemshub/GEMS3K.git
-  GEMS3K_BRANCH: develop_optima
+  GEMS3K_BRANCH: master
 # xgems itself is built from the branch/commit this workflow is run on.
 # ------------------------------------------------------------------------------------------------
 
