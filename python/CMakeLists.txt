@@ -41,7 +41,12 @@ install(CODE
 
     execute_process(
         COMMAND ${Python3_EXECUTABLE} -m pip install --prefix \${XGEMS_PYTHON_INSTALL_PREFIX_NATIVE} ${CMAKE_CURRENT_BINARY_DIR} -vv
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        RESULT_VARIABLE XGEMS_PIP_RESULT
+        ERROR_VARIABLE XGEMS_PIP_ERROR)
+    if(NOT XGEMS_PIP_RESULT EQUAL 0)
+        message(FATAL_ERROR \"pip install of the xgems python package failed (exit status \${XGEMS_PIP_RESULT}) using ${Python3_EXECUTABLE}:\\n\${XGEMS_PIP_ERROR}\")
+    endif()
 "
 )
 

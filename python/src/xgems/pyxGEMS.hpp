@@ -39,6 +39,8 @@ Configuration options for the ChemicalEngine.
 Attributes:
     warmstart (bool): Use smart start for faster convergence.
     print_zero_amounts (bool): Whether to print zero-amount species/phases.
+    solver_mode (str): ``"aia"`` (default), ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"`` or ``"shp"``; see
+        :py:meth:`ChemicalEngine.setSolverMode`.
 )doc")
         .def(py::init<>())
         .def_readwrite("warmstart", &ChemicalEngineOptions::warmstart,
@@ -52,6 +54,22 @@ Whether to use smart start for faster convergence (may be less accurate).
 Whether to include zero-amount species/phases in the printed output.
 
 :type: bool
+)doc")
+        .def_readwrite("solver_mode", &ChemicalEngineOptions::solver_mode,
+            R"doc(
+Solver used by equilibrate: ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"`` or ``"shp"``.
+An unknown mode, or an Optima mode when GEMS3K was built without Optima, is
+rejected with ``RuntimeError`` when the options are assigned to the engine.
+
+:type: str
+
+**Example:**
+
+.. code-block:: python
+
+  opts = engine.options
+  opts.solver_mode = "aop"
+  engine.options = opts
 )doc");
 
     m.def("update_loggers", &update_loggers,
@@ -61,6 +79,17 @@ Whether to include zero-amount species/phases in the printed output.
   :param bool use_cout: If true, prints log messages to stdout.
   :param str logfile_name: The filename for a rotating log file. If empty, file logging is disabled.
   :param int log_level: Verbosity level for logging (trace=0, debug=1, info=2, warn=3, err=4, critical=5, off=6).
+
+  xGEMS creates the log file when the first message is written to it.
+  Thus no empty file stays when nothing is logged (for example with ``log_level=6``).
+
+  The Optima solver writes its warnings at warning level.
+  An example is "Proceeding with linear-search algorithm even though current Newton step is not a descent direction".
+  These warnings go to the console if ``use_cout`` is true and ``log_level`` <= 3.
+  They go to the log file if you give a file name. With ``log_level`` >= 4, xGEMS does not log them.
+
+  The GEMS3K logging documentation describes each value, the loggers and the configuration file:
+  `GEMS3K logging documentation <https://github.com/gemshub/GEMS3K/blob/master/Docs/spdlog-doc.md>`_.
   
   **Example:**
   
@@ -69,6 +98,34 @@ Whether to include zero-amount species/phases in the printed output.
       update_loggers(True, "chemical_log.txt", 2)
   )doc",
           py::arg("use_cout"), py::arg("logfile_name"), py::arg("log_level"));
+
+    py::class_<TraceRegime>(m, "TraceRegime",
+        R"doc(
+Result of :meth:`ChemicalEngine.traceRegimes` for one trace element.
+
+Attributes:
+    element (int): Element index.
+    name (str): Element name.
+    amount (float): Bulk amount (mol).
+    verdict (str): ``LINEAR``, ``SATURATED``, ``BOUNDARY``, ``NONLINEAR``,
+        ``STRANDED`` (may be combined, e.g. ``STRANDED+NONLINEAR``) or ``FAILED``.
+    maxFractionChange (float): Largest change of a phase fraction over the factors.
+    phases (list[tuple[str, float]]): Fractions of the element per phase, largest first.
+    boundaryPhases (list[str]): Phases that appear or disappear across the factors.
+)doc")
+        .def_readonly("element", &TraceRegime::element)
+        .def_readonly("name", &TraceRegime::name)
+        .def_readonly("amount", &TraceRegime::amount)
+        .def_readonly("verdict", &TraceRegime::verdict)
+        .def_readonly("maxFractionChange", &TraceRegime::maxFractionChange)
+        .def_readonly("phases", &TraceRegime::phases)
+        .def_readonly("boundaryPhases", &TraceRegime::boundaryPhases)
+        .def("__repr__", [](const TraceRegime& r) {
+            std::string s = "<TraceRegime " + r.name + " " + r.verdict + " amount=" + std::to_string(r.amount);
+            for (const auto& p : r.phases)
+                s += " " + p.first + ":" + std::to_string(p.second);
+            return s + ">";
+        });
 
     py::class_<ChemicalEngine>(m, "ChemicalEngine")
         .def(py::init<>(),
@@ -609,6 +666,125 @@ Cold start resets the initial guess to default values for robust convergence.
   engine.setColdStart()
 )doc")
 
+        .def("setSolverMode", &ChemicalEngine::setSolverMode, py::arg("mode"),
+             R"doc(
+Selects the solver for the next equilibrations.
+
+:param str mode: One of ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"``, ``"shp"`` (case-insensitive).
+    The default is ``"aia"``.
+
+- ``"aia"`` -- GEMS3K IPM solver, cold start (automatic initial approximation)
+- ``"sia"`` -- GEMS3K IPM solver, warm start (starts from the previous result)
+- ``"aop"`` -- Optima solver, cold start
+- ``"sop"`` -- Optima solver, warm start
+- ``"hop"`` -- the GEMS3K IPM solver from scratch, then Optima refines and checks the result.
+  If Optima fails, xGEMS keeps the GEMS3K IPM result and flags it.
+- ``"shp"`` -- the same as ``"hop"``, but the GEMS3K IPM solver starts from the previous result
+
+A warm start (:py:meth:`setWarmStart`, ``options.warmstart`` or ``reequilibrate(True)``)
+changes ``"aia"`` to ``"sia"``, ``"aop"`` to ``"sop"`` and ``"hop"`` to ``"shp"``.
+:py:meth:`solverMode` returns the mode that runs. :py:meth:`setColdStart` changes each warm mode to a cold mode.
+
+:raises RuntimeError: for an unknown mode, or for an Optima mode when GEMS3K was
+    built without Optima.
+
+**Example:**
+
+.. code-block:: python
+
+  engine.setSolverMode("aop")
+)doc")
+
+        .def("solverMode", &ChemicalEngine::solverMode,
+             R"doc(
+Returns the solver mode that runs: ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"`` or ``"shp"``.
+A set ``warmstart`` changes ``"aia"`` to ``"sia"``, ``"aop"`` to ``"sop"`` and ``"hop"`` to ``"shp"``.
+)doc")
+
+        .def_static("builtWithOptima", &ChemicalEngine::builtWithOptima,
+             R"doc(
+Whether the linked GEMS3K was built with the Optima solver.
+)doc")
+
+        .def("setpHTarget", &ChemicalEngine::setpHTarget,
+             py::arg("pH_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Fixes the pH. The solver finds the titrant amount in the equilibrium calculation.
+
+The target applies to the Optima modes (``"aop"``, ``"sop"``, ``"hop"`` and ``"shp"``).
+It stays active until :py:meth:`clearControlConditions`.
+The modes ``"aia"`` and ``"sia"`` ignore the target and do not raise an error. Then the pH is free and the titrant is 0.
+
+:param float pH_target: Requested pH.
+:param float tolerance: Tolerance on the achieved pH; negative uses the default.
+
+:raises RuntimeError: if GEMS3K was built without Optima.
+
+.. note::
+   The titrant is added to the engine's own bulk composition. The array returned by
+   :py:meth:`elementAmounts` is a live view of it, so it changes too. To restart from
+   the original composition, keep a copy: ``b0 = numpy.array(engine.elementAmounts())``,
+   and pass ``b0`` to :py:meth:`equilibrate`. Read the amount added with
+   :py:meth:`controlConditionTitrant`.
+
+**Example:**
+
+.. code-block:: python
+
+  engine.setSolverMode("aop")
+  engine.setpHTarget(7.0)
+  engine.setEhTarget(0.2)
+  engine.equilibrate(298.15, 1e5, b)
+)doc")
+
+        .def("setEhTarget", &ChemicalEngine::setEhTarget,
+             py::arg("Eh_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Fixes the Eh (in volts); see :py:meth:`setpHTarget`.
+
+:raises RuntimeError: if GEMS3K was built without Optima.
+)doc")
+
+        .def("clearControlConditions", &ChemicalEngine::clearControlConditions,
+             R"doc(
+Removes every registered pH/Eh control condition.
+)doc")
+
+        .def("controlConditionTitrant", &ChemicalEngine::controlConditionTitrant,
+             py::arg("name"),
+             R"doc(
+Titrant amount (mol) solved for the named condition in the last equilibration;
+0 if the condition was not active.
+
+:param str name: ``"pH"`` or ``"Eh"``.
+)doc")
+
+        .def("traceRegimes", &ChemicalEngine::traceRegimes,
+             py::arg("factors") = std::vector<double>{0.1, 10.}, py::arg("trace_rel") = 1e-6,
+             py::arg("tol") = 1e-3, py::arg("of_interest") = std::vector<std::string>{},
+             R"doc(
+Classifies how each trace element partitions between phases.
+
+Re-solves the system cold, in the current solver mode, with all trace element
+amounts scaled by each factor, and compares the phase fractions. The engine
+state is restored afterwards.
+
+:param list[float] factors: Multipliers applied to the trace amounts.
+:param float trace_rel: An element is trace when its amount is at most
+    ``trace_rel`` times the total bulk amount; ignored when ``of_interest`` is given.
+:param float tol: Largest phase-fraction change counted as ``LINEAR``.
+:param list[str] of_interest: Element names to check; empty checks every trace element.
+:returns: ``list[TraceRegime]``, in element order.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.equilibrate(T, P, b)
+    for r in engine.traceRegimes(of_interest=["Cs", "Sr"]):
+        print(r.name, r.verdict, r.phases)
+)doc")
+
         .def("setSpeciesUpperLimit", static_cast<void (ChemicalEngine::*)(std::string, double, std::optional<std::string>)>(&ChemicalEngine::setSpeciesUpperLimit),
              py::arg("name"), py::arg("limit"), py::arg("phase") = py::none(),
              R"doc(
@@ -839,15 +1015,26 @@ Access specified element with bounds checking.
                    The function returns an integer code indicating the status:
                    
                    - 0: No GEM re-calculation needed
-                   - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-                   - 2: OK after GEM calculation with LPP AIA
-                   - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-                   - 4: Failure (no result) in GEM calculation with LPP AIA
-                   - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-                   - 6: OK after GEM calculation with SIA
-                   - 7: Bad (not fully trustful) result after GEM calculation with SIA
-                   - 8: Failure (no result) in GEM calculation with SIA
                    - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+                   For the other results, the code depends on the solver mode that ran (see ``setSolverMode``):
+
+                   ======  ======  ====================================  ======================
+                   Mode    OK      Bad (result not fully trustworthy)    Failure (no result)
+                   ======  ======  ====================================  ======================
+                   aia     2       3                                     4
+                   sia     6       7                                     8
+                   aop     11      12                                    13
+                   sop     15      16                                    17
+                   hop     23      24                                    25
+                   shp     27      28                                    29
+                   ======  ======  ====================================  ======================
+
+                   OK: the result can be used. Bad: there is a result, but check it. The modes ``aop``, ``sop``, ``hop`` and
+                   ``shp`` need GEMS3K built with Optima.
+                   
+                   This is a number, so ``print(ret)`` shows for example ``2``. ``ChemicalEngineDicts`` returns the same information as text.
+                   The solver modes are explained in the :doc:`solver_guide`.
 
               )doc")
 
@@ -868,15 +1055,26 @@ Access specified element with bounds checking.
                    The function returns an integer code indicating the status:
                    
                    - 0: No GEM re-calculation needed
-                   - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-                   - 2: OK after GEM calculation with LPP AIA
-                   - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-                   - 4: Failure (no result) in GEM calculation with LPP AIA
-                   - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-                   - 6: OK after GEM calculation with SIA
-                   - 7: Bad (not fully trustful) result after GEM calculation with SIA
-                   - 8: Failure (no result) in GEM calculation with SIA
                    - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+                   For the other results, the code depends on the solver mode that ran (see ``setSolverMode``):
+
+                   ======  ======  ====================================  ======================
+                   Mode    OK      Bad (result not fully trustworthy)    Failure (no result)
+                   ======  ======  ====================================  ======================
+                   aia     2       3                                     4
+                   sia     6       7                                     8
+                   aop     11      12                                    13
+                   sop     15      16                                    17
+                   hop     23      24                                    25
+                   shp     27      28                                    29
+                   ======  ======  ====================================  ======================
+
+                   OK: the result can be used. Bad: there is a result, but check it. The modes ``aop``, ``sop``, ``hop`` and
+                   ``shp`` need GEMS3K built with Optima.
+                   
+                   This is a number, so ``print(ret)`` shows for example ``2``. ``ChemicalEngineDicts`` returns the same information as text.
+                   The solver modes are explained in the :doc:`solver_guide`.
 
               )doc")
 
@@ -914,15 +1112,26 @@ Access specified element with bounds checking.
            The function returns an integer code indicating the status:
            
            - 0: No GEM re-calculation needed
-           - 1: Need GEM calculation with LPP (automatic) initial approximation (AIA)
-           - 2: OK after GEM calculation with LPP AIA
-           - 3: Bad (not fully trustful) result after GEM calculation with LPP AIA
-           - 4: Failure (no result) in GEM calculation with LPP AIA
-           - 5: Need GEM calculation with no-LPP (smart) IA, SIA using the previous speciation
-           - 6: OK after GEM calculation with SIA
-           - 7: Bad (not fully trustful) result after GEM calculation with SIA
-           - 8: Failure (no result) in GEM calculation with SIA
            - 9: Terminal error in GEMS3K (e.g., memory corruption). Restart required.
+
+           For the other results, the code depends on the solver mode that ran (see ``setSolverMode``):
+
+           ======  ======  ====================================  ======================
+           Mode    OK      Bad (result not fully trustworthy)    Failure (no result)
+           ======  ======  ====================================  ======================
+           aia     2       3                                     4
+           sia     6       7                                     8
+           aop     11      12                                    13
+           sop     15      16                                    17
+           hop     23      24                                    25
+           shp     27      28                                    29
+           ======  ======  ====================================  ======================
+
+           OK: the result can be used. Bad: there is a result, but check it. The modes ``aop``, ``sop``, ``hop`` and
+           ``shp`` need GEMS3K built with Optima.
+           
+           This is a number, so ``print(ret)`` shows for example ``2``. ``ChemicalEngineDicts`` returns the same information as text.
+           The solver modes are explained in the :doc:`solver_guide`.
            
            .. note::
               Ensure the `b` vector is properly ordered and matches the number of elements
@@ -957,7 +1166,7 @@ forwards to ``equilibrate(T, P, b)``.
              R"doc(
             Checks if the equilibrium computation has converged.
             
-            :return bool: True if the computation has converged, False otherwise.
+            :return bool: True if the last calculation ended with a good result in any solver mode, False otherwise.
             
             **Example:**
             
@@ -965,6 +1174,42 @@ forwards to ``equilibrate(T, P, b)``.
             
                 is_converged = engine.converged()
                 print(is_converged)
+            )doc")
+
+        .def("rescueStep", &ChemicalEngine::rescueStep,
+             R"doc(
+            Returns the rescue step that made the last result.
+
+            GEMS3K tries a failed call again in steps. The setting ``pa_FailRescue`` in the ``-ipm`` file controls this.
+
+            :return int: 0 = the call itself. 1 = a warm restart. 2 = a composition that changes by a very small amount.
+                3 = a walk from the previous result. 4 = looser settings. 5 = the other solver.
+                6 = the best balanced attempt. Its status is always BAD.
+
+            **Example:**
+
+            .. code-block:: python
+
+                engine.reequilibrate()
+                if engine.rescueStep() == 6:
+                    print("no good result; the best balanced attempt was returned")
+            )doc")
+
+        .def("presentPhasesRel", &ChemicalEngine::presentPhasesRel, py::arg("relFloor") = 0.,
+             R"doc(
+            Returns the names of the present phases.
+
+            Both solvers decide by the same rule when a phase is absent.
+            An absent phase that Optima keeps at a very small floor amount is not in the list.
+
+            :param float relFloor: If above 0, a phase below this share of the total phase amount is also absent (default 0, off).
+            :return list[str]: Names of present phases.
+
+            **Example:**
+
+            .. code-block:: python
+
+                print(engine.presentPhasesRel())
             )doc")
 
         .def("numIterations", &ChemicalEngine::numIterations,

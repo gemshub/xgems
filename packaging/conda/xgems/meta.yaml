@@ -1,0 +1,53 @@
+{% set version = load_file_regex(load_file="CMakeLists.txt", regex_pattern="project\\(xGEMS VERSION ([0-9.]+)").group(1) %}
+
+package:
+  name: xgems
+  version: {{ version }}
+
+source:
+  path: ../../..
+
+build:
+  number: 900
+  string: optima_py{{ py }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ stdlib('c') }}
+    - cmake
+    - ninja
+    - python  # [win or osx]
+    - pip  # [win or osx]
+    - setuptools  # [win or osx]
+    - wheel  # [win or osx]
+  host:
+    - gems3k * optima*   # carries the modified Optima (lib/gems3k-optima)
+    - thermofun >=0.7.1,<1
+    - eigen >=3.4.0
+    - spdlog
+    - nlohmann_json
+    - pybind11
+    - python
+    - pip
+    - setuptools
+    - wheel
+    - numpy
+  run:
+    # GEMS3K and its Optima are linked statically into PyxGEMS (host-only), so they are not run requirements.
+    - thermofun >=0.7.1,<1
+    - python
+    - numpy
+
+test:
+  imports:
+    - xgems
+
+about:
+  home: https://github.com/gemshub/xgems
+  license: LGPL-3.0-or-later
+  license_file:
+    - COPYING
+    - COPYING.LESSER
+  summary: xGEMS with the Optima solver modes (GEMS3K and its Optima from github.com/gemshub/optima, branch optima_develop, built in).

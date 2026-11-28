@@ -155,8 +155,10 @@ private:
 
 /// Recursive-descent parser for an atomic formula segment (no '.' separators).
 /// Handles uppercase-lowercase element symbols, integer subscripts, and
-/// nested parentheses.
-auto parseSimple(const std::string& s) -> ElementMap
+/// nested parentheses. An element name from `elements` (e.g. "Inert",
+/// "N_atm") is read as one symbol: the longest name that matches at an
+/// uppercase letter and is not followed by a lowercase letter.
+auto parseSimple(const std::string& s, const std::vector<std::string>& elements) -> ElementMap
 {
     std::vector<ElementMap> stack;
     stack.emplace_back();
@@ -187,11 +189,22 @@ auto parseSimple(const std::string& s) -> ElementMap
             }
         }
         else if (std::isupper(c)) {
-            std::string el(1, static_cast<char>(c));
-            ++i;
-            if (i < n && std::islower(static_cast<unsigned char>(s[i]))) {
-                el += s[i];
+            std::string el;
+            for (const auto& name : elements) {     // a system element name, longest first
+                const std::size_t len = name.size();
+                if (len > el.size() && s.compare(i, len, name) == 0 &&
+                    !(i + len < n && std::islower(static_cast<unsigned char>(s[i + len]))))
+                    el = name;
+            }
+            if (!el.empty()) {
+                i += el.size();
+            } else {
+                el.assign(1, static_cast<char>(c));
                 ++i;
+                if (i < n && std::islower(static_cast<unsigned char>(s[i]))) {
+                    el += s[i];
+                    ++i;
+                }
             }
             int cnt = 0;
             while (i < n && std::isdigit(static_cast<unsigned char>(s[i]))) {
@@ -216,7 +229,8 @@ auto parseSimple(const std::string& s) -> ElementMap
 
 // ─── parseChemicalFormula ────────────────────────────────────────────
 
-auto parseChemicalFormula(const std::string& formula) -> ElementMap
+auto parseChemicalFormula(const std::string& formula,
+                          const std::vector<std::string>& elements) -> ElementMap
 {
     // Strip whitespace.
     std::string s;
@@ -248,7 +262,7 @@ auto parseChemicalFormula(const std::string& formula) -> ElementMap
         while (k < part.size() &&
                std::isdigit(static_cast<unsigned char>(part[k]))) ++k;
         const double coef = (k > 0) ? std::stod(part.substr(0, k)) : 1.0;
-        const ElementMap sub = parseSimple(part.substr(k));
+        const ElementMap sub = parseSimple(part.substr(k), elements);
         for (const auto& kv : sub) {
             total[kv.first] += kv.second * coef;
         }
@@ -350,7 +364,8 @@ auto Material::buildConstituent(const ElementMap& formula,
 auto Material::add(const std::string& formula, double value,
                    const std::string& units, double react_ext) -> Material&
 {
-    auto parsed = parseChemicalFormula(formula);
+    auto parsed = adapter_ ? parseChemicalFormula(formula, adapter_->elementNames())
+                           : parseChemicalFormula(formula);
     constituents_.push_back(
         buildConstituent(parsed, formula, value, units, react_ext));
     return *this;

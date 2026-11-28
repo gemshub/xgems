@@ -35,13 +35,16 @@ inline void exportMaterial(py::module& m)
 {
     // ─── Free helper ────────────────────────────────────────────────
     m.def("parse_chemical_formula", &parseChemicalFormula,
-          py::arg("formula"),
+          py::arg("formula"), py::arg("elements") = std::vector<std::string>{},
           R"doc(
 Parse a chemical-formula string into a {element: count} dictionary.
 
 Supports nested parentheses and hydrate notation with '.' separators.
 
 :param str formula: Chemical formula (e.g. "CaSO4.2H2O", "Ca(OH)2", "Cl").
+:param list[str] elements: Element names of the chemical system (optional). A name that is not a
+    one- or two-letter symbol (e.g. "Inert", "N_atm") is read only if it is in this list.
+    ``Material.add`` gives the element names of its engine.
 :return dict: {element_symbol: float count per formula unit}
 
 **Example:**
@@ -50,6 +53,8 @@ Supports nested parentheses and hydrate notation with '.' separators.
 
     parse_chemical_formula("CaSO4.2H2O")
     # → {"Ca": 1, "S": 1, "O": 6, "H": 4}
+    parse_chemical_formula("Inert2O", ["Inert", "O"])
+    # → {"Inert": 2, "O": 1}
 )doc");
 
     // ─── Material class ────────────────────────────────────────────
@@ -152,7 +157,8 @@ C++ ``ChemicalEngineMaps`` type.
              R"doc(
 Add a constituent by chemical-formula string.
 
-:param str formula: e.g. "CaCO3", "H2O", "Cl", "CaSO4.2H2O".
+:param str formula: e.g. "CaCO3", "H2O", "Cl", "CaSO4.2H2O". Element names of the chemical system
+    that are not one- or two-letter symbols (e.g. "Inert", "N_atm") can also be used.
 :param float value: Amount in ``units`` (default 1.0).
 :param str units: One of "mol"/"moles", "mmol", "umol", "kg", "g", "mg", "ug".
 :param float react_ext: Reaction-extent multiplier in [0,1] (default 1).
@@ -270,7 +276,7 @@ Return the bulk-composition vector ``b`` indexed by the engine's
 element list (length ``engine.numElements()``).
 
 Each non-``Zz`` engine element is clamped to at least ``min_amount``
-(default 1e-15). The charge element ``Zz`` is always 0. Ready to be passed to
+(default 1e-11). The charge element ``Zz`` is always 0. Ready to be passed to
 ``engine.equilibrate(T, P, b)``.
 
 **Example:**
@@ -286,7 +292,7 @@ Return the bulk-composition as a ``{element_name: moles}`` dict.
 
 Natural form for ChemicalEngineDicts users. Includes one entry per
 engine element; each non-``Zz`` value is clamped to at least
-``min_amount`` (default 1e-15). ``Zz`` is always 0.
+``min_amount`` (default 1e-11). ``Zz`` is always 0.
 
 **Example:**
 
@@ -313,7 +319,7 @@ engine element; each non-``Zz`` value is clamped to at least
 Minimum [mol] returned for each non-``Zz`` entry in ``b()`` and ``b_dict()``.
 
 The GEM solver requires strictly positive bulk amounts. Any non-``Zz``
-entry below this value is raised to the floor (default 1e-15). Set to
+entry below this value is raised to the floor (default 1e-11). Set to
 0.0 to disable the clamp and pass exact recipe amounts to the solver.
 
 **Example:**

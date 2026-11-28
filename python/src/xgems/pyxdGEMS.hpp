@@ -319,7 +319,8 @@ Read-only property: the dictionary of the species standard molar volumes in m³/
 Computes the equilibrium state of the current system.
 Uses current temperature (K), pressure (Pa), and element amounts (in mol) to compute equilibrium.
 
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -330,11 +331,13 @@ Uses current temperature (K), pressure (Pa), and element amounts (in mol) to com
     bulk_composition = {'C': 1e-08, 'Ca': 1e-08, 'Cl': 0.002, 'H': 111.016746657646,
                         'Mg': 0.001, 'O': 55.5083933588231, 'Sn': 130.841288437146, 'Zz': 0.0}
     engine.set_bulk_composition(bulk_composition)
-    engine.equilibrate()
+    result = engine.equilibrate()
+    print(result)     # for example: OK after GEM calculation with LPP AIA
+    print(engine)     # the equilibrium state: T, P, elements, phases and species
 )doc")
             .def("equilibrate",
                  static_cast<std::string(ChemicalEngineMaps::*)(double, double, ValuesMap, double)>(&ChemicalEngineMaps::equilibrate),
-                 py::arg("T"), py::arg("P"), py::arg("b_dict"), py::arg("min_amount")=1e-15,
+                 py::arg("T"), py::arg("P"), py::arg("b_dict"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Computes the equilibrium state with explicit temperature, pressure, and bulk composition.
 
@@ -344,8 +347,9 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 :param float T: Temperature in Kelvin.
 :param float P: Pressure in Pascals.
 :param dict b_dict: Dictionary of element amounts in mol (elements not listed keep their current value).
-:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
-:return str: The string indicating the status.
+:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-11.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -357,7 +361,7 @@ composition. Sets the internal T, P, and bulk composition before computing equil
 )doc")
             .def("equilibrate",
                  static_cast<std::string(ChemicalEngineMaps::*)(double, double, const Material&, double)>(&ChemicalEngineMaps::equilibrate),
-                 py::arg("T"), py::arg("P"), py::arg("material"), py::arg("min_amount")=1e-15,
+                 py::arg("T"), py::arg("P"), py::arg("material"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Computes the equilibrium state from temperature, pressure, and a Material recipe.
 
@@ -367,8 +371,9 @@ Convenience overload that extracts the element-amount dictionary from *material*
 :param float T: Temperature in Kelvin.
 :param float P: Pressure in Pascals.
 :param Material material: A Material object whose element amounts define the bulk composition.
-:param float min_amount: Minimum amount in mol for elements absent from the material, default 1e-15.
-:return str: The string indicating the status.
+:param float min_amount: Minimum amount in mol for elements absent from the material, default 1e-11.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -385,7 +390,8 @@ Re-equilibrates the system using the current internal state without changing T, 
 
 Mirrors ``ChemicalEngine.reequilibrate()``.
 
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -402,7 +408,8 @@ Re-equilibrates the system with explicit warm/cold start control.
 Mirrors ``ChemicalEngine.reequilibrate(warmstart)``.
 
 :param bool warmstart: If true, uses previous speciation as initial guess (SIA).
-:return str: The string indicating the status.
+:return str: The status as text, for example ``OK after GEM calculation with LPP AIA``, so ``print(engine.equilibrate())``
+    prints that text. The text names the solver that ran; see the :doc:`solver_guide`.
 
 **Example:**
 
@@ -410,6 +417,76 @@ Mirrors ``ChemicalEngine.reequilibrate(warmstart)``.
 
     result = engine.reequilibrate(True)
     print(result)
+)doc")
+            .def("setSolverMode", &ChemicalEngineMaps::setSolverMode,
+                 py::arg("mode"),
+             R"doc(
+Selects the solver used by subsequent equilibrations; see ``ChemicalEngine.setSolverMode``.
+
+:param str mode: ``"aia"``, ``"sia"``, ``"aop"``, ``"sop"``, ``"hop"`` or ``"shp"``.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.setSolverMode("aop")
+)doc")
+            .def_static("builtWithOptima", &ChemicalEngineMaps::builtWithOptima,
+             R"doc(
+Whether the linked GEMS3K was built with the Optima solver (``"aop"``, ``"sop"``, ``"hop"`` and ``"shp"`` need it).
+
+**Example:**
+
+.. code-block:: python
+
+    if ChemicalEngineDicts.builtWithOptima():
+        engine.setSolverMode("aop")
+)doc")
+            .def("solverMode", &ChemicalEngineMaps::solverMode,
+             R"doc(
+Returns the selected solver mode: "aia", "sia", "aop", "sop", "hop" or "shp".
+)doc")
+            .def("setpHTarget", &ChemicalEngineMaps::setpHTarget,
+                 py::arg("pH_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Fixes the pH. The solver finds the titrant amount in the equilibrium calculation.
+
+The target applies to the Optima modes. The modes "aia" and "sia" ignore it. See ``ChemicalEngine.setpHTarget``.
+
+:param float pH_target: Requested pH.
+:param float tolerance: Tolerance on the achieved pH; negative uses the default.
+
+**Example:**
+
+.. code-block:: python
+
+    engine.setSolverMode("aop")
+    engine.setpHTarget(7.0)
+    engine.setEhTarget(0.2)
+    engine.equilibrate(298.15, 1e5, b)
+)doc")
+            .def("setEhTarget", &ChemicalEngineMaps::setEhTarget,
+                 py::arg("Eh_target"), py::arg("tolerance") = -1.,
+             R"doc(
+Fixes the Eh (in volts); see ``setpHTarget()``.
+)doc")
+            .def("clearControlConditions", &ChemicalEngineMaps::clearControlConditions,
+             R"doc(
+Removes every registered pH/Eh control condition.
+)doc")
+            .def("controlConditionTitrant", &ChemicalEngineMaps::controlConditionTitrant,
+                 py::arg("name"),
+             R"doc(
+Returns the titrant amount (mol) for the ``"pH"`` or ``"Eh"`` condition in the last equilibration.
+The value is 0 if the condition was not active.
+)doc")
+            .def("traceRegimes", &ChemicalEngineMaps::traceRegimes,
+                 py::arg("factors") = std::vector<double>{0.1, 10.}, py::arg("trace_rel") = 1e-6,
+                 py::arg("tol") = 1e-3, py::arg("of_interest") = std::vector<std::string>{},
+             R"doc(
+Trace-element regimes keyed by element name; see :meth:`ChemicalEngine.traceRegimes`.
+
+:returns: ``{element name: TraceRegime}``.
 )doc")
             .def("setPT", &ChemicalEngineMaps::setPT,
                  py::arg("P"), py::arg("T"),
@@ -429,7 +506,7 @@ Mirrors ``ChemicalEngine.setPT(P, T)``. Also updates the T and P member variable
     ok = engine.setPT(101325.0, 298.15)
 )doc")
             .def("setB", &ChemicalEngineMaps::setB,
-                 py::arg("b_dict"), py::arg("min_amount")=1e-15,
+                 py::arg("b_dict"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Sets the amounts of elements from a dictionary.
 
@@ -438,7 +515,7 @@ Elements absent from ``b_dict`` are left at their current value (or set to ``min
 if they fall below it).
 
 :param dict b_dict: Dictionary of element amounts in mol.
-:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-15.
+:param float min_amount: Minimum amount in mol for unspecified elements, default 1e-11.
 
 **Example:**
 
@@ -483,7 +560,7 @@ Reads a DBR file from disk, updating the system composition.
 
 Mirrors ``ChemicalEngine.readDbrFromFile(filename)``.
 
-:param str filename: Path to the DBR file (e.g., "*-dbr.json").
+:param str filename: Path to the DBR file (e.g., ``*-dbr.json``).
 
 **Example:**
 
@@ -596,11 +673,11 @@ Read-only property: the number of species in the system.
 
     print("nspecies", engine.nspecies)
 )doc")
-            .def("clear", &ChemicalEngineMaps::clear, py::arg("min_amount")=1e-15,
+            .def("clear", &ChemicalEngineMaps::clear, py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Clear the amounts of elements (set the default amount for all components).
 
-:param float min_amount: Min amount of element in mol, default 1e-15.
+:param float min_amount: Min amount of element in mol, default 1e-11.
 
 **Example:**
 
@@ -758,13 +835,27 @@ Dictionary keys: "total", "Ca", "Mg".
              R"doc(
 Read-only property: whether the last equilibrium computation converged.
 
-:return bool: True if the last equilibration converged.
+:return bool: True if the last equilibration ended with a good result in any solver mode.
 
 **Example:**
 
 .. code-block:: python
 
     print("converged", engine.converged)
+)doc")
+            .def_property_readonly("rescue_step", &ChemicalEngineMaps::rescue_step,
+             R"doc(
+Read-only property: the rescue step that made the last result.
+
+:return int: 0 = the call itself; 1 to 5 = a rescue step (see ``ChemicalEngine.rescueStep``);
+    6 = the best balanced attempt (status BAD).
+
+**Example:**
+
+.. code-block:: python
+
+    if engine.rescue_step > 0:
+        print("rescued at step", engine.rescue_step)
 )doc")
             .def_property_readonly("mass_balance_errors", &ChemicalEngineMaps::mass_balance_errors,
              R"doc(
@@ -829,6 +920,23 @@ Return names of all phases whose molar amount exceeds the threshold.
 
     for name in engine.present_phases():
         print(name)
+)doc")
+            .def("present_phases_rel", &ChemicalEngineMaps::present_phases_rel,
+             py::arg("rel_floor") = 0.,
+             R"doc(
+Returns the names of all present phases.
+
+Both solvers decide by the same rule when a phase is absent.
+``present_phases`` uses a fixed amount in mol. This can count an Optima floor amount as present.
+
+:param float rel_floor: If above 0, a phase below this share of the total phase amount is also absent (default 0, off).
+:return list[str]: Names of present phases.
+
+**Example:**
+
+.. code-block:: python
+
+    print(engine.present_phases_rel())
 )doc")
             .def("present_minerals", &ChemicalEngineMaps::present_minerals,
              py::arg("threshold") = 1e-12,
@@ -1144,12 +1252,12 @@ Read-only property: the dictionary of the amounts of each element in the aqueous
     print("aq_elements_moles", engine.aq_elements_moles)
 )doc")
             .def("set_bulk_composition", &ChemicalEngineMaps::set_bulk_composition,
-             py::arg("b_input"), py::arg("min_amount")=1e-15,
+             py::arg("b_input"), py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Sets the amounts of elements (vector b).
 
 :param dict b_input: Dictionary of elements amounts in mol.
-:param float min_amount: Min amount of element in mol, default 1e-15.
+:param float min_amount: Min amount of element in mol, default 1e-11.
 
 **Example:**
 
@@ -1585,7 +1693,7 @@ Add multiple elements using user defined formula.
     engine.add_amt_from_formula({'K': 2, 'O': 1}, 4.108e-3, "kg")
 )doc")
             .def("get_b_from_formula", &ChemicalEngineMaps::get_b_from_formula,
-             py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=1e-15,
+             py::arg("formula"), py::arg("val")=1, py::arg("units")="moles", py::arg("min_amount")=xGEMS::default_min_element_amount,
              R"doc(
 Returns a bulk vector b from user-defined formula (as dict {"H":2,"O":1})
 and amount of the formula object in units of "moles" or "kg".
@@ -1593,7 +1701,7 @@ and amount of the formula object in units of "moles" or "kg".
 :param dict formula: User defined formula.
 :param float val: Amount of the formula object in units, default 1.
 :param str units: Units of amount ("moles", "kg"), default "moles".
-:param float min_amount: Min amount of element in mol, default 1e-15.
+:param float min_amount: Min amount of element in mol, default 1e-11.
 :return list[float]: Vector of element amounts in mol.
 
 **Example:**
