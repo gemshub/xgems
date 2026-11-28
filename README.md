@@ -2,6 +2,7 @@
 
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/xgems?style=for-the-badge&logo=conda-forge)](https://anaconda.org/conda-forge/xgems)
 [![Docs](https://img.shields.io/readthedocs/xgems?style=for-the-badge)](https://xgems.readthedocs.io)
+[![Binder](https://img.shields.io/badge/try%20it-binder-579ACA?style=for-the-badge)](https://mybinder.org/v2/gh/gemshub/xgems-jupyter/main?urlpath=lab/tree/how-to-use-xgems-examples.ipynb)
 
 xGEMS calculates chemical equilibrium in complex non-ideal systems by Gibbs energy minimization.
 It gives the [GEMS3K](https://github.com/gemshub/GEMS3K) solver a C++ and Python interface.
@@ -43,6 +44,10 @@ pH 5.50 needs 1.40e-02 mol of H+
 The chemical system (species, phases, thermodynamic data) comes from a project that
 [GEMS-Selektor](https://gems.web.psi.ch) exports.
 
+More examples as Jupyter notebooks: [xgems-jupyter](https://github.com/gemshub/xgems-jupyter).
+[Try them in your browser with Binder](https://mybinder.org/v2/gh/gemshub/xgems-jupyter/main?urlpath=lab/tree/how-to-use-xgems-examples.ipynb),
+no installation needed.
+
 ## Features
 
 * Two solvers. The GEMS3K IPM solver is fast and is the default. The Optima solver is more reliable for solid
@@ -54,6 +59,19 @@ The chemical system (species, phases, thermodynamic data) comes from a project t
 * Results by name: amounts, activities, saturation indices, volumes, masses and thermodynamic properties of
   species, phases and the system.
 * Use from Python or C++, or link the library into a transport code.
+
+## What is new in 2.2.2
+
+* Built on GEMS3K 5.2.3, with the Optima solver in the conda package.
+* Solver modes: `setSolverMode()` selects `"aia"`, `"sia"` (GEMS3K IPM solver), `"aop"`, `"sop"` (Optima solver)
+  or `"hop"`, `"shp"` (GEMS3K IPM solver, then an Optima check). The default stays `"aia"`.
+* pH and Eh targets in the Optima modes: `setpHTarget()`, `setEhTarget()`, `controlConditionTitrant()`.
+* New checks of the result: `rescueStep()` (which retry step gave the result), `phasePresentRel()`
+  (is a phase present) and `traceRegimes()` (how each trace element behaves when its amount changes).
+* Changed: an element that the input does not contain now gets 1e-11 mol (before: 1e-15 mol). Use `min_amount`
+  to set another value.
+
+See the [solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html) for the details.
 
 ## Documentation
 
