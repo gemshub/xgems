@@ -8,7 +8,7 @@ Each setting switches a correctness fix or a speed tuning on or off, or sets an 
 The settings are separate so that a test can check each mechanism alone.
 A project file keeps a setting only if its value is not the default.
 The same list is in the GEMS3K
-`advanced settings <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/SOLVER-ADVANCED-SETTINGS.md>`_.
+`advanced settings <https://github.com/gemshub/GEMS3K/blob/master/Docs/SOLVER-ADVANCED-SETTINGS.md>`_.
 
 The settings that a user can change are on the page :doc:`solver_settings`.
 See :ref:`project-file-settings` for how to put a setting in a project file.
@@ -291,7 +291,7 @@ GEMS3K IPM solver
      - Checks the totals of major elements in absolute terms and the totals of trace elements in relative terms. The value is the ratio of trace to major.
    * - ``pa_NativeOptimaFinish``
      - 500 (on)
-     - Needs a build with Optima. A solid can be left out, or be in a trace amount, and still tend to form. Then Optima finishes the result. The solver keeps the new result only if it is better. Optima also finishes a calculation that reaches its iteration limit or fails to solve its equations, from the point where it stopped.
+     - Needs a build with Optima. A solid can be left out, or be in a trace amount, and still tend to form. Then Optima finishes the result. The solver keeps the new result only if it is better. Optima also finishes a calculation that reaches its iteration limit or fails to solve its equations, from the point where it stopped. The amount of a dissolved species can disagree with its activity. Then Optima also finishes the result. If only species that depend on an undetermined redox level disagree, there is no finish, only a warning.
 
    * - ``pa_PhaseSmoothing``
      - 1 (on)
@@ -311,6 +311,9 @@ GEMS3K IPM solver
    * - ``pa_TracePolish``
      - 1e-5 (on)
      - After the GEMS3K IPM solver stops, the solver calculates each trace element again. A trace element has less than this fraction of the total amount in the system. The potentials of all other elements stay fixed. A pure solid of the element can limit its potential at saturation. The solver keeps the result only if the energy does not increase. The mass balance must also stay within its tolerance, or not become worse than before. A dissolved species that the input switches off stays at zero. Each phase must stay dilute in the trace species. 0 = off.
+   * - ``pa_IpmWarmAbsent``
+     - 1 (on)
+     - After a warm GEMS3K IPM calculation, the solver checks each absent solid solution with its exact stability index. If a solid solution must form, the calculation is solved again from a cold start. A phase that the input holds at zero is not checked. 0 = off.
 
 Names with no effect
 --------------------

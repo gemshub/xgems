@@ -99,7 +99,7 @@ Suggested settings for common cases
 
 Most projects need no change. The table gives the settings that help in some common cases.
 They are suggestions for one project or one run. They do not change the defaults.
-The GEMS3K `advanced usage <https://github.com/gemshub/GEMS3K/blob/develop_optima/Docs/SOLVER-ADVANCED-USAGE.md>`_ page has the same table.
+The GEMS3K `advanced usage <https://github.com/gemshub/GEMS3K/blob/master/Docs/SOLVER-ADVANCED-USAGE.md>`_ page has the same table.
 Put them in the ``-ipm`` file of the project (see :ref:`project-file-settings`). The code after the table changes them from Python.
 
 .. list-table::

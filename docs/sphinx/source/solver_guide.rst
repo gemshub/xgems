@@ -125,8 +125,13 @@ Which mode to use
 
 A warm ``sia`` sequence can keep phases that are no longer stable after a phase boundary. Use ``aop`` and ``sop`` for such sequences.
 
-If a warm ``sia`` result keeps a species of a present solution at 0 mol, but the species must form,
-GEMS3K solves the call again from a cold start. The call then returns the good code of ``aia`` (2), not 6.
+A warm ``sia`` call is solved again from a cold start in these cases:
+
+* The result keeps a species of a present solution at 0 mol, but the species must form.
+* Two copies of one solid solution keep one composition, but they must split (``pa_IpmTwinSplit``).
+* A solid solution is absent, but its stability index shows that it must form (``pa_IpmWarmAbsent``).
+
+The call then returns the good code of ``aia`` (2), not 6.
 
 
 Quick start
