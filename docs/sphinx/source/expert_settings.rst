@@ -291,7 +291,7 @@ GEMS3K IPM solver
      - Checks the totals of major elements in absolute terms and the totals of trace elements in relative terms. The value is the ratio of trace to major.
    * - ``pa_NativeOptimaFinish``
      - 500 (on)
-     - Needs a build with Optima. A solid can be left out, or be in a trace amount, and still tend to form. Then Optima finishes the result. The solver keeps the new result only if it is better. Optima also finishes a calculation that reaches its iteration limit or fails to solve its equations, from the point where it stopped. The amount of a dissolved species can disagree with its activity. Then Optima also finishes the result. If only species that depend on an undetermined redox level disagree, there is no finish, only a warning.
+     - Needs a build with Optima. A solid can be left out, or be in a trace amount, and still tend to form. Then Optima finishes the result. The solver keeps the new result only if it is better. Optima also finishes a calculation that reaches its iteration limit or fails to solve its equations, from the point where it stopped. The activity of a dissolved species can differ from its molality times its activity coefficient by more than 0.01 in log10. Then Optima also finishes the result. If only species that depend on an undetermined redox level disagree, there is no finish, only a warning.
 
    * - ``pa_PhaseSmoothing``
      - 1 (on)
