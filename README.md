@@ -78,14 +78,9 @@ no installation needed.
 
 ## Documentation
 
-* [Installation](https://xgems.readthedocs.io/en/latest/installation.html) — conda package and build from source.
-* [Solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html) — solver modes, return codes, which mode to use.
-* [Solver settings](https://xgems.readthedocs.io/en/latest/solver_settings.html) — the settings for users.
-* [Expert settings](https://xgems.readthedocs.io/en/latest/expert_settings.html) — settings for testing and tuning.
-* [Advanced usage](https://xgems.readthedocs.io/en/latest/advanced_usage.html) — examples for common cases.
-* [Python API](https://xgems.readthedocs.io/en/latest/python_api_reference.html) and
-  [C++ API](https://xgems.readthedocs.io/en/latest/cpp_api_reference.html).
-* More examples: [demos/](demos) and the [Jupyter notebooks](https://github.com/gemshub/xgems-jupyter).
+The full documentation is on [xgems.readthedocs.io](https://xgems.readthedocs.io): installation, solver guide,
+settings, advanced usage, and the Python and C++ API. More examples are in [demos/](demos) and in the
+[Jupyter notebooks](https://github.com/gemshub/xgems-jupyter).
 
 ## Installation with conda
 
