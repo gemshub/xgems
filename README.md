@@ -135,7 +135,7 @@ pip install sphinxcontrib-autodoc-doxygen
 Generate xml and html
 ```bash
 doxygen Doxyfile
-sphinx-build -b html docs/sphinx/source docs/html
+sphinx-build -b html docs/sphinx/source docs/build/html
 ```
 
 

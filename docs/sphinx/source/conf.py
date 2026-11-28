@@ -102,6 +102,3 @@ html_theme_options = {
 os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'build', 'doxygen'), exist_ok=True)
 subprocess.call('cd ../../.. ; doxygen', shell=True)
 
-# docs/html is the pre-built site that older branches publish; Read the Docs builds from source
-if not os.environ.get('READTHEDOCS'):
-    html_extra_path = ['../../html']
