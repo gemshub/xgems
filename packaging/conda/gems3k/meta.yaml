@@ -45,5 +45,10 @@ test:
 
 about:
   home: https://github.com/gemshub/GEMS3K
-  license: LGPL-3.0-or-later
+  license: LGPL-3.0-or-later AND LGPL-2.1-or-later AND Apache-2.0
+  license_file:
+    - COPYING
+    - COPYING.LESSER
+    - optima-src/LICENSE.md   # the modified Optima built into this package
+    - simdjson/LICENSE        # simdjson, bundled in GEMS3K
   summary: GEMS3K with the Optima solver (Optima from github.com/gemshub/optima, branch optima_develop, built in).
