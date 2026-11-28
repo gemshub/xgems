@@ -60,26 +60,32 @@ no installation needed.
   species, phases and the system.
 * Use from Python or C++, or link the library into a transport code.
 
-## What is new in 2.2.2
+## Solver modes
 
-* Built on GEMS3K 5.2.3, with the Optima solver in the conda package.
-* Solver modes: `setSolverMode()` selects `"aia"`, `"sia"` (GEMS3K IPM solver), `"aop"`, `"sop"` (Optima solver)
-  or `"hop"`, `"shp"` (GEMS3K IPM solver, then an Optima check). The default stays `"aia"`.
-* pH and Eh targets in the Optima modes: `setpHTarget()`, `setEhTarget()`, `controlConditionTitrant()`.
-* New checks of the result: `rescueStep()` (which retry step gave the result), `phasePresentRel()`
-  (is a phase present) and `traceRegimes()` (how each trace element behaves when its amount changes).
-* Changed: an element that the input does not contain now gets 1e-11 mol (before: 1e-15 mol). Use `min_amount`
-  to set another value.
+* `setSolverMode()` selects the solver for each calculation: `"aia"`, `"sia"` (GEMS3K IPM solver, cold and warm
+  start), `"aop"`, `"sop"` (Optima solver, cold and warm start), `"hop"`, `"shp"` (GEMS3K IPM solver, then an Optima
+  check).
+* `solverMode()` tells which mode runs. `builtWithOptima()` tells if the Optima modes are available.
+* If `warmstart` is set, `"aia"` runs as `"sia"`, `"aop"` as `"sop"` and `"hop"` as `"shp"`.
+* The default is `"aia"`.
 
-See the [solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html) for the details.
+## pH and Eh targets
+
+* `setpHTarget()` and `setEhTarget()` set a target pH or Eh in the Optima modes. The solver adds the needed amount
+  of acid, base or electrons.
+* `controlConditionTitrant()` gives that amount. For a pH target it is the amount of H+ removed, so a negative value
+  means H+ added. `clearControlConditions()` removes the targets.
 
 ## Documentation
 
-[xgems.readthedocs.io](https://xgems.readthedocs.io): installation, the
-[solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html),
-[solver settings](https://xgems.readthedocs.io/en/latest/solver_settings.html),
-[advanced usage](https://xgems.readthedocs.io/en/latest/advanced_usage.html) and the Python and C++ API.
-More examples are in [demos/](demos).
+* [Installation](https://xgems.readthedocs.io/en/latest/installation.html) — conda package and build from source.
+* [Solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html) — solver modes, return codes, which mode to use.
+* [Solver settings](https://xgems.readthedocs.io/en/latest/solver_settings.html) — the settings for users.
+* [Expert settings](https://xgems.readthedocs.io/en/latest/expert_settings.html) — settings for testing and tuning.
+* [Advanced usage](https://xgems.readthedocs.io/en/latest/advanced_usage.html) — examples for common cases.
+* [Python API](https://xgems.readthedocs.io/en/latest/python_api_reference.html) and
+  [C++ API](https://xgems.readthedocs.io/en/latest/cpp_api_reference.html).
+* More examples: [demos/](demos) and the [Jupyter notebooks](https://github.com/gemshub/xgems-jupyter).
 
 ## Installation with conda
 
