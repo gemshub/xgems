@@ -40,8 +40,8 @@ test:
   commands:
     - test -f ${PREFIX}/lib/cmake/GEMS3K/GEMS3KConfig.cmake  # [unix]
     - test -f ${PREFIX}/lib/gems3k-optima/lib/cmake/Optima/OptimaConfig.cmake  # [unix]
-    - if exist %LIBRARY_PREFIX%\lib\cmake\GEMS3K\GEMS3KConfig.cmake (exit 0) else (exit 1)  # [win]
-    - if exist %LIBRARY_PREFIX%\lib\gems3k-optima\lib\cmake\Optima\OptimaConfig.cmake (exit 0) else (exit 1)  # [win]
+    - if not exist %LIBRARY_PREFIX%\lib\cmake\GEMS3K\GEMS3KConfig.cmake exit /b 1  # [win]
+    - if not exist %LIBRARY_PREFIX%\lib\gems3k-optima\lib\cmake\Optima\OptimaConfig.cmake exit /b 1  # [win]
 
 about:
   home: https://github.com/gemshub/GEMS3K
