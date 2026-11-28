@@ -1,9 +1,9 @@
 # Read the Docs configuration file
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 #
-# This branch (develop_optima) builds the docs with Sphinx on Read the Docs, from a conda
-# environment that installs the prerelease xgems package (the compiled module is needed to read
-# the Python docstrings). Nothing generated is committed. Published at /en/develop_optima/.
+# Read the Docs builds the docs with Sphinx, from a conda environment that installs the xgems
+# package of the same version from the prerelease channel (the compiled module is needed to read
+# the Python docstrings). Each branch and tag is published under its own name, for example /en/latest/.
 
 version: 2
 
