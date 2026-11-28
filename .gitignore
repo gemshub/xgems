@@ -29,3 +29,4 @@ tests/test_mines
 
 # the logging test must be tracked although "*log*" above ignores log files
 !tests/test_logging.py
+xgems.code-workspace

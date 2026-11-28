@@ -1,5 +1,0 @@
-API Reference
-=================
-.. doxygenclass:: xGEMS::ChemicalEngine
-    :project: xGEMS
-    :members:

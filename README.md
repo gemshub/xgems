@@ -1,143 +1,137 @@
-
-## xGEMS 
-
-Linux, OSX, Windows
-
-This is a numerical solver of chemical equilibria for thermodynamic modelling, extended (relative to GEMS3K code) with new [C++ and Python APIs](https://gemshub.github.io/site/start/gemstandalone/documentation/#cpython-chemicalengine-interface), and supposed to replace GEMS3K in next-generation software.  
-
-### Documentation
-
-For detailed information about how to use this project through its C++ and Python interface interface [View Documentation](https://xgems.readthedocs.io)
-
-### Briefly about xGEMS
-
-* Currently uses the [GEMS3K](https://github.com/gemshub/GEMS3K) code that implements the improved GEM IPM-3 algorithm for Gibbs energy minimization in very complex non-ideal chemical systems with two-sided metastability constraints.
-* With GEMS3K 5, a second solver, Optima, is available. It is more robust for solid solutions and melts, and it can fix the pH or the Eh. A failed calculation is tried again in steps before GEMS3K reports it. See the [Solver Guide](https://xgems.readthedocs.io/en/latest/solver_guide.html).
-* Written in C/C++. The xGEMS code can be compiled as a standalone program (see /demos); or built as a static or dynamic library for coupling with a mass transport simulator or another code.
-
-### License
-* xGEMS is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See [COPYING.LESSER](COPYING.LESSER) and [COPYING](COPYING).
-* xGEMS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-* xGEMS uses GEMS3K (LGPL-3.0-or-later) and the modified Optima of gemshub (LGPL-2.1-or-later, see its LICENSE.md).
-
-### Installation using Conda 
+# xGEMS
 
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/xgems?style=for-the-badge&logo=conda-forge)](https://anaconda.org/conda-forge/xgems)
+[![Docs](https://img.shields.io/readthedocs/xgems?style=for-the-badge)](https://xgems.readthedocs.io)
 
-xGEMS can be easily installed using [Conda](https://www.anaconda.com/docs/getting-started/miniconda/install) package manager. If you have Conda or Miniforge installed, first add the conda-forge channel by executing 
+xGEMS calculates chemical equilibrium in complex non-ideal systems by Gibbs energy minimization.
+It gives the [GEMS3K](https://github.com/gemshub/GEMS3K) solver a C++ and Python interface.
+It runs on Linux, macOS and Windows.
 
-```bash
-conda config --add channels conda-forge
+## Example
+
+Calcite in 1 kg of water. More CO2 makes the water more acidic, and the calcite dissolves:
+
+```python
+import xgems
+
+engine = xgems.ChemicalEngineDicts("demos/resources/CalciteBC/CalciteBC-dat.lst")
+engine.T, engine.P = 298.15, 1e5            # K, Pa
+
+for co2 in [0.0, 0.001, 0.01, 0.1]:         # mol of CO2 added
+    engine.set_bulk_composition({"H": 111.017, "O": 55.508 + 0.03 + 2*co2,
+                                 "Ca": 0.01, "C": 0.01 + co2})
+    engine.equilibrate()
+    print(f"CO2 {co2:5.3f} mol | pH {engine.pH:5.2f} | "
+          f"calcite left {engine.phases_moles['Calcite']:.4f} mol | "
+          f"Ca in water {engine.aq_elements_molality['Ca']:.2e} mol/kg")
+
+# Optima solver: set the pH to 5.5 and get the acid that it needs
+engine.setSolverMode("aop")
+engine.setpHTarget(5.5)
+engine.equilibrate()
+print(f"pH {engine.pH:.2f} needs {-engine.controlConditionTitrant('pH'):.2e} mol of H+")
 ```
 
-install xGEMS by executing the following command:
-
-```bash
-conda install xgems
+```text
+CO2 0.000 mol | pH 10.31 | calcite left 0.0095 mol | Ca in water 3.12e-04 mol/kg
+CO2 0.001 mol | pH  7.89 | calcite left 0.0092 mol | Ca in water 8.49e-04 mol/kg
+CO2 0.010 mol | pH  6.53 | calcite left 0.0053 mol | Ca in water 4.67e-03 mol/kg
+CO2 0.100 mol | pH  6.01 | calcite left 0.0004 mol | Ca in water 9.64e-03 mol/kg
+pH 5.50 needs 1.40e-02 mol of H+
 ```
 
-Conda can be installed from [Miniconda](https://conda.io/miniconda.html).
+The chemical system (species, phases, thermodynamic data) comes from a project that
+[GEMS-Selektor](https://gems.web.psi.ch) exports.
 
-### How to download xGEMS source code
+## Features
 
-* In your home directory, make a folder named e.g. ~/git/xGEMS.
-* Change into ~/git/xGEMS and clone this repository from https://bitbucket.org/gems4/xgems.git using a preinstalled free git client, e.g. SourceTree. 
-* Alternatively on Mac OS X or linux, open a terminal and type in the command line:
+* Two solvers. The GEMS3K IPM solver is fast and is the default. The Optima solver is more reliable for solid
+  solutions, melts and miscibility gaps. Select the solver for each calculation with `setSolverMode()`.
+* Cold start, or warm start from the previous result. A warm start costs much less in sequences of small changes,
+  for example in reactive transport.
+* Target pH and Eh: the solver finds the acid, base or electrons that give the target.
+* A failed calculation is tried again in steps before xGEMS reports it.
+* Results by name: amounts, activities, saturation indices, volumes, masses and thermodynamic properties of
+  species, phases and the system.
+* Use from Python or C++, or link the library into a transport code.
+
+## Documentation
+
+[xgems.readthedocs.io](https://xgems.readthedocs.io): installation, the
+[solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html),
+[solver settings](https://xgems.readthedocs.io/en/latest/solver_settings.html),
+[advanced usage](https://xgems.readthedocs.io/en/latest/advanced_usage.html) and the Python and C++ API.
+More examples are in [demos/](demos).
+
+## Installation with conda
+
 ```bash
-cd ~/git/xGEMS
-git clone https://bitbucket.org/gems4/xgems.git .
+conda install -c conda-forge xgems
 ```
 
-### How to build xGEMS library and examples
+To get conda, install [Miniforge](https://conda-forge.org/download/).
 
-#### **Option 1: Build xGEMS in a Conda Environment Using `conda-devenv`**
+## Build from source
 
-1. **Install Conda and `conda-devenv`**  
-   Ensure you have Conda installed. If not, download and install Miniconda or Anaconda from [here](https://docs.conda.io/en/latest/miniconda.html).  
-   Install `conda-devenv`:
-   ```bash
-   conda install -c conda-forge conda-devenv
-   ```
-
-2. **Create and Activate the Conda Environment** 
-   ```bash
-   conda devenv
-   conda activate xgems
-   ```
-3. **Build xGEMS**
-   ```bash
-   cd ~/git/xGEMS
-   mkdir build
-   cd build
-   cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
-   make
-   make install
-   ```
-
-#### **Option 2: Build xGEMS without Conda**
-
-
-1. **Install Dependencies**
-
-   by executing in ```~/xGEMS$```
-   
-   ```bash
-   sudo ./install-dependencies.sh
-   ```
-
-2. **Build xGEMS** 
-
-   To build xGEMS and install it in your home directory or in the system directory (as in the example below), a typical sequence of commands can be executed in the terminal:
-   
-   ```sh
-   cd ~/xGEMS
-   mkdir build
-   cd build
-   cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
-   make
-   sudo make install
-   ```
-
-#### Verify installation
-
-   * To execute the c++ demo:
-   
-   ```bash
-   cd ~/build/bin
-   ./demo1
-   ```
-   
-   * To execute the python demo: 
-   
-   ```bash
-    cd ~git/xGEMS/demos/
-    python3 demo1.py
-   ```
-
-## For developers
-
-### Update documentation 
-
-Install doxygen
+Get the source code:
 
 ```bash
-sudo apt install doxygen  # Linux
-```
-Install addons 
-```bash
-pip install sphinx breathe sphinx_rtd_theme
-pip install sphinx-autodoc-typehints
-pip install sphinxcontrib-autodoc-doxygen
+git clone https://github.com/gemshub/xgems.git
+cd xgems
 ```
 
-(first build and install xgems, then update documentation)
+### Option 1: in a conda environment (recommended)
 
-Generate xml and html
+The environment file installs all dependencies, including GEMS3K with the Optima solver.
+
 ```bash
+conda install -c conda-forge conda-devenv
+conda devenv
+conda activate xgems
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+make
+make install
+```
+
+### Option 2: without conda
+
+The script builds the dependencies and GEMS3K. It does not build Optima, so the Optima modes use the GEMS3K IPM
+solver.
+
+```bash
+sudo ./install-dependencies.sh
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+make
+sudo make install
+```
+
+### Check the installation
+
+```bash
+cd build/bin
+./demo1             # C++ demo
+python3 demo1.py    # Python demo
+```
+
+## License
+
+xGEMS is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+version. See [COPYING.LESSER](COPYING.LESSER) and [COPYING](COPYING).
+
+xGEMS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+xGEMS uses GEMS3K (LGPL-3.0-or-later) and the modified Optima of gemshub (LGPL-2.1-or-later, see its LICENSE.md).
+
+## For developers: build the documentation
+
+First build and install xGEMS. Then:
+
+```bash
+conda install -c conda-forge doxygen sphinx breathe sphinx_rtd_theme
 doxygen Doxyfile
-sphinx-build -b html docs/sphinx/source docs/html
+sphinx-build -b html docs/sphinx/source docs/build/html
 ```
-
-
-
-
