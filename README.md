@@ -2,6 +2,7 @@
 
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/xgems?style=for-the-badge&logo=conda-forge)](https://anaconda.org/conda-forge/xgems)
 [![Docs](https://img.shields.io/readthedocs/xgems?style=for-the-badge)](https://xgems.readthedocs.io)
+[![Binder](https://img.shields.io/badge/try%20it-binder-579ACA?style=for-the-badge)](https://mybinder.org/v2/gh/gemshub/xgems-jupyter/main?urlpath=lab/tree/how-to-use-xgems-examples.ipynb)
 
 xGEMS calculates chemical equilibrium in complex non-ideal systems by Gibbs energy minimization.
 It gives the [GEMS3K](https://github.com/gemshub/GEMS3K) solver a C++ and Python interface.
@@ -43,6 +44,10 @@ pH 5.50 needs 1.40e-02 mol of H+
 The chemical system (species, phases, thermodynamic data) comes from a project that
 [GEMS-Selektor](https://gems.web.psi.ch) exports.
 
+More examples as Jupyter notebooks: [xgems-jupyter](https://github.com/gemshub/xgems-jupyter).
+[Try them in your browser with Binder](https://mybinder.org/v2/gh/gemshub/xgems-jupyter/main?urlpath=lab/tree/how-to-use-xgems-examples.ipynb),
+no installation needed.
+
 ## Features
 
 * Two solvers. The GEMS3K IPM solver is fast and is the default. The Optima solver is more reliable for solid
@@ -55,13 +60,27 @@ The chemical system (species, phases, thermodynamic data) comes from a project t
   species, phases and the system.
 * Use from Python or C++, or link the library into a transport code.
 
+## Solver modes
+
+* `setSolverMode()` selects the solver for each calculation: `"aia"`, `"sia"` (GEMS3K IPM solver, cold and warm
+  start), `"aop"`, `"sop"` (Optima solver, cold and warm start), `"hop"`, `"shp"` (GEMS3K IPM solver, then an Optima
+  check).
+* `solverMode()` tells which mode runs. `builtWithOptima()` tells if the Optima modes are available.
+* If `warmstart` is set, `"aia"` runs as `"sia"`, `"aop"` as `"sop"` and `"hop"` as `"shp"`.
+* The default is `"aia"`.
+
+## pH and Eh targets
+
+* `setpHTarget()` and `setEhTarget()` set a target pH or Eh in the Optima modes. The solver adds the needed amount
+  of acid, base or electrons.
+* `controlConditionTitrant()` gives that amount. For a pH target it is the amount of H+ removed, so a negative value
+  means H+ added. `clearControlConditions()` removes the targets.
+
 ## Documentation
 
-[xgems.readthedocs.io](https://xgems.readthedocs.io): installation, the
-[solver guide](https://xgems.readthedocs.io/en/latest/solver_guide.html),
-[solver settings](https://xgems.readthedocs.io/en/latest/solver_settings.html),
-[advanced usage](https://xgems.readthedocs.io/en/latest/advanced_usage.html) and the Python and C++ API.
-More examples are in [demos/](demos).
+The full documentation is on [xgems.readthedocs.io](https://xgems.readthedocs.io): installation, solver guide,
+settings, advanced usage, and the Python and C++ API. More examples are in [demos/](demos) and in the
+[Jupyter notebooks](https://github.com/gemshub/xgems-jupyter).
 
 ## Installation with conda
 
